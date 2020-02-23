@@ -1,0 +1,208 @@
+<template>
+  <div class="item"
+       @tap="onHandleDetail(item.id)">
+    <div class="item-inner">
+      <div class="item-img">
+        <lazy-image src="http://sersms.com:7000/house/v1/file/static/userfile/202001/15/1217303536806432768.jpg"/>
+      </div>
+      <div class="item-info">
+        <div class="item-row">
+          <div class="item-title ellipsis">{{item.title}}</div>
+        </div>
+        <div class="item-row">
+          <span class="item-addr">{{item.addr_qu}}</span>
+          <span class="item-split"></span>
+          <span class="item-size">建面 90-{{item.mianji}}m²</span>
+        </div>
+        <div class="item-row">
+          <span class="item-normal item-price">
+            <span class="item-value">{{item.price}}</span>
+            <span class="item-unit">元/m²</span>
+          </span>
+        </div>
+        <div class="item-row">
+          <span class="item-tag item-state state1" v-if="item.status===1">在售</span>
+          <span class="item-tag item-state state2" v-if="item.status===2">待售</span>
+          <span class="item-tag item-state state3" v-if="item.status===3">售罄</span>
+          <span class="item-tag"
+                v-for="(tag,index) in item.tags"
+                :key="index">{{tag}}</span>
+        </div>
+      </div>
+      <div class="item-type" v-if="isType">新房</div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+  import * as $routes from '../../router';
+
+  wepy.component({
+    data: {},
+    props: {
+      item: {
+        type: Object,
+        default: {}
+      },
+      isType: {
+        type: Boolean,
+        default: false
+      }
+    },
+    events: {},
+    methods: {
+      onHandleDetail(id) {
+        wx.navigateTo({
+          url: $routes.NEW_HOUSE_DETAIL.path + '?house_id=' + id
+        });
+      }
+    },
+    onLoad() {
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../assets/less/variable";
+  @import "../../assets/less/iconfont";
+  @import "../../assets/less/common";
+
+  .item {
+    position: relative;
+    overflow: hidden;
+    padding: 0 unit(30, rpx);
+    background-color: @white;
+    .item-inner {
+      display: flex;
+      padding: unit(30, rpx) 0;
+      border-bottom: 0.5px solid @borderColor2;
+      .item-img {
+        width: unit(220, rpx);
+        height: unit(180, rpx);
+      }
+      .item-info {
+        width: calc(100% - unit(220, rpx));
+        padding-left: unit(20, rpx);
+        .item-row {
+          margin-bottom: unit(8, rpx);
+          font-size: 0;
+          &:last-child {
+            margin: 0;
+            padding-top: unit(4, rpx);
+          }
+          .item-title {
+            height: unit(40, rpx);
+            line-height: unit(40, rpx);
+            font-size: unit(28, rpx);
+            font-weight: bold;
+            color: @fontColor1;
+          }
+          .item-addr,
+          .item-desc,
+          .item-size {
+            height: unit(32, rpx);
+            line-height: unit(32, rpx);
+            display: inline-block;
+            vertical-align: middle;
+            font-size: unit(24, rpx);
+            color: @fontColor2;
+          }
+          .item-split {
+            height: unit(20, rpx);
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 unit(10, rpx);
+            border-left: 1px solid @borderColor1;
+          }
+          .item-value,
+          .item-unit {
+            height: 100%;
+            display: inline-block;
+            vertical-align: middle;
+            &.item-value {
+              font-size: unit(32, rpx);
+              font-weight: bold;
+            }
+            &.item-unit {
+              font-size: unit(24, rpx);
+            }
+          }
+          .item-normal {
+            height: unit(40, rpx);
+            line-height: unit(40, rpx);
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: unit(10, rpx);
+            font-size: unit(24, rpx);
+            color: @fontColor3;
+            &.item-price {
+              color: @priceColor;
+              font-size: 0;
+            }
+            &:last-child {
+              margin: 0;
+            }
+          }
+          .item-tag {
+            height: unit(40, rpx);
+            line-height: unit(40, rpx);
+            display: inline-block;
+            vertical-align: middle;
+            padding: 0 unit(10, rpx);
+            margin-right: unit(10, rpx);
+            background-color: @stateColor;
+            font-size: @fontSize1;
+            color: @fontColor3;
+            &.item-state {
+              color: @white;
+              &.state1 {
+                background-color: @stateColor1;
+              }
+              &.state2 {
+                background-color: @stateColor2;
+              }
+              &.state3 {
+                background-color: @stateColor3;
+              }
+            }
+            &:last-child {
+              margin: 0;
+            }
+          }
+        }
+      }
+      .item-type {
+        position: absolute;
+        top: unit(8, rpx);
+        left: unit(-80, rpx);
+        z-index: 10;
+        width: unit(200, rpx);
+        height: unit(30, rpx);
+        line-height: unit(30, rpx);
+        transform: rotate(-45deg);
+        background-color: @typeColor1;
+        font-size: unit(16, rpx);
+        font-weight: bold;
+        text-align: center;
+        color: @white;
+      }
+    }
+  }
+
+  new-house-item {
+    &:last-child {
+      .item-inner {
+        border: none !important;
+      }
+    }
+  }
+</style>
+
+<config>
+  {
+  usingComponents: {
+  'lazy-image': '../lazy-image/lazy-image'
+  }
+  }
+</config>

@@ -1,0 +1,51 @@
+<style scoped lang="less">
+  @import "./assets/less/common";
+
+</style>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+  import wepyRedux from '@wepy/redux';
+
+  wepy.use(wepyRedux);
+
+  wepy.app({
+    globalData: {
+      userInfo: null
+    },
+
+    onLaunch() {
+    },
+
+    methods: {}
+  });
+</script>
+
+<config>
+  {
+  pages: [
+  'pages/index/index'
+  ],
+  window: {
+  backgroundColor: '#fafafa',
+  backgroundTextStyle: 'light',
+  navigationBarTextStyle: 'black',
+  navigationBarBackgroundColor: '#ffffff'
+  }
+  }
+</config>
+
+<!--<script type="text/ecmascript-6">-->
+<!--const config =-->
+<!--{-->
+<!--pages: [-->
+<!--'pages/index/index'-->
+<!--],-->
+<!--window: {-->
+<!--backgroundColor: '#fafafa',-->
+<!--backgroundTextStyle: 'light',-->
+<!--navigationBarTextStyle: 'black',-->
+<!--navigationBarBackgroundColor: '#ffffff'-->
+<!--}-->
+<!--};-->
+<!--</script>-->

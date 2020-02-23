@@ -1,0 +1,87 @@
+<template>
+  <div class="error fade{{isFailure?'':' hide'}}" v-if="isShow">
+    <div class="error-inner">
+      <img class="error-image" src="./images/error@2x.png" mode="aspectFit"/>
+      <div class="btn btn-refresh" @tap="refresh">重新加载</div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+
+  wepy.component({
+    data: {
+      isShow: false
+    },
+    props: {
+      isFailure: {
+        type: Boolean,
+        default: false
+      }
+    },
+    events: {},
+    watch: {
+      isFailure() {
+        if (this.isFailure) {
+          this.isShow = this.isFailure;
+        } else {
+          setTimeout(() => {
+            this.isShow = this.isFailure;
+          }, 300);
+        }
+      }
+    },
+    methods: {
+      refresh() {
+        this.$emit('refresh');
+      }
+    },
+    created() {
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../assets/less/common";
+  @import "../../assets/less/variable";
+
+  @height: unit(60, rpx);
+
+  .error {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 0;
+    .error-inner {
+      display: inline-block;
+      vertical-align: middle;
+      .error-image {
+        width: unit(200, rpx);
+        height: unit(200, rpx);
+      }
+      .btn-refresh {
+        width: auto;
+        overflow: hidden;
+        line-height: @height;
+        display: inline-block;
+        border-radius: @height;
+        padding: 0 unit(30, rpx);
+        margin-top: unit(20, rpx);
+        border: 0.5px solid @borderColor3;
+        font-size: @fontSize3;
+        letter-spacing: 1px;
+        color: @fontColor3;
+      }
+    }
+    &:before {
+      content: '';
+      height: 100%;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+</style>

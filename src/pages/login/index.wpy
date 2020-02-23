@@ -1,0 +1,83 @@
+<template>
+  <div class="container">
+    <div class="content">
+      <div class="header"></div>
+      <div class="body">
+        <div class="context fade">
+
+        </div>
+      </div>
+      <div class="footer"></div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+  import store from '../../store';
+  import {mapState, mapActions} from '@wepy/redux';
+  import * as controller from './controller';
+  import * as $routes from '../../router';
+
+  wepy.page({
+    store,
+
+    mixins: [],
+
+    data: {},
+
+    computed: {
+      ...mapState(controller.STATES)
+    },
+
+    methods: {
+      ...mapActions(controller.ACTIONS),
+      onRefresh() {
+      }
+    },
+
+    onLoad() {
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../assets/less/variable";
+  @import "../../assets/less/@media";
+
+  @height: unit(64, rpx);
+
+  .container {
+    min-height: 100vh;
+    .content {
+      height: 100vh;
+      .header {}
+      .body {
+        height: 100%;
+        position: relative;
+        .context {
+          height: 100%;
+          padding-top: 65px;
+          .scroll-view {
+            height: 100%;
+            .scroll-inner {
+              padding-bottom: unit(20, rpx);
+            }
+          }
+        }
+      }
+      .footer {
+      }
+    }
+  }
+
+</style>
+
+<config>
+  {
+  navigationStyle:'custom',
+  usingComponents: {
+  'top-bar': '../../components/top-bar/top-bar'
+  }
+  }
+</config>
