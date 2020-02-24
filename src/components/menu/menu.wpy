@@ -1,0 +1,46 @@
+<template>
+  <div class="menu">
+    <div class="item">
+      <div class="item-icon iconfont icon-house"></div>
+      <div class="item-text">房源管理</div>
+    </div>
+    <div class="item">
+      <div class="item-icon iconfont icon-user"></div>
+      <div class="item-text">用户管理</div>
+    </div>
+    <div class="item">
+      <div class="item-icon iconfont icon-agent"></div>
+      <div class="item-text">经纪人管理</div>
+    </div>
+    <div class="item">
+      <div class="item-icon iconfont icon-business"></div>
+      <div class="item-text">商户管理</div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+
+  wepy.component({
+    data: {},
+    props: {},
+    events: {},
+    watch: {},
+    methods: {},
+    onLoad() {
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../assets/less/common";
+  @import "../../assets/less/variable";
+  @import "../../assets/less/iconfont";
+
+  .menu {
+    .item{
+
+    }
+  }
+</style>

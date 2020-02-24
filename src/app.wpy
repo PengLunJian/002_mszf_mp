@@ -24,6 +24,7 @@
 <config>
   {
   pages: [
+  'pages/login/index',
   'pages/index/index'
   ],
   window: {

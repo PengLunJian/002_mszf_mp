@@ -104,6 +104,27 @@ button {
   animation: hide 300ms ease-out forwards;
 }
 
+checkbox {
+  .wx-checkbox-input {
+    border-radius: 50%;
+    border: none;
+    &:before {
+      display: block;
+      font-size: @fontSize24;
+      color: @borderColor1;
+      text-align: center;
+    }
+    &.wx-checkbox-input-checked {
+      border-radius: 50%;
+      border-color: @theme2;
+      background-color: @theme2;
+      &:before {
+        color: @white;
+      }
+    }
+  }
+}
+
 @keyframes fade {
   0% {
     opacity: 0;
