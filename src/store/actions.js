@@ -21,7 +21,7 @@ export const ajaxRequestSelectLogin = createAction(
   'selectLogin', (params) => {
     commit(actionTypes.SELECT_LOGIN_REQUEST);
     return new Promise((resolve, reject) => {
-      axios.get(apis.selectLogin, {params})
+      axios.post(apis.selectLogin, params)
         .then((res) => {
           res = res || {};
           const {data, success} = res;

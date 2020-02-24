@@ -6,121 +6,29 @@ const apis = {
   headers: {
     'Content-Type': 'application/json; charset=UTF-8'
   },
-  insertHouse: {
-    url: 'house/v1/houser/house/list',
-    params: {
-      page: {
-        pageSize: 10,
-        pageIndex: 1
-      },
-      filter: [
-        {
-          field: 'type',
-          opt: '=',
-          value: 3
-        }
-      ],
-      sort: [
-        {
-          field: 'id',
-          asc: false
-        }
-      ]
-    }
-  },
+  insertHouse: {},
   selectLogin: {
-    url: 'house/v1/houser/house/list',
+    url: 'auth/account/login',
     params: {
-      page: {
-        pageSize: 10,
-        pageIndex: 1
-      },
-      filter: [
-        {
-          field: 'type',
-          opt: '=',
-          value: 3
-        }
-      ],
-      sort: [
-        {
-          field: 'id',
-          asc: false
-        }
-      ]
+      account: '',
+      pwd: ''
     }
   },
   deleteHouse: {
     url: 'house/v1/houser/house/list',
-    params: {
-      page: {
-        pageSize: 10,
-        pageIndex: 1
-      },
-      filter: [
-        {
-          field: 'type',
-          opt: '=',
-          value: 3
-        }
-      ],
-      sort: [
-        {
-          field: 'id',
-          asc: false
-        }
-      ]
-    }
+    params: {}
   },
   updateHouse: {
     url: 'house/v1/houser/house/list',
-    params: {
-      page: {
-        pageSize: 10,
-        pageIndex: 1
-      },
-      filter: [
-        {
-          field: 'type',
-          opt: '=',
-          value: 3
-        }
-      ],
-      sort: [
-        {
-          field: 'id',
-          asc: false
-        }
-      ]
-    }
+    params: {}
   },
   selectHouse: {
     url: 'house/v1/houser/house/list',
-    params: {
-      page: {
-        pageSize: 10,
-        pageIndex: 1
-      },
-      filter: [
-        {
-          field: 'type',
-          opt: '=',
-          value: 3
-        }
-      ],
-      sort: [
-        {
-          field: 'id',
-          asc: false
-        }
-      ]
-    }
+    params: {}
   },
   selectHouseDetail: {
     url: 'house/v1/houser/house/detail',
-    params: {
-      house_id: 1
-    }
+    params: {}
   }
 };
 
