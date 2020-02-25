@@ -15,19 +15,10 @@
         <div class="context fade">
           <scroll-view
             class="scroll-view"
-            scroll-y="{{true}}">
-            <new-house-item v-for="(item,index) in isData.rows"
-                            v-if="item.type===1"
-                            :item="item"
-                            :key="index"></new-house-item>
-            <second-house-item v-for="(item,index) in isData.rows"
-                               v-if="item.type===2"
-                               :item="item"
-                               :key="index"></second-house-item>
-            <rent-house-item v-for="(item,index) in isData.rows"
-                             v-if="item.type===3"
-                             :item="item"
-                             :key="index"></rent-house-item>
+            scroll-y="{{true}}"
+            @scrolltolower="onHandleScrollToLower">
+            <module-house-item :items="isData.rows"></module-house-item>
+            <load-more :length="isData.rows.length" :totalCount="isData.totalCount"></load-more>
           </scroll-view>
         </div>
       </div>
@@ -50,6 +41,7 @@
     mixins: [Toast, Loading],
 
     data: {
+      timer: null,
       pageSize: 10,
       pageIndex: 1,
       tab: {
@@ -71,10 +63,19 @@
           .then((res) => {
             this.hideLoading();
             res = res || {};
+            const {success} = res.payload;
+            if (success) {
+              this.pageIndex++;
+            } else {
+              this.showToast('加载失败，请重试');
+            }
+            this.timer = null;
             console.log(res);
           })
           .catch((err) => {
             this.hideLoading();
+            this.timer = null;
+            this.showToast('加载失败，请重试');
             console.log(err);
           });
       },
@@ -83,6 +84,15 @@
         this.clearSelectHouse();
         this.pageIndex = 1;
         this.exeAjaxSelectHouse();
+      },
+      onHandleScrollToLower() {
+        if (this.timer) return;
+        this.timer = setTimeout(() => {
+          const {rows, totalCount} = this.isData;
+          if (rows.length < totalCount) {
+            this.exeAjaxSelectHouse();
+          }
+        }, 500);
       },
       getParams() {
         const type = this.tab.initIndex + 1;
@@ -205,9 +215,8 @@
   navigationStyle:'custom',
   usingComponents: {
   'top-bar': '../../components/top-bar/top-bar',
-  'new-house-item': '../../components/new-house-item/new-house-item',
-  'second-house-item': '../../components/second-house-item/second-house-item',
-  'rent-house-item': '../../components/rent-house-item/rent-house-item'
+  'load-more': '../../components/load-more/load-more',
+  'module-house-item': '../../components/module-house-item/module-house-item'
   }
   }
 </config>

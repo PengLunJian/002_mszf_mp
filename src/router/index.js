@@ -22,3 +22,8 @@ export const BUSINESS = {
   name: '商户管理',
   path: '/pages/business/index'
 };
+
+export const DETAIL = {
+  name: '房源详情',
+  path: '/pages/detail/index'
+};

@@ -54,7 +54,7 @@
     methods: {
       onHandleDetail(id) {
         wx.navigateTo({
-          url: $routes.RENT_HOUSE_DETAIL.path + '?house_id=' + id
+          url: $routes.DETAIL.path + '?house_id=' + id
         });
       }
     },

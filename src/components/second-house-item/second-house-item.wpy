@@ -53,7 +53,7 @@
     methods: {
       onHandleDetail(id) {
         wx.navigateTo({
-          url: $routes.SECOND_HOUSE_DETAIL.path + '?house_id=' + id
+          url: $routes.DETAIL.path + '?house_id=' + id
         });
       }
     },
