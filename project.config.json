@@ -55,8 +55,8 @@
 			"list": [
 				{
 					"id": -1,
-					"name": "packageMine/pages/mine/index",
-					"pathName": "packageMine/pages/mine/index",
+					"name": "pages/index/index",
+					"pathName": "pages/index/index",
 					"query": "",
 					"scene": null
 				},
@@ -69,22 +69,9 @@
 				},
 				{
 					"id": -1,
-					"name": "packageMine/pages/about/index",
-					"pathName": "packageMine/pages/about/index",
+					"name": "pages/house/index",
+					"pathName": "pages/house/index",
 					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "packageMine/pages/login/index",
-					"pathName": "packageMine/pages/login/index",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "packageMine/pages/history/index",
-					"pathName": "packageMine/pages/history/index",
 					"scene": null
 				}
 			]

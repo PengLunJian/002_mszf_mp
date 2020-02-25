@@ -25,7 +25,8 @@
   {
   pages: [
   'pages/login/index',
-  'pages/index/index'
+  'pages/index/index',
+  'pages/house/index'
   ],
   window: {
   backgroundColor: '#fafafa',

@@ -6,3 +6,19 @@ export const INDEX = {
   name: '首页',
   path: '/pages/index/index'
 };
+export const HOUSE = {
+  name: '房源管理',
+  path: '/pages/house/index'
+};
+export const USER = {
+  name: '用户管理',
+  path: '/pages/user/index'
+};
+export const AGENT = {
+  name: '经纪人管理',
+  path: '/pages/agent/index'
+};
+export const BUSINESS = {
+  name: '商户管理',
+  path: '/pages/business/index'
+};

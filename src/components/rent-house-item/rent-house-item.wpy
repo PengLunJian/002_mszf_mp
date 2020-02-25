@@ -94,7 +94,7 @@
           .item-title {
             height: unit(40, rpx);
             line-height: unit(40, rpx);
-            font-size: unit(28, rpx);
+            font-size: @fontSize28;
             font-weight: bold;
             color: @fontColor1;
           }
@@ -105,7 +105,7 @@
             line-height: unit(32, rpx);
             display: inline-block;
             vertical-align: middle;
-            font-size: unit(24, rpx);
+            font-size: @fontSize24;
             color: @fontColor2;
           }
           .item-split {
@@ -121,11 +121,11 @@
             display: inline-block;
             vertical-align: middle;
             &.item-value {
-              font-size: unit(32, rpx);
+              font-size: @fontSize32;
               font-weight: bold;
             }
             &.item-unit {
-              font-size: unit(24, rpx);
+              font-size: @fontSize24;
             }
           }
           .item-normal {
@@ -134,7 +134,7 @@
             display: inline-block;
             vertical-align: middle;
             margin-right: unit(10, rpx);
-            font-size: unit(24, rpx);
+            font-size: @fontSize24;
             color: @fontColor3;
             &.item-price {
               color: @priceColor;
@@ -152,7 +152,7 @@
             padding: 0 unit(10, rpx);
             margin-right: unit(10, rpx);
             border: 1px solid @theme2;
-            font-size: unit(24, rpx);
+            font-size: @fontSize24;
             color: @theme2;
             &:last-child {
               margin: 0;

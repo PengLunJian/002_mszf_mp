@@ -54,11 +54,12 @@
   import * as controller from './controller';
   import * as $routes from '../../router';
   import Toast from '../../mixins/toast';
+  import Loading from '../../mixins/loading';
 
   wepy.page({
     store,
 
-    mixins: [Toast],
+    mixins: [Toast, Loading],
 
     data: {
       username: '',
@@ -89,48 +90,49 @@
         }
       },
       onHandleCheck() {
-        const data = {
-          username: this.username,
-          password: this.password
-        };
         if (this.checked) {
           this.checked = false;
-          localStorage.removeItem('data', data);
         } else {
           this.checked = true;
-          localStorage.setItem('data', data);
         }
       },
       onHandleLogin() {
         this.checkAccount();
       },
       exeAjaxSelectLogin() {
-        wx.showLoading({
-          title: '正在加载',
-          mask: true
-        });
+        this.showLoading();
         const params = {
           account: this.username,
           pwd: this.password
         };
         this.ajaxSelectLogin(params)
           .then((res) => {
-            wx.hideLoading();
+            this.hideLoading();
             res = res || {};
             const {payload} = res;
             const {error, success} = payload || {};
             if (success) {
+              const data = {
+                username: this.username,
+                password: this.password
+              };
+              if (this.checked) {
+                localStorage.setItem('data', data);
+              } else {
+                localStorage.removeItem('data', data);
+              }
               wx.redirectTo({
                 url: $routes.INDEX.path
               });
             } else {
               const {errorMessage} = error || {};
-              this.showToast(errorMessage);
+              const message = errorMessage || '系统错误，请重试';
+              this.showToast(message);
             }
             console.log(res);
           })
           .catch((err) => {
-            wx.hideLoading();
+            this.hideLoading();
             this.showToast('服务器连接失败');
             console.log(err);
           });
@@ -278,7 +280,6 @@
 <config>
   {
   disableScroll:true,
-  navigationStyle:'custom',
-  usingComponents: {}
+  navigationStyle:'custom'
   }
 </config>

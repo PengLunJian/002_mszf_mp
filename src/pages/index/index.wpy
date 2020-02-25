@@ -9,7 +9,10 @@
           <scroll-view
             class="scroll-view"
             scroll-y="{{true}}">
-            <div class="scroll-inner"></div>
+            <div class="scroll-inner">
+              <module-info></module-info>
+              <module-menu></module-menu>
+            </div>
           </scroll-view>
         </div>
       </div>
@@ -23,7 +26,6 @@
   import store from '../../store';
   import {mapState, mapActions} from '@wepy/redux';
   import * as controller from './controller';
-  import * as $routes from '../../router';
 
   wepy.page({
     store,
@@ -37,9 +39,7 @@
     },
 
     methods: {
-      ...mapActions(controller.ACTIONS),
-      onRefresh() {
-      }
+      ...mapActions(controller.ACTIONS)
     },
 
     onLoad() {
@@ -57,7 +57,8 @@
     min-height: 100vh;
     .content {
       height: 100vh;
-      .header {}
+      .header {
+      }
       .body {
         height: 100%;
         position: relative;
@@ -67,7 +68,7 @@
           .scroll-view {
             height: 100%;
             .scroll-inner {
-              padding-bottom: unit(20, rpx);
+              padding-top: unit(20, rpx);
             }
           }
         }
@@ -83,7 +84,9 @@
   {
   navigationStyle:'custom',
   usingComponents: {
-  'top-bar': '../../components/top-bar/top-bar'
+  'top-bar': '../../components/top-bar/top-bar',
+  'module-info': '../../components/module-info/module-info',
+  'module-menu': '../../components/module-menu/module-menu'
   }
   }
 </config>

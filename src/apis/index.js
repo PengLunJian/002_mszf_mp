@@ -24,7 +24,25 @@ const apis = {
   },
   selectHouse: {
     url: 'house/v1/houser/house/list',
-    params: {}
+    params: {
+      page: {
+        pageSize: 10,
+        pageIndex: 1
+      },
+      filter: [
+        {
+          field: 'type',
+          opt: '=',
+          value: 3
+        }
+      ],
+      sort: [
+        {
+          field: 'id',
+          asc: false
+        }
+      ]
+    }
   },
   selectHouseDetail: {
     url: 'house/v1/houser/house/detail',

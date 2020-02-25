@@ -1,0 +1,213 @@
+<template>
+  <div class="container">
+    <div class="content">
+      <div class="header">
+        <top-bar title="房源管理"></top-bar>
+        <div class="tab-bar">
+          <div class="tab-item" v-for="(item,index) in tab.items"
+               :class="{'active':index===tab.initIndex}" :key="index"
+               @tap="onHandleChange(index)">
+            <div class="tab-text">{{item}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="context fade">
+          <scroll-view
+            class="scroll-view"
+            scroll-y="{{true}}">
+            <new-house-item v-for="(item,index) in isData.rows"
+                            v-if="item.type===1"
+                            :item="item"
+                            :key="index"></new-house-item>
+            <second-house-item v-for="(item,index) in isData.rows"
+                               v-if="item.type===2"
+                               :item="item"
+                               :key="index"></second-house-item>
+            <rent-house-item v-for="(item,index) in isData.rows"
+                             v-if="item.type===3"
+                             :item="item"
+                             :key="index"></rent-house-item>
+          </scroll-view>
+        </div>
+      </div>
+      <div class="footer"></div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+  import store from '../../store';
+  import {mapState, mapActions} from '@wepy/redux';
+  import * as controller from './controller';
+  import Toast from '../../mixins/toast';
+  import Loading from '../../mixins/loading';
+
+  wepy.page({
+    store,
+
+    mixins: [Toast, Loading],
+
+    data: {
+      pageSize: 10,
+      pageIndex: 1,
+      tab: {
+        initIndex: 0,
+        items: ['新房', '二手房', '租房']
+      }
+    },
+
+    computed: {
+      ...mapState(controller.STATES)
+    },
+
+    methods: {
+      ...mapActions(controller.ACTIONS),
+      exeAjaxSelectHouse() {
+        this.showLoading();
+        const params = this.getParams();
+        this.ajaxSelectHouse(params)
+          .then((res) => {
+            this.hideLoading();
+            res = res || {};
+            console.log(res);
+          })
+          .catch((err) => {
+            this.hideLoading();
+            console.log(err);
+          });
+      },
+      onHandleChange(index) {
+        this.tab.initIndex = index;
+        this.clearSelectHouse();
+        this.pageIndex = 1;
+        this.exeAjaxSelectHouse();
+      },
+      getParams() {
+        const type = this.tab.initIndex + 1;
+        const params = {
+          page: {
+            pageSize: this.pageSize,
+            pageIndex: this.pageIndex
+          },
+          filter: [
+            {
+              field: 'type',
+              opt: '=',
+              value: type
+            }
+          ],
+          sort: [
+            {
+              field: 'id',
+              asc: false
+            }
+          ]
+        };
+        return params;
+      }
+    },
+
+    onLoad() {
+      this.clearSelectHouse();
+      this.exeAjaxSelectHouse();
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../assets/less/variable";
+  @import "../../assets/less/@media";
+
+  @height: unit(64, rpx);
+
+  .container {
+    min-height: 100vh;
+    .content {
+      height: 100vh;
+      .header {
+        .tab-bar {
+          width: 100%;
+          display: flex;
+          flex-wrap: wrap;
+          position: fixed;
+          top: unit(130, rpx);
+          left: 0;
+          z-index: 1000;
+          background-color: @white;
+          box-shadow: 0 5px 5px rgba(0, 0, 0, 0.03);
+          font-size: @fontSize28;
+          text-align: center;
+          color: @fontColor2;
+          .tab-item {
+            width: 33.333%;
+            position: relative;
+            padding: unit(20, rpx) 0;
+            .tab-text {
+              height: unit(40, rpx);
+              line-height: unit(40, rpx);
+              transition: all 300ms ease;
+              border-right: 0.5px solid @borderColor1;
+            }
+            &:after {
+              content: '';
+              width: 0px;
+              display: block;
+              position: absolute;
+              left: 50%;
+              bottom: 0;
+              opacity: 0;
+              visibility: hidden;
+              transform: translateX(-50%);
+              transition: all 300ms ease;
+              border-top: unit(6, rpx) solid @theme2;
+            }
+            &.active {
+              color: @theme2;
+              &:after {
+                opacity: 1;
+                visibility: visible;
+                width: unit(120, rpx);
+              }
+            }
+            &:last-child {
+              .tab-text {
+                border: none;
+              }
+            }
+          }
+        }
+      }
+      .body {
+        height: 100%;
+        position: relative;
+        .context {
+          height: 100%;
+          padding-top: unit(210, rpx);
+          .scroll-view {
+            height: 100%;
+            .scroll-inner {
+              padding-top: unit(20, rpx);
+            }
+          }
+        }
+      }
+      .footer {
+      }
+    }
+  }
+
+</style>
+
+<config>
+  {
+  navigationStyle:'custom',
+  usingComponents: {
+  'top-bar': '../../components/top-bar/top-bar',
+  'new-house-item': '../../components/new-house-item/new-house-item',
+  'second-house-item': '../../components/second-house-item/second-house-item',
+  'rent-house-item': '../../components/rent-house-item/rent-house-item'
+  }
+  }
+</config>

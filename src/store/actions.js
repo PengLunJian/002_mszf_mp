@@ -1,7 +1,6 @@
 import apis from '../apis';
 import store from './index';
 import axios from '../axios';
-import * as utils from '../utils';
 import * as actionTypes from './actionTypes';
 import {createAction} from 'redux-actions';
 
