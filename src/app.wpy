@@ -26,7 +26,9 @@
   pages: [
   'pages/login/index',
   'pages/index/index',
-  'pages/house/index'
+  'pages/house/index',
+  'pages/detail/index',
+  'pages/insert-house/index'
   ],
   window: {
   backgroundColor: '#fafafa',
