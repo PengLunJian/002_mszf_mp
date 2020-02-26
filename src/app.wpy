@@ -14,8 +14,7 @@
       userInfo: null
     },
 
-    onLaunch() {
-    },
+    onLaunch() {},
 
     methods: {}
   });
