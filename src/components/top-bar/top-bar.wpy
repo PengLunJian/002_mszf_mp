@@ -1,11 +1,8 @@
 <template>
   <div class="top-bar">
-    <div class="top-inner" v-if="isIcon">
-      <div class="top-icon iconfont icon-back" @tap="onHandleBack"></div>
-      <div class="top-icon iconfont icon-home" @tap="onHandleHome"></div>
-      <div class="top-title">{{title}}</div>
-    </div>
-    <div class="top-inner" v-if="!isIcon">
+    <div class="top-inner">
+      <div class="top-icon iconfont icon-back" v-if="isIcon" @tap="onHandleBack"></div>
+      <div class="top-icon iconfont icon-home" v-if="isIcon" @tap="onHandleHome"></div>
       <div class="top-title">{{title}}</div>
     </div>
   </div>

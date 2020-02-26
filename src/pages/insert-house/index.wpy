@@ -12,53 +12,49 @@
                 <div class="module-content">
                   <div class="module-header"></div>
                   <div class="module-body">
-                    <div class="form-group">
-                      <div class="form-inner">
-                        <label class="form-label">小区名</label>
-                        <div class="form-value">
-                          <input class="form-input" v-model="name" type="text" placeholder="请输入小区名"/>
+                    <div class="module-base">
+                      <div class="form-row row">
+                        <div class="form-col col-6">
+                          <div class="form-group">
+                            <label class="form-label">小区</label>
+                            <input class="form-input" v-model="xiaoqu" type="text" placeholder="小区名"/>
+                          </div>
+                        </div>
+                        <div class="form-col col-6">
+                          <div class="form-group">
+                            <label class="form-label">租金</label>
+                            <input class="form-input" v-model="price" type="number" placeholder="元/月"/>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="form-inner">
-                        <label class="form-label">租金</label>
-                        <div class="form-value">
-                          <input class="form-input" v-model="price" type="number" placeholder="请输入租金(元/月)"/>
+                      <div class="form-row row">
+                        <div class="form-col col-6">
+                          <div class="form-group">
+                            <label class="form-label">户型</label>
+                            <input class="form-input" v-model="huxing" type="number" placeholder="2室1厅1卫"/>
+                          </div>
+                        </div>
+                        <div class="form-col col-6">
+                          <div class="form-group">
+                            <label class="form-label">面积</label>
+                            <input class="form-input" v-model="mianji" type="number" placeholder="m²"/>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="form-inner">
-                        <label class="form-label">面积</label>
-                        <div class="form-value">
-                          <input class="form-input" v-model="size" type="number" placeholder="请输入面积(m²)"/>
+                      <div class="form-row row">
+                        <div class="form-col col-12">
+                          <div class="form-group">
+                            <label class="form-label">地址</label>
+                            <input class="form-input" v-model="dizhi" type="number" placeholder="安徽省、宣城市、广德县"/>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="form-inner">
-                        <label class="form-label">户型</label>
-                        <div class="form-value">
-                          <input class="form-input" v-model="layout" type="number" placeholder="请选择户型"/>
-                          <div class="form-next iconfont icon-next"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="form-inner">
-                        <label class="form-label">地址</label>
-                        <div class="form-value">
-                          <input class="form-input" v-model="address" type="number" placeholder="请选择地址"/>
-                          <div class="form-next iconfont icon-next"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="form-inner">
-                        <label class="form-label">详细地址</label>
-                        <div class="form-value">
-                          <input class="form-input" v-model="detailAddr" type="text"/>
+                      <div class="form-row row">
+                        <div class="form-col col-12">
+                          <div class="form-group">
+                            <label class="form-label">详细地址</label>
+                            <input class="form-input" v-model="xiangxidizhi" type="text" placeholder="街道、小区、门牌号"/>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -70,48 +66,50 @@
                 <div class="module-content">
                   <div class="module-header"></div>
                   <div class="module-body">
-                    <div class="form-group">
-                      <div class="form-inner">
-                        <label class="form-label">支付方式</label>
-                        <div class="form-value">
-                          <input class="form-input" v-model="zhifufangshi" type="text" placeholder="请选择支付方式"/>
-                          <div class="form-next iconfont icon-next"></div>
+                    <div class="module-base">
+                      <div class="form-row row">
+                        <div class="form-col col-6">
+                          <div class="form-group">
+                            <label class="form-label">支付</label>
+                            <input class="form-input" v-model="zhifufangshi" type="text" placeholder="押一付三"/>
+                          </div>
+                        </div>
+                        <div class="form-col col-6">
+                          <div class="form-group">
+                            <label class="form-label">朝向</label>
+                            <input class="form-input" v-model="chaoxiang" type="number" placeholder="朝南"/>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="form-inner">
-                        <label class="form-label">朝向</label>
-                        <div class="form-value">
-                          <input class="form-input" v-model="chaoxiang" type="number" placeholder="请选择朝向"/>
-                          <div class="form-next iconfont icon-next"></div>
+                      <div class="form-row row">
+                        <div class="form-col col-6">
+                          <div class="form-group">
+                            <label class="form-label">楼层</label>
+                            <input class="form-input" v-model="louceng" type="number" placeholder="低楼层"/>
+                          </div>
+                        </div>
+                        <div class="form-col col-6">
+                          <div class="form-group">
+                            <label class="form-label">装修</label>
+                            <input class="form-input" v-model="zhuangxiu" type="number" placeholder="精装修"/>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="form-inner">
-                        <label class="form-label">楼层</label>
-                        <div class="form-value">
-                          <input class="form-input" v-model="louceng" type="number" placeholder="请选择楼层"/>
-                          <div class="form-next iconfont icon-next"></div>
+                      <div class="form-row row">
+                        <div class="form-col col-12">
+                          <div class="form-group">
+                            <label class="form-label">出租方式</label>
+                            <input class="form-input" v-model="chuzufangshi" type="number" placeholder="整租、合租、转租"/>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="form-inner">
-                        <label class="form-label">装修</label>
-                        <div class="form-value">
-                          <input class="form-input" v-model="zhuangxiu" type="number" placeholder="请选择装修"/>
-                          <div class="form-next iconfont icon-next"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="form-inner">
-                        <label class="form-label">出租方式</label>
-                        <div class="form-value">
-                          <input class="form-input" v-model="chuzufangshi" type="number" placeholder="请选择出租方式"/>
-                          <div class="form-next iconfont icon-next"></div>
+                      <div class="form-row row">
+                        <div class="form-col col-12">
+                          <div class="form-group">
+                            <label class="form-label">房源简介</label>
+                            <input class="form-input" v-model="fangyuanjianjie" type="text"
+                                   placeholder="范例：万象小区 南向两居室 精装修"/>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -140,17 +138,18 @@
     mixins: [],
 
     data: {
-      name: '',
+      xiaoqu: '',
       price: '',
-      layout: '',
-      size: '',
-      address: '',
-      detailAddr: '',
-      zhifufangshi: '押一付三',
-      chaoxiang: '南',
-      louceng: '低楼层',
-      zhuangxiu: '精装修',
-      chuzufangshi: '整租'
+      huxing: '',
+      mianji: '',
+      dizhi: '',
+      xiangxidizhi: '',
+      zhifufangshi: '',
+      chaoxiang: '',
+      louceng: '',
+      zhuangxiu: '',
+      chuzufangshi: '',
+      fangyuanjianjie: ''
     },
 
     computed: {
@@ -170,7 +169,7 @@
   @import "../../assets/less/variable";
   @import "../../assets/less/@media";
 
-  @height: unit(64, rpx);
+  @height: unit(120, rpx);
 
   .container {
     min-height: 100vh;
@@ -192,47 +191,65 @@
                 &:first-child {
                   margin: 0;
                 }
-              }
-              .form-group {
-                position: relative;
-                padding-left: unit(30, rpx);
-                background-color: @white;
-                font-size: @fontSize32;
-                color: @fontColor1;
-                .form-inner {
-                  display: flex;
-                  padding-right: unit(30, rpx);
-                  border-bottom: 0.5px solid @borderColor1;
-                  .form-label {
-                    width: 20%;
-                    height: unit(110, rpx);
-                    display: inline-block;
-                    vertical-align: middle;
-                    line-height: unit(110, rpx);
+                .module-content {
+                  .module-header {
+                    display: none;
+                    padding: unit(30, rpx) unit(30, rpx) 0;
+                    .module-title {
+                      height: unit(32, rpx);
+                      line-height: unit(32, rpx);
+                      padding-left: unit(20, rpx);
+                      border-left: 4px solid @theme2;
+                      font-size: @fontSize32;
+                      letter-spacing: 0.5px;
+                      font-weight: bold;
+                      color: @fontColor1;
+                    }
                   }
-                  .form-value {
-                    width: 80%;
-                    text-align: right;
-                    .form-input {
-                      height: unit(110, rpx);
+                  .module-body {
+                  }
+                  .module-footer {
+
+                  }
+                }
+              }
+              .form-row {
+                border-bottom: 0.5px solid @borderColor1;
+                .form-col {
+                  padding: 0 unit(30, rpx);
+                  border-right: 0.5px solid @borderColor1;
+                  .form-group {
+                    display: flex;
+                    font-size: @fontSize32;
+                    color: @fontColor1;
+                    .form-label {
+                      width: 25%;
+                      height: @height;
                       display: inline-block;
                       vertical-align: middle;
-                      line-height: unit(110, rpx);
+                      line-height: @height;
+                    }
+                    .form-input {
+                      width: 75%;
+                      height: @height;
+                      display: inline-block;
+                      vertical-align: middle;
                       text-align: right;
                     }
                     .form-next {
                       display: inline-block;
                       vertical-align: middle;
-                      padding-left: unit(15, rpx);
-                      line-height: unit(110, rpx);
+                      padding-left: unit(10, rpx);
+                      line-height: @height;
                       color: @iconNext;
                     }
                   }
-                }
-                &:last-child {
-                  .form-inner {
+                  &:last-child {
                     border: none;
                   }
+                }
+                &:last-child {
+                  border: none;
                 }
               }
             }

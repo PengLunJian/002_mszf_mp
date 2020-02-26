@@ -8,8 +8,20 @@
         <div class="module-info row">
           <div class="module-item col-6">
             <div class="item-info">
-              <div class="item-label">房源总数</div>
-              <div class="item-value">1548</div>
+              <div class="item-label">总数(新房)</div>
+              <div class="item-value">118</div>
+            </div>
+          </div>
+          <div class="module-item col-6">
+            <div class="item-info">
+              <div class="item-label">总数(二手房)</div>
+              <div class="item-value">320</div>
+            </div>
+          </div>
+          <div class="module-item col-6">
+            <div class="item-info">
+              <div class="item-label">总数(租房)</div>
+              <div class="item-value">518</div>
             </div>
           </div>
           <div class="module-item col-6">
@@ -27,7 +39,6 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import * as $routes from '../../router';
 
   wepy.component({
     data: {},
@@ -76,7 +87,7 @@
                 line-height: unit(40, rpx);
                 margin-bottom: unit(10, rpx);
                 font-size: @fontSize32;
-                color: @fontColor1;
+                color: @fontColor2;
               }
               .item-value {
                 height: unit(50, rpx);
