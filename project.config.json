@@ -62,8 +62,8 @@
 				},
 				{
 					"id": -1,
-					"name": "pages/index/index",
-					"pathName": "pages/index/index",
+					"name": "pages/insert-house/index",
+					"pathName": "pages/insert-house/index",
 					"query": "",
 					"scene": null
 				},
@@ -71,13 +71,6 @@
 					"id": -1,
 					"name": "pages/house/index",
 					"pathName": "pages/house/index",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/insert-house/index",
-					"pathName": "pages/insert-house/index",
 					"query": "",
 					"scene": null
 				}

@@ -28,7 +28,17 @@ export const DETAIL = {
   path: '/pages/detail/index'
 };
 
-export const INSERT_HOUSE = {
+export const INSERT_NEW_HOUSE = {
+  name: '房源详情',
+  path: '/pages/insert-house/index'
+};
+
+export const INSERT_SECOND_HOUSE = {
+  name: '房源详情',
+  path: '/pages/insert-house/index'
+};
+
+export const INSERT_RENT_HOUSE = {
   name: '房源详情',
   path: '/pages/insert-house/index'
 };

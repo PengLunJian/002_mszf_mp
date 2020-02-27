@@ -29,23 +29,32 @@
                       </div>
                       <div class="form-row row">
                         <div class="form-col col-6">
-                          <div class="form-group">
-                            <label class="form-label">户型</label>
-                            <input class="form-input" v-model="huxing" type="number" placeholder="2室1厅1卫"/>
-                          </div>
+                          <picker mode="multiSelector" @change="onHandleHuXingChange"
+                                  value="{{huxing.index}}" range="{{huxing.items}}">
+                            <div class="form-group">
+                              <label class="form-label">户型</label>
+                              <input class="form-input" v-model="huxing.value" disabled="{{true}}" type="text"
+                                     placeholder="2室1厅1卫"/>
+                            </div>
+                          </picker>
                         </div>
                         <div class="form-col col-6">
                           <div class="form-group">
                             <label class="form-label">面积</label>
-                            <input class="form-input" v-model="mianji" type="number" placeholder="m²"/>
+                            <input class="form-input" v-model="mianji" type="digit" placeholder="m²"/>
                           </div>
                         </div>
                       </div>
                       <div class="form-row row">
                         <div class="form-col col-12">
-                          <div class="form-group">
-                            <label class="form-label">地址</label>
-                            <input class="form-input" v-model="dizhi" type="number" placeholder="安徽省、宣城市、广德县"/>
+                          <div class="form-picker">
+                            <picker mode="region" @change="onHandleRegionChange" value="{{dizhi.items}}">
+                              <div class="form-group">
+                                <label class="form-label">地址</label>
+                                <input class="form-input" v-model="dizhi.value" disabled="{{true}}" type="text"
+                                       placeholder="安徽省、宣城市、广德县"/>
+                              </div>
+                            </picker>
                           </div>
                         </div>
                       </div>
@@ -69,15 +78,20 @@
                     <div class="module-base">
                       <div class="form-row row">
                         <div class="form-col col-6">
-                          <div class="form-group">
-                            <label class="form-label">支付</label>
-                            <input class="form-input" v-model="zhifufangshi" type="text" placeholder="押一付三"/>
-                          </div>
+                          <picker mode="multiSelector" @change="onHandleZhiFuChange"
+                                  value="{{zhifu.index}}" range="{{zhifu.items}}">
+                            <div class="form-group">
+                              <label class="form-label">支付</label>
+                              <input class="form-input" v-model="zhifu.value" disabled="{{true}}" type="text"
+                                     placeholder="押1付3"/>
+                            </div>
+                          </picker>
                         </div>
                         <div class="form-col col-6">
                           <div class="form-group">
                             <label class="form-label">朝向</label>
-                            <input class="form-input" v-model="chaoxiang" type="number" placeholder="朝南"/>
+                            <input class="form-input" v-model="chaoxiang.value" disabled="{{true}}" type="text"
+                                   placeholder="朝南" @tap="onHandleShowChaoXiang"/>
                           </div>
                         </div>
                       </div>
@@ -85,13 +99,15 @@
                         <div class="form-col col-6">
                           <div class="form-group">
                             <label class="form-label">楼层</label>
-                            <input class="form-input" v-model="louceng" type="number" placeholder="低楼层"/>
+                            <input class="form-input" v-model="louceng.value" disabled="{{true}}" type="text"
+                                   placeholder="低楼层" @tap="onHandleShowLouCeng"/>
                           </div>
                         </div>
                         <div class="form-col col-6">
                           <div class="form-group">
                             <label class="form-label">装修</label>
-                            <input class="form-input" v-model="zhuangxiu" type="number" placeholder="精装修"/>
+                            <input class="form-input" v-model="zhuangxiu.value" disabled="{{true}}" type="text"
+                                   placeholder="精装修" @tap="onHandleShowZhuangXiu"/>
                           </div>
                         </div>
                       </div>
@@ -99,7 +115,8 @@
                         <div class="form-col col-12">
                           <div class="form-group">
                             <label class="form-label">出租方式</label>
-                            <input class="form-input" v-model="chuzufangshi" type="number" placeholder="整租、合租、转租"/>
+                            <input class="form-input" v-model="chuzufangshi.value" disabled="{{true}}" type="text"
+                                   placeholder="整租、合租、转租" @tap="onHandleShowChuZuFangShi"/>
                           </div>
                         </div>
                       </div>
@@ -140,15 +157,67 @@
     data: {
       xiaoqu: '',
       price: '',
-      huxing: '',
+      huxing: {
+        value: '',
+        items: [
+          ['1室', '2室', '3室', '4室', '5室'],
+          ['0厅', '1厅', '2厅', '3厅', '4厅'],
+          ['0卫', '1卫', '2卫', '3卫', '4卫']
+        ],
+        index: [0, 0, 0]
+      },
       mianji: '',
-      dizhi: '',
+      dizhi: {
+        value: '',
+        items: ['安徽省', '宣城市', '广德县']
+      },
       xiangxidizhi: '',
-      zhifufangshi: '',
-      chaoxiang: '',
-      louceng: '',
-      zhuangxiu: '',
-      chuzufangshi: '',
+      zhifu: {
+        value: '',
+        items: [
+          [
+            '押1', '押2', '押3', '押4', '押5', '押6'
+          ],
+          [
+            '付1', '付2', '付3', '付4', '付5', '付6',
+            '付7', '付8', '付9', '付10', '付11', '付12'
+          ]
+        ],
+        index: [0, 0]
+      },
+      chaoxiang: {
+        value: '',
+        items: [
+          '朝东',
+          '朝西',
+          '朝南',
+          '朝北'
+        ]
+      },
+      louceng: {
+        value: '',
+        items: [
+          '低楼层',
+          '中楼层',
+          '高楼层'
+        ]
+      },
+      zhuangxiu: {
+        value: '',
+        items: [
+          '简装',
+          '精装',
+          '豪装'
+        ]
+      },
+      chuzufangshi: {
+        value: '',
+        items: [
+          '整租',
+          '合租',
+          '转租'
+        ]
+      },
       fangyuanjianjie: ''
     },
 
@@ -157,7 +226,68 @@
     },
 
     methods: {
-      ...mapActions(controller.ACTIONS)
+      ...mapActions(controller.ACTIONS),
+      onHandleHuXingChange(e) {
+        const index = e.$wx.detail.value;
+        const items = this.huxing.items;
+        this.huxing.value = items[0][index[0]] + items[1][index[1]] + items[2][index[2]];
+      },
+      onHandleZhiFuChange(e) {
+        const index = e.$wx.detail.value;
+        const items = this.zhifu.items;
+        this.zhifu.value = items[0][index[0]] + items[1][index[1]];
+      },
+      onHandleRegionChange(e) {
+        this.dizhi.value = e.$wx.detail.value.join('、');
+      },
+      onHandleShowChaoXiang() {
+        wx.showActionSheet({
+          itemList: this.chaoxiang.items,
+          success: (res) => {
+            const value = this.chaoxiang.items[res.tapIndex];
+            this.chaoxiang.value = value;
+          },
+          fail: (err) => {
+            console.log(err);
+          }
+        });
+      },
+      onHandleShowLouCeng() {
+        wx.showActionSheet({
+          itemList: this.louceng.items,
+          success: (res) => {
+            const value = this.louceng.items[res.tapIndex];
+            this.louceng.value = value;
+          },
+          fail: (err) => {
+            console.log(err);
+          }
+        });
+      },
+      onHandleShowZhuangXiu() {
+        wx.showActionSheet({
+          itemList: this.zhuangxiu.items,
+          success: (res) => {
+            const value = this.zhuangxiu.items[res.tapIndex];
+            this.zhuangxiu.value = value;
+          },
+          fail: (err) => {
+            console.log(err);
+          }
+        });
+      },
+      onHandleShowChuZuFangShi() {
+        wx.showActionSheet({
+          itemList: this.chuzufangshi.items,
+          success: (res) => {
+            const value = this.chuzufangshi.items[res.tapIndex];
+            this.chuzufangshi.value = value;
+          },
+          fail: (err) => {
+            console.log(err);
+          }
+        });
+      }
     },
 
     onLoad() {
