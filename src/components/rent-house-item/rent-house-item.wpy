@@ -7,21 +7,21 @@
       </div>
       <div class="item-info">
         <div class="item-row">
-          <div class="item-title ellipsis">{{item.title}}</div>
+          <div class="item-title ellipsis">{{item.title||noData}}</div>
         </div>
         <div class="item-row">
-          <span class="item-addr">{{item.addr_qu}}</span>
+          <span class="item-addr">{{item.addr_qu||noData}}</span>
           <span class="item-split"></span>
-          <span class="item-desc">{{item.addr}}</span>
+          <span class="item-desc">{{item.addr||noData}}</span>
         </div>
         <div class="item-row">
                   <span class="item-normal item-price">
-                    <span class="item-value">{{item.price}}</span>
+                    <span class="item-value">{{item.price||0}}</span>
                     <span class="item-unit">元/月</span>
                   </span>
-          <span class="item-normal">{{item.huxing}}</span>
-          <span class="item-normal">{{item.chuzufangshi}}</span>
-          <span class="item-normal">{{item.mianji}}m²</span>
+          <span class="item-normal">{{item.huxing||noData}}</span>
+          <span class="item-normal">{{item.chuzufangshi||noData}}</span>
+          <span class="item-normal">{{item.mianji||noData}}m²</span>
         </div>
         <div class="item-row">
           <span class="item-tag"
@@ -39,7 +39,9 @@
   import * as $routes from '../../router';
 
   wepy.component({
-    data: {},
+    data: {
+      noData: '暂无数据'
+    },
     props: {
       item: {
         type: Object,
@@ -53,9 +55,9 @@
     events: {},
     methods: {
       onHandleDetail(id) {
-        wx.navigateTo({
-          url: $routes.DETAIL.path + '?house_id=' + id
-        });
+        // wx.navigateTo({
+        //   url: $routes.DETAIL.path + '?house_id=' + id
+        // });
       }
     },
     onLoad() {
