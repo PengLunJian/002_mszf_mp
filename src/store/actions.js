@@ -42,7 +42,7 @@ export const ajaxRequestInsertHouse = createAction(
   'insertHouse', (params) => {
     commit(actionTypes.INSERT_HOUSE_REQUEST);
     return new Promise((resolve, reject) => {
-      axios.get(apis.insertHouse, {params})
+      axios.post(apis.insertHouse, params)
         .then((res) => {
           res = res || {};
           const {data, success} = res;
