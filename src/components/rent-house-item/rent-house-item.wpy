@@ -14,19 +14,17 @@
           <span class="item-split"></span>
           <span class="item-desc">{{item.addr||noData}}</span>
         </div>
-        <div class="item-row">
-                  <span class="item-normal item-price">
-                    <span class="item-value">{{item.price||0}}</span>
-                    <span class="item-unit">元/月</span>
-                  </span>
-          <span class="item-normal">{{item.huxing||noData}}</span>
-          <span class="item-normal">{{item.chuzufangshi||noData}}</span>
-          <span class="item-normal">{{item.mianji||noData}}m²</span>
+        <div class="item-row row">
+          <div class="item-normal price">{{item.price||0}}</div>
+          <div class="item-normal unit">元/月</div>
+          <div class="item-normal">{{item.huxing||noData}}</div>
+          <div class="item-normal">{{item.chuzufangshi||noData}}</div>
+          <div class="item-normal">{{item.mianji||noData}}m²</div>
         </div>
-        <div class="item-row">
-          <span class="item-tag"
-                v-for="(tag,index) in item.tags"
-                :key="index">{{tag}}</span>
+        <div class="item-row row">
+          <div class="item-col" v-for="(value,index) in item.tags" :key="index">
+            <div class="item-tag">{{value}}</div>
+          </div>
         </div>
       </div>
       <div class="item-type" v-if="isType">租房</div>
@@ -89,10 +87,6 @@
         .item-row {
           margin-bottom: unit(8, rpx);
           font-size: 0;
-          &:last-child {
-            margin: 0;
-            padding-top: unit(4, rpx);
-          }
           .item-title {
             height: unit(40, rpx);
             line-height: unit(40, rpx);
@@ -117,48 +111,41 @@
             margin: 0 unit(10, rpx);
             border-left: 1px solid @borderColor1;
           }
-          .item-value,
-          .item-unit {
-            height: 100%;
-            display: inline-block;
-            vertical-align: middle;
-            &.item-value {
-              font-size: @fontSize32;
-              font-weight: bold;
-            }
-            &.item-unit {
-              font-size: @fontSize24;
-            }
-          }
           .item-normal {
             height: unit(40, rpx);
             line-height: unit(40, rpx);
-            display: inline-block;
-            vertical-align: middle;
             margin-right: unit(10, rpx);
             font-size: @fontSize24;
             color: @fontColor3;
-            &.item-price {
+            &.price {
+              margin: 0;
+              font-size: @fontSize36;
               color: @priceColor;
-              font-size: 0;
+              font-weight: bold;
+            }
+            &.unit {
+              font-size: @fontSize24;
+              color: @priceColor;
             }
             &:last-child {
               margin: 0;
             }
           }
-          .item-tag {
-            height: unit(40, rpx);
-            line-height: unit(36, rpx);
-            display: inline-block;
-            vertical-align: middle;
-            padding: 0 unit(10, rpx);
-            margin-right: unit(10, rpx);
-            border: 1px solid @theme2;
-            font-size: @fontSize24;
-            color: @theme2;
-            &:last-child {
-              margin: 0;
+          .item-col {
+            padding-top: unit(10, rpx);
+            padding-right: unit(10, rpx);
+            .item-tag {
+              line-height: unit(38, rpx);
+              padding: 0 unit(10, rpx);
+              border: 1px solid @theme2;
+              font-size: @fontSize24;
+              text-align: center;
+              color: @theme2;
             }
+          }
+          &:nth-last-child(1),
+          &:nth-last-child(2) {
+            margin: 0;
           }
         }
       }
