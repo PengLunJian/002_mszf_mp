@@ -38,7 +38,19 @@ export const INSERT_SECOND_HOUSE = {
   path: '/pages/insert-house/index'
 };
 
-export const INSERT_RENT_HOUSE = {
-  name: '房源详情',
-  path: '/pages/insert-house/index'
+export const INSERT_HOUSE = {
+  rent: {
+    step1: {
+      name: '基本信息',
+      path: '/pages/insert-house/insert-rent-house/step1'
+    },
+    step2: {
+      name: '房源配置',
+      path: '/pages/insert-house/insert-rent-house/step2'
+    },
+    step3: {
+      name: '图片上传',
+      path: '/pages/insert-house/insert-rent-house/step3'
+    }
+  }
 };

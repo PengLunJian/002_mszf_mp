@@ -4,7 +4,7 @@
       <img src="./images/logo@2x.png" style="{{lazyStyle}}" mode="aspectFit"/>
     </div>
     <div class="lazy-image-success{{isLazy?'':' lazy-image-enter'}}">
-      <img :src="src" @load="onHandleLoad"/>
+      <img :src="src" style="{{loadStyle}}" @load="onHandleLoad"/>
     </div>
   </div>
 </template>
@@ -19,6 +19,10 @@
     },
     props: {
       lazyStyle: {
+        type: String,
+        default: ''
+      },
+      loadStyle: {
         type: String,
         default: ''
       },

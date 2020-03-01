@@ -9,10 +9,12 @@
         <div class="item-row">
           <div class="item-title ellipsis">{{item.title||noData}}</div>
         </div>
-        <div class="item-row">
-          <span class="item-addr">{{item.addr_qu||noData}}</span>
-          <span class="item-split"></span>
-          <span class="item-desc">{{item.addr||noData}}</span>
+        <div class="item-row row">
+          <div class="item-addr ellipsis">
+            <span class="item-normal addr">{{item.addr_qu||noData}}</span>
+            <span class="item-normal split"></span>
+            <span class="item-normal desc">{{item.addr||noData}}</span>
+          </div>
         </div>
         <div class="item-row row">
           <div class="item-normal price">{{item.price||0}}</div>
@@ -95,7 +97,6 @@
             color: @fontColor1;
           }
           .item-addr,
-          .item-desc,
           .item-size {
             height: unit(32, rpx);
             line-height: unit(32, rpx);
@@ -104,19 +105,30 @@
             font-size: @fontSize24;
             color: @fontColor2;
           }
-          .item-split {
-            height: unit(20, rpx);
-            display: inline-block;
-            vertical-align: middle;
-            margin: 0 unit(10, rpx);
-            border-left: 1px solid @borderColor1;
-          }
           .item-normal {
             height: unit(40, rpx);
             line-height: unit(40, rpx);
             margin-right: unit(10, rpx);
             font-size: @fontSize24;
             color: @fontColor3;
+            &.addr,
+            &.desc,
+            &.split {
+              margin: 0;
+              height: unit(32, rpx);
+              line-height: unit(32, rpx);
+              color: @fontColor2;
+            }
+            &.split {
+              padding: 0 unit(10, rpx);
+              font-size: 0;
+              &:before {
+                content: '';
+                height: unit(20, rpx);
+                display: inline-block;
+                border-left: 1px solid @borderColor1;
+              }
+            }
             &.price {
               margin: 0;
               font-size: @fontSize36;
