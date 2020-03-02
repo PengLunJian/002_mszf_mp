@@ -39,7 +39,7 @@
                             </div>
                           </div>
                           <div class="module-col col-4">
-                            <div class="module-btn btn btn-image">
+                            <div class="module-btn btn btn-image" @tap="onHandleUploadRouter">
                               <div class="module-icon iconfont icon-insert"></div>
                             </div>
                           </div>
@@ -67,6 +67,7 @@
   import store from '../../../store';
   import {mapState, mapActions} from '@wepy/redux';
   import * as controller from './controller';
+  import * as $routes from '../../../router';
   import Toast from '../../../mixins/toast';
   import Loading from '../../../mixins/loading';
 
@@ -108,10 +109,13 @@
             console.log(err);
           });
       },
-      onHandleCheckEmpty() {
-      },
       onHandleSubmitHouse() {
         this.exeAjaxInsertHouse();
+      },
+      onHandleUploadRouter() {
+        wx.navigateTo({
+          url: $routes.UPLOAD.path
+        });
       },
       onHandleImagesSelector() {
       },
@@ -124,8 +128,8 @@
     },
 
     onLoad(option) {
-      const {paramsStep2} = option;
-      this.paramsStep2 = JSON.parse(paramsStep2);
+      // const {paramsStep2} = option;
+      // this.paramsStep2 = JSON.parse(paramsStep2);
     }
   });
 </script>
@@ -191,7 +195,7 @@
                               text-align: center;
                               .module-icon {
                                 font-size: @fontSize50;
-                                color: @fontColor3;
+                                color: @fontColor5;
                               }
                             }
                           }

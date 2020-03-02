@@ -159,3 +159,32 @@ export const saveImage = () => {
     });
   }, 300);
 };
+
+export const chooseImage = (that) => {
+  wx.chooseImage({
+    count: 1,
+    sizeType: ['original'],
+    success: (res) => {
+      const src = res.tempFilePaths[0];
+      that.$children[1].pushOrigin(src);
+      console.log(res);
+    },
+    fail: (err) => {
+      console.log(err);
+    }
+  });
+};
+
+export const getCropperImage = (that) => {
+  that.$children[1].getCropperImage()
+    .then((src) => {
+      if (src) {
+        wx.previewImage({
+          current: '', // 当前显示图片的http链接
+          urls: [src] // 需要预览的图片http链接列表
+        });
+      } else {
+        console.log('获取图片地址失败，请重试');
+      }
+    });
+};

@@ -29,7 +29,7 @@
 	"miniprogramRoot": "weapp/",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
-	"libVersion": "2.10.1",
+	"libVersion": "2.10.2",
 	"condition": {
 		"search": {
 			"current": -1,
@@ -62,8 +62,8 @@
 				},
 				{
 					"id": 1,
-					"name": "pages/insert-house/insert-rent-house/step1",
-					"pathName": "pages/insert-house/insert-rent-house/step1",
+					"name": "pages/upload/index",
+					"pathName": "pages/upload/index",
 					"query": "",
 					"scene": null
 				},

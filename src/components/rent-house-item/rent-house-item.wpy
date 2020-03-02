@@ -36,7 +36,6 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import * as $routes from '../../router';
 
   wepy.component({
     data: {
@@ -60,7 +59,7 @@
         // });
       }
     },
-    onLoad() {
+    created() {
     }
   });
 </script>
@@ -150,9 +149,12 @@
               line-height: unit(38, rpx);
               padding: 0 unit(10, rpx);
               border: 1px solid @theme2;
-              font-size: @fontSize24;
+              font-size: @fontSize22;
               text-align: center;
               color: @theme2;
+            }
+            &:last-child {
+              padding-right: 0;
             }
           }
           &:nth-last-child(1),
