@@ -6,12 +6,22 @@
       </div>
       <div class="body">
         <div class="context">
-          <wepy-com-cropper
-            :options="options"
-            @ready="onHandleCropperReady"
-            @beforeImageLoad="onHandleCropperBeforeLoad"
-            @imageLoad="onHandleCropperAfterLoad"
-            @beforeDraw="onHandleCropperBeforeDraw"/>
+          <canvas
+            class="cropper"
+            disable-scroll="true"
+            style="width: 375px;height: 100%;background-color: rgba(0, 0, 0, 0.8);"
+            @touchstart="onHandleTouchStart"
+            @touchmove="onHandleTouchMove"
+            @touchend="onHandleTouchEnd"
+            @error="onHandleCanvasError"
+            canvas-id="cropper">
+          </canvas>
+          <canvas
+            class="cropper"
+            disable-scroll="true"
+            style="position: fixed;top: -1334px;left: -750px;width: 750px;height: 1334px;"
+            canvas-id="targetCropper">
+          </canvas>
         </div>
       </div>
       <div class="footer">
@@ -31,7 +41,7 @@
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
   import store from '../../store';
-  import * as utils from '../../utils';
+  import WeCropper from 'we-cropper';
 
   wepy.page({
     store,
@@ -39,50 +49,100 @@
     mixins: [],
 
     data: {
-      options: null
+      $: null
     },
 
     computed: {},
 
     methods: {
       onHandleChooseImage() {
-        utils.chooseImage(this);
+        wx.chooseImage({
+          count: 1,
+          sizeType: ['original'],
+          success: (res) => {
+            const src = res.tempFilePaths[0];
+            this.pushOrigin(src);
+            console.log(res);
+          },
+          fail: (err) => {
+            console.log(err);
+          }
+        });
       },
       onHandleConfirmImage() {
-        utils.getCropperImage(this);
+        this.getCropperImage()
+          .then((src) => {
+            if (src) {
+              wx.previewImage({
+                current: '', // 当前显示图片的http链接
+                urls: [src] // 需要预览的图片http链接列表
+              });
+            } else {
+              console.log('获取图片地址失败，请重试');
+            }
+          });
       },
-      onHandleCropperReady() {
-        console.log('we-cropper ready');
+      onHandleGetOptions() {
+        const device = wx.getSystemInfoSync();
+        const width = device.windowWidth;
+        const height = device.windowHeight - 50;
+        const options = {
+          width,
+          height,
+          scale: 2.5,
+          zoom: 8,
+          cut: {
+            x: (width - 300) / 2,
+            y: (height - 300) / 2,
+            width: 300,
+            height: 300
+          },
+          id: 'cropper',
+          targetId: 'targetCropper'
+        };
+        return options;
       },
-      onHandleCropperBeforeLoad() {
-        console.log('we-cropper beforeImageLoad');
+      onHandleTouchStart(e) {
+        this.$.touchStart(e);
       },
-      onHandleCropperAfterLoad() {
-        console.log('we-cropper imageLoad');
+      onHandleTouchMove(e) {
+        this.$.touchMove(e);
       },
-      onHandleCropperBeforeDraw() {
-        console.log('we-cropper beforeDraw');
+      onHandleTouchEnd(e) {
+        this.$.touchEnd(e);
+      },
+      onHandleCanvasError(e) {
+        console.error(e.detail.errMsg);
+      },
+      pushOrigin(src) {
+        this.$.pushOrign(src);
+      },
+      updateCanvas() {
+        // this.$.updateCanvas();
+      },
+      getCropperImage() {
+        return this.$.getCropperImage();
+      },
+      getCropperBase64(fn) {
+        // this.$.getCropperImage(fn);
       }
     },
 
     onLoad() {
-      const device = wx.getSystemInfoSync();
-      const width = device.windowWidth;
-      const height = device.windowHeight - 50;
-      const options = {
-        width,
-        height,
-        scale: 2.5,
-        zoom: 8,
-        cut: {
-          x: (width - 300) / 2,
-          y: (height - 300) / 2,
-          width: 300,
-          height: 300
-        },
-        src: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3669915350,2630607392&fm=15&gp=0.jpg'
-      };
-      this.options = options;
+      const options = this.onHandleGetOptions();
+      this.$ = new WeCropper(options)
+        .on('ready', (...args) => {
+          this.$emit('ready', ...args);
+        })
+        .on('beforeImageLoad', (...args) => {
+          this.$emit('beforeImageLoad', ...args);
+        })
+        .on('imageLoad', (...args) => {
+          this.$emit('imageLoad', ...args);
+        })
+        .on('beforeDraw', (...args) => {
+          this.$emit('beforeDraw', ...args);
+        });
     }
   });
 </script>
@@ -144,8 +204,7 @@
   disableScroll:true,
   navigationStyle:'custom',
   usingComponents: {
-  'top-bar': '../../components/top-bar/top-bar',
-  'wepy-com-cropper': '../../components/wepy-com-cropper/wepy-com-cropper'
+  'top-bar': '../../components/top-bar/top-bar'
   }
   }
 </config>

@@ -1,5 +1,5 @@
 <template>
-  <div class="top-bar">
+  <div class="top-bar" style="{{styl}}">
     <div class="top-inner">
       <div class="top-icon iconfont icon-back" v-if="isIcon" @tap="onHandleBack"></div>
       <div class="top-icon iconfont icon-home" v-if="isIcon" @tap="onHandleHome"></div>
@@ -22,6 +22,10 @@
       isIcon: {
         type: Boolean,
         default: true
+      },
+      styl: {
+        type: String,
+        default: ''
       }
     },
     events: {},

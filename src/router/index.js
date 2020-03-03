@@ -30,7 +30,7 @@ export const DETAIL = {
 
 export const UPLOAD = {
   name: '房源详情',
-  path: '/pages/upload/index'
+  path: '/pages/upload/index2'
 };
 
 export const INSERT_NEW_HOUSE = {

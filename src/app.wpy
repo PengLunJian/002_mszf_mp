@@ -28,7 +28,7 @@
   'pages/index/index',
   'pages/house/index',
   'pages/detail/index',
-  'pages/upload/index',
+  'pages/upload/index2',
   'pages/insert-house/index',
   'pages/insert-house/insert-rent-house/step1',
   'pages/insert-house/insert-rent-house/step2',

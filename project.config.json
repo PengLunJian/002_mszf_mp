@@ -19,9 +19,9 @@
 			"disablePlugins": [],
 			"outputPath": ""
 		},
+		"bundle": false,
 		"showShadowRootInWxmlPanel": false,
-		"scopeDataCheck": false,
-		"bundle": false
+		"scopeDataCheck": false
 	},
 	"compileType": "miniprogram",
 	"appid": "wx37f2a784cb64a0ed",
@@ -62,8 +62,8 @@
 				},
 				{
 					"id": 1,
-					"name": "pages/upload/index",
-					"pathName": "pages/upload/index",
+					"name": "pages/upload/index2",
+					"pathName": "pages/upload/index2",
 					"query": "",
 					"scene": null
 				},

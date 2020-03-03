@@ -1,0 +1,396 @@
+<template>
+  <div class="container">
+    <div class="content">
+      <div class="header">
+        <top-bar title="图片裁剪" styl="{{styl}}"></top-bar>
+        <div class="params">
+          <div>clientX:{{touches.clientX}}</div>
+          <div>clientY:{{touches.clientY}}</div>
+          <div>offsetX:{{touches.offsetX}}</div>
+          <div>offsetY:{{touches.offsetY}}</div>
+          <div>totalOffsetX:{{touches.totalOffsetX}}</div>
+          <div>totalOffsetY:{{touches.totalOffsetY}}</div>
+          <div>storageOffsetX:{{touches.storageOffsetX}}</div>
+          <div>storageOffsetY:{{touches.storageOffsetY}}</div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="context">
+          <div class="upload">
+            <div class="upload-content">
+              <div class="upload-header"></div>
+              <div class="upload-body">
+                <div class="upload-cut">
+                  <div class="upload-cut-touch"
+                       @touchstart="onHandleTouchStart"
+                       @touchmove="onHandleTouchMove"
+                       @touchend="onHandleTouchEnd"></div>
+                  <div class="upload-cut-border">
+                    <div class="upload-border"></div>
+                    <div class="upload-border"></div>
+                    <div class="upload-border"></div>
+                    <div class="upload-border"></div>
+                  </div>
+                  <div class="upload-cut-mask"></div>
+                  <div class="upload-cut-image">
+                    <img class="upload-image"
+                         :src="imageSrc"
+                         style="{{imageStyle+transformStyle}}"
+                         @load="onHandleLoadImage"/>
+                  </div>
+                </div>
+              </div>
+              <div class="upload-footer"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="footer-row row">
+          <div class="footer-col col-6">
+            <div class="btn btn-upload" @tap="onHandleChooseImage">上传图片</div>
+          </div>
+          <div class="footer-col col-6">
+            <div class="btn btn-confirm" @tap="onHandleConfirmImage">生成图片</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+  import store from '../../store';
+  import Loading from '../../mixins/loading';
+
+  wepy.page({
+    store,
+
+    mixins: [Loading],
+
+    data: {
+      imageSrc: '',
+      imageStyle: '',
+      transformStyle: '',
+      styl: 'background-color:transparent;color:#FFFFFF;',
+      moveImage: {
+        src: '',
+        style: '',
+        width: '',
+        height: ''
+      },
+      touches: {
+        clientX: 0,
+        clientY: 0,
+        offsetX: 0,
+        offsetY: 0,
+        totalOffsetX: 0,
+        totalOffsetY: 0,
+        storageOffsetX: 0,
+        storageOffsetY: 0
+      }
+    },
+
+    computed: {},
+
+    methods: {
+      onHandleChooseImage() {
+        wx.chooseImage({
+          count: 1,
+          sizeType: ['original'],
+          success: (res) => {
+            this.showLoading();
+            const imageSrc = res.tempFilePaths[0];
+            wx.getImageInfo({
+              src: imageSrc,
+              success: (res) => {
+                res = res || {};
+                this.transformStyle = '';
+                this.touches.storageOffsetX = 0;
+                this.touches.storageOffsetY = 0;
+                this.onHandleRenderImage(res);
+                console.log(res);
+              },
+              fail: (err) => {
+                console.log(err);
+              }
+            });
+            this.imageSrc = imageSrc;
+            console.log(res);
+          },
+          fail: (err) => {
+            console.log(err);
+          }
+        });
+      },
+      onHandleConfirmImage() {
+        this.getCropperImage()
+          .then((src) => {
+            if (src) {
+              wx.previewImage({
+                current: '', // 当前显示图片的http链接
+                urls: [src] // 需要预览的图片http链接列表
+              });
+            } else {
+              console.log('获取图片地址失败，请重试');
+            }
+          });
+      },
+      onHandleRenderImage(res) {
+        let rateWidth = 0;
+        let rateHeight = 0;
+        const {width, height} = res;
+        const rate = width / height;
+        if (width > height) {
+          rateHeight = 520;
+          rateWidth = 520 * rate;
+        } else if (width < height) {
+          rateWidth = 520;
+          rateHeight = 520 / rate;
+        } else {
+          rateWidth = 520;
+          rateHeight = 520;
+        }
+        this.moveImage.width = rateWidth / 2;
+        this.moveImage.height = rateHeight / 2;
+        this.imageStyle =
+          'width:' + rateWidth + 'rpx;' +
+          'height:' + rateHeight + 'rpx;' +
+          'margin-left:' + (-rateWidth / 2) + 'rpx;' +
+          'margin-top:' + (-rateHeight / 2) + 'rpx;';
+      },
+      onHandleAddWaterMark() {
+      },
+      onHandleLoadImage() {
+        this.hideLoading();
+      },
+      onHandleTouchStart(e) {
+        const {changedTouches} = e;
+        if (changedTouches.length === 1) {
+          const {clientX, clientY} = e.changedTouches[0];
+          this.touches.clientX = clientX;
+          this.touches.clientY = clientY;
+        }
+      },
+      onHandleTouchMove(e) {
+        const {changedTouches} = e;
+        if (changedTouches.length === 1) {
+          const {clientX, clientY} = e.changedTouches[0];
+          this.touches.offsetX = this.touches.clientX - clientX;
+          this.touches.offsetY = this.touches.clientY - clientY;
+          let totalOffsetX = this.touches.offsetX + this.touches.storageOffsetX;
+          let totalOffsetY = this.touches.offsetY + this.touches.storageOffsetY;
+          this.touches.totalOffsetX = totalOffsetX;
+          this.touches.totalOffsetY = totalOffsetY;
+
+          let moveOffsetX = (this.moveImage.width - 520 / 2) / 2;
+          let moveOffsetY = (this.moveImage.height - 520 / 2) / 2;
+          moveOffsetX = totalOffsetX > 0 ? moveOffsetX : -moveOffsetX;
+          moveOffsetY = totalOffsetY > 0 ? moveOffsetY : -moveOffsetY;
+          totalOffsetX = Math.abs(totalOffsetX) > Math.abs(moveOffsetX) ? moveOffsetX : totalOffsetX;
+          totalOffsetY = Math.abs(totalOffsetY) > Math.abs(moveOffsetY) ? moveOffsetY : totalOffsetY;
+
+          this.transformStyle = 'transform:translate3d(' + (-totalOffsetX) +
+            'px,' + (-totalOffsetY) + 'px,0);';
+        }
+      },
+      onHandleTouchEnd(e) {
+        const {changedTouches} = e;
+        if (changedTouches.length === 1) {
+          const totalOffsetX = this.touches.storageOffsetX + this.touches.offsetX;
+          const totalOffsetY = this.touches.storageOffsetY + this.touches.offsetY;
+
+          let moveOffsetX = (this.moveImage.width - 520 / 2) / 2;
+          let moveOffsetY = (this.moveImage.height - 520 / 2) / 2;
+          moveOffsetX = totalOffsetX > 0 ? moveOffsetX : -moveOffsetX;
+          moveOffsetY = totalOffsetY > 0 ? moveOffsetY : -moveOffsetY;
+          this.touches.storageOffsetX = Math.abs(totalOffsetX) > Math.abs(moveOffsetX) ? moveOffsetX : totalOffsetX;
+          this.touches.storageOffsetY = Math.abs(totalOffsetY) > Math.abs(moveOffsetY) ? moveOffsetY : totalOffsetY;
+
+          this.touches.offsetX = 0;
+          this.touches.offsetY = 0;
+          this.touches.clientX = 0;
+          this.touches.clientY = 0;
+        }
+      }
+    },
+
+    onLoad() {
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../assets/less/variable";
+  @import "../../assets/less/@media";
+
+  @btnHeight: unit(90, rpx);
+
+  .container {
+    min-height: 100vh;
+    .content {
+      height: 100vh;
+      .header {
+        .params {
+          display: none;
+          position: fixed;
+          z-index: 2000;
+          color: white;
+          top: 65px;
+          text-align: center;
+          width: 100%;
+          padding: 15px;
+          font-size: 16px;
+        }
+      }
+      .body {
+        height: 100%;
+        position: relative;
+        .context {
+          height: 100%;
+          padding-top: 65px;
+          padding-bottom: 105px;
+          .upload {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 900;
+            background-color: #000000;
+            .upload-content {
+              .upload-header {
+              }
+              .upload-body {
+                .upload-cut {
+                  width: unit(520, rpx);
+                  height: unit(520, rpx);
+                  position: fixed;
+                  top: 50%;
+                  left: 50%;
+                  z-index: 901;
+                  margin-top: unit(-260, rpx);
+                  margin-left: unit(-260, rpx);
+                  background-color: rgba(255, 255, 255, .15);
+                  .upload-cut-touch {
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: 905;
+                  }
+                  .upload-cut-border {
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: 904;
+                    .upload-border {
+                      position: absolute;
+                      width: unit(30, rpx);
+                      height: unit(30, rpx);
+                      border-color: @theme2 !important;
+                      &:nth-child(1) {
+                        top: -2px;
+                        left: -2px;
+                        border-top: 2px solid @white;
+                        border-left: 2px solid @white;
+                      }
+                      &:nth-child(2) {
+                        top: -2px;
+                        right: -2px;
+                        border-top: 2px solid @white;
+                        border-right: 2px solid @white;
+                      }
+                      &:nth-child(3) {
+                        bottom: -2px;
+                        left: -2px;
+                        border-bottom: 2px solid @white;
+                        border-left: 2px solid @white;
+                      }
+                      &:nth-child(4) {
+                        bottom: -2px;
+                        right: -2px;
+                        border-bottom: 2px solid @white;
+                        border-right: 2px solid @white;
+                      }
+                    }
+                  }
+                  .upload-cut-mask {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    z-index: 903;
+                    width: 100%;
+                    height: 100%;
+                    background-color: @transparent;
+                    border-left: calc((100vw - unit(520, rpx)) / 2) solid rgba(0, 0, 0, .8);
+                    border-right: calc((100vw - unit(520, rpx)) / 2) solid rgba(0, 0, 0, 0.8);
+                    border-top: calc((100vh - unit(520, rpx)) / 2) solid rgba(0, 0, 0, .8);
+                    border-bottom: calc((100vh - unit(520, rpx)) / 2) solid rgba(0, 0, 0, 0.8);
+                  }
+                  .upload-cut-image {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: 902;
+                    width: 100%;
+                    height: 100%;
+                    .upload-image {
+                      position: absolute;
+                      top: 50%;
+                      left: 50%;
+                      width: 100%;
+                      height: 100%;
+                    }
+                  }
+                }
+              }
+              .upload-footer {
+              }
+            }
+          }
+        }
+      }
+      .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        z-index: 1000;
+        .footer-row {
+          padding: unit(30, rpx);
+          .footer-col {
+            padding: unit(30, rpx);
+          }
+        }
+        .btn {
+          margin: 0 auto;
+          overflow: hidden;
+          height: @btnHeight;
+          line-height: @btnHeight;
+          border-radius: @btnHeight;
+          box-shadow: 0 0 15px @boxShadow05;
+          background: -webkit-linear-gradient(left, @theme1, @theme2);
+          font-size: @fontSize32;
+          text-align: center;
+          color: @white;
+        }
+      }
+    }
+  }
+
+</style>
+
+<config>
+  {
+  disableScroll:true,
+  navigationStyle:'custom',
+  usingComponents: {
+  'top-bar': '../../components/top-bar/top-bar'
+  }
+  }
+</config>
