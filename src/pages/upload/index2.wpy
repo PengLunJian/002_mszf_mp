@@ -81,6 +81,7 @@
         height: ''
       },
       touches: {
+        length: 0,
         clientX: 0,
         clientY: 0,
         offsetX: 0,
@@ -160,23 +161,26 @@
           'margin-left:' + (-rateWidth / 2) + 'rpx;' +
           'margin-top:' + (-rateHeight / 2) + 'rpx;';
       },
-      onHandleAddWaterMark() {
+      onHandleWaterMark() {
+      },
+      onHandleDrawCanvas() {
       },
       onHandleLoadImage() {
         this.hideLoading();
       },
       onHandleTouchStart(e) {
-        const {changedTouches} = e;
-        if (changedTouches.length === 1) {
-          const {clientX, clientY} = e.changedTouches[0];
+        const {touches} = e.$wx;
+        this.touches.length = touches.length;
+        if (touches.length === 1) {
+          const {clientX, clientY} = touches[0];
           this.touches.clientX = clientX;
           this.touches.clientY = clientY;
         }
       },
       onHandleTouchMove(e) {
-        const {changedTouches} = e;
-        if (changedTouches.length === 1) {
-          const {clientX, clientY} = e.changedTouches[0];
+        const {touches} = e.$wx;
+        if (this.touches.length === 1) {
+          const {clientX, clientY} = touches[0];
           this.touches.offsetX = this.touches.clientX - clientX;
           this.touches.offsetY = this.touches.clientY - clientY;
           let totalOffsetX = this.touches.offsetX + this.touches.storageOffsetX;
@@ -188,31 +192,29 @@
           let moveOffsetY = (this.moveImage.height - 520 / 2) / 2;
           moveOffsetX = totalOffsetX > 0 ? moveOffsetX : -moveOffsetX;
           moveOffsetY = totalOffsetY > 0 ? moveOffsetY : -moveOffsetY;
-          totalOffsetX = Math.abs(totalOffsetX) > Math.abs(moveOffsetX) ? moveOffsetX : totalOffsetX;
-          totalOffsetY = Math.abs(totalOffsetY) > Math.abs(moveOffsetY) ? moveOffsetY : totalOffsetY;
+          totalOffsetX = Math.abs(totalOffsetX) >= Math.abs(moveOffsetX) ? moveOffsetX : totalOffsetX;
+          totalOffsetY = Math.abs(totalOffsetY) >= Math.abs(moveOffsetY) ? moveOffsetY : totalOffsetY;
 
           this.transformStyle = 'transform:translate3d(' + (-totalOffsetX) +
             'px,' + (-totalOffsetY) + 'px,0);';
         }
       },
-      onHandleTouchEnd(e) {
-        const {changedTouches} = e;
-        if (changedTouches.length === 1) {
-          const totalOffsetX = this.touches.storageOffsetX + this.touches.offsetX;
-          const totalOffsetY = this.touches.storageOffsetY + this.touches.offsetY;
+      onHandleTouchEnd() {
+        const totalOffsetX = this.touches.storageOffsetX + this.touches.offsetX;
+        const totalOffsetY = this.touches.storageOffsetY + this.touches.offsetY;
 
-          let moveOffsetX = (this.moveImage.width - 520 / 2) / 2;
-          let moveOffsetY = (this.moveImage.height - 520 / 2) / 2;
-          moveOffsetX = totalOffsetX > 0 ? moveOffsetX : -moveOffsetX;
-          moveOffsetY = totalOffsetY > 0 ? moveOffsetY : -moveOffsetY;
-          this.touches.storageOffsetX = Math.abs(totalOffsetX) > Math.abs(moveOffsetX) ? moveOffsetX : totalOffsetX;
-          this.touches.storageOffsetY = Math.abs(totalOffsetY) > Math.abs(moveOffsetY) ? moveOffsetY : totalOffsetY;
+        let moveOffsetX = (this.moveImage.width - 520 / 2) / 2;
+        let moveOffsetY = (this.moveImage.height - 520 / 2) / 2;
+        moveOffsetX = totalOffsetX > 0 ? moveOffsetX : -moveOffsetX;
+        moveOffsetY = totalOffsetY > 0 ? moveOffsetY : -moveOffsetY;
+        this.touches.storageOffsetX = Math.abs(totalOffsetX) >= Math.abs(moveOffsetX) ? moveOffsetX : totalOffsetX;
+        this.touches.storageOffsetY = Math.abs(totalOffsetY) >= Math.abs(moveOffsetY) ? moveOffsetY : totalOffsetY;
 
-          this.touches.offsetX = 0;
-          this.touches.offsetY = 0;
-          this.touches.clientX = 0;
-          this.touches.clientY = 0;
-        }
+        this.touches.length = 0;
+        this.touches.offsetX = 0;
+        this.touches.offsetY = 0;
+        this.touches.clientX = 0;
+        this.touches.clientY = 0;
       }
     },
 
