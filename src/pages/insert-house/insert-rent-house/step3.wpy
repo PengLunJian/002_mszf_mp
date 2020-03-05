@@ -18,24 +18,9 @@
                     <div class="module-body">
                       <div class="module-images">
                         <div class="module-row row">
-                          <div class="module-col col-4">
+                          <div class="module-col col-4" v-for="(item,index) in items" :key="index">
                             <div class="module-item">
-                              <img src="../../../assets/images/agent.jpg"/>
-                            </div>
-                          </div>
-                          <div class="module-col col-4">
-                            <div class="module-item">
-                              <img src="../../../assets/images/agent.jpg"/>
-                            </div>
-                          </div>
-                          <div class="module-col col-4">
-                            <div class="module-item">
-                              <img src="../../../assets/images/agent.jpg"/>
-                            </div>
-                          </div>
-                          <div class="module-col col-4">
-                            <div class="module-item">
-                              <img src="../../../assets/images/agent.jpg"/>
+                              <img src="{{item}}"/>
                             </div>
                           </div>
                           <div class="module-col col-4">
@@ -70,6 +55,7 @@
   import * as $routes from '../../../router';
   import Toast from '../../../mixins/toast';
   import Loading from '../../../mixins/loading';
+  import * as localStorage from '../../../utils/localStorage';
 
   wepy.page({
     store,
@@ -77,7 +63,7 @@
     mixins: [Toast, Loading],
 
     data: {
-      pic_url: [],
+      items: [],
       paramsStep2: {}
     },
 
@@ -120,10 +106,20 @@
       onHandleImagesSelector() {
       },
       getParams() {
+        const {items} = this.data;
         const params = {
-          pic_url: ['']
+          pic_url: items
         };
         return params;
+      }
+    },
+
+    onShow() {
+      const path = localStorage.getItem('path');
+      if (path) {
+        console.log(path);
+        this.items.push(path);
+        localStorage.removeItem('path');
       }
     },
 

@@ -2,8 +2,8 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="图片裁剪" styl="{{styl}}"></top-bar>
-        <div class="params">
+        <top-bar title="图片裁剪" styl="{{topBar.style}}"></top-bar>
+        <div class="hidden">
           <div>clientX:{{touches.clientX}}</div>
           <div>clientY:{{touches.clientY}}</div>
           <div>offsetX:{{touches.offsetX}}</div>
@@ -12,6 +12,7 @@
           <div>totalOffsetY:{{touches.totalOffsetY}}</div>
           <div>storageOffsetX:{{touches.storageOffsetX}}</div>
           <div>storageOffsetY:{{touches.storageOffsetY}}</div>
+          <img src="../../assets/images/water-image@2x.png"/>
         </div>
       </div>
       <div class="body">
@@ -34,9 +35,12 @@
                   <div class="upload-cut-mask"></div>
                   <div class="upload-cut-image">
                     <img class="upload-image"
-                         :src="imageSrc"
-                         style="{{imageStyle+transformStyle}}"
+                         :src="touchImage.src"
+                         style="{{touchImage.style}}"
                          @load="onHandleLoadImage"/>
+                  </div>
+                  <div class="upload-cut-canvas">
+                    <canvas canvas-id="upload-canvas" class="upload-canvas"/>
                   </div>
                 </div>
               </div>
@@ -63,6 +67,7 @@
   import wepy from '@wepy/core';
   import store from '../../store';
   import Loading from '../../mixins/loading';
+  import * as localStorage from '../../utils/localStorage';
 
   wepy.page({
     store,
@@ -70,15 +75,15 @@
     mixins: [Loading],
 
     data: {
-      imageSrc: '',
-      imageStyle: '',
-      transformStyle: '',
-      styl: 'background-color:transparent;color:#FFFFFF;',
-      moveImage: {
+      topBar: {
+        style: 'background-color:transparent;color:#FFFFFF;'
+      },
+      touchImage: {
         src: '',
         style: '',
         width: '',
-        height: ''
+        height: '',
+        initStyle: ''
       },
       touches: {
         length: 0,
@@ -90,6 +95,14 @@
         totalOffsetY: 0,
         storageOffsetX: 0,
         storageOffsetY: 0
+      },
+      canvas: {
+        selector: 'upload-canvas',
+        waterImage: {
+          path: '../../assets/images/water-image@2x.png',
+          width: 100,
+          height: 100
+        }
       }
     },
 
@@ -102,14 +115,12 @@
           sizeType: ['original'],
           success: (res) => {
             this.showLoading();
-            const imageSrc = res.tempFilePaths[0];
+            this.touchImage.src = res.tempFilePaths[0];
             wx.getImageInfo({
-              src: imageSrc,
+              src: this.touchImage.src,
               success: (res) => {
                 res = res || {};
-                this.transformStyle = '';
-                this.touches.storageOffsetX = 0;
-                this.touches.storageOffsetY = 0;
+                this.onHandleClearTouches();
                 this.onHandleRenderImage(res);
                 console.log(res);
               },
@@ -117,7 +128,6 @@
                 console.log(err);
               }
             });
-            this.imageSrc = imageSrc;
             console.log(res);
           },
           fail: (err) => {
@@ -126,17 +136,8 @@
         });
       },
       onHandleConfirmImage() {
-        this.getCropperImage()
-          .then((src) => {
-            if (src) {
-              wx.previewImage({
-                current: '', // 当前显示图片的http链接
-                urls: [src] // 需要预览的图片http链接列表
-              });
-            } else {
-              console.log('获取图片地址失败，请重试');
-            }
-          });
+        this.onHandleDrawCanvas();
+        this.onHandleWaterMark();
       },
       onHandleRenderImage(res) {
         let rateWidth = 0;
@@ -153,17 +154,49 @@
           rateWidth = 520;
           rateHeight = 520;
         }
-        this.moveImage.width = rateWidth / 2;
-        this.moveImage.height = rateHeight / 2;
-        this.imageStyle =
+        this.touchImage.width = rateWidth / 2;
+        this.touchImage.height = rateHeight / 2;
+        this.touchImage.style =
           'width:' + rateWidth + 'rpx;' +
           'height:' + rateHeight + 'rpx;' +
           'margin-left:' + (-rateWidth / 2) + 'rpx;' +
           'margin-top:' + (-rateHeight / 2) + 'rpx;';
+        this.touchImage.initStyle = this.touchImage.style;
       },
       onHandleWaterMark() {
+        const {selector, waterImage} = this.canvas;
+        const {path, width, height} = waterImage;
+        const ctx = wx.createCanvasContext(selector);
+        ctx.drawImage(path, 160, 190, width, height);
+        ctx.draw(true);
+        setTimeout(() => {
+          wx.canvasToTempFilePath({
+            x: 0,
+            y: 0,
+            width: 260,
+            height: 260,
+            destWidth: width,
+            destHeight: height,
+            canvasId: selector,
+            success: (res) => {
+              res = res || {};
+              const {tempFilePath} = res;
+              localStorage.setItem('path', tempFilePath);
+              wx.navigateBack({
+                delta: 1
+              });
+            }
+          });
+        }, 300);
       },
       onHandleDrawCanvas() {
+        const ctx = wx.createCanvasContext(this.canvas.selector);
+        const {src, width, height} = this.touchImage;
+        const {storageOffsetX, storageOffsetY} = this.touches;
+        const offsetX = (width - 520 / 2) / 2 + storageOffsetX;
+        const offsetY = (height - 520 / 2) / 2 + storageOffsetY;
+        ctx.drawImage(src, -offsetX, -offsetY, width, height);
+        ctx.draw();
       },
       onHandleLoadImage() {
         this.hideLoading();
@@ -185,17 +218,19 @@
           this.touches.offsetY = this.touches.clientY - clientY;
           let totalOffsetX = this.touches.offsetX + this.touches.storageOffsetX;
           let totalOffsetY = this.touches.offsetY + this.touches.storageOffsetY;
-          this.touches.totalOffsetX = totalOffsetX;
-          this.touches.totalOffsetY = totalOffsetY;
 
-          let moveOffsetX = (this.moveImage.width - 520 / 2) / 2;
-          let moveOffsetY = (this.moveImage.height - 520 / 2) / 2;
+          let moveOffsetX = (this.touchImage.width - 520 / 2) / 2;
+          let moveOffsetY = (this.touchImage.height - 520 / 2) / 2;
           moveOffsetX = totalOffsetX > 0 ? moveOffsetX : -moveOffsetX;
           moveOffsetY = totalOffsetY > 0 ? moveOffsetY : -moveOffsetY;
           totalOffsetX = Math.abs(totalOffsetX) >= Math.abs(moveOffsetX) ? moveOffsetX : totalOffsetX;
           totalOffsetY = Math.abs(totalOffsetY) >= Math.abs(moveOffsetY) ? moveOffsetY : totalOffsetY;
 
-          this.transformStyle = 'transform:translate3d(' + (-totalOffsetX) +
+          this.touches.totalOffsetX = totalOffsetX;
+          this.touches.totalOffsetY = totalOffsetY;
+
+          this.touchImage.style = this.touchImage.initStyle +
+            'transform:translate3d(' + (-totalOffsetX) +
             'px,' + (-totalOffsetY) + 'px,0);';
         }
       },
@@ -203,8 +238,8 @@
         const totalOffsetX = this.touches.storageOffsetX + this.touches.offsetX;
         const totalOffsetY = this.touches.storageOffsetY + this.touches.offsetY;
 
-        let moveOffsetX = (this.moveImage.width - 520 / 2) / 2;
-        let moveOffsetY = (this.moveImage.height - 520 / 2) / 2;
+        let moveOffsetX = (this.touchImage.width - 520 / 2) / 2;
+        let moveOffsetY = (this.touchImage.height - 520 / 2) / 2;
         moveOffsetX = totalOffsetX > 0 ? moveOffsetX : -moveOffsetX;
         moveOffsetY = totalOffsetY > 0 ? moveOffsetY : -moveOffsetY;
         this.touches.storageOffsetX = Math.abs(totalOffsetX) >= Math.abs(moveOffsetX) ? moveOffsetX : totalOffsetX;
@@ -215,6 +250,11 @@
         this.touches.offsetY = 0;
         this.touches.clientX = 0;
         this.touches.clientY = 0;
+      },
+      onHandleClearTouches() {
+        for (let key in this.touches) {
+          this.touches[key] = 0;
+        }
       }
     },
 
@@ -234,7 +274,7 @@
     .content {
       height: 100vh;
       .header {
-        .params {
+        .hidden {
           display: none;
           position: fixed;
           z-index: 2000;
@@ -329,10 +369,10 @@
                     width: 100%;
                     height: 100%;
                     background-color: @transparent;
-                    border-left: calc((100vw - unit(520, rpx)) / 2) solid rgba(0, 0, 0, .8);
-                    border-right: calc((100vw - unit(520, rpx)) / 2) solid rgba(0, 0, 0, 0.8);
-                    border-top: calc((100vh - unit(520, rpx)) / 2) solid rgba(0, 0, 0, .8);
-                    border-bottom: calc((100vh - unit(520, rpx)) / 2) solid rgba(0, 0, 0, 0.8);
+                    border-left: calc((100vw - unit(520, rpx)) / 2) solid rgba(0, 0, 0, .5);
+                    border-right: calc((100vw - unit(520, rpx)) / 2) solid rgba(0, 0, 0, 0.5);
+                    border-top: calc((100vh - unit(520, rpx)) / 2) solid rgba(0, 0, 0, .5);
+                    border-bottom: calc((100vh - unit(520, rpx)) / 2) solid rgba(0, 0, 0, 0.5);
                   }
                   .upload-cut-image {
                     position: absolute;
@@ -347,6 +387,19 @@
                       left: 50%;
                       width: 100%;
                       height: 100%;
+                    }
+                  }
+                  .upload-cut-canvas {
+                    position: fixed;
+                    top: unit(-520, rpx);
+                    left: 0;
+                    z-index: 1000;
+                    width: unit(520, rpx);
+                    height: unit(520, rpx);
+                    .upload-canvas {
+                      width: 100%;
+                      height: 100%;
+                      background-color: transparent;
                     }
                   }
                 }

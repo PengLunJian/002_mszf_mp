@@ -80,6 +80,19 @@
 					"pathName": "pages/login/index",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/insert-house/insert-rent-house/step1",
+					"pathName": "pages/insert-house/insert-rent-house/step1",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/insert-house/insert-rent-house/step3",
+					"pathName": "pages/insert-house/insert-rent-house/step3",
+					"scene": null
 				}
 			]
 		}
