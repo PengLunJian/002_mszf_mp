@@ -12,7 +12,7 @@
           <div>totalOffsetY:{{touches.totalOffsetY}}</div>
           <div>storageOffsetX:{{touches.storageOffsetX}}</div>
           <div>storageOffsetY:{{touches.storageOffsetY}}</div>
-          <img src="../../assets/images/water-image@2x.png"/>
+          <img src="../../assets/images/water-mark@2x.png"/>
         </div>
       </div>
       <div class="body">
@@ -67,13 +67,14 @@
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
   import store from '../../store';
+  import Toast from '../../mixins/toast';
   import Loading from '../../mixins/loading';
   import * as localStorage from '../../utils/localStorage';
 
   wepy.page({
     store,
 
-    mixins: [Loading],
+    mixins: [Toast, Loading],
 
     data: {
       topBar: {
@@ -98,11 +99,12 @@
         storageOffsetY: 0
       },
       canvas: {
+        ctx: null,
         selector: 'upload-canvas',
-        waterImage: {
-          path: '../../assets/images/water-image@2x.png',
-          width: 100,
-          height: 100
+        waterMark: {
+          path: '../../assets/images/water-mark@2x.png',
+          width: 78,
+          height: 25
         }
       }
     },
@@ -137,8 +139,13 @@
         });
       },
       onHandleConfirmImage() {
-        this.onHandleDrawCanvas();
-        this.onHandleWaterMark();
+        const {src} = this.touchImage;
+        if (src) {
+          this.onHandleDrawCanvas();
+          this.onHandleWaterMark();
+        } else {
+          this.showToast('请先选择上传图片');
+        }
       },
       onHandleRenderImage(res) {
         let rateWidth = 0;
@@ -165,19 +172,15 @@
         this.touchImage.initStyle = this.touchImage.style;
       },
       onHandleWaterMark() {
-        const {selector, waterImage} = this.canvas;
-        const {path, width, height} = waterImage;
-        const ctx = wx.createCanvasContext(selector);
-        ctx.drawImage(path, 160, 190, width, height);
-        ctx.draw(true);
-        setTimeout(() => {
+        const {selector, waterMark} = this.canvas;
+        const {path, width, height} = waterMark;
+        this.canvas.ctx.drawImage(path, 10 * 2, 10 * 2, width * 2, height * 2);
+        this.canvas.ctx.draw(true, () => {
           wx.canvasToTempFilePath({
-            x: 0,
-            y: 0,
-            width: 520,
-            height: 520,
-            destWidth: 520,
-            destHeight: 520,
+            width: 1040,
+            height: 1040,
+            destWidth: 750,
+            destHeight: 750,
             canvasId: selector,
             success: (res) => {
               res = res || {};
@@ -188,17 +191,42 @@
               });
             }
           });
-        }, 300);
+        });
       },
       onHandleDrawCanvas() {
         const {selector} = this.canvas;
-        const ctx = wx.createCanvasContext(selector);
         const {src, width, height} = this.touchImage;
         const {storageOffsetX, storageOffsetY} = this.touches;
         const offsetX = (width - 520 / 2) / 2 + storageOffsetX;
         const offsetY = (height - 520 / 2) / 2 + storageOffsetY;
-        ctx.drawImage(src, -offsetX, -offsetY, width, height);
-        ctx.draw(true);
+        this.canvas.ctx = wx.createCanvasContext(selector);
+        this.canvas.ctx.drawImage(src, -offsetX * 2, -offsetY * 2, width * 2, height * 2);
+        this.canvas.ctx.save();
+      },
+      onHandleShowImage() {
+        const {src} = this.touchImage;
+        if (src) {
+          this.onHandleDrawCanvas();
+          const {selector} = this.canvas;
+          this.canvas.ctx.restore();
+          this.canvas.ctx.draw(true, () => {
+            wx.canvasToTempFilePath({
+              width: 1040,
+              height: 1040,
+              destWidth: 750,
+              destHeight: 750,
+              canvasId: selector,
+              success: (res) => {
+                res = res || {};
+                const {tempFilePath} = res;
+                wx.previewImage({
+                  current: tempFilePath,
+                  urls: [tempFilePath]
+                });
+              }
+            });
+          });
+        }
       },
       onHandleLoadImage() {
         this.hideLoading();
@@ -252,33 +280,6 @@
         this.touches.offsetY = 0;
         this.touches.clientX = 0;
         this.touches.clientY = 0;
-      },
-      onHandleShowImage() {
-        this.onHandleDrawCanvas();
-        const {selector, waterImage} = this.canvas;
-        const {path, width, height} = waterImage;
-        const ctx = wx.createCanvasContext(selector);
-        ctx.drawImage(path, 160, 190, width, height);
-        ctx.draw(true);
-        setTimeout(() => {
-          wx.canvasToTempFilePath({
-            x: 0,
-            y: 0,
-            width: 520,
-            height: 520,
-            destWidth: 520,
-            destHeight: 520,
-            canvasId: selector,
-            success: (res) => {
-              res = res || {};
-              const {tempFilePath} = res;
-              wx.previewImage({
-                current: tempFilePath,
-                urls: [tempFilePath]
-              });
-            }
-          });
-        }, 300);
       },
       onHandleClearTouches() {
         for (let key in this.touches) {
@@ -420,11 +421,11 @@
                   }
                   .upload-cut-canvas {
                     position: fixed;
-                    top: unit(-520, rpx);
+                    top: unit(-1040, rpx);
                     left: 0;
                     z-index: 1000;
-                    width: unit(520, rpx);
-                    height: unit(520, rpx);
+                    width: unit(1040, rpx);
+                    height: unit(1040, rpx);
                     .upload-canvas {
                       width: 100%;
                       height: 100%;
@@ -473,6 +474,7 @@
   {
   disableScroll:true,
   navigationStyle:'custom',
+  navigationBarTextStyle:'white',
   usingComponents: {
   'top-bar': '../../components/top-bar/top-bar'
   }
