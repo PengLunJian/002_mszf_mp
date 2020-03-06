@@ -23,8 +23,6 @@
                                      @input="onHandleCheckEmpty"/>
                             </div>
                           </div>
-                        </div>
-                        <div class="form-row row">
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">房源简介</label>
@@ -55,8 +53,6 @@
                               </picker>
                             </div>
                           </div>
-                        </div>
-                        <div class="form-row row">
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">详细地址</label>
@@ -84,8 +80,6 @@
                                      @input="onHandleCheckEmpty"/>
                             </div>
                           </div>
-                        </div>
-                        <div class="form-row row">
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">房主电话</label>
@@ -113,8 +107,6 @@
                                      @input="onHandleCheckEmpty"/>
                             </div>
                           </div>
-                        </div>
-                        <div class="form-row row">
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">面积</label>
@@ -134,7 +126,7 @@
                     <div class="module-body">
                       <div class="module-base">
                         <div class="form-row row">
-                          <div class="form-col col-6">
+                          <div class="form-col col-12">
                             <picker mode="multiSelector" @change="onHandleHuXingChange"
                                     value="{{huxing.index}}" range="{{huxing.items}}">
                               <div class="form-group">
@@ -144,7 +136,7 @@
                               </div>
                             </picker>
                           </div>
-                          <div class="form-col col-6">
+                          <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">朝向</label>
                               <input class="form-input" v-model="chaoxiang.value" disabled="{{true}}" type="text"
@@ -152,15 +144,24 @@
                             </div>
                           </div>
                         </div>
+                      </div>
+                    </div>
+                    <div class="module-footer"></div>
+                  </div>
+                </div>
+                <div class="module">
+                  <div class="module-content">
+                    <div class="module-body">
+                      <div class="module-base">
                         <div class="form-row row">
-                          <div class="form-col col-6">
+                          <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">看房</label>
                               <input class="form-input" v-model="kanfangshijian.value" disabled="{{true}}" type="text"
                                      placeholder="随时看房" @tap="onHandleShowKanFangShiJian"/>
                             </div>
                           </div>
-                          <div class="form-col col-6">
+                          <div class="form-col col-12">
                             <picker mode="multiSelector" @change="onHandleZhiFuChange"
                                     value="{{zhifu.index}}" range="{{zhifu.items}}">
                               <div class="form-group">
@@ -181,14 +182,14 @@
                     <div class="module-body">
                       <div class="module-base">
                         <div class="form-row row">
-                          <div class="form-col col-6">
+                          <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">楼层</label>
                               <input class="form-input" v-model="louceng.value" disabled="{{true}}" type="text"
                                      placeholder="低楼层" @tap="onHandleShowLouCeng"/>
                             </div>
                           </div>
-                          <div class="form-col col-6">
+                          <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">装修</label>
                               <input class="form-input" v-model="zhuangxiu.value" disabled="{{true}}" type="text"
@@ -196,15 +197,24 @@
                             </div>
                           </div>
                         </div>
+                      </div>
+                    </div>
+                    <div class="module-footer"></div>
+                  </div>
+                </div>
+                <div class="module">
+                  <div class="module-content">
+                    <div class="module-body">
+                      <div class="module-base">
                         <div class="form-row row">
-                          <div class="form-col col-6">
+                          <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">方式</label>
                               <input class="form-input" v-model="chuzufangshi.value" disabled="{{true}}" type="text"
                                      placeholder="整租" @tap="onHandleShowChuZuFangShi"/>
                             </div>
                           </div>
-                          <div class="form-col col-6">
+                          <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">类型</label>
                               <input class="form-input" v-model="leixing.value" disabled="{{true}}" type="text"
@@ -542,9 +552,9 @@
                       .module-base {
                         padding-left: unit(30, rpx);
                         .form-row {
-                          border-bottom: 0.5px solid @borderColor1;
                           .form-col {
                             padding-right: unit(30, rpx);
+                            border-bottom: 0.5px solid @borderColor1;
                             .form-group {
                               display: flex;
                               font-size: @fontSize32;
@@ -571,9 +581,9 @@
                                 color: @iconNext;
                               }
                             }
-                          }
-                          &:last-child {
-                            border: none;
+                            &:last-child {
+                              border: none;
+                            }
                           }
                         }
                       }

@@ -19,7 +19,7 @@
                       <div class="module-images">
                         <div class="module-row row">
                           <div class="module-col col-4" v-for="(item,index) in items" :key="index">
-                            <div class="module-item">
+                            <div class="module-item" @tap="onHandleShowImage(index)">
                               <img src="{{item}}"/>
                             </div>
                           </div>
@@ -105,10 +105,15 @@
       },
       onHandleImagesSelector() {
       },
+      onHandleShowImage(index) {
+        wx.previewImage({
+          current: this.items[index],
+          urls: this.items
+        });
+      },
       getParams() {
-        const {items} = this.data;
         const params = {
-          pic_url: items
+          pic_url: this.items
         };
         return params;
       }

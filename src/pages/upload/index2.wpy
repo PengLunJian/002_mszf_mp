@@ -25,7 +25,8 @@
                   <div class="upload-cut-touch"
                        @touchstart="onHandleTouchStart"
                        @touchmove="onHandleTouchMove"
-                       @touchend="onHandleTouchEnd"></div>
+                       @touchend="onHandleTouchEnd"
+                       @tap="onHandleShowImage"></div>
                   <div class="upload-cut-border">
                     <div class="upload-border"></div>
                     <div class="upload-border"></div>
@@ -173,10 +174,10 @@
           wx.canvasToTempFilePath({
             x: 0,
             y: 0,
-            width: 260,
-            height: 260,
-            destWidth: width,
-            destHeight: height,
+            width: 520,
+            height: 520,
+            destWidth: 520,
+            destHeight: 520,
             canvasId: selector,
             success: (res) => {
               res = res || {};
@@ -190,13 +191,14 @@
         }, 300);
       },
       onHandleDrawCanvas() {
-        const ctx = wx.createCanvasContext(this.canvas.selector);
+        const {selector} = this.canvas;
+        const ctx = wx.createCanvasContext(selector);
         const {src, width, height} = this.touchImage;
         const {storageOffsetX, storageOffsetY} = this.touches;
         const offsetX = (width - 520 / 2) / 2 + storageOffsetX;
         const offsetY = (height - 520 / 2) / 2 + storageOffsetY;
         ctx.drawImage(src, -offsetX, -offsetY, width, height);
-        ctx.draw();
+        ctx.draw(true);
       },
       onHandleLoadImage() {
         this.hideLoading();
@@ -250,6 +252,33 @@
         this.touches.offsetY = 0;
         this.touches.clientX = 0;
         this.touches.clientY = 0;
+      },
+      onHandleShowImage() {
+        this.onHandleDrawCanvas();
+        const {selector, waterImage} = this.canvas;
+        const {path, width, height} = waterImage;
+        const ctx = wx.createCanvasContext(selector);
+        ctx.drawImage(path, 160, 190, width, height);
+        ctx.draw(true);
+        setTimeout(() => {
+          wx.canvasToTempFilePath({
+            x: 0,
+            y: 0,
+            width: 520,
+            height: 520,
+            destWidth: 520,
+            destHeight: 520,
+            canvasId: selector,
+            success: (res) => {
+              res = res || {};
+              const {tempFilePath} = res;
+              wx.previewImage({
+                current: tempFilePath,
+                urls: [tempFilePath]
+              });
+            }
+          });
+        }, 300);
       },
       onHandleClearTouches() {
         for (let key in this.touches) {
