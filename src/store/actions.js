@@ -82,6 +82,28 @@ export const ajaxRequestDeleteHouse = createAction(
     });
   });
 
+export const ajaxRequestUploadImage = createAction(
+  'uploadImage', (params) => {
+    commit(actionTypes.UPLOAD_IMAGE_REQUEST);
+    return new Promise((resolve, reject) => {
+      axios.get(apis.uploadImage, {params})
+        .then((res) => {
+          res = res || {};
+          const {data, success} = res;
+          if (success) {
+            commit(actionTypes.UPLOAD_IMAGE_SUCCESS, data);
+          } else {
+            commit(actionTypes.UPLOAD_IMAGE_FAILURE);
+          }
+          resolve(res);
+        })
+        .catch((err) => {
+          commit(actionTypes.UPLOAD_IMAGE_FAILURE);
+          reject(err);
+        });
+    });
+  });
+
 export const ajaxRequestUpdateHouse = createAction(
   'updateHouse', (params) => {
     commit(actionTypes.UPDATE_HOUSE_REQUEST);

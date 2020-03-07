@@ -78,6 +78,10 @@ const apis = {
       ]
     }
   },
+  uploadImage: {
+    url: 'house/v1/file/uploadfile',
+    params: {}
+  },
   selectHouseDetail: {
     url: 'house/v1/houser/house/detail',
     params: {}

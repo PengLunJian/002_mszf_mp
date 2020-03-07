@@ -20,7 +20,8 @@
                         <div class="module-row row">
                           <div class="module-col col-4" v-for="(item,index) in items" :key="index">
                             <div class="module-item" @tap="onHandleShowImage(index)">
-                              <div class="btn-delete iconfont icon-delete4" @tap.stop="onHandleDeleteImage(index)"></div>
+                              <div class="btn-delete iconfont icon-delete1"
+                                   @tap.stop="onHandleDeleteImage(index)"></div>
                               <img class="item-image" src="{{item}}"/>
                             </div>
                           </div>
@@ -113,7 +114,7 @@
         });
       },
       onHandleDeleteImage(index) {
-        this.items.splice(index);
+        this.items.splice(index, 1);
       },
       getParams() {
         const params = {
@@ -126,7 +127,6 @@
     onShow() {
       const path = localStorage.getItem('path');
       if (path) {
-        console.log(path);
         this.items.push(path);
         localStorage.removeItem('path');
       }
@@ -195,13 +195,14 @@
                               }
                               .btn-delete {
                                 position: absolute;
-                                top: unit(-20, rpx);
-                                right: unit(-20, rpx);
+                                top: 0;
+                                right: 0;
                                 z-index: 1;
-                                width: unit(40, rpx);
-                                height: unit(40, rpx);
-                                line-height: unit(40, rpx);
-                                font-size: @fontSize40;
+                                width: unit(50, rpx);
+                                height: unit(50, rpx);
+                                line-height: unit(50, rpx);
+                                background-color: rgba(0, 0, 0, .6);
+                                font-size: @fontSize36;
                                 text-align: center;
                                 color: @btnDelete;
                               }

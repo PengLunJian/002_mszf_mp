@@ -62,8 +62,8 @@
 				},
 				{
 					"id": 1,
-					"name": "pages/upload/index2",
-					"pathName": "pages/upload/index2",
+					"name": "pages/upload/index",
+					"pathName": "pages/upload/index",
 					"query": "",
 					"scene": null
 				},
@@ -92,6 +92,7 @@
 					"id": -1,
 					"name": "pages/insert-house/insert-rent-house/step3",
 					"pathName": "pages/insert-house/insert-rent-house/step3",
+					"query": "",
 					"scene": null
 				}
 			]
