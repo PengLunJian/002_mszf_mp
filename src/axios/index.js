@@ -2,6 +2,7 @@ import Axios from 'axios/dist/axios';
 import apis from '../apis';
 import * as utils from '../utils';
 import wepyAxiosAdapter from 'wepy-plugin-axios/dist/adapter';
+
 /**
  *
  * @param config
@@ -12,6 +13,7 @@ const getConfig = (config) => {
   const opts = config.url;
   const {url, params} = opts;
   config.timeout = apis.timeout;
+  console.log(config);
   config.headers = apis.headers;
   config.adapter = wepyAxiosAdapter(Axios);
   config.url = apis.baseUrl + url;

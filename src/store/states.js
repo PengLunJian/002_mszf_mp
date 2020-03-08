@@ -18,3 +18,10 @@ export const INSERT_HOUSE_STATE = {
   isFailure: false,
   data: null
 };
+
+export const UPLOAD_IMAGE_STATE = {
+  isLoading: true,
+  isSuccess: false,
+  isFailure: false,
+  data: null
+};

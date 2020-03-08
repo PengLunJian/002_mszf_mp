@@ -3,6 +3,10 @@
     <div class="content">
       <div class="header">
         <top-bar title="基本信息"></top-bar>
+        <div class="hidden">
+          <img src="../../../assets/images/agent.jpg"/>
+          <img src="../../../assets/images/water-mark@2x.png"/>
+        </div>
       </div>
       <div class="body">
         <div class="context fade">

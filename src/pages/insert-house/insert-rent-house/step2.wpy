@@ -175,7 +175,7 @@
             checked: false
           },
           {
-            label: '有车位',
+            label: '车位充足',
             checked: false
           },
           {

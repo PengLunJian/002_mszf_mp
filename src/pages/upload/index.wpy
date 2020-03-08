@@ -154,22 +154,23 @@
         this.touchImage.width = rateWidth / 2;
         this.touchImage.height = rateHeight / 2;
         this.touchImage.style =
-          'width:' + rateWidth + 'rpx;' +
-          'height:' + rateHeight + 'rpx;' +
-          'margin-left:' + (-rateWidth / 2) + 'rpx;' +
-          'margin-top:' + (-rateHeight / 2) + 'rpx;';
+          'width:' + (rateWidth / 2) + 'px;' +
+          'height:' + (rateHeight / 2) + 'px;' +
+          'margin-left:' + (-rateWidth / 2 / 2) + 'px;' +
+          'margin-top:' + (-rateHeight / 2 / 2) + 'px;';
         this.touchImage.initStyle = this.touchImage.style;
       },
       onHandleWaterMark() {
         const {selector, waterMark} = this.canvas;
         const {path, width, height} = waterMark;
-        this.canvas.ctx.drawImage(path, 10 * 2, 10 * 2, width * 2, height * 2);
+        this.canvas.ctx.drawImage(path, 10 * 3, 10 * 3, width * 3, height * 3);
         this.canvas.ctx.draw(true, () => {
           wx.canvasToTempFilePath({
-            width: 1040,
-            height: 1040,
+            width: 520 * 3,
+            height: 520 * 3,
             destWidth: 750,
             destHeight: 750,
+            fileType: 'jpg',
             canvasId: selector,
             success: (res) => {
               res = res || {};
@@ -189,7 +190,8 @@
         const offsetX = (width - 520 / 2) / 2 + storageOffsetX;
         const offsetY = (height - 520 / 2) / 2 + storageOffsetY;
         this.canvas.ctx = wx.createCanvasContext(selector);
-        this.canvas.ctx.drawImage(src, -offsetX * 2, -offsetY * 2, width * 2, height * 2);
+        this.canvas.ctx.draw();
+        this.canvas.ctx.drawImage(src, -offsetX * 3, -offsetY * 3, width * 3, height * 3);
         this.canvas.ctx.save();
       },
       onHandleShowImage() {
@@ -200,10 +202,11 @@
           this.canvas.ctx.restore();
           this.canvas.ctx.draw(true, () => {
             wx.canvasToTempFilePath({
-              width: 1040,
-              height: 1040,
+              width: 520 * 3,
+              height: 520 * 3,
               destWidth: 750,
               destHeight: 750,
+              fileType: 'jpg',
               canvasId: selector,
               success: (res) => {
                 res = res || {};
@@ -292,7 +295,8 @@
     min-height: 100vh;
     .content {
       height: 100vh;
-      .header {}
+      .header {
+      }
       .body {
         height: 100%;
         position: relative;
@@ -313,14 +317,14 @@
               }
               .upload-body {
                 .upload-cut {
-                  width: unit(520, rpx);
-                  height: unit(520, rpx);
+                  width: 260px;
+                  height: 260px;
                   position: fixed;
                   top: 50%;
                   left: 50%;
                   z-index: 901;
-                  margin-top: unit(-260, rpx);
-                  margin-left: unit(-260, rpx);
+                  margin-top: -130px;
+                  margin-left: -130px;
                   background-color: rgba(255, 255, 255, .15);
                   .upload-cut-touch {
                     width: 100%;
@@ -339,8 +343,8 @@
                     z-index: 904;
                     .upload-border {
                       position: absolute;
-                      width: unit(30, rpx);
-                      height: unit(30, rpx);
+                      width: 15px;
+                      height: 15px;
                       border-color: @theme2 !important;
                       &:nth-child(1) {
                         top: -2px;
@@ -376,10 +380,10 @@
                     width: 100%;
                     height: 100%;
                     background-color: @transparent;
-                    border-left: calc((100vw - unit(520, rpx)) / 2) solid rgba(0, 0, 0, .5);
-                    border-right: calc((100vw - unit(520, rpx)) / 2) solid rgba(0, 0, 0, 0.5);
-                    border-top: calc((100vh - unit(520, rpx)) / 2) solid rgba(0, 0, 0, .5);
-                    border-bottom: calc((100vh - unit(520, rpx)) / 2) solid rgba(0, 0, 0, 0.5);
+                    border-left: calc((100vw - 260px) / 2) solid rgba(0, 0, 0, .5);
+                    border-right: calc((100vw - 260px) / 2) solid rgba(0, 0, 0, 0.5);
+                    border-top: calc((100vh - 260px) / 2) solid rgba(0, 0, 0, .5);
+                    border-bottom: calc((100vh - 260px) / 2) solid rgba(0, 0, 0, 0.5);
                   }
                   .upload-cut-image {
                     position: absolute;
@@ -398,11 +402,12 @@
                   }
                   .upload-cut-canvas {
                     position: fixed;
-                    top: unit(-1040, rpx);
+                    top: -780px;
                     left: 0;
                     z-index: 1000;
-                    width: unit(1040, rpx);
-                    height: unit(1040, rpx);
+                    width: 780px;
+                    height: 780px;
+                    visibility: hidden;
                     .upload-canvas {
                       width: 100%;
                       height: 100%;

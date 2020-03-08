@@ -51,13 +51,14 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
+  import apis from '../../../apis';
   import store from '../../../store';
   import {mapState, mapActions} from '@wepy/redux';
   import * as controller from './controller';
   import * as $routes from '../../../router';
+  import * as localStorage from '../../../utils/localStorage';
   import Toast from '../../../mixins/toast';
   import Loading from '../../../mixins/loading';
-  import * as localStorage from '../../../utils/localStorage';
 
   wepy.page({
     store,
@@ -66,7 +67,12 @@
 
     data: {
       items: [],
-      paramsStep2: {}
+      pic_url: [],
+      paramsStep2: {},
+      image: {
+        count: 0,
+        baseUrl: ''
+      }
     },
 
     computed: {
@@ -76,7 +82,6 @@
     methods: {
       ...mapActions(controller.ACTIONS),
       exeAjaxInsertHouse() {
-        this.showLoading();
         const params = this.getParams();
         const paramsStep3 = Object.assign(this.paramsStep2, params);
         this.ajaxInsertHouse(paramsStep3)
@@ -86,6 +91,11 @@
             const {success} = res.payload;
             if (success) {
               this.showToast('房源添加成功');
+              setTimeout(() => {
+                wx.navigateBack({
+                  delta: 4
+                });
+              }, 1000);
             } else {
               this.showToast('添加失败，请重试');
             }
@@ -97,15 +107,48 @@
             console.log(err);
           });
       },
+      exeAjaxUploadImage() {
+        let {count, baseUrl} = this.image;
+        const filePath = this.items[count];
+        const params = {count, filePath};
+        this.ajaxUploadImage(params)
+          .then((res) => {
+            res = res || {};
+            const {success, data} = res.payload;
+            if (success) {
+              this.pic_url.push(baseUrl + data);
+            }
+            this.image.count++;
+            if (this.image.count === this.items.length) {
+              this.exeAjaxInsertHouse();
+            } else {
+              this.exeAjaxUploadImage();
+            }
+            console.log(res);
+          })
+          .catch((err) => {
+            this.showToast('第' + count + '张图片上传失败');
+            this.image.count++;
+            if (this.image.count === this.items.length) {
+              this.exeAjaxInsertHouse();
+            } else {
+              this.exeAjaxUploadImage();
+            }
+            console.log(err);
+          });
+      },
       onHandleSubmitHouse() {
-        this.exeAjaxInsertHouse();
+        this.showLoading('正在加载');
+        if (this.items.length) {
+          this.exeAjaxUploadImage();
+        } else {
+          this.exeAjaxInsertHouse();
+        }
       },
       onHandleUploadRouter() {
         wx.navigateTo({
           url: $routes.UPLOAD.path
         });
-      },
-      onHandleImagesSelector() {
       },
       onHandleShowImage(index) {
         wx.previewImage({
@@ -118,7 +161,7 @@
       },
       getParams() {
         const params = {
-          pic_url: this.items
+          pic_url: this.pic_url
         };
         return params;
       }
@@ -133,8 +176,10 @@
     },
 
     onLoad(option) {
-      // const {paramsStep2} = option;
-      // this.paramsStep2 = JSON.parse(paramsStep2);
+      const {paramsStep2} = option;
+      const end = apis.baseUrl.lastIndexOf('/');
+      this.paramsStep2 = JSON.parse(paramsStep2);
+      this.image.baseUrl = apis.baseUrl.substring(0, end);
     }
   });
 </script>

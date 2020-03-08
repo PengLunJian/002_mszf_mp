@@ -147,7 +147,7 @@
             padding-right: unit(10, rpx);
             .item-tag {
               line-height: unit(38, rpx);
-              padding: 0 unit(10, rpx);
+              padding: 0 unit(8, rpx);
               border: 1px solid @theme2;
               font-size: @fontSize22;
               text-align: center;

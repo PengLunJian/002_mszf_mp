@@ -82,25 +82,56 @@ export const ajaxRequestDeleteHouse = createAction(
     });
   });
 
+// export const ajaxRequestUploadImage = createAction(
+//   'uploadImage', (params) => {
+//     commit(actionTypes.UPLOAD_IMAGE_REQUEST);
+//     return new Promise((resolve, reject) => {
+//       axios.post(apis.uploadImage, params)
+//         .then((res) => {
+//           res = res || {};
+//           const {data, success} = res;
+//           if (success) {
+//             commit(actionTypes.UPLOAD_IMAGE_SUCCESS, data);
+//           } else {
+//             commit(actionTypes.UPLOAD_IMAGE_FAILURE);
+//           }
+//           resolve(res);
+//         })
+//         .catch((err) => {
+//           commit(actionTypes.UPLOAD_IMAGE_FAILURE);
+//           reject(err);
+//         });
+//     });
+//   });
+
 export const ajaxRequestUploadImage = createAction(
   'uploadImage', (params) => {
     commit(actionTypes.UPLOAD_IMAGE_REQUEST);
     return new Promise((resolve, reject) => {
-      axios.get(apis.uploadImage, {params})
-        .then((res) => {
+      const {count, filePath} = params;
+      const url = apis.baseUrl + apis.uploadImage.url;
+      const header = {'Content-Type': 'multipart/form-data'};
+      wx.uploadFile({
+        url: url,
+        filePath: filePath,
+        name: 'file' + count,
+        header: header,
+        success: (res) => {
           res = res || {};
-          const {data, success} = res;
+          const resData = JSON.parse(res.data);
+          const {success, data} = resData;
           if (success) {
             commit(actionTypes.UPLOAD_IMAGE_SUCCESS, data);
           } else {
             commit(actionTypes.UPLOAD_IMAGE_FAILURE);
           }
-          resolve(res);
-        })
-        .catch((err) => {
+          resolve(resData);
+        },
+        fail: (err) => {
           commit(actionTypes.UPLOAD_IMAGE_FAILURE);
           reject(err);
-        });
+        }
+      });
     });
   });
 
