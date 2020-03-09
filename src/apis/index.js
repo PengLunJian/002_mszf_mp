@@ -49,8 +49,10 @@ const apis = {
     }
   },
   deleteHouse: {
-    url: 'house/v1/houser/house/list',
-    params: {}
+    url: 'house/v1/agency/house/delete',
+    params: {
+      id: 0
+    }
   },
   updateHouse: {
     url: 'house/v1/houser/house/list',

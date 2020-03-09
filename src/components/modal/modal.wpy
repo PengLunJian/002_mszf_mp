@@ -1,0 +1,152 @@
+<template>
+  <div class="modal" :class="{'hide':isHide}">
+    <div class="modal-mask" @tap="onHandleHideModal"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">新增房源</div>
+        <div class="modal-close" @tap="onHandleHideModal">
+          <div class="btn-close iconfont icon-close2"></div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-row row">
+          <div class="modal-col col-4" v-for="(item,index) in items" :key="index">
+            <div class="btn-item" @tap="onHandleRouter(item.path)">
+              <div class="btn-icon iconfont {{item.icon}}"></div>
+              <div class="btn-text">{{item.name}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+
+  wepy.component({
+    data: {
+      isHide: true,
+      isScroll: true
+    },
+    props: {},
+    methods: {
+      onHandleShowModal() {
+        this.isHide = false;
+        this.isScroll = false;
+      },
+      onHandleHideModal() {
+        this.isHide = true;
+        this.isScroll = true;
+      },
+      onHandleRouter(url) {
+        wx.navigateTo({
+          url
+        });
+      }
+    },
+    created() {
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../assets/less/common";
+  @import "../../assets/less/variable";
+
+  .modal {
+    .modal-mask {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1010;
+      width: 100%;
+      height: 100%;
+      background-color: @mask;
+      transition: all 300ms ease-out;
+    }
+    .modal-content {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      z-index: 1011;
+      width: 100%;
+      height: unit(400, rpx);
+      overflow: hidden;
+      background-color: @white;
+      transition: all 300ms ease-out;
+      box-shadow: 0 0 15px @boxShadow15;
+      border-top-left-radius: @borderRadius40;
+      border-top-right-radius: @borderRadius40;
+      .modal-header {
+        .modal-close {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: unit(100, rpx);
+          height: unit(100, rpx);
+          line-height: unit(100, rpx);
+          .btn-close {
+            font-size: @fontSize36;
+            text-align: center;
+            color: @fontColor1;
+          }
+        }
+        .modal-title {
+          height: unit(100, rpx);
+          line-height: unit(100, rpx);
+          font-size: @fontSize32;
+          letter-spacing: 1px;
+          text-align: center;
+          font-weight: bold;
+          color: @fontColor1;
+        }
+      }
+      .modal-body {
+        padding-top: unit(20, rpx);
+        .modal-row {
+          padding: unit(15, rpx);
+        }
+        .modal-col {
+          padding: unit(15, rpx);
+          .btn-item {
+            text-align: center;
+            .btn-icon {
+              overflow: hidden;
+              width: unit(110, rpx);
+              height: unit(110, rpx);
+              line-height: unit(110, rpx);
+              margin: 0 auto unit(20, rpx);
+              border-radius: @borderRadius100;
+              box-shadow: 0 0 15px @boxShadow05;
+              background: -webkit-linear-gradient(-45deg, @theme1, @theme2);
+              font-size: @fontSize50;
+              color: @white;
+            }
+            .btn-text {
+              height: unit(40, rpx);
+              line-height: unit(40, rpx);
+              font-size: @fontSize32;
+              color: @fontColor1;
+            }
+          }
+        }
+      }
+      .modal-footer {
+      }
+    }
+    &.hide {
+      .modal-mask {
+        opacity: 0;
+        visibility: hidden;
+      }
+      .modal-content {
+        visibility: hidden;
+        transform: translateY(unit(400, rpx));
+      }
+    }
+  }
+
+</style>

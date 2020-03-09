@@ -5,7 +5,7 @@ export const LOGIN_STATE = {
   data: null
 };
 
-export const HOUSE_STATE = {
+export const SELECT_HOUSE_STATE = {
   isLoading: true,
   isSuccess: false,
   isFailure: false,
@@ -13,6 +13,20 @@ export const HOUSE_STATE = {
 };
 
 export const INSERT_HOUSE_STATE = {
+  isLoading: true,
+  isSuccess: false,
+  isFailure: false,
+  data: null
+};
+
+export const DELETE_HOUSE_STATE = {
+  isLoading: true,
+  isSuccess: false,
+  isFailure: false,
+  data: null
+};
+
+export const UPDATE_HOUSE_STATE = {
   isLoading: true,
   isSuccess: false,
   isFailure: false,

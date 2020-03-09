@@ -90,20 +90,20 @@
             res = res || {};
             const {success} = res.payload;
             if (success) {
-              this.showToast('房源新增成功');
+              this.showToast('房源添加成功');
               setTimeout(() => {
                 wx.navigateBack({
                   delta: 4
                 });
               }, 1000);
             } else {
-              this.showToast('新增失败，请重试');
+              this.showToast('添加失败，请重试');
             }
             console.log(res);
           })
           .catch((err) => {
             this.hideLoading();
-            this.showToast('新增失败，请重试');
+            this.showToast('添加失败，请重试');
             console.log(err);
           });
       },

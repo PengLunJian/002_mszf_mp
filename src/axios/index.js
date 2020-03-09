@@ -13,7 +13,6 @@ const getConfig = (config) => {
   const opts = config.url;
   const {url, params} = opts;
   config.timeout = apis.timeout;
-  console.log(config);
   config.headers = apis.headers;
   config.adapter = wepyAxiosAdapter(Axios);
   config.url = apis.baseUrl + url;

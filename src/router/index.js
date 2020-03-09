@@ -59,3 +59,20 @@ export const INSERT_HOUSE = {
     }
   }
 };
+
+export const UPDATE_HOUSE = {
+  rent: {
+    step1: {
+      name: '基本信息',
+      path: '/pages/insert-house/insert-rent-house/step1'
+    },
+    step2: {
+      name: '房源配置',
+      path: '/pages/insert-house/insert-rent-house/step2'
+    },
+    step3: {
+      name: '图片上传',
+      path: '/pages/insert-house/insert-rent-house/step3'
+    }
+  }
+};

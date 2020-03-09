@@ -1,45 +1,68 @@
 <template>
-  <div class="item"
-       @tap="onHandleDetail(item.id)">
-    <div class="item-inner">
-      <div class="item-img">
-        <lazy-image src="http://sersms.com:7000/house/v1/file/static/userfile/202001/15/1217303264084398080.jpg"/>
-      </div>
-      <div class="item-info">
-        <div class="item-row">
-          <div class="item-title ellipsis">{{item.title||noData}}</div>
-        </div>
-        <div class="item-row row">
-          <div class="item-addr ellipsis">
-            <span class="item-normal addr">{{item.addr_qu||noData}}</span>
-            <span class="item-normal split"></span>
-            <span class="item-normal desc">{{item.addr||noData}}</span>
+  <div class="weui-cells">
+    <mp-slideview buttons="{{slideButtons}}" @buttontap="onHandleSlideView">
+      <div class="item"
+           @tap="onHandleDetail(item.id)">
+        <div class="item-inner">
+          <div class="item-img">
+            <lazy-image src="{{item.pic_url[0]}}" mode="aspectFill"/>
           </div>
-        </div>
-        <div class="item-row row">
-          <div class="item-normal price">{{item.price||0}}</div>
-          <div class="item-normal unit">元/月</div>
-          <div class="item-normal">{{item.huxing||noData}}</div>
-          <div class="item-normal">{{item.chuzufangshi||noData}}</div>
-          <div class="item-normal">{{item.mianji||noData}}m²</div>
-        </div>
-        <div class="item-row row">
-          <div class="item-col" v-for="(value,index) in item.tags" :key="index">
-            <div class="item-tag">{{value}}</div>
+          <div class="item-info">
+            <div class="item-row">
+              <div class="item-title ellipsis">{{item.title||noData}}</div>
+            </div>
+            <div class="item-row row">
+              <div class="item-addr ellipsis">
+                <span class="item-normal addr">{{item.addr_qu||noData}}</span>
+                <span class="item-normal split"></span>
+                <span class="item-normal desc">{{item.addr||noData}}</span>
+              </div>
+            </div>
+            <div class="item-row row">
+              <div class="item-normal price">{{item.price||0}}</div>
+              <div class="item-normal unit">元/月</div>
+              <div class="item-normal">{{item.huxing||noData}}</div>
+              <div class="item-normal">{{item.chuzufangshi||noData}}</div>
+              <div class="item-normal">{{item.mianji||noData}}m²</div>
+            </div>
+            <div class="item-row row">
+              <div class="item-col" v-for="(value,index) in item.tags" :key="index">
+                <div class="item-tag">{{value}}</div>
+              </div>
+            </div>
           </div>
+          <div class="item-type" v-if="isType">租房</div>
         </div>
       </div>
-      <div class="item-type" v-if="isType">租房</div>
-    </div>
+    </mp-slideview>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
+  import store from '../../store';
+  import {mapState, mapActions} from '@wepy/redux';
+  import * as controller from './controller';
+  import * as $routes from '../../router';
+  import Toast from '../../mixins/toast';
+  import Loading from '../../mixins/loading';
 
   wepy.component({
+    store,
+    mixins: [Toast, Loading],
     data: {
-      noData: '暂无数据'
+      noData: '暂无数据',
+      slideButtons: [
+        {
+          text: '修改',
+          extClass: 'btn-update'
+        },
+        {
+          text: '删除',
+          type: 'warn',
+          extClass: 'btn-delete'
+        }
+      ]
     },
     props: {
       item: {
@@ -51,12 +74,52 @@
         default: false
       }
     },
-    events: {},
+    computed: {
+      ...mapState(controller.STATES)
+    },
     methods: {
+      ...mapActions(controller.ACTIONS),
+      exeAjaxDeleteHouse() {
+        this.showLoading('正在加载');
+        const params = {id: this.item.id};
+        this.ajaxDeleteHouse(params)
+          .then((res) => {
+            this.hideLoading();
+            res = res || {};
+            const {success} = res.payload;
+            if (success) {
+              this.showToast('房源删除成功');
+            } else {
+              this.showToast('删除失败，请重试');
+            }
+            console.log(res);
+          })
+          .catch((err) => {
+            this.hideLoading();
+            this.showToast('删除失败，请重试');
+            console.log(err);
+          });
+      },
+      onHandleUpdateRouter() {
+        const {id} = this.item;
+        wx.navigateTo({
+          url: $routes.UPDATE_HOUSE.step1.path + '?id=' + id
+        });
+      },
       onHandleDetail(id) {
         // wx.navigateTo({
         //   url: $routes.DETAIL.path + '?house_id=' + id
         // });
+      },
+      onHandleSlideView(e) {
+        const {index} = e.$wx.detail;
+        if (index) {
+          // 执行删除操作
+          this.exeAjaxDeleteHouse();
+        } else {
+          // 执行修改操作
+          this.onHandleUpdateRouter();
+        }
       }
     },
     created() {
@@ -147,9 +210,9 @@
             padding-right: unit(10, rpx);
             .item-tag {
               line-height: unit(38, rpx);
-              padding: 0 unit(8, rpx);
+              padding: 0 unit(10, rpx);
               border: 1px solid @theme2;
-              font-size: @fontSize22;
+              font-size: @fontSize24;
               text-align: center;
               color: @theme2;
             }
@@ -188,12 +251,15 @@
       }
     }
   }
+
 </style>
 
 <config>
   {
   usingComponents: {
-  'lazy-image': '../lazy-image/lazy-image'
+  'lazy-image': '../lazy-image/lazy-image',
+  'mp-slideview':'module:weui-miniprogram/miniprogram_dist/slideview/slideview.js',
+  'mp-cell':'module:weui-miniprogram/miniprogram_dist/cell/cell.js'
   }
   }
 </config>

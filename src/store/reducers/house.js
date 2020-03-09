@@ -34,7 +34,39 @@ const actions = {
       isFailure: true
     };
   },
-  [actionTypes.CLEAR_HOUSE_STATE](state) {
+  [actionTypes.RESET_INSERT_HOUSE](state, params) {
+    const newRow = params.data;
+    const {rows, totalCount} = state.data;
+    rows.unshift(newRow);
+    const newTotalCount = totalCount + 1;
+    const newData = {rows: rows, totalCount: newTotalCount};
+    const data = Object.assign(state.data, newData);
+    console.log(data);
+    return {
+      ...state,
+      data
+    };
+  },
+  [actionTypes.RESET_DELETE_HOUSE](state, params) {
+    const {rows, totalCount} = state.data;
+    const {id} = params.data;
+    const newRows = rows.filter((item) => {
+      return item.id !== id;
+    });
+    const newTotalCount = totalCount - 1;
+    const newData = {rows: newRows, totalCount: newTotalCount};
+    const data = Object.assign(state.data, newData);
+    return {
+      ...state,
+      data
+    };
+  },
+  [actionTypes.RESET_UPDATE_HOUSE](state, params) {
+    return {
+      ...state
+    };
+  },
+  [actionTypes.RESET_SELECT_HOUSE](state) {
     return {
       ...state,
       isLoading: false,
@@ -45,6 +77,6 @@ const actions = {
   }
 };
 
-const HOUSE_REDUCER = handleActions(actions, states.HOUSE_STATE);
+const SELECT_HOUSE_REDUCER = handleActions(actions, states.SELECT_HOUSE_STATE);
 
-export default HOUSE_REDUCER;
+export default SELECT_HOUSE_REDUCER;

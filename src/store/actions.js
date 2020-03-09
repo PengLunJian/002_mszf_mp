@@ -48,6 +48,7 @@ export const ajaxRequestInsertHouse = createAction(
           const {data, success} = res;
           if (success) {
             commit(actionTypes.INSERT_HOUSE_SUCCESS, data);
+            commit(actionTypes.RESET_INSERT_HOUSE, data);
           } else {
             commit(actionTypes.INSERT_HOUSE_FAILURE);
           }
@@ -64,12 +65,13 @@ export const ajaxRequestDeleteHouse = createAction(
   'deleteHouse', (params) => {
     commit(actionTypes.DELETE_HOUSE_REQUEST);
     return new Promise((resolve, reject) => {
-      axios.get(apis.deleteHouse, {params})
+      axios.post(apis.deleteHouse, params)
         .then((res) => {
           res = res || {};
           const {data, success} = res;
           if (success) {
             commit(actionTypes.DELETE_HOUSE_SUCCESS, data);
+            commit(actionTypes.RESET_DELETE_HOUSE, params);
           } else {
             commit(actionTypes.DELETE_HOUSE_FAILURE);
           }
