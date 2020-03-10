@@ -20,6 +20,9 @@
             <module-house-item :items="isData.rows"/>
             <loading-more :length="isData.rows.length" :totalCount="isData.totalCount"/>
           </scroll-view>
+          <modal :isEnter="isEnter"
+                 :isLeave="isLeave"
+                 @onConfirm="onHandleConfirm"/>
         </div>
       </div>
       <div class="footer">
@@ -31,12 +34,12 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import store from '../../store';
+  import store from '../../../store/index';
   import {mapState, mapActions} from '@wepy/redux';
   import * as controller from './controller';
-  import * as $routes from '../../router';
-  import Toast from '../../mixins/toast';
-  import Loading from '../../mixins/loading';
+  import * as $routes from '../../../router/index';
+  import Toast from '../../../mixins/toast';
+  import Loading from '../../../mixins/loading';
 
   wepy.page({
     store,
@@ -47,18 +50,21 @@
       timer: null,
       pageSize: 10,
       pageIndex: 1,
+      isEnter: false,
+      isLeave: false,
+      isScroll: true,
       tab: {
         initIndex: 0,
         items: [
           {
             name: '新房',
             icon: 'icon-new',
-            path: $routes.INSERT_NEW_HOUSE.path
+            path: $routes.DETAIL.path
           },
           {
             name: '二手房',
             icon: 'icon-house',
-            path: $routes.INSERT_SECOND_HOUSE.path
+            path: $routes.DETAIL.path
           },
           {
             name: '租房',
@@ -98,6 +104,26 @@
             console.log(err);
           });
       },
+      exeAjaxDeleteHouse() {
+        this.showLoading('正在加载');
+        this.ajaxDeleteHouse(this.params)
+          .then((res) => {
+            this.hideLoading();
+            res = res || {};
+            const {success} = res.payload;
+            if (success) {
+              this.showToast('房源删除成功');
+            } else {
+              this.showToast('删除失败，请重试');
+            }
+            console.log(res);
+          })
+          .catch((err) => {
+            this.hideLoading();
+            this.showToast('删除失败，请重试');
+            console.log(err);
+          });
+      },
       onHandleChange(index) {
         this.tab.initIndex = index;
         this.resetSelectHouse();
@@ -116,10 +142,18 @@
       onHandleInsertHouseRouter() {
         const {items, initIndex} = this.tab;
         const url = items[initIndex].path;
-        console.log(url);
         wx.navigateTo({
           url
         });
+      },
+      onHandleDeleteHouse(params) {
+        this.params = params;
+        this.isScroll = false;
+        this.isEnter = true;
+        this.isLeave = false;
+      },
+      onHandleConfirm() {
+        this.exeAjaxDeleteHouse();
       },
       getParams() {
         const type = this.tab.initIndex + 1;
@@ -154,8 +188,8 @@
 </script>
 
 <style scoped lang="less">
-  @import "../../assets/less/variable";
-  @import "../../assets/less/iconfont";
+  @import "../../../assets/less/variable";
+  @import "../../../assets/less/iconfont";
 
   .container {
     min-height: 100vh;
@@ -296,9 +330,10 @@
   disableScroll:true,
   navigationStyle:'custom',
   usingComponents: {
-  'top-bar': '../../components/top-bar/top-bar',
-  'loading-more': '../../components/loading-more/loading-more',
-  'module-house-item': '../../components/module-house-item/module-house-item'
+  'top-bar': '../../../components/top-bar/top-bar',
+  'loading-more': '../../../components/loading-more/loading-more',
+  'module-house-item': '../../../components/module-house-item/module-house-item',
+  'modal':'../../../components/message-box/message-box'
   }
   }
 </config>

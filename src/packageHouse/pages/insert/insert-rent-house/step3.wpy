@@ -51,14 +51,14 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import apis from '../../../apis';
-  import store from '../../../store';
+  import apis from '../../../../apis/index';
+  import store from '../../../../store/index';
   import {mapState, mapActions} from '@wepy/redux';
   import * as controller from './controller';
-  import * as $routes from '../../../router';
-  import * as localStorage from '../../../utils/localStorage';
-  import Toast from '../../../mixins/toast';
-  import Loading from '../../../mixins/loading';
+  import * as $routes from '../../../../router/index';
+  import * as localStorage from '../../../../utils/localStorage';
+  import Toast from '../../../../mixins/toast';
+  import Loading from '../../../../mixins/loading';
 
   wepy.page({
     store,
@@ -93,7 +93,7 @@
               this.showToast('房源新增成功');
               setTimeout(() => {
                 wx.navigateBack({
-                  delta: 4
+                  delta: 3
                 });
               }, 1000);
             } else {
@@ -185,8 +185,8 @@
 </script>
 
 <style scoped lang="less">
-  @import "../../../assets/less/variable";
-  @import "../../../assets/less/@media";
+  @import "../../../../assets/less/variable";
+  @import "../../../../assets/less/@media";
 
   @height: unit(110, rpx);
 
@@ -320,7 +320,7 @@
   {
   navigationStyle:'custom',
   usingComponents: {
-  'top-bar': '../../../components/top-bar/top-bar'
+  'top-bar': '../../../../components/top-bar/top-bar'
   }
   }
 </config>

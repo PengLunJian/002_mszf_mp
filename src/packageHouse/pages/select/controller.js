@@ -1,5 +1,5 @@
-import * as actions from '../../store/actions';
-import * as actionTypes from '../../store/actionTypes';
+import * as actions from '../../../store/actions';
+import * as actionTypes from '../../../store/actionTypes';
 
 export const STATES = {
   isLoading: state => state.SELECT_HOUSE_REDUCER.isLoading,
@@ -10,5 +10,6 @@ export const STATES = {
 
 export const ACTIONS = {
   resetSelectHouse: actionTypes.RESET_SELECT_HOUSE,
-  ajaxSelectHouse: params => actions.ajaxRequestSelectHouse(params)
+  ajaxSelectHouse: params => actions.ajaxRequestSelectHouse(params),
+  ajaxDeleteHouse: params => actions.ajaxRequestDeleteHouse(params)
 };

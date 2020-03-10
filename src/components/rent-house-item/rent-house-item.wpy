@@ -41,8 +41,6 @@
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
   import store from '../../store';
-  import {mapState, mapActions} from '@wepy/redux';
-  import * as controller from './controller';
   import * as $routes from '../../router';
   import Toast from '../../mixins/toast';
   import Loading from '../../mixins/loading';
@@ -74,31 +72,12 @@
         default: false
       }
     },
-    computed: {
-      ...mapState(controller.STATES)
-    },
+    computed: {},
     methods: {
-      ...mapActions(controller.ACTIONS),
-      exeAjaxDeleteHouse() {
-        this.showLoading('正在加载');
+      onHandleDeleteHouse() {
+        const {$parent} = this.$parent;
         const params = {id: this.item.id};
-        this.ajaxDeleteHouse(params)
-          .then((res) => {
-            this.hideLoading();
-            res = res || {};
-            const {success} = res.payload;
-            if (success) {
-              this.showToast('房源删除成功');
-            } else {
-              this.showToast('删除失败，请重试');
-            }
-            console.log(res);
-          })
-          .catch((err) => {
-            this.hideLoading();
-            this.showToast('删除失败，请重试');
-            console.log(err);
-          });
+        $parent.onHandleDeleteHouse(params);
       },
       onHandleUpdateRouter() {
         const {id} = this.item;
@@ -114,10 +93,8 @@
       onHandleSlideView(e) {
         const {index} = e.$wx.detail;
         if (index) {
-          // 执行删除操作
-          this.exeAjaxDeleteHouse();
+          this.onHandleDeleteHouse();
         } else {
-          // 执行修改操作
           this.onHandleUpdateRouter();
         }
       }

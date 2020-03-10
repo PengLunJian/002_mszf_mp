@@ -4,8 +4,8 @@
       <div class="header">
         <top-bar title="基本信息"></top-bar>
         <div class="hidden">
-          <img src="../../../assets/images/agent.jpg"/>
-          <img src="../../../assets/images/water-mark@2x.png"/>
+          <img src="../../../../assets/images/agent.jpg"/>
+          <img src="../../../../assets/images/water-mark@2x.png"/>
         </div>
       </div>
       <div class="body">
@@ -248,10 +248,10 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import store from '../../../store/index';
-  import * as $routes from '../../../router';
-  import Toast from '../../../mixins/toast';
-  import Loading from '../../../mixins/loading';
+  import store from '../../../../store/index';
+  import * as $routes from '../../../../router/index';
+  import Toast from '../../../../mixins/toast';
+  import Loading from '../../../../mixins/loading';
 
   wepy.page({
     store,
@@ -512,8 +512,8 @@
 </script>
 
 <style scoped lang="less">
-  @import "../../../assets/less/variable";
-  @import "../../../assets/less/@media";
+  @import "../../../../assets/less/variable";
+  @import "../../../../assets/less/@media";
 
   @height: unit(120, rpx);
 
@@ -761,7 +761,7 @@
   {
   navigationStyle:'custom',
   usingComponents: {
-  'top-bar': '../../../components/top-bar/top-bar'
+  'top-bar': '../../../../components/top-bar/top-bar'
   }
   }
 </config>

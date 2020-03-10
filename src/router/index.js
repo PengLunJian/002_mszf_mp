@@ -8,54 +8,44 @@ export const INDEX = {
 };
 export const HOUSE = {
   name: '房源管理',
-  path: '/pages/house/index'
+  path: '/packageHouse/pages/select/index'
 };
 export const USER = {
   name: '用户管理',
-  path: '/pages/user/index'
+  path: '/packageUser/pages/user/index'
 };
 export const AGENT = {
   name: '经纪人管理',
-  path: '/pages/agent/index'
+  path: '/packageAgent/pages/agent/index'
 };
 export const BUSINESS = {
   name: '商户管理',
-  path: '/pages/business/index'
+  path: '/packageBusiness/pages/business/index'
 };
 
 export const DETAIL = {
   name: '房源详情',
-  path: '/pages/detail/index'
+  path: '/packageHouse/pages/detail/index'
 };
 
 export const UPLOAD = {
-  name: '房源详情',
+  name: '图片上传',
   path: '/pages/upload/index'
-};
-
-export const INSERT_NEW_HOUSE = {
-  name: '房源详情',
-  path: '/pages/insert-house/index'
-};
-
-export const INSERT_SECOND_HOUSE = {
-  name: '房源详情',
-  path: '/pages/insert-house/index'
 };
 
 export const INSERT_HOUSE = {
   rent: {
     step1: {
       name: '基本信息',
-      path: '/pages/insert-house/insert-rent-house/step1'
+      path: '/packageHouse/pages/insert/insert-rent-house/step1'
     },
     step2: {
       name: '房源配置',
-      path: '/pages/insert-house/insert-rent-house/step2'
+      path: '/packageHouse/pages/insert/insert-rent-house/step2'
     },
     step3: {
       name: '图片上传',
-      path: '/pages/insert-house/insert-rent-house/step3'
+      path: '/packageHouse/pages/insert/insert-rent-house/step3'
     }
   }
 };

@@ -35,13 +35,12 @@ const actions = {
     };
   },
   [actionTypes.RESET_INSERT_HOUSE](state, params) {
-    const newRow = params.data;
     const {rows, totalCount} = state.data;
-    rows.unshift(newRow);
+    const newRow = utils.dataFilter([params.data]);
+    rows.unshift(newRow[0]);
     const newTotalCount = totalCount + 1;
     const newData = {rows: rows, totalCount: newTotalCount};
     const data = Object.assign(state.data, newData);
-    console.log(data);
     return {
       ...state,
       data

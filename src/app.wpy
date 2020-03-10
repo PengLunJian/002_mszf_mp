@@ -26,12 +26,22 @@
   pages: [
   'pages/login/index',
   'pages/index/index',
-  'pages/house/index',
-  'pages/detail/index',
-  'pages/upload/index',
-  'pages/insert-house/insert-rent-house/step1',
-  'pages/insert-house/insert-rent-house/step2',
-  'pages/insert-house/insert-rent-house/step3'
+  'pages/upload/index'
+  ],
+  'subpackages': [
+    {
+      'root': 'packageHouse',
+      'pages': [
+        'pages/select/index',
+        'pages/detail/index',
+        'pages/insert/insert-rent-house/step1',
+        'pages/insert/insert-rent-house/step2',
+        'pages/insert/insert-rent-house/step3',
+        'pages/update/update-rent-house/step1',
+        'pages/update/update-rent-house/step2',
+        'pages/update/update-rent-house/step3',
+      ]
+    }
   ],
   window: {
   backgroundColor: '#fafafa',

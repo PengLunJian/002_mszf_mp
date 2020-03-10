@@ -55,43 +55,8 @@
 			"list": [
 				{
 					"id": -1,
-					"name": "pages/index/index",
-					"pathName": "pages/index/index",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": 1,
-					"name": "pages/upload/index",
-					"pathName": "pages/upload/index",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/house/index",
-					"pathName": "pages/house/index",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/login/index",
-					"pathName": "pages/login/index",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/insert-house/insert-rent-house/step1",
-					"pathName": "pages/insert-house/insert-rent-house/step1",
-					"query": "",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "pages/insert-house/insert-rent-house/step3",
-					"pathName": "pages/insert-house/insert-rent-house/step3",
+					"name": "packageHouse/pages/select/index",
+					"pathName": "packageHouse/pages/select/index",
 					"query": "",
 					"scene": null
 				}

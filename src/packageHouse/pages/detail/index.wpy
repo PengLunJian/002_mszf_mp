@@ -14,7 +14,7 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import store from '../../store';
+  import store from '../../../store/index';
   import {mapState, mapActions} from '@wepy/redux';
   import * as controller from './controller';
 
@@ -38,8 +38,8 @@
 </script>
 
 <style scoped lang="less">
-  @import "../../assets/less/variable";
-  @import "../../assets/less/@media";
+  @import "../../../assets/less/variable";
+  @import "../../../assets/less/@media";
 
   @height: unit(64, rpx);
 
@@ -70,8 +70,8 @@
   {
   navigationStyle:'custom',
   usingComponents: {
-  'top-bar': '../../components/top-bar/top-bar',
-  'wait': '../../components/wait/wait'
+  'top-bar': '../../../components/top-bar/top-bar',
+  'wait': '../../../components/wait/wait'
   }
   }
 </config>

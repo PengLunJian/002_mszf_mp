@@ -1,5 +1,5 @@
-import * as actions from '../../store/actions';
-import * as actionTypes from '../../store/actionTypes';
+import * as actions from '../../../store/actions';
+import * as actionTypes from '../../../store/actionTypes';
 
 export const STATES = {
   isLoading: state => state.HOUSE_REDUCER.isLoading,
