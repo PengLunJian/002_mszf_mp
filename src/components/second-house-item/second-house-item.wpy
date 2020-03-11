@@ -1,44 +1,63 @@
 <template>
-  <div class="item"
-       @tap="onHandleDetail(item.id)">
-    <div class="item-inner">
-      <div class="item-img">
-        <lazy-image src="{{item.pic_url[0]}}" mode="aspectFill"/>
-      </div>
-      <div class="item-info">
-        <div class="item-row">
-          <div class="item-title ellipsis">{{item.title}}</div>
-        </div>
-        <div class="item-row">
-          <span class="item-addr">{{item.addr_qu}}</span>
-          <span class="item-split"></span>
-          <span class="item-desc">{{item.addr}}</span>
-        </div>
-        <div class="item-row">
+  <div class="weui-cells">
+    <mp-slideview buttons="{{slideButtons}}" @buttontap="onHandleSlideView">
+      <div class="item"
+           @tap="onHandleDetail(item.id)">
+        <div class="item-inner">
+          <div class="item-img">
+            <lazy-image src="{{item.pic_url[0]}}" mode="aspectFill"/>
+          </div>
+          <div class="item-info">
+            <div class="item-row">
+              <div class="item-title ellipsis">{{item.title}}</div>
+            </div>
+            <div class="item-row">
+              <span class="item-addr">{{item.addr_qu}}</span>
+              <span class="item-split"></span>
+              <span class="item-desc">{{item.addr}}</span>
+            </div>
+            <div class="item-row">
                   <span class="item-normal item-price">
                     <span class="item-value">{{item.total_price/10000}}</span>
                     <span class="item-unit">万</span>
                   </span>
-          <span class="item-normal">{{item.huxing}}</span>
-          <span class="item-normal">{{item.mianji}}m²</span>
-        </div>
-        <div class="item-row">
+              <span class="item-normal">{{item.huxing}}</span>
+              <span class="item-normal">{{item.mianji}}m²</span>
+            </div>
+            <div class="item-row">
           <span class="item-tag"
                 v-for="(tag,index) in item.tags"
                 :key="index">{{tag}}</span>
+            </div>
+          </div>
+          <div class="item-type" v-if="isType">二手房</div>
         </div>
       </div>
-      <div class="item-type" v-if="isType">二手房</div>
-    </div>
+    </mp-slideview>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
+  import store from '../../store';
   import * as $routes from '../../router';
 
   wepy.component({
-    data: {},
+    store,
+    data: {
+      noData: '暂无数据',
+      slideButtons: [
+        {
+          text: '修改',
+          extClass: 'btn-update'
+        },
+        {
+          text: '删除',
+          type: 'warn',
+          extClass: 'btn-delete'
+        }
+      ]
+    },
     props: {
       item: {
         type: Object,
@@ -49,12 +68,31 @@
         default: false
       }
     },
-    events: {},
+    computed: {},
     methods: {
+      onHandleDeleteHouse() {
+        const {$parent} = this.$parent;
+        const params = {id: this.item.id};
+        $parent.onHandleDeleteHouse(params);
+      },
+      onHandleUpdateHouse() {
+        const {id} = this.item;
+        wx.navigateTo({
+          url: $routes.UPDATE_SECOND_HOUSE.step1.path + '?id=' + id
+        });
+      },
       onHandleDetail(id) {
         // wx.navigateTo({
         //   url: $routes.DETAIL.path + '?house_id=' + id
         // });
+      },
+      onHandleSlideView(e) {
+        const {index} = e.$wx.detail;
+        if (index) {
+          this.onHandleDeleteHouse();
+        } else {
+          this.onHandleUpdateRouter();
+        }
       }
     },
     onLoad() {
@@ -189,7 +227,9 @@
 <config>
   {
   usingComponents: {
-  'lazy-image': '../lazy-image/lazy-image'
+  'lazy-image': '../lazy-image/lazy-image',
+  'mp-slideview':'module:weui-miniprogram/miniprogram_dist/slideview/slideview.js',
+  'mp-cell':'module:weui-miniprogram/miniprogram_dist/cell/cell.js'
   }
   }
 </config>

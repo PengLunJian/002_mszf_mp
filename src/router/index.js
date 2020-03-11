@@ -33,36 +33,92 @@ export const UPLOAD = {
   path: '/pages/upload/index'
 };
 
-export const INSERT_HOUSE = {
-  rent: {
-    step1: {
-      name: '基本信息',
-      path: '/packageHouse/pages/insert/insert-rent-house/step1'
-    },
-    step2: {
-      name: '房源配置',
-      path: '/packageHouse/pages/insert/insert-rent-house/step2'
-    },
-    step3: {
-      name: '图片上传',
-      path: '/packageHouse/pages/insert/insert-rent-house/step3'
-    }
+export const INSERT_NEW_HOUSE = {
+  step1: {
+    name: '基本信息',
+    path: '/packageHouse/pages/insert/insert-new-house/step1'
+  },
+  step2: {
+    name: '房源配置',
+    path: '/packageHouse/pages/insert/insert-new-house/step2'
+  },
+  step3: {
+    name: '图片上传',
+    path: '/packageHouse/pages/insert/insert-new-house/step3'
   }
 };
 
-export const UPDATE_HOUSE = {
-  rent: {
-    step1: {
-      name: '基本信息',
-      path: '/pages/insert-house/insert-rent-house/step1'
-    },
-    step2: {
-      name: '房源配置',
-      path: '/pages/insert-house/insert-rent-house/step2'
-    },
-    step3: {
-      name: '图片上传',
-      path: '/pages/insert-house/insert-rent-house/step3'
-    }
+export const INSERT_SECOND_HOUSE = {
+  step1: {
+    name: '基本信息',
+    path: '/packageHouse/pages/insert/insert-second-house/step1'
+  },
+  step2: {
+    name: '房源配置',
+    path: '/packageHouse/pages/insert/insert-second-house/step2'
+  },
+  step3: {
+    name: '图片上传',
+    path: '/packageHouse/pages/insert/insert-second-house/step3'
+  }
+};
+
+export const INSERT_RENT_HOUSE = {
+  step1: {
+    name: '基本信息',
+    path: '/packageHouse/pages/insert/insert-rent-house/step1'
+  },
+  step2: {
+    name: '房源配置',
+    path: '/packageHouse/pages/insert/insert-rent-house/step2'
+  },
+  step3: {
+    name: '图片上传',
+    path: '/packageHouse/pages/insert/insert-rent-house/step3'
+  }
+};
+
+export const UPDATE_NEW_HOUSE = {
+  step1: {
+    name: '基本信息',
+    path: '/pages/update-house/update-new-house/step1'
+  },
+  step2: {
+    name: '房源配置',
+    path: '/pages/update-house/update-new-house/step2'
+  },
+  step3: {
+    name: '图片上传',
+    path: '/pages/update-house/update-new-house/step3'
+  }
+};
+
+export const UPDATE_SECOND_HOUSE = {
+  step1: {
+    name: '基本信息',
+    path: '/pages/update-house/update-second-house/step1'
+  },
+  step2: {
+    name: '房源配置',
+    path: '/pages/update-house/update-second-house/step2'
+  },
+  step3: {
+    name: '图片上传',
+    path: '/pages/update-house/update-second-house/step3'
+  }
+};
+
+export const UPDATE_RENT_HOUSE = {
+  step1: {
+    name: '基本信息',
+    path: '/packageHouse/pages/update/update-rent-house/step1'
+  },
+  step2: {
+    name: '房源配置',
+    path: '/packageHouse/pages/update/update-rent-house/step2'
+  },
+  step3: {
+    name: '图片上传',
+    path: '/packageHouse/pages/update/update-rent-house/step3'
   }
 };

@@ -25,13 +25,9 @@
 
     data: {},
 
-    computed: {
-      ...mapState(controller.STATES)
-    },
+    computed: {},
 
-    methods: {
-      ...mapActions(controller.ACTIONS)
-    },
+    methods: {},
 
     onLoad() {}
   });

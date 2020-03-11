@@ -37,6 +37,17 @@
                               <span class="form-next iconfont icon-next"></span>
                             </div>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="module-footer"></div>
+                  </div>
+                </div>
+                <div class="module">
+                  <div class="module-content">
+                    <div class="module-body">
+                      <div class="module-base">
+                        <div class="form-row row">
                           <div class="form-col col-12">
                             <div class="form-picker">
                               <picker mode="region" @change="onHandleRegionChange" value="{{dizhi.items}}">
@@ -86,6 +97,17 @@
                               <span class="form-next iconfont icon-next"></span>
                             </div>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="module-footer"></div>
+                  </div>
+                </div>
+                <div class="module">
+                  <div class="module-content">
+                    <div class="module-body">
+                      <div class="module-base">
+                        <div class="form-row row">
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">租金</label>
@@ -134,6 +156,17 @@
                               <span class="form-next iconfont icon-next"></span>
                             </div>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="module-footer"></div>
+                  </div>
+                </div>
+                <div class="module">
+                  <div class="module-content">
+                    <div class="module-body">
+                      <div class="module-base">
+                        <div class="form-row row">
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">看房</label>
@@ -183,6 +216,17 @@
                               <span class="form-next iconfont icon-next"></span>
                             </div>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="module-footer"></div>
+                  </div>
+                </div>
+                <div class="module">
+                  <div class="module-content">
+                    <div class="module-body">
+                      <div class="module-base">
+                        <div class="form-row row">
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">方式</label>
@@ -449,7 +493,7 @@
           const params = this.getParams();
           const query = '?paramsStep1=' + JSON.stringify(params);
           wx.navigateTo({
-            url: $routes.INSERT_RENT_HOUSE.step2.path + query
+            url: $routes.INSERT_HOUSE.rent.step2.path + query
           });
         }
       },

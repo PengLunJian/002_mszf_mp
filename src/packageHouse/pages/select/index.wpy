@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="footer">
-        <div class="btn-insert iconfont icon-insert" @tap="onHandleInsertHouseRouter"></div>
+        <div class="btn-insert iconfont icon-insert" @tap="onHandleInsertHouse"></div>
       </div>
     </div>
   </div>
@@ -59,17 +59,17 @@
           {
             name: '新房',
             icon: 'icon-new',
-            path: $routes.DETAIL.path
+            path: $routes.INSERT_NEW_HOUSE.step1.path
           },
           {
             name: '二手房',
             icon: 'icon-house',
-            path: $routes.DETAIL.path
+            path: $routes.INSERT_SECOND_HOUSE.step1.path
           },
           {
             name: '租房',
             icon: 'icon-rent',
-            path: $routes.INSERT_HOUSE.rent.step1.path
+            path: $routes.INSERT_RENT_HOUSE.step1.path
           }
         ]
       }
@@ -139,7 +139,7 @@
           }
         }, 500);
       },
-      onHandleInsertHouseRouter() {
+      onHandleInsertHouse() {
         const {items, initIndex} = this.tab;
         const url = items[initIndex].path;
         wx.navigateTo({
@@ -148,9 +148,9 @@
       },
       onHandleDeleteHouse(params) {
         this.params = params;
-        this.isScroll = false;
         this.isEnter = true;
         this.isLeave = false;
+        this.isScroll = false;
       },
       onHandleConfirm() {
         this.exeAjaxDeleteHouse();
@@ -333,7 +333,7 @@
   'top-bar': '../../../components/top-bar/top-bar',
   'loading-more': '../../../components/loading-more/loading-more',
   'module-house-item': '../../../components/module-house-item/module-house-item',
-  'modal':'../../../components/message-box/message-box'
+  'modal':'../../../components/modal/modal'
   }
   }
 </config>

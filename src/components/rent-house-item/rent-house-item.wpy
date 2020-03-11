@@ -42,12 +42,9 @@
   import wepy from '@wepy/core';
   import store from '../../store';
   import * as $routes from '../../router';
-  import Toast from '../../mixins/toast';
-  import Loading from '../../mixins/loading';
 
   wepy.component({
     store,
-    mixins: [Toast, Loading],
     data: {
       noData: '暂无数据',
       slideButtons: [
@@ -79,10 +76,10 @@
         const params = {id: this.item.id};
         $parent.onHandleDeleteHouse(params);
       },
-      onHandleUpdateRouter() {
+      onHandleUpdateHouse() {
         const {id} = this.item;
         wx.navigateTo({
-          url: $routes.UPDATE_HOUSE.step1.path + '?id=' + id
+          url: $routes.UPDATE_RENT_HOUSE.step1.path + '?id=' + id
         });
       },
       onHandleDetail(id) {

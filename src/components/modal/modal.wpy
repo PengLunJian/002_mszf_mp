@@ -1,24 +1,19 @@
 <template>
-  <div class="modal" :class="{'hide':isHide}">
+  <div class="modal{{isEnter?' enter':''}}{{isLeave?' leave':''}}">
     <div class="modal-mask" @tap="onHandleHideModal"></div>
     <div class="modal-content">
       <div class="modal-header">
-        <div class="modal-title">新增房源</div>
-        <div class="modal-close" @tap="onHandleHideModal">
-          <div class="btn-close iconfont icon-close2"></div>
-        </div>
+        <div class="modal-title">确认删除该房源吗?</div>
       </div>
       <div class="modal-body">
-        <div class="modal-row row">
-          <div class="modal-col col-4" v-for="(item,index) in items" :key="index">
-            <div class="btn-item" @tap="onHandleRouter(item.path)">
-              <div class="btn-icon iconfont {{item.icon}}"></div>
-              <div class="btn-text">{{item.name}}</div>
-            </div>
-          </div>
+        <div class="modal-context">删除此房源同时删除所有信息</div>
+      </div>
+      <div class="modal-footer">
+        <div class="modal-btns row">
+          <div class="btn btn-cancel col-6" @tap="onHandleCancel">取消</div>
+          <div class="btn btn-confirm col-6" @tap="onHandleConfirm">确认</div>
         </div>
       </div>
-      <div class="modal-footer"></div>
     </div>
   </div>
 </template>
@@ -27,24 +22,31 @@
   import wepy from '@wepy/core';
 
   wepy.component({
-    data: {
-      isHide: true,
-      isScroll: true
+    data: {},
+    props: {
+      isEnter: {
+        type: Boolean,
+        default: false
+      },
+      isLeave: {
+        type: Boolean,
+        default: false
+      }
     },
-    props: {},
     methods: {
-      onHandleShowModal() {
-        this.isHide = false;
-        this.isScroll = false;
-      },
       onHandleHideModal() {
-        this.isHide = true;
-        this.isScroll = true;
+        this.isEnter = false;
+        this.isLeave = true;
+        this.$parent.isEnter = false;
+        this.$parent.isLeave = true;
+        this.$parent.isScroll = true;
       },
-      onHandleRouter(url) {
-        wx.navigateTo({
-          url
-        });
+      onHandleCancel() {
+        this.onHandleHideModal();
+      },
+      onHandleConfirm() {
+        this.$emit('onConfirm');
+        this.onHandleHideModal();
       }
     },
     created() {
@@ -64,88 +66,137 @@
       z-index: 1010;
       width: 100%;
       height: 100%;
+      opacity: 0;
+      visibility: hidden;
       background-color: @mask;
       transition: all 300ms ease-out;
     }
     .modal-content {
       position: fixed;
-      left: 0;
-      bottom: 0;
+      top: 50%;
+      left: 50%;
+      opacity: 0;
       z-index: 1011;
-      width: 100%;
-      height: unit(400, rpx);
       overflow: hidden;
-      background-color: @white;
-      transition: all 300ms ease-out;
+      visibility: hidden;
+      width: unit(560, rpx);
+      height: unit(300, rpx);
+      margin-top: unit(-150, rpx);
+      margin-left: unit(-280, rpx);
+      border-radius: @borderRadius30;
       box-shadow: 0 0 15px @boxShadow15;
-      border-top-left-radius: @borderRadius40;
-      border-top-right-radius: @borderRadius40;
+      background-color: @white;
+      letter-spacing: 0.5px;
+      text-align: center;
+      color: @fontColor1;
       .modal-header {
-        .modal-close {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: unit(100, rpx);
-          height: unit(100, rpx);
-          line-height: unit(100, rpx);
-          .btn-close {
-            font-size: @fontSize36;
-            text-align: center;
-            color: @fontColor1;
-          }
-        }
+        padding: unit(50, rpx) unit(30, rpx) 0;
         .modal-title {
-          height: unit(100, rpx);
-          line-height: unit(100, rpx);
-          font-size: @fontSize32;
-          letter-spacing: 1px;
-          text-align: center;
-          font-weight: bold;
-          color: @fontColor1;
+          height: unit(40, rpx);
+          line-height: unit(40, rpx);
+          font-size: @fontSize34;
+          font-weight: 500;
         }
       }
       .modal-body {
-        padding-top: unit(20, rpx);
-        .modal-row {
-          padding: unit(15, rpx);
+        padding: unit(20, rpx) unit(30, rpx) unit(50, rpx);
+        font-size: 0;
+        .modal-context {
+          display: inline-block;
+          vertical-align: middle;
+          line-height: unit(40, rpx);
+          font-size: @fontSize28;
         }
-        .modal-col {
-          padding: unit(15, rpx);
-          .btn-item {
-            text-align: center;
-            .btn-icon {
-              overflow: hidden;
-              width: unit(110, rpx);
-              height: unit(110, rpx);
-              line-height: unit(110, rpx);
-              margin: 0 auto unit(20, rpx);
-              border-radius: @borderRadius100;
-              box-shadow: 0 0 15px @boxShadow05;
-              background: -webkit-linear-gradient(-45deg, @theme1, @theme2);
-              font-size: @fontSize50;
-              color: @white;
+        &:before {
+          content: '';
+          height: 100%;
+          display: inline-block;
+          vertical-align: middle;
+        }
+      }
+      .modal-footer {
+        .modal-btns {
+          border-top: 0.5px solid @borderColor3;
+          font-size: @fontSize34;
+          letter-spacing: 1px;
+          font-weight: 500;
+          .btn {
+            height: unit(100, rpx);
+            line-height: unit(100, rpx);
+            border-right: 0.5px solid @borderColor3;
+            &.btn-confirm {
+              color: @btnDelete;
             }
-            .btn-text {
-              height: unit(40, rpx);
-              line-height: unit(40, rpx);
-              font-size: @fontSize32;
-              color: @fontColor1;
+            &:last-child {
+              border: none;
             }
           }
         }
       }
-      .modal-footer {
-      }
     }
-    &.hide {
+    &.enter {
       .modal-mask {
-        opacity: 0;
-        visibility: hidden;
+        animation: modal-mask-enter 300ms ease forwards;
       }
       .modal-content {
-        visibility: hidden;
-        transform: translateY(unit(400, rpx));
+        animation: modal-content-enter 300ms ease forwards;
       }
+    }
+    &.leave {
+      .modal-mask {
+        animation: modal-mask-leave 300ms ease forwards;
+      }
+      .modal-content {
+        animation: modal-content-leave 300ms ease forwards;
+      }
+    }
+  }
+
+  @keyframes modal-mask-enter {
+    0% {
+      opacity: 0;
+      visibility: hidden;
+    }
+    100% {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  @keyframes modal-mask-leave {
+    0% {
+      opacity: 1;
+      visibility: visible;
+    }
+    100% {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  @keyframes modal-content-enter {
+    0% {
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(1.3);
+    }
+    100% {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1.0);
+    }
+  }
+
+  @keyframes modal-content-leave {
+    0% {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1.0);
+    }
+    100% {
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.7);
     }
   }
 

@@ -88,9 +88,9 @@
                           </div>
                           <div class="form-col col-12">
                             <div class="form-group">
-                              <label class="form-label">租金</label>
+                              <label class="form-label">总价</label>
                               <input class="form-input" v-model="price" type="number"
-                                     placeholder="元/月"
+                                     placeholder="元/m²"
                                      @input="onHandleCheckEmpty"/>
                               <span class="form-next iconfont icon-next"></span>
                             </div>
@@ -144,12 +144,12 @@
                             </div>
                           </div>
                           <div class="form-col col-12">
-                            <picker mode="multiSelector" @change="onHandleZhiFuChange"
-                                    value="{{zhifu.index}}" range="{{zhifu.items}}">
+                            <picker mode="multiSelector" @change="onHandleNiaNaiChange"
+                                    value="{{nianai.index}}" range="{{nianai.items}}">
                               <div class="form-group">
-                                <label class="form-label">支付</label>
-                                <input class="form-input" v-model="zhifu.value" disabled="{{true}}" type="text"
-                                       placeholder="押1付3"/>
+                                <label class="form-label">年代</label>
+                                <input class="form-input" v-model="nianai.value" disabled="{{true}}" type="text"
+                                       placeholder="2019年"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </picker>
@@ -180,15 +180,6 @@
                               <input class="form-input" v-model="zhuangxiu.value" disabled="{{true}}" type="text"
                                      placeholder="精装"
                                      @tap="onHandleShowZhuangXiu"/>
-                              <span class="form-next iconfont icon-next"></span>
-                            </div>
-                          </div>
-                          <div class="form-col col-12">
-                            <div class="form-group">
-                              <label class="form-label">方式</label>
-                              <input class="form-input" v-model="chuzufangshi.value" disabled="{{true}}" type="text"
-                                     placeholder="整租"
-                                     @tap="onHandleShowChuZuFangShi"/>
                               <span class="form-next iconfont icon-next"></span>
                             </div>
                           </div>
@@ -241,6 +232,7 @@
       price: '',
       title: '',
       name: '',
+      total_price: '',
       huxing: {
         value: '',
         items: [
@@ -256,16 +248,11 @@
         items: ['安徽省', '宣城市', '广德县']
       },
       xiangxidizhi: '',
-      zhifu: {
+      nianai: {
         value: '',
         items: [
           [
-            '押1', '押2', '押3', '押4', '押5', '押6',
-            '押7', '押8', '押9', '押10', '押11', '押12'
-          ],
-          [
-            '付1', '付2', '付3', '付4', '付5', '付6',
-            '付7', '付8', '付9', '付10', '付11', '付12'
+            '2019年', '2020年'
           ]
         ],
         index: [0, 0]
@@ -294,14 +281,6 @@
           '简装',
           '精装',
           '豪装'
-        ]
-      },
-      chuzufangshi: {
-        value: '',
-        items: [
-          '整租',
-          '合租',
-          '转租'
         ]
       },
       leixing: {
@@ -333,6 +312,7 @@
             this.price &&
             this.title &&
             this.name &&
+            this.total_price &&
             this.huxing.value &&
             this.mianji &&
             this.dizhi.value &&
@@ -341,7 +321,6 @@
             this.chaoxiang.value &&
             this.louceng.value &&
             this.zhuangxiu.value &&
-            this.chuzufangshi.value &&
             this.leixing.value &&
             this.kanfangshijian.value
           );
@@ -403,19 +382,6 @@
           }
         });
       },
-      onHandleShowChuZuFangShi() {
-        wx.showActionSheet({
-          itemList: this.chuzufangshi.items,
-          success: (res) => {
-            const value = this.chuzufangshi.items[res.tapIndex];
-            this.chuzufangshi.value = value;
-            this.onHandleCheckEmpty();
-          },
-          fail: (err) => {
-            console.log(err);
-          }
-        });
-      },
       onHandleShowLeiXing() {
         wx.showActionSheet({
           itemList: this.leixing.items,
@@ -449,18 +415,19 @@
           const params = this.getParams();
           const query = '?paramsStep1=' + JSON.stringify(params);
           wx.navigateTo({
-            url: $routes.INSERT_RENT_HOUSE.step2.path + query
+            url: $routes.INSERT_HOUSE.rent.step2.path + query
           });
         }
       },
       getParams() {
         const params = {
-          type: 3,
+          type: 2,
           status: 1,
           name: this.name,
           phone: this.phone,
           title: this.title,
           price: this.price,
+          total_price: this.total_price,
           huxing: this.huxing.value,
           mianji: this.mianji,
           chaoxiang: this.chaoxiang.value,
@@ -474,9 +441,7 @@
           addr_qu: this.dizhi.items[2],
           agency_phone: '18130278679',
           agency_com_name: '广进房产',
-          kanfangshijian: this.kanfangshijian.value,
-          zhifufangshi: this.zhifu.value,
-          chuzufangshi: this.chuzufangshi.value
+          kanfangshijian: this.kanfangshijian.value
         };
         return params;
       }

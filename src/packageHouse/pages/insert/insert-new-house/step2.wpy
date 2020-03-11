@@ -278,7 +278,7 @@
           const paramsStep2 = Object.assign(this.paramsStep1, params);
           const query = '?paramsStep2=' + JSON.stringify(paramsStep2);
           wx.navigateTo({
-            url: $routes.INSERT_RENT_HOUSE.step3.path + query
+            url: $routes.INSERT_HOUSE.rent.step3.path + query
           });
         }
       },

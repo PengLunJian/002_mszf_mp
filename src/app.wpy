@@ -34,6 +34,12 @@
       'pages': [
         'pages/select/index',
         'pages/detail/index',
+        'pages/insert/insert-new-house/step1',
+        'pages/insert/insert-new-house/step2',
+        'pages/insert/insert-new-house/step3',
+        'pages/insert/insert-second-house/step1',
+        'pages/insert/insert-second-house/step2',
+        'pages/insert/insert-second-house/step3',
         'pages/insert/insert-rent-house/step1',
         'pages/insert/insert-rent-house/step2',
         'pages/insert/insert-rent-house/step3',
