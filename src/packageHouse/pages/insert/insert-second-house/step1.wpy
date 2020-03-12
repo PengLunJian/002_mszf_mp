@@ -39,7 +39,7 @@
                           </div>
                           <div class="form-col col-12">
                             <div class="form-picker">
-                              <picker mode="region" @change="onHandleRegionChange" value="{{dizhi.items}}">
+                              <picker mode="region" @change="onHandleDiZhiChange" value="{{dizhi.items}}">
                                 <div class="form-group">
                                   <label class="form-label">地址</label>
                                   <input class="form-input" v-model="dizhi.value" disabled="{{true}}" type="text"
@@ -89,8 +89,8 @@
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">总价</label>
-                              <input class="form-input" v-model="price" type="number"
-                                     placeholder="元/m²"
+                              <input class="form-input" v-model="total_price" type="digit"
+                                     placeholder="万元"
                                      @input="onHandleCheckEmpty"/>
                               <span class="form-next iconfont icon-next"></span>
                             </div>
@@ -144,11 +144,12 @@
                             </div>
                           </div>
                           <div class="form-col col-12">
-                            <picker mode="multiSelector" @change="onHandleNiaNaiChange"
-                                    value="{{nianai.index}}" range="{{nianai.items}}">
+                            <picker mode="date" fields="year" start="1900" end="2020"
+                                    @change="onHandleNianFenChange"
+                                    value="{{nianfen}}">
                               <div class="form-group">
-                                <label class="form-label">年代</label>
-                                <input class="form-input" v-model="nianai.value" disabled="{{true}}" type="text"
+                                <label class="form-label">年份</label>
+                                <input class="form-input" v-model="nianfen" disabled="{{true}}" type="text"
                                        placeholder="2019年"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
@@ -232,7 +233,10 @@
       price: '',
       title: '',
       name: '',
+      mianji: '',
+      nianfen: '',
       total_price: '',
+      xiangxidizhi: '',
       huxing: {
         value: '',
         items: [
@@ -242,20 +246,9 @@
         ],
         index: [1, 1, 1]
       },
-      mianji: '',
       dizhi: {
         value: '',
         items: ['安徽省', '宣城市', '广德县']
-      },
-      xiangxidizhi: '',
-      nianai: {
-        value: '',
-        items: [
-          [
-            '2019年', '2020年'
-          ]
-        ],
-        index: [0, 0]
       },
       chaoxiang: {
         value: '',
@@ -309,15 +302,14 @@
           (
             this.xiaoqu &&
             this.phone &&
-            this.price &&
             this.title &&
             this.name &&
+            this.mianji &&
+            this.nianfen &&
             this.total_price &&
             this.huxing.value &&
-            this.mianji &&
             this.dizhi.value &&
             this.xiangxidizhi &&
-            this.zhifu.value &&
             this.chaoxiang.value &&
             this.louceng.value &&
             this.zhuangxiu.value &&
@@ -331,13 +323,12 @@
         this.huxing.value = items[0][index[0]] + items[1][index[1]] + items[2][index[2]];
         this.onHandleCheckEmpty();
       },
-      onHandleZhiFuChange(e) {
-        const index = e.$wx.detail.value;
-        const items = this.zhifu.items;
-        this.zhifu.value = items[0][index[0]] + items[1][index[1]];
+      onHandleNianFenChange(e) {
+        const value = e.$wx.detail.value;
+        this.nianfen = value + '年';
         this.onHandleCheckEmpty();
       },
-      onHandleRegionChange(e) {
+      onHandleDiZhiChange(e) {
         const items = e.$wx.detail.value;
         this.dizhi.items = items;
         this.dizhi.value = items.join('、');
@@ -415,11 +406,12 @@
           const params = this.getParams();
           const query = '?paramsStep1=' + JSON.stringify(params);
           wx.navigateTo({
-            url: $routes.INSERT_HOUSE.rent.step2.path + query
+            url: $routes.INSERT_SECOND_HOUSE.step2.path + query
           });
         }
       },
       getParams() {
+        this.price = (this.total_price * 10000 / this.mianji).toFixed(1);
         const params = {
           type: 2,
           status: 1,
@@ -427,6 +419,7 @@
           phone: this.phone,
           title: this.title,
           price: this.price,
+          nianai: this.nianfen,
           total_price: this.total_price,
           huxing: this.huxing.value,
           mianji: this.mianji,
@@ -532,130 +525,8 @@
                           }
                         }
                       }
-                      .module-agents {
-                        .module-row {
-                          padding: unit(15, rpx);
-                          .module-col {
-                            padding: unit(20, rpx) unit(15, rpx);
-                            .item-agent {
-                              position: relative;
-                              .item-img {
-                                image {
-                                  width: unit(80, rpx);
-                                  height: unit(80, rpx);
-                                  border-radius: @borderRadius100;
-                                }
-                              }
-                              .item-info {
-                                padding: 0 unit(30, rpx);
-                                font-size: @fontSize28;
-                                color: @fontColor3;
-                                .item-name {
-                                  height: unit(40, rpx);
-                                  line-height: unit(40, rpx);
-                                }
-                                .item-phone {
-                                  height: unit(40, rpx);
-                                  line-height: unit(40, rpx);
-                                }
-                              }
-                              .item-check {
-                                position: absolute;
-                                top: 50%;
-                                z-index: 1;
-                                right: unit(10, rpx);
-                                width: unit(44, rpx);
-                                height: unit(44, rpx);
-                                line-height: unit(44, rpx);
-                                margin-top: unit(-22, rpx);
-                                transition: all 150ms ease;
-                                border-radius: @borderRadius100;
-                                background-color: @unCheck;
-                                font-size: @fontSize20;
-                                color: @borderColor1;
-                                text-align: center;
-                              }
-                              &.checked {
-                                .item-check {
-                                  background: -webkit-linear-gradient(left, @theme1, @theme2);
-                                  color: @white;
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                      .module-tags {
-                        .module-row {
-                          padding: unit(15, rpx);
-                          .module-col {
-                            padding: unit(20, rpx) unit(15, rpx);
-                            text-align: center;
-                            .item-tag {
-                              height: unit(60, rpx);
-                              line-height: unit(60, rpx);
-                              border-radius: unit(60, rpx);
-                              background: @unCheck;
-                              font-size: @fontSize24;
-                              color: @fontColor3;
-                              &.checked {
-                                background: -webkit-linear-gradient(left, @theme1, @theme2);
-                                color: @white;
-                              }
-                            }
-                          }
-                        }
-                      }
-                      .module-configs {
-                        text-align: center;
-                        color: @fontColor1;
-                        .module-row {
-                          padding: unit(15, rpx);
-                          .module-col {
-                            padding: unit(15, rpx);
-                            .item-config {
-                              position: relative;
-                              .item-icon {
-                                font-size: @fontSize60;
-                              }
-                              .item-label {
-                                height: unit(40, rpx);
-                                line-height: unit(40, rpx);
-                                font-size: @fontSize24;
-                              }
-                              .item-check {
-                                position: absolute;
-                                left: 0;
-                                bottom: 0;
-                                z-index: 1;
-                                width: unit(44, rpx);
-                                height: unit(44, rpx);
-                                line-height: unit(44, rpx);
-                                transition: all 150ms ease;
-                                border-radius: @borderRadius100;
-                                background-color: @unCheck;
-                                font-size: @fontSize20;
-                                color: @borderColor1;
-                              }
-                              &.checked {
-                                .item-check {
-                                  background: -webkit-linear-gradient(left, @theme1, @theme2);
-                                  color: @white;
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
                     }
-                    .module-footer {
-                      .information {
-                        padding: 0 unit(30, rpx) unit(30, rpx);
-                        line-height: unit(40, rpx);
-                        font-size: @fontSize26;
-                        color: @fontColor3;
-                      }
-                    }
+                    .module-footer {}
                   }
                   &:first-child {
                     margin: 0;

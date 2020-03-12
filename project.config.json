@@ -59,6 +59,19 @@
 					"pathName": "packageHouse/pages/select/index",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "packageHouse/pages/update/update-rent-house/index",
+					"pathName": "packageHouse/pages/update/update-rent-house/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "packageHouse/pages/insert/insert-rent-house/step2",
+					"pathName": "packageHouse/pages/insert/insert-rent-house/step2",
+					"scene": null
 				}
 			]
 		}

@@ -79,7 +79,7 @@
       onHandleUpdateHouse() {
         const {id} = this.item;
         wx.navigateTo({
-          url: $routes.UPDATE_RENT_HOUSE.step1.path + '?id=' + id
+          url: $routes.UPDATE_RENT_HOUSE.path + '?id=' + id
         });
       },
       onHandleDetail(id) {
@@ -92,7 +92,7 @@
         if (index) {
           this.onHandleDeleteHouse();
         } else {
-          this.onHandleUpdateRouter();
+          this.onHandleUpdateHouse();
         }
       }
     },

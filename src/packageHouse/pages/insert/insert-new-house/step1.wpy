@@ -3,10 +3,6 @@
     <div class="content">
       <div class="header">
         <top-bar title="基本信息"></top-bar>
-        <div class="hidden">
-          <img src="../../../../assets/images/agent.jpg"/>
-          <img src="../../../../assets/images/water-mark@2x.png"/>
-        </div>
       </div>
       <div class="body">
         <div class="context fade">
@@ -611,130 +607,8 @@
                           }
                         }
                       }
-                      .module-agents {
-                        .module-row {
-                          padding: unit(15, rpx);
-                          .module-col {
-                            padding: unit(20, rpx) unit(15, rpx);
-                            .item-agent {
-                              position: relative;
-                              .item-img {
-                                image {
-                                  width: unit(80, rpx);
-                                  height: unit(80, rpx);
-                                  border-radius: @borderRadius100;
-                                }
-                              }
-                              .item-info {
-                                padding: 0 unit(30, rpx);
-                                font-size: @fontSize28;
-                                color: @fontColor3;
-                                .item-name {
-                                  height: unit(40, rpx);
-                                  line-height: unit(40, rpx);
-                                }
-                                .item-phone {
-                                  height: unit(40, rpx);
-                                  line-height: unit(40, rpx);
-                                }
-                              }
-                              .item-check {
-                                position: absolute;
-                                top: 50%;
-                                z-index: 1;
-                                right: unit(10, rpx);
-                                width: unit(44, rpx);
-                                height: unit(44, rpx);
-                                line-height: unit(44, rpx);
-                                margin-top: unit(-22, rpx);
-                                transition: all 150ms ease;
-                                border-radius: @borderRadius100;
-                                background-color: @unCheck;
-                                font-size: @fontSize20;
-                                color: @borderColor1;
-                                text-align: center;
-                              }
-                              &.checked {
-                                .item-check {
-                                  background: -webkit-linear-gradient(left, @theme1, @theme2);
-                                  color: @white;
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                      .module-tags {
-                        .module-row {
-                          padding: unit(15, rpx);
-                          .module-col {
-                            padding: unit(20, rpx) unit(15, rpx);
-                            text-align: center;
-                            .item-tag {
-                              height: unit(60, rpx);
-                              line-height: unit(60, rpx);
-                              border-radius: unit(60, rpx);
-                              background: @unCheck;
-                              font-size: @fontSize24;
-                              color: @fontColor3;
-                              &.checked {
-                                background: -webkit-linear-gradient(left, @theme1, @theme2);
-                                color: @white;
-                              }
-                            }
-                          }
-                        }
-                      }
-                      .module-configs {
-                        text-align: center;
-                        color: @fontColor1;
-                        .module-row {
-                          padding: unit(15, rpx);
-                          .module-col {
-                            padding: unit(15, rpx);
-                            .item-config {
-                              position: relative;
-                              .item-icon {
-                                font-size: @fontSize60;
-                              }
-                              .item-label {
-                                height: unit(40, rpx);
-                                line-height: unit(40, rpx);
-                                font-size: @fontSize24;
-                              }
-                              .item-check {
-                                position: absolute;
-                                left: 0;
-                                bottom: 0;
-                                z-index: 1;
-                                width: unit(44, rpx);
-                                height: unit(44, rpx);
-                                line-height: unit(44, rpx);
-                                transition: all 150ms ease;
-                                border-radius: @borderRadius100;
-                                background-color: @unCheck;
-                                font-size: @fontSize20;
-                                color: @borderColor1;
-                              }
-                              &.checked {
-                                .item-check {
-                                  background: -webkit-linear-gradient(left, @theme1, @theme2);
-                                  color: @white;
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
                     }
-                    .module-footer {
-                      .information {
-                        padding: 0 unit(30, rpx) unit(30, rpx);
-                        line-height: unit(40, rpx);
-                        font-size: @fontSize26;
-                        color: @fontColor3;
-                      }
-                    }
+                    .module-footer {}
                   }
                   &:first-child {
                     margin: 0;

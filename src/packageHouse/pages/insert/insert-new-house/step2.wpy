@@ -394,43 +394,6 @@
                       }
                     }
                     .module-body {
-                      .module-base {
-                        .form-row {
-                          border-bottom: 0.5px solid @borderColor1;
-                          .form-col {
-                            padding: 0 unit(30, rpx);
-                            .form-group {
-                              display: flex;
-                              font-size: @fontSize32;
-                              color: @fontColor1;
-                              .form-label {
-                                width: 25%;
-                                height: @height;
-                                display: inline-block;
-                                vertical-align: middle;
-                                line-height: @height;
-                              }
-                              .form-input {
-                                width: 75%;
-                                height: @height;
-                                display: inline-block;
-                                vertical-align: middle;
-                                text-align: right;
-                              }
-                              .form-next {
-                                display: inline-block;
-                                vertical-align: middle;
-                                padding-left: unit(10, rpx);
-                                line-height: @height;
-                                color: @iconNext;
-                              }
-                            }
-                          }
-                          &:last-child {
-                            border: none;
-                          }
-                        }
-                      }
                       .module-agents {
                         .module-row {
                           padding: unit(15, rpx);

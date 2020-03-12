@@ -26,7 +26,7 @@
                             </div>
                           </div>
                           <div class="module-col col-4">
-                            <div class="module-btn btn btn-image" @tap="onHandleUploadRouter">
+                            <div class="module-btn btn btn-image" @tap="onHandleUploadImage">
                               <div class="module-icon iconfont icon-insert"></div>
                             </div>
                           </div>
@@ -145,7 +145,7 @@
           this.exeAjaxInsertHouse();
         }
       },
-      onHandleUploadRouter() {
+      onHandleUploadImage() {
         wx.navigateTo({
           url: $routes.UPLOAD.path
         });
@@ -267,12 +267,6 @@
                       }
                     }
                     .module-footer {
-                      .information {
-                        padding: 0 unit(30, rpx) unit(30, rpx);
-                        line-height: unit(40, rpx);
-                        font-size: @fontSize26;
-                        color: @fontColor3;
-                      }
                     }
                   }
                   &:first-child {

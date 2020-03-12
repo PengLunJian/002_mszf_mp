@@ -43,9 +43,7 @@
         'pages/insert/insert-rent-house/step1',
         'pages/insert/insert-rent-house/step2',
         'pages/insert/insert-rent-house/step3',
-        'pages/update/update-rent-house/step1',
-        'pages/update/update-rent-house/step2',
-        'pages/update/update-rent-house/step3',
+        'pages/update/update-rent-house/index'
       ]
     }
   ],
