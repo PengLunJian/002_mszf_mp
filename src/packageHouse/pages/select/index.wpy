@@ -59,17 +59,17 @@
           {
             name: '新房',
             icon: 'icon-new',
-            path: $routes.INSERT_NEW_HOUSE.step1.path
+            path: $routes.INSERT_NEW_HOUSE.path
           },
           {
             name: '二手房',
             icon: 'icon-house',
-            path: $routes.INSERT_SECOND_HOUSE.step1.path
+            path: $routes.INSERT_SECOND_HOUSE.path
           },
           {
             name: '租房',
             icon: 'icon-rent',
-            path: $routes.INSERT_RENT_HOUSE.step1.path
+            path: $routes.INSERT_RENT_HOUSE.path
           }
         ]
       }

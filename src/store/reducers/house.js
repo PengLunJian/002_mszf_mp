@@ -61,8 +61,19 @@ const actions = {
     };
   },
   [actionTypes.RESET_UPDATE_HOUSE](state, params) {
+    const {rows} = state.data;
+    const newRow = utils.dataFilter([params.data]);
+    const {id} = newRow[0];
+    rows.map((item, index) => {
+      if (item.id === id) {
+        rows[index] = newRow[0];
+      }
+    });
+    const newData = {rows: rows};
+    const data = Object.assign(state.data, newData);
     return {
-      ...state
+      ...state,
+      data
     };
   },
   [actionTypes.RESET_SELECT_HOUSE](state) {

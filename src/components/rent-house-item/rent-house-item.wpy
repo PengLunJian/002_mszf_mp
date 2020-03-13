@@ -79,7 +79,7 @@
       onHandleUpdateHouse() {
         const {id} = this.item;
         wx.navigateTo({
-          url: $routes.UPDATE_RENT_HOUSE.path + '?id=' + id
+          url: $routes.UPDATE_RENT_HOUSE.path + '?house_id=' + id
         });
       },
       onHandleDetail(id) {
@@ -107,8 +107,8 @@
   @import "../../assets/less/common";
 
   .item {
-    position: relative;
     overflow: hidden;
+    position: relative;
     padding: 0 unit(30, rpx);
     background-color: @white;
     .item-inner {
@@ -128,7 +128,7 @@
           .item-title {
             height: unit(40, rpx);
             line-height: unit(40, rpx);
-            font-size: @fontSize28;
+            font-size: @fontSize32;
             font-weight: bold;
             color: @fontColor1;
           }

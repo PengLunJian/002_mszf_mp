@@ -8,7 +8,11 @@
         <div class="context">
           <div class="upload">
             <div class="upload-content">
-              <div class="upload-header"></div>
+              <div class="upload-header">
+                <div class="hidden">
+                  <img src="../../assets/images/water-mark.png"/>
+                </div>
+              </div>
               <div class="upload-body">
                 <div class="upload-cut">
                   <div class="upload-cut-touch"
@@ -58,7 +62,6 @@
   import store from '../../store';
   import Toast from '../../mixins/toast';
   import Loading from '../../mixins/loading';
-  import * as localStorage from '../../utils/localStorage';
 
   wepy.page({
     store,
@@ -91,9 +94,9 @@
         ctx: null,
         selector: 'upload-canvas',
         waterMark: {
-          path: '../../assets/images/water-mark@2x.png',
-          width: 78,
-          height: 25
+          path: '../../assets/images/water-mark.png',
+          width: 750,
+          height: 750
         }
       }
     },
@@ -163,11 +166,11 @@
       onHandleWaterMark() {
         const {selector, waterMark} = this.canvas;
         const {path, width, height} = waterMark;
-        this.canvas.ctx.drawImage(path, 10 * 3, 10 * 3, width * 3, height * 3);
+        this.canvas.ctx.drawImage(path, 0, 0, width, height);
         this.canvas.ctx.draw(true, () => {
           wx.canvasToTempFilePath({
-            width: 520 * 3,
-            height: 520 * 3,
+            width: 750,
+            height: 750,
             destWidth: 750,
             destHeight: 750,
             fileType: 'jpg',
@@ -175,7 +178,7 @@
             success: (res) => {
               res = res || {};
               const {tempFilePath} = res;
-              localStorage.setItem('path', tempFilePath);
+              this.$app.$path = {path: tempFilePath};
               wx.navigateBack({
                 delta: 1
               });
@@ -189,9 +192,10 @@
         const {storageOffsetX, storageOffsetY} = this.touches;
         const offsetX = (width - 520 / 2) / 2 + storageOffsetX;
         const offsetY = (height - 520 / 2) / 2 + storageOffsetY;
+        const rate = 750 / (520 / 2);
         this.canvas.ctx = wx.createCanvasContext(selector);
         this.canvas.ctx.draw();
-        this.canvas.ctx.drawImage(src, -offsetX * 3, -offsetY * 3, width * 3, height * 3);
+        this.canvas.ctx.drawImage(src, -offsetX * rate, -offsetY * rate, width * rate, height * rate);
         this.canvas.ctx.save();
       },
       onHandleShowImage() {
@@ -202,8 +206,8 @@
           this.canvas.ctx.restore();
           this.canvas.ctx.draw(true, () => {
             wx.canvasToTempFilePath({
-              width: 520 * 3,
-              height: 520 * 3,
+              width: 750,
+              height: 750,
               destWidth: 750,
               destHeight: 750,
               fileType: 'jpg',
@@ -402,11 +406,11 @@
                   }
                   .upload-cut-canvas {
                     position: fixed;
-                    top: -780px;
+                    top: -750px;
                     left: 0;
                     z-index: 1000;
-                    width: 780px;
-                    height: 780px;
+                    width: 750px;
+                    height: 750px;
                     visibility: hidden;
                     .upload-canvas {
                       width: 100%;

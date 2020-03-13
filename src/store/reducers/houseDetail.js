@@ -1,9 +1,10 @@
 import {handleActions} from 'redux-actions';
 import * as actionTypes from '../actionTypes';
+import * as utils from '../../utils';
 import * as states from '../states';
 
 const actions = {
-  [actionTypes.UPDATE_HOUSE_REQUEST](state) {
+  [actionTypes.SELECT_HOUSE_DETAIL_REQUEST](state) {
     return {
       ...state,
       isLoading: true,
@@ -11,7 +12,7 @@ const actions = {
       isFailure: false
     };
   },
-  [actionTypes.UPDATE_HOUSE_SUCCESS](state, action) {
+  [actionTypes.SELECT_HOUSE_DETAIL_REQUEST](state, action) {
     return {
       ...state,
       isLoading: false,
@@ -20,7 +21,7 @@ const actions = {
       data: action.data
     };
   },
-  [actionTypes.UPDATE_HOUSE_FAILURE](state) {
+  [actionTypes.SELECT_HOUSE_FAILURE](state) {
     return {
       ...state,
       isLoading: false,
@@ -30,6 +31,6 @@ const actions = {
   }
 };
 
-const UPDATE_HOUSE_REDUCER = handleActions(actions, states.UPDATE_HOUSE_STATE);
+const SELECT_HOUSE_DETAIL_REDUCER = handleActions(actions, states.SELECT_HOUSE_DETAIL_STATE);
 
-export default UPDATE_HOUSE_REDUCER;
+export default SELECT_HOUSE_DETAIL_REDUCER;

@@ -39,3 +39,10 @@ export const UPLOAD_IMAGE_STATE = {
   isFailure: false,
   data: null
 };
+
+export const SELECT_HOUSE_DETAIL_STATE = {
+  isLoading: true,
+  isSuccess: false,
+  isFailure: false,
+  data: null
+};

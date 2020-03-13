@@ -1,13 +1,14 @@
 import * as actions from '../../../../store/actions';
 
 export const STATES = {
-  isLoading: state => state.INSERT_HOUSE_REDUCER.isLoading,
-  isSuccess: state => state.INSERT_HOUSE_REDUCER.isSuccess,
-  isFailure: state => state.INSERT_HOUSE_REDUCER.isFailure,
-  isData: state => state.INSERT_HOUSE_REDUCER.data
+  isLoading: state => state.UPDATE_HOUSE_REDUCER.isLoading,
+  isSuccess: state => state.UPDATE_HOUSE_REDUCER.isSuccess,
+  isFailure: state => state.UPDATE_HOUSE_REDUCER.isFailure,
+  isData: state => state.UPDATE_HOUSE_REDUCER.data
 };
 
 export const ACTIONS = {
-  ajaxInsertHouse: params => actions.ajaxRequestInsertHouse(params),
+  ajaxSelectHouseDetail: params => actions.ajaxRequestSelectHouseDetail(params),
+  ajaxUpdateHouse: params => actions.ajaxRequestUpdateHouse(params),
   ajaxUploadImage: params => actions.ajaxRequestUploadImage(params)
 };

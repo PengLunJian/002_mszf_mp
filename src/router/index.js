@@ -34,48 +34,18 @@ export const UPLOAD = {
 };
 
 export const INSERT_NEW_HOUSE = {
-  step1: {
-    name: '基本信息',
-    path: '/packageHouse/pages/insert/insert-new-house/step1'
-  },
-  step2: {
-    name: '房源配置',
-    path: '/packageHouse/pages/insert/insert-new-house/step2'
-  },
-  step3: {
-    name: '图片上传',
-    path: '/packageHouse/pages/insert/insert-new-house/step3'
-  }
+  name: '新房添加',
+  path: '/packageHouse/pages/insert/insert-new-house/index'
 };
 
 export const INSERT_SECOND_HOUSE = {
-  step1: {
-    name: '基本信息',
-    path: '/packageHouse/pages/insert/insert-second-house/step1'
-  },
-  step2: {
-    name: '房源配置',
-    path: '/packageHouse/pages/insert/insert-second-house/step2'
-  },
-  step3: {
-    name: '图片上传',
-    path: '/packageHouse/pages/insert/insert-second-house/step3'
-  }
+  name: '二手房添加',
+  path: '/packageHouse/pages/insert/insert-second-house/index'
 };
 
 export const INSERT_RENT_HOUSE = {
-  step1: {
-    name: '基本信息',
-    path: '/packageHouse/pages/insert/insert-rent-house/step1'
-  },
-  step2: {
-    name: '房源配置',
-    path: '/packageHouse/pages/insert/insert-rent-house/step2'
-  },
-  step3: {
-    name: '图片上传',
-    path: '/packageHouse/pages/insert/insert-rent-house/step3'
-  }
+  name: '租房添加',
+  path: '/packageHouse/pages/insert/insert-rent-house/index'
 };
 
 export const UPDATE_NEW_HOUSE = {

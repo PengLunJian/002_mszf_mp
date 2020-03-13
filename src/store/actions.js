@@ -84,28 +84,6 @@ export const ajaxRequestDeleteHouse = createAction(
     });
   });
 
-// export const ajaxRequestUploadImage = createAction(
-//   'uploadImage', (params) => {
-//     commit(actionTypes.UPLOAD_IMAGE_REQUEST);
-//     return new Promise((resolve, reject) => {
-//       axios.post(apis.uploadImage, params)
-//         .then((res) => {
-//           res = res || {};
-//           const {data, success} = res;
-//           if (success) {
-//             commit(actionTypes.UPLOAD_IMAGE_SUCCESS, data);
-//           } else {
-//             commit(actionTypes.UPLOAD_IMAGE_FAILURE);
-//           }
-//           resolve(res);
-//         })
-//         .catch((err) => {
-//           commit(actionTypes.UPLOAD_IMAGE_FAILURE);
-//           reject(err);
-//         });
-//     });
-//   });
-
 export const ajaxRequestUploadImage = createAction(
   'uploadImage', (params) => {
     commit(actionTypes.UPLOAD_IMAGE_REQUEST);
@@ -141,12 +119,13 @@ export const ajaxRequestUpdateHouse = createAction(
   'updateHouse', (params) => {
     commit(actionTypes.UPDATE_HOUSE_REQUEST);
     return new Promise((resolve, reject) => {
-      axios.get(apis.updateHouse, {params})
+      axios.put(apis.updateHouse, params)
         .then((res) => {
           res = res || {};
           const {data, success} = res;
           if (success) {
             commit(actionTypes.UPDATE_HOUSE_SUCCESS, data);
+            commit(actionTypes.RESET_UPDATE_HOUSE, data);
           } else {
             commit(actionTypes.UPDATE_HOUSE_FAILURE);
           }
@@ -181,7 +160,7 @@ export const ajaxRequestSelectHouse = createAction(
     });
   });
 
-export const ajaxRequestHouseDetail = createAction(
+export const ajaxRequestSelectHouseDetail = createAction(
   'selectHouseDetail', (params) => {
     commit(actionTypes.SELECT_HOUSE_DETAIL_REQUEST);
     return new Promise((resolve, reject) => {

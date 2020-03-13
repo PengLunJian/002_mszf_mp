@@ -295,7 +295,7 @@
                       <div class="module-body">
                         <div class="module-images">
                           <div class="module-row row">
-                            <div class="module-col col-4" v-for="(item,index) in totalUrls" :key="index">
+                            <div class="module-col col-4" v-for="(item,index) in items" :key="index">
                               <div class="module-item" @tap="onHandleShowImage(index)">
                                 <div class="btn-delete iconfont icon-delete"
                                      @tap.stop="onHandleDeleteImage(index)"></div>
@@ -321,8 +321,8 @@
         </div>
       </div>
       <div class="footer">
-        <div class="btn btn-update{{isDisable?'':' disable'}}"
-             @tap="onHandleUpdateHouse">提交保存
+        <div class="btn btn-insert{{isDisable?'':' disable'}}"
+             @tap="onHandleInsertHouse">添加房源
         </div>
       </div>
     </div>
@@ -354,10 +354,8 @@
       phone: '',
       price: '',
       title: '',
-      status: 1,
-      mianji: '',
       owner: '',
-      id: -1,
+      mianji: '',
       xiangxidizhi: '',
       huxing: {
         value: '',
@@ -586,9 +584,8 @@
           }
         ]
       },
-      oldUrls: [],
-      newUrls: [],
-      totalUrls: [],
+      items: [],
+      pic_url: [],
       image: {
         count: 0,
         baseUrl: ''
@@ -782,20 +779,7 @@
         this.fagnwupeizhi.value = arr.join(' ');
         arr = null;
       },
-      onHandleUploadImage() {
-        wx.navigateTo({
-          url: $routes.UPLOAD.path
-        });
-      },
-      onHandleSubmitHouse() {
-        this.showLoading('正在加载');
-        if (this.newUrls.length) {
-          this.exeAjaxUploadImage();
-        } else {
-          this.exeAjaxUpdateHouse();
-        }
-      },
-      onHandleUpdateHouse() {
+      onHandleInsertHouse() {
         const isCheckEmpty = this.onHandleCheckEmpty();
         const {isBaseEmpty, isAgentEmpty, isTagsEmpty} = isCheckEmpty;
         if (!isBaseEmpty) {
@@ -808,142 +792,67 @@
           this.onHandleSubmitHouse();
         }
       },
+      onHandleSubmitHouse() {
+        this.showLoading('正在加载');
+        if (this.items.length) {
+          this.exeAjaxUploadImage();
+        } else {
+          this.exeAjaxInsertHouse();
+        }
+      },
+      onHandleUploadImage() {
+        wx.navigateTo({
+          url: $routes.UPLOAD.path
+        });
+      },
       onHandleShowImage(index) {
-        const {totalUrls} = this;
         wx.previewImage({
-          current: totalUrls[index],
-          urls: totalUrls
+          current: this.items[index],
+          urls: this.items
         });
       },
       onHandleDeleteImage(index) {
-        if ((index + 1) <= this.oldUrls.length) {
-          this.oldUrls.splice(index, 1);
-        } else {
-          this.newUrls.splice(index, 1);
-        }
-        this.totalUrls = this.oldUrls.concat(this.newUrls);
+        this.items.splice(index, 1);
       },
-      onHandleRenderHouse(data) {
-        const {
-          id,
-          owner,
-          phone,
-          title,
-          price,
-          huxing,
-          mianji,
-          chaoxiang,
-          leixing,
-          zhaungxiu,
-          louceng,
-          xiaoqu,
-          status,
-          addr,
-          addr_sheng,
-          addr_shi,
-          addr_qu,
-          zhifufangshi,
-          chuzufangshi,
-          kanfangshijian,
-          agents,
-          tags,
-          fagnwupeizhi,
-          pic_url
-        } = data;
-        this.id = id;
-        this.xiaoqu = xiaoqu;
-        this.phone = phone;
-        this.price = price;
-        this.title = title;
-        this.owner = owner;
-        this.status = status;
-        this.mianji = mianji;
-        this.xiangxidizhi = addr;
-        this.huxing.value = huxing;
-        this.dizhi.items = [addr_sheng, addr_shi, addr_qu];
-        this.dizhi.value = this.dizhi.items.join('、');
-        this.zhifu.value = zhifufangshi;
-        this.chaoxiang.value = chaoxiang;
-        this.louceng.value = louceng;
-        this.zhuangxiu.value = zhaungxiu;
-        this.chuzufangshi.value = chuzufangshi;
-        this.leixing.value = leixing;
-        this.kanfangshijian.value = kanfangshijian;
-        this.agents.value = agents;
-        this.tags.value = tags;
-        this.tags.items.map((item) => {
-          if (tags.indexOf(item.label) !== -1) {
-            item.checked = true;
-          }
-        });
-        this.fagnwupeizhi.value = fagnwupeizhi;
-        this.fagnwupeizhi.items.map((item) => {
-          if (fagnwupeizhi.indexOf(item.label) !== -1) {
-            item.checked = true;
-          }
-        });
-        this.oldUrls = pic_url;
-        this.totalUrls = pic_url.concat(this.newUrls);
-      },
-      exeAjaxSelectDetail(params) {
-        this.showLoading('正在加载');
-        this.ajaxSelectHouseDetail(params)
-          .then((res) => {
-            res = res || {};
-            const {success, data} = res.payload;
-            if (success) {
-              this.onHandleRenderHouse(data);
-              this.onHandleCheckEmpty();
-            } else {
-              this.showToast('加载失败，请重试');
-            }
-            this.hideLoading();
-          })
-          .catch((err) => {
-            this.showToast('加载失败，请重试');
-            this.hideLoading();
-            console.log(err);
-          });
-      },
-      exeAjaxUpdateHouse() {
+      exeAjaxInsertHouse() {
         const params = this.getParams();
-        this.ajaxUpdateHouse(params)
+        this.ajaxInsertHouse(params)
           .then((res) => {
             this.hideLoading();
             res = res || {};
             const {success} = res.payload;
             if (success) {
-              this.showToast('房源修改成功');
+              this.showToast('房源新增成功');
               setTimeout(() => {
                 wx.navigateBack({
                   delta: 1
                 });
               }, 1000);
             } else {
-              this.showToast('修改失败，请重试');
+              this.showToast('新增失败，请重试');
             }
             console.log(res);
           })
           .catch((err) => {
             this.hideLoading();
-            this.showToast('修改失败，请重试');
+            this.showToast('新增失败，请重试');
             console.log(err);
           });
       },
       exeAjaxUploadImage() {
         let {count, baseUrl} = this.image;
-        const filePath = this.newUrls[count];
+        const filePath = this.items[count];
         const params = {count, filePath};
         this.ajaxUploadImage(params)
           .then((res) => {
             res = res || {};
             const {success, data} = res.payload;
             if (success) {
-              this.oldUrls.push(baseUrl + data);
+              this.pic_url.push(baseUrl + data);
             }
             this.image.count++;
-            if (this.image.count === this.newUrls.length) {
-              this.exeAjaxUpdateHouse();
+            if (this.image.count === this.items.length) {
+              this.exeAjaxInsertHouse();
             } else {
               this.exeAjaxUploadImage();
             }
@@ -952,8 +861,8 @@
           .catch((err) => {
             this.showToast('第' + count + '张图片上传失败');
             this.image.count++;
-            if (this.image.count === this.newUrls.length) {
-              this.exeAjaxUpdateHouse();
+            if (this.image.count === this.items.length) {
+              this.exeAjaxInsertHouse();
             } else {
               this.exeAjaxUploadImage();
             }
@@ -964,7 +873,6 @@
         const params = {
           type: 3,
           status: 1,
-          id: this.id,
           owner: this.owner,
           phone: this.phone,
           title: this.title,
@@ -988,7 +896,7 @@
           tags: this.tags.value,
           agents: this.agents.value,
           fagnwupeizhi: this.fagnwupeizhi.value,
-          pic_url: this.oldUrls
+          pic_url: this.pic_url
         };
         return params;
       }
@@ -998,14 +906,12 @@
       const {$path} = this.$app;
       if ($path) {
         const {path} = $path;
-        this.newUrls.push(path);
-        this.totalUrls = this.oldUrls.concat(this.newUrls);
+        this.items.push(path);
         this.$app.$path = null;
       }
     },
 
-    onLoad(option) {
-      this.exeAjaxSelectDetail(option);
+    onLoad() {
       const end = apis.baseUrl.lastIndexOf('/');
       this.image.baseUrl = apis.baseUrl.substring(0, end);
     }
@@ -1317,7 +1223,7 @@
         padding: unit(30, rpx);
         background-color: @white;
         box-shadow: 0 0 15px @boxShadow05;
-        .btn-update {
+        .btn-insert {
           overflow: hidden;
           height: unit(100, rpx);
           line-height: unit(100, rpx);
