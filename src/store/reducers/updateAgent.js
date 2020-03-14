@@ -3,7 +3,7 @@ import * as actionTypes from '../actionTypes';
 import * as states from '../states';
 
 const actions = {
-  [actionTypes.SELECT_HOUSE_DETAIL_REQUEST](state) {
+  [actionTypes.UPDATE_AGENT_REQUEST](state) {
     return {
       ...state,
       isLoading: true,
@@ -11,7 +11,7 @@ const actions = {
       isFailure: false
     };
   },
-  [actionTypes.SELECT_HOUSE_DETAIL_SUCCESS](state, action) {
+  [actionTypes.UPDATE_AGENT_SUCCESS](state, action) {
     return {
       ...state,
       isLoading: false,
@@ -20,7 +20,7 @@ const actions = {
       data: action.data
     };
   },
-  [actionTypes.SELECT_HOUSE_DETAIL_FAILURE](state) {
+  [actionTypes.UPDATE_AGENT_FAILURE](state) {
     return {
       ...state,
       isLoading: false,
@@ -30,6 +30,6 @@ const actions = {
   }
 };
 
-const SELECT_HOUSE_DETAIL_REDUCER = handleActions(actions, states.SELECT_HOUSE_DETAIL_STATE);
+const UPDATE_AGENT_REDUCER = handleActions(actions, states.UPDATE_AGENT_STATE);
 
-export default SELECT_HOUSE_DETAIL_REDUCER;
+export default UPDATE_AGENT_REDUCER;

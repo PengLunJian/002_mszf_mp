@@ -1,0 +1,73 @@
+<template>
+  <div class="container">
+    <div class="content">
+      <div class="header">
+        <top-bar title="经纪人详情"></top-bar>
+      </div>
+      <div class="body">
+        <wait></wait>
+      </div>
+      <div class="footer"></div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+  import store from '../../../store/index';
+  import {mapState, mapActions} from '@wepy/redux';
+  import * as controller from './controller';
+
+  wepy.page({
+    store,
+
+    mixins: [],
+
+    data: {},
+
+    computed: {},
+
+    methods: {},
+
+    onLoad() {}
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../../assets/less/variable";
+  @import "../../../assets/less/@media";
+
+  @height: unit(64, rpx);
+
+  .container {
+    min-height: 100vh;
+    .content {
+      height: 100vh;
+      .header {}
+      .body {
+        height: 100%;
+        position: relative;
+        .context {
+          height: 100%;
+          padding-top: unit(130, rpx);
+          .scroll-view {
+            height: 100%;
+          }
+        }
+      }
+      .footer {
+      }
+    }
+  }
+
+</style>
+
+<config>
+  {
+  navigationStyle:'custom',
+  usingComponents: {
+  'top-bar': '../../../components/top-bar/top-bar',
+  'wait': '../../../components/wait/wait'
+  }
+  }
+</config>

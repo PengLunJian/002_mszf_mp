@@ -181,3 +181,91 @@ export const ajaxRequestSelectHouseDetail = createAction(
         });
     });
   });
+
+export const ajaxRequestInsertAgent = createAction(
+  'insertAgent', (params) => {
+    commit(actionTypes.INSERT_AGENT_REQUEST);
+    return new Promise((resolve, reject) => {
+      axios.post(apis.insertAgent, params)
+        .then((res) => {
+          res = res || {};
+          const {data, success} = res;
+          if (success) {
+            commit(actionTypes.INSERT_AGENT_SUCCESS, data);
+          } else {
+            commit(actionTypes.INSERT_AGENT_FAILURE);
+          }
+          resolve(res);
+        })
+        .catch((err) => {
+          commit(actionTypes.INSERT_AGENT_FAILURE);
+          reject(err);
+        });
+    });
+  });
+
+export const ajaxRequestDeleteAgent = createAction(
+  'deleteAgent', (params) => {
+    commit(actionTypes.DELETE_AGENT_REQUEST);
+    return new Promise((resolve, reject) => {
+      axios.post(apis.deleteAgent, {params})
+        .then((res) => {
+          res = res || {};
+          const {data, success} = res;
+          if (success) {
+            commit(actionTypes.DELETE_AGENT_SUCCESS, data);
+          } else {
+            commit(actionTypes.DELETE_AGENT_FAILURE);
+          }
+          resolve(res);
+        })
+        .catch((err) => {
+          commit(actionTypes.DELETE_AGENT_FAILURE);
+          reject(err);
+        });
+    });
+  });
+
+export const ajaxRequestUpdateAgent = createAction(
+  'updateAgent', (params) => {
+    commit(actionTypes.UPDATE_AGENT_REQUEST);
+    return new Promise((resolve, reject) => {
+      axios.get(apis.updateAgent, {params})
+        .then((res) => {
+          res = res || {};
+          const {data, success} = res;
+          if (success) {
+            commit(actionTypes.UPDATE_AGENT_SUCCESS, data);
+          } else {
+            commit(actionTypes.UPDATE_AGENT_FAILURE);
+          }
+          resolve(res);
+        })
+        .catch((err) => {
+          commit(actionTypes.UPDATE_AGENT_FAILURE);
+          reject(err);
+        });
+    });
+  });
+
+export const ajaxRequestSelectAgent = createAction(
+  'selectAgent', () => {
+    commit(actionTypes.SELECT_AGENT_REQUEST);
+    return new Promise((resolve, reject) => {
+      axios.get(apis.selectAgent)
+        .then((res) => {
+          res = res || {};
+          const {data, success} = res;
+          if (success) {
+            commit(actionTypes.SELECT_AGENT_SUCCESS, data);
+          } else {
+            commit(actionTypes.SELECT_AGENT_FAILURE);
+          }
+          resolve(res);
+        })
+        .catch((err) => {
+          commit(actionTypes.SELECT_AGENT_FAILURE);
+          reject(err);
+        });
+    });
+  });

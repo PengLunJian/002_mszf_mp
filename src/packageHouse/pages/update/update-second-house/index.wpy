@@ -92,9 +92,9 @@
                             </div>
                             <div class="form-col col-12">
                               <div class="form-group">
-                                <label class="form-label">租金</label>
-                                <input class="form-input" v-model="price" type="number"
-                                       placeholder="元/月"
+                                <label class="form-label">总价</label>
+                                <input class="form-input" v-model="total_price" type="digit"
+                                       placeholder="万元"
                                        @input="onHandleCheckEmpty"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
@@ -148,12 +148,13 @@
                               </div>
                             </div>
                             <div class="form-col col-12">
-                              <picker mode="multiSelector" @change="onHandleZhiFuChange"
-                                      value="{{zhifu.index}}" range="{{zhifu.items}}">
+                              <picker mode="date" fields="year" start="1900" end="2020"
+                                      @change="onHandleNianFenChange"
+                                      value="{{nianfen}}">
                                 <div class="form-group">
-                                  <label class="form-label">支付</label>
-                                  <input class="form-input" v-model="zhifu.value" disabled="{{true}}" type="text"
-                                         placeholder="押1付3"/>
+                                  <label class="form-label">年份</label>
+                                  <input class="form-input" v-model="nianfen" disabled="{{true}}" type="text"
+                                         placeholder="2019年"/>
                                   <span class="form-next iconfont icon-next"></span>
                                 </div>
                               </picker>
@@ -184,15 +185,6 @@
                                 <input class="form-input" v-model="zhuangxiu.value" disabled="{{true}}" type="text"
                                        placeholder="精装"
                                        @tap="onHandleShowZhuangXiu"/>
-                                <span class="form-next iconfont icon-next"></span>
-                              </div>
-                            </div>
-                            <div class="form-col col-12">
-                              <div class="form-group">
-                                <label class="form-label">方式</label>
-                                <input class="form-input" v-model="chuzufangshi.value" disabled="{{true}}" type="text"
-                                       placeholder="整租"
-                                       @tap="onHandleShowChuZuFangShi"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
@@ -350,15 +342,21 @@
         items: ['基本信息', '房源配置', '图片上传']
       },
       isDisable: false,
-      xiaoqu: '',
+      id: -1,
       phone: '',
       price: '',
       title: '',
       status: 1,
-      mianji: '',
       owner: '',
-      id: -1,
+      xiaoqu: '',
+      mianji: '',
+      nianfen: '',
+      total_price: '',
       xiangxidizhi: '',
+      dizhi: {
+        value: '',
+        items: ['安徽省', '宣城市', '广德县']
+      },
       huxing: {
         value: '',
         items: [
@@ -368,23 +366,22 @@
         ],
         index: [1, 1, 1]
       },
-      dizhi: {
-        value: '',
-        items: ['安徽省', '宣城市', '广德县']
-      },
-      zhifu: {
+      louceng: {
         value: '',
         items: [
-          [
-            '押1', '押2', '押3', '押4', '押5', '押6',
-            '押7', '押8', '押9', '押10', '押11', '押12'
-          ],
-          [
-            '付1', '付2', '付3', '付4', '付5', '付6',
-            '付7', '付8', '付9', '付10', '付11', '付12'
-          ]
-        ],
-        index: [0, 0]
+          '低楼层',
+          '中楼层',
+          '高楼层'
+        ]
+      },
+      leixing: {
+        value: '',
+        items: [
+          '小区',
+          '别墅',
+          '住宅',
+          '商铺'
+        ]
       },
       chaoxiang: {
         value: '',
@@ -395,14 +392,6 @@
           '朝北'
         ]
       },
-      louceng: {
-        value: '',
-        items: [
-          '低楼层',
-          '中楼层',
-          '高楼层'
-        ]
-      },
       zhuangxiu: {
         value: '',
         items: [
@@ -410,23 +399,6 @@
           '简装',
           '精装',
           '豪装'
-        ]
-      },
-      chuzufangshi: {
-        value: '',
-        items: [
-          '整租',
-          '合租',
-          '转租'
-        ]
-      },
-      leixing: {
-        value: '',
-        items: [
-          '小区',
-          '别墅',
-          '住宅',
-          '商铺'
         ]
       },
       kanfangshijian: {
@@ -607,21 +579,20 @@
       onHandleCheckEmpty() {
         let isBaseEmpty =
           (
-            this.xiaoqu &&
             this.phone &&
-            this.price &&
             this.title &&
             this.owner &&
-            this.huxing.value &&
+            this.xiaoqu &&
             this.mianji &&
+            this.nianfen &&
+            this.total_price &&
             this.dizhi.value &&
+            this.huxing.value &&
             this.xiangxidizhi &&
-            this.zhifu.value &&
-            this.chaoxiang.value &&
             this.louceng.value &&
-            this.zhuangxiu.value &&
-            this.chuzufangshi.value &&
             this.leixing.value &&
+            this.chaoxiang.value &&
+            this.zhuangxiu.value &&
             this.kanfangshijian.value
           );
         let isAgentEmpty = this.agents.value;
@@ -633,22 +604,42 @@
           isTagsEmpty
         };
       },
-      onHandleHuXingChange(e) {
-        const index = e.$wx.detail.value;
-        const items = this.huxing.items;
-        this.huxing.value = items[0][index[0]] + items[1][index[1]] + items[2][index[2]];
-        this.onHandleCheckEmpty();
+      onHandleShowLouCeng() {
+        wx.showActionSheet({
+          itemList: this.louceng.items,
+          success: (res) => {
+            const value = this.louceng.items[res.tapIndex];
+            this.louceng.value = value;
+            this.onHandleCheckEmpty();
+          },
+          fail: (err) => {
+            console.log(err);
+          }
+        });
       },
-      onHandleZhiFuChange(e) {
-        const index = e.$wx.detail.value;
-        const items = this.zhifu.items;
-        this.zhifu.value = items[0][index[0]] + items[1][index[1]];
-        this.onHandleCheckEmpty();
+      onHandleShowLeiXing() {
+        wx.showActionSheet({
+          itemList: this.leixing.items,
+          success: (res) => {
+            const value = this.leixing.items[res.tapIndex];
+            this.leixing.value = value;
+            this.onHandleCheckEmpty();
+          },
+          fail: (err) => {
+            console.log(err);
+          }
+        });
       },
       onHandleDiZhiChange(e) {
         const items = e.$wx.detail.value;
         this.dizhi.items = items;
         this.dizhi.value = items.join('、');
+        this.onHandleCheckEmpty();
+      },
+      onHandleHuXingChange(e) {
+        const index = e.$wx.detail.value;
+        const items = this.huxing.items;
+        this.huxing.value = items[0][index[0]] + items[1][index[1]] + items[2][index[2]];
         this.onHandleCheckEmpty();
       },
       onHandleShowChaoXiang() {
@@ -657,19 +648,6 @@
           success: (res) => {
             const value = this.chaoxiang.items[res.tapIndex];
             this.chaoxiang.value = value;
-            this.onHandleCheckEmpty();
-          },
-          fail: (err) => {
-            console.log(err);
-          }
-        });
-      },
-      onHandleShowLouCeng() {
-        wx.showActionSheet({
-          itemList: this.louceng.items,
-          success: (res) => {
-            const value = this.louceng.items[res.tapIndex];
-            this.louceng.value = value;
             this.onHandleCheckEmpty();
           },
           fail: (err) => {
@@ -690,31 +668,28 @@
           }
         });
       },
-      onHandleShowChuZuFangShi() {
-        wx.showActionSheet({
-          itemList: this.chuzufangshi.items,
-          success: (res) => {
-            const value = this.chuzufangshi.items[res.tapIndex];
-            this.chuzufangshi.value = value;
-            this.onHandleCheckEmpty();
-          },
-          fail: (err) => {
-            console.log(err);
-          }
-        });
+      onHandleNianFenChange(e) {
+        const value = e.$wx.detail.value;
+        this.nianfen = value + '年';
+        this.onHandleCheckEmpty();
       },
-      onHandleShowLeiXing() {
-        wx.showActionSheet({
-          itemList: this.leixing.items,
-          success: (res) => {
-            const value = this.leixing.items[res.tapIndex];
-            this.leixing.value = value;
-            this.onHandleCheckEmpty();
-          },
-          fail: (err) => {
-            console.log(err);
+      onHandleTagSelector(index) {
+        let arr = [];
+        if (this.tags.items[index].checked) {
+          this.tags.items[index].checked = false;
+        } else {
+          this.tags.items[index].checked = true;
+        }
+
+        this.tags.items.map((item) => {
+          if (item.checked) {
+            arr.push(item.label);
           }
         });
+
+        this.tags.value = arr.join(' ');
+        this.onHandleCheckEmpty();
+        arr = null;
       },
       onHandleShowKanFangShiJian() {
         wx.showActionSheet({
@@ -744,24 +719,6 @@
         });
 
         this.agents.value = arr.join(' ');
-        this.onHandleCheckEmpty();
-        arr = null;
-      },
-      onHandleTagSelector(index) {
-        let arr = [];
-        if (this.tags.items[index].checked) {
-          this.tags.items[index].checked = false;
-        } else {
-          this.tags.items[index].checked = true;
-        }
-
-        this.tags.items.map((item) => {
-          if (item.checked) {
-            arr.push(item.label);
-          }
-        });
-
-        this.tags.value = arr.join(' ');
         this.onHandleCheckEmpty();
         arr = null;
       },
@@ -815,39 +772,31 @@
           urls: totalUrls
         });
       },
-      onHandleDeleteImage(index) {
-        if ((index + 1) <= this.oldUrls.length) {
-          this.oldUrls.splice(index, 1);
-        } else {
-          this.newUrls.splice(index - this.oldUrls.length, 1);
-        }
-        this.totalUrls = this.oldUrls.concat(this.newUrls);
-      },
       onHandleRenderHouse(data) {
         const {
           id, owner, phone, title, price,
-          huxing, mianji, chaoxiang, leixing, zhaungxiu,
-          louceng, xiaoqu, status, addr, addr_sheng,
-          addr_shi, addr_qu, zhifufangshi, chuzufangshi, kanfangshijian,
+          huxing, mianji, nianai, total_price, chaoxiang,
+          leixing, zhaungxiu, louceng, xiaoqu, status,
+          addr, addr_sheng, addr_shi, addr_qu, kanfangshijian,
           agents, tags, fagnwupeizhi, pic_url
         } = data;
         this.id = id;
-        this.xiaoqu = xiaoqu;
         this.phone = phone;
         this.price = price;
         this.title = title;
         this.owner = owner;
+        this.xiaoqu = xiaoqu;
         this.status = status;
         this.mianji = mianji;
+        this.nianfen = nianai;
         this.xiangxidizhi = addr;
         this.huxing.value = huxing;
+        this.total_price = total_price;
         this.dizhi.items = [addr_sheng, addr_shi, addr_qu];
         this.dizhi.value = this.dizhi.items.join('、');
-        this.zhifu.value = zhifufangshi;
         this.chaoxiang.value = chaoxiang;
         this.louceng.value = louceng;
         this.zhuangxiu.value = zhaungxiu;
-        this.chuzufangshi.value = chuzufangshi;
         this.leixing.value = leixing;
         this.kanfangshijian.value = kanfangshijian;
         this.agents.value = agents;
@@ -865,6 +814,14 @@
         });
         this.oldUrls = pic_url;
         this.totalUrls = pic_url.concat(this.newUrls);
+      },
+      onHandleDeleteImage(index) {
+        if ((index + 1) <= this.oldUrls.length) {
+          this.oldUrls.splice(index, 1);
+        } else {
+          this.newUrls.splice(index - this.oldUrls.length, 1);
+        }
+        this.totalUrls = this.oldUrls.concat(this.newUrls);
       },
       exeAjaxSelectDetail(params) {
         this.showLoading('正在加载');
@@ -942,30 +899,31 @@
           });
       },
       getParams() {
+        this.price = (this.total_price * 10000 / this.mianji).toFixed(1);
         const params = {
-          type: 3,
-          status: 1,
+          type: 2,
           id: this.id,
           owner: this.owner,
           phone: this.phone,
           title: this.title,
           price: this.price,
-          huxing: this.huxing.value,
+          status: this.status,
           mianji: this.mianji,
-          chaoxiang: this.chaoxiang.value,
-          leixing: this.leixing.value,
-          zhaungxiu: this.zhuangxiu.value,
-          louceng: this.louceng.value,
           xiaoqu: this.xiaoqu,
+          nianai: this.nianfen,
           addr: this.xiangxidizhi,
+          huxing: this.huxing.value,
+          leixing: this.leixing.value,
+          louceng: this.louceng.value,
+          total_price: this.total_price,
+          chaoxiang: this.chaoxiang.value,
+          zhaungxiu: this.zhuangxiu.value,
           addr_sheng: this.dizhi.items[0],
           addr_shi: this.dizhi.items[1],
           addr_qu: this.dizhi.items[2],
           agency_phone: '18130278679',
           agency_com_name: '广进房产',
           kanfangshijian: this.kanfangshijian.value,
-          zhifufangshi: this.zhifu.value,
-          chuzufangshi: this.chuzufangshi.value,
           tags: this.tags.value,
           agents: this.agents.value,
           fagnwupeizhi: this.fagnwupeizhi.value,

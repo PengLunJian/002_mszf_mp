@@ -580,20 +580,20 @@
       onHandleCheckEmpty() {
         let isBaseEmpty =
           (
-            this.xiaoqu &&
             this.phone &&
             this.title &&
             this.owner &&
+            this.xiaoqu &&
             this.mianji &&
             this.nianfen &&
             this.total_price &&
-            this.huxing.value &&
             this.dizhi.value &&
+            this.huxing.value &&
             this.xiangxidizhi &&
-            this.chaoxiang.value &&
             this.louceng.value &&
-            this.zhuangxiu.value &&
             this.leixing.value &&
+            this.chaoxiang.value &&
+            this.zhuangxiu.value &&
             this.kanfangshijian.value
           );
         let isAgentEmpty = this.agents.value;

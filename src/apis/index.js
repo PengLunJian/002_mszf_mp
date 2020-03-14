@@ -115,6 +115,32 @@ const apis = {
     url: 'house/v1/file/uploadfile',
     params: {}
   },
+  insertAgent: {
+    url: 'auth/company/agency/create',
+    params: {
+      id: 1,
+      com_id: 1,
+      name: '张三',
+      tel: '15044446666',
+      remarks: '好评经纪人，专业挑好房'
+    }
+  },
+  deleteAgent: {
+    url: 'auth/company/agency/delete',
+    params: {
+      id: 1
+    }
+  },
+  updateAgent: {
+    url: 'auth/company/agency/update',
+    params: {
+      id: 1
+    }
+  },
+  selectAgent: {
+    url: 'auth/company/agency/list',
+    params: {}
+  },
   selectHouseDetail: {
     url: 'house/v1/houser/house/detail',
     params: {

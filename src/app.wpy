@@ -34,9 +34,19 @@
       'pages': [
         'pages/select/index',
         'pages/detail/index',
-        'pages/insert/insert-second-house/index',
         'pages/insert/insert-rent-house/index',
-        'pages/update/update-rent-house/index'
+        'pages/update/update-rent-house/index',
+        'pages/insert/insert-second-house/index',
+        'pages/update/update-second-house/index'
+      ]
+    },
+    {
+      'root': 'packageAgent',
+      'pages': [
+        'pages/insert/index',
+        'pages/update/index',
+        'pages/select/index',
+        'pages/detail/index'
       ]
     }
   ],

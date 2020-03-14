@@ -78,7 +78,7 @@
       onHandleUpdateHouse() {
         const {id} = this.item;
         wx.navigateTo({
-          url: $routes.UPDATE_SECOND_HOUSE.path + '?id=' + id
+          url: $routes.UPDATE_HOUSE.secondHouse.path + '?house_id=' + id
         });
       },
       onHandleDetail(id) {

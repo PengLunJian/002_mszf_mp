@@ -1,0 +1,141 @@
+<template>
+  <div class="container">
+    <div class="content">
+      <div class="header">
+        <top-bar title="经纪人添加"></top-bar>
+      </div>
+      <div class="body">
+        <div class="context fade"></div>
+      </div>
+      <div class="footer">
+        <div class="btn btn-insert{{isDisable?'':' disable'}}"
+             @tap="onHandleInsertAgent">添加经纪人
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+  import store from '../../../store/index';
+  import {mapState, mapActions} from '@wepy/redux';
+  import * as controller from './controller';
+  import Toast from '../../../mixins/toast';
+  import Loading from '../../../mixins/loading';
+
+  wepy.page({
+    store,
+
+    mixins: [Toast, Loading],
+
+    data: {
+      com_id: 1,
+      name: '彭伦健',
+      tel: '18130278679',
+      remarks: '优质好房 尽在码上找房'
+    },
+
+    computed: {
+      ...mapState(controller.STATES)
+    },
+
+    methods: {
+      ...mapActions(controller.ACTIONS),
+      onHandleInsertAgent() {
+        this.exeAjaxInsertAgent();
+      },
+      exeAjaxInsertAgent() {
+        this.showLoading();
+        const params = this.getParams();
+        this.ajaxInsertAgent(params)
+          .then((res) => {
+            this.hideLoading();
+            res = res || {};
+            const {success, data} = res.payload;
+            if (success) {
+            } else {
+              this.showToast('添加失败，请重试');
+            }
+          })
+          .catch((err) => {
+            this.hideLoading();
+            this.showToast('添加失败，请重试');
+            console.log(err);
+          });
+      },
+      getParams() {
+        const params = {
+          com_id: this.com_id,
+          name: this.name,
+          tel: this.tel,
+          remarks: this.remarks
+        };
+        return params;
+      }
+    },
+
+    onLoad() {
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../../assets/less/variable";
+  @import "../../../assets/less/iconfont";
+
+  .container {
+    min-height: 100vh;
+    .content {
+      height: 100vh;
+      .header {
+      }
+      .body {
+        height: 100%;
+        position: relative;
+        .context {
+          height: 100%;
+          padding-top: unit(210, rpx);
+          .scroll-view {
+            height: 100%;
+          }
+        }
+      }
+      .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        z-index: 1000;
+        padding: unit(30, rpx);
+        background-color: @white;
+        box-shadow: 0 0 15px @boxShadow05;
+        .btn-insert {
+          overflow: hidden;
+          height: unit(100, rpx);
+          line-height: unit(100, rpx);
+          border-radius: @borderRadius10;
+          background: -webkit-linear-gradient(left, @theme1, @theme2);
+          font-size: @fontSize32;
+          letter-spacing: 1px;
+          text-align: center;
+          color: @white;
+          &.disable {
+            background: @disable;
+            color: @fontColor3;
+          }
+        }
+      }
+    }
+  }
+</style>
+
+<config>
+  {
+  navigationStyle:'custom',
+  usingComponents: {
+  'top-bar': '../../../components/top-bar/top-bar',
+  'lazy-image': '../../../components/lazy-image/lazy-image',
+  }
+  }
+</config>
