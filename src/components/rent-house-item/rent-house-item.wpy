@@ -2,7 +2,7 @@
   <div class="weui-cells">
     <mp-slideview buttons="{{slideButtons}}" @buttontap="onHandleSlideView">
       <div class="item"
-           @tap="onHandleDetail(item.id)">
+           @tap="onHandleSelectDetail(item.id)">
         <div class="item-inner">
           <div class="item-img">
             <lazy-image src="{{item.pic_url[0]}}" mode="aspectFill"/>
@@ -77,12 +77,12 @@
         $parent.onHandleDeleteHouse(params);
       },
       onHandleUpdateHouse() {
-        const {id} = this.item;
+        const query = '?item=' + JSON.stringify(this.item);
         wx.navigateTo({
-          url: $routes.UPDATE_HOUSE.rentHouse.path + '?house_id=' + id
+          url: $routes.UPDATE_HOUSE.rentHouse.path + query
         });
       },
-      onHandleDetail(id) {
+      onHandleSelectDetail(id) {
         // wx.navigateTo({
         //   url: $routes.DETAIL.path + '?house_id=' + id
         // });

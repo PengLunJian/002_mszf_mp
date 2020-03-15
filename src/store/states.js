@@ -1,4 +1,4 @@
-export const LOGIN_STATE = {
+export const SELECT_LOGIN_STATE = {
   isLoading: true,
   isSuccess: false,
   isFailure: false,
@@ -33,7 +33,7 @@ export const UPDATE_HOUSE_STATE = {
   data: null
 };
 
-export const UPLOAD_IMAGE_STATE = {
+export const INSERT_IMAGE_STATE = {
   isLoading: true,
   isSuccess: false,
   isFailure: false,
@@ -69,6 +69,13 @@ export const UPDATE_AGENT_STATE = {
 };
 
 export const SELECT_AGENT_STATE = {
+  isLoading: true,
+  isSuccess: false,
+  isFailure: false,
+  data: null
+};
+
+export const SELECT_AGENT_DETAIL_STATE = {
   isLoading: true,
   isSuccess: false,
   isFailure: false,

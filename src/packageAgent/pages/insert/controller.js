@@ -8,5 +8,6 @@ export const STATES = {
 };
 
 export const ACTIONS = {
-  ajaxInsertAgent: params => actions.ajaxRequestInsertAgent(params)
+  ajaxInsertAgent: params => actions.ajaxRequestInsertAgent(params),
+  ajaxInsertImage: params => actions.ajaxRequestInsertImage(params)
 };

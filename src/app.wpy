@@ -26,7 +26,8 @@
   pages: [
   'pages/login/index',
   'pages/index/index',
-  'pages/upload/index'
+  'pages/upload/index',
+  'pages/edit/index'
   ],
   'subpackages': [
     {

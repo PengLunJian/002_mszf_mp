@@ -9,5 +9,5 @@ export const STATES = {
 
 export const ACTIONS = {
   ajaxInsertHouse: params => actions.ajaxRequestInsertHouse(params),
-  ajaxUploadImage: params => actions.ajaxRequestUploadImage(params)
+  ajaxInsertImage: params => actions.ajaxRequestInsertImage(params)
 };

@@ -12,8 +12,10 @@ const getConfig = (config) => {
   const {method} = config;
   const opts = config.url;
   const {url, params} = opts;
+  const token = utils.getToken('accessToken');
   config.timeout = apis.timeout;
   config.headers = apis.headers;
+  config.headers['Authorization'] = token;
   config.adapter = wepyAxiosAdapter(Axios);
   config.url = apis.baseUrl + url;
   if (method === 'get') {

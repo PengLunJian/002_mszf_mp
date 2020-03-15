@@ -6,10 +6,30 @@
       </div>
       <div class="body">
         <div class="context fade">
-          <scroll-view
-            class="scroll-view"
-            scroll-y="{{isScroll}}">
-            <loading-more :length="isData.rows.length" :totalCount="isData.totalCount"/>
+          <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
+            <div class="scroll-content">
+              <div class="scroll-header"></div>
+              <div class="scroll-body">
+                <div class="module">
+                  <div class="module-content">
+                    <div class="module-header">
+                      <div class="module-title">
+                        <div class="module-row row">
+                          <div class="module-col col-2">照片</div>
+                          <div class="module-col col-3">姓名</div>
+                          <div class="module-col col-4">电话</div>
+                          <div class="module-col col-3">操作</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="module-body">
+                      <wepy-agent-item v-for="(item,index) in isData" :item="item" :key="index"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="scroll-footer"></div>
+            </div>
           </scroll-view>
           <modal :isEnter="isEnter"
                  :isLeave="isLeave"
@@ -74,11 +94,13 @@
           .then((res) => {
             this.hideLoading();
             res = res || {};
-            const {success} = res.payload;
+            const {success, error} = res.payload;
             if (success) {
               this.showToast('经纪人删除成功');
             } else {
-              this.showToast('删除失败，请重试');
+              let {errorMessage} = error;
+              errorMessage = errorMessage || '删除失败，请重试';
+              this.showToast(errorMessage);
             }
             console.log(res);
           })
@@ -119,66 +141,54 @@
     .content {
       height: 100vh;
       .header {
-        .tab-bar {
-          width: 100%;
-          display: flex;
-          flex-wrap: wrap;
-          position: fixed;
-          top: unit(130, rpx);
-          left: 0;
-          z-index: 999;
-          background-color: @white;
-          box-shadow: 0 0 15px @boxShadow05;
-          font-size: @fontSize28;
-          text-align: center;
-          color: @fontColor2;
-          .tab-item {
-            width: 33.333%;
-            position: relative;
-            padding: unit(20, rpx) 0;
-            .tab-text {
-              height: unit(40, rpx);
-              line-height: unit(40, rpx);
-              transition: all 300ms ease;
-              border-right: 0.5px solid @borderColor1;
-            }
-            &:after {
-              content: '';
-              width: 0px;
-              display: block;
-              position: absolute;
-              left: 50%;
-              bottom: 0;
-              opacity: 0;
-              visibility: hidden;
-              transform: translateX(-50%);
-              transition: all 300ms ease;
-              border-top: unit(6, rpx) solid @theme2;
-            }
-            &.active {
-              color: @theme2;
-              &:after {
-                opacity: 1;
-                visibility: visible;
-                width: unit(120, rpx);
-              }
-            }
-            &:last-child {
-              .tab-text {
-                border: none;
-              }
-            }
-          }
-        }
       }
       .body {
         height: 100%;
         position: relative;
         .context {
           height: 100%;
-          padding-top: unit(210, rpx);
+          padding-top: unit(130, rpx);
           .scroll-view {
             height: 100%;
+            .scroll-content {
+              padding: unit(20, rpx) 0;
+              .scroll-header {
+              }
+              .scroll-body {
+                .module {
+                  .module-content {
+                    padding: unit(30, rpx);
+                    .module-header {
+                      line-height: unit(100, rpx);
+                      border-top: 0.5px solid @borderColor1;
+                      border-bottom: 0.5px solid @borderColor1;
+                      background-color: #F5F5F5;
+                      font-size: @fontSize26;
+                      text-align: center;
+                      color: @fontColor2;
+                      font-weight: bold;
+                      .module-row {
+                        .module-col {
+                          border-right: 0.5px solid @borderColor1;
+                          &:first-child {
+                            border-left: 0.5px solid @borderColor1;
+                          }
+                        }
+                      }
+                    }
+                    .module-body {
+                    }
+                    .module-footer {
+                    }
+                  }
+                  &:first-child {
+                    margin: 0;
+                  }
+                }
+              }
+              .scroll-footer {
+              }
+            }
           }
         }
       }
@@ -201,51 +211,6 @@
       }
     }
   }
-
-  /* iPhone X, iPhone XS */
-  @media only screen and (device-width: 375px)and (max-device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
-    .tab-bar {
-      top: 89px !important;
-    }
-
-    .context {
-      padding-top: 129px !important;
-    }
-  }
-
-  /* iPhone XR */
-  @media only screen and (device-width: 414px)and (max-device-height: 896px) and (-webkit-device-pixel-ratio: 2) {
-    .tab-bar {
-      top: 89px !important;
-    }
-
-    .context {
-      padding-top: 129px !important;
-    }
-  }
-
-  /* iPhone XS Max */
-  @media only screen and (device-width: 414px)and (max-device-height: 896px) and (-webkit-device-pixel-ratio: 3) {
-    .tab-bar {
-      top: 89px !important;
-    }
-
-    .context {
-      padding-top: 129px !important;
-    }
-  }
-
-  /* iPhone 6/7/8 Plus */
-  @media only screen and (device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3) {
-    .tab-bar {
-      top: 65px !important;
-    }
-
-    .context {
-      padding-top: 105px !important;
-    }
-  }
-
 </style>
 
 <config>
@@ -253,9 +218,10 @@
   disableScroll:true,
   navigationStyle:'custom',
   usingComponents: {
+  'modal':'../../../components/modal/modal',
   'top-bar': '../../../components/top-bar/top-bar',
   'lazy-image': '../../../components/lazy-image/lazy-image',
-  'modal':'../../../components/modal/modal'
+  'wepy-agent-item': '../../../components/wepy-agent-item/wepy-agent-item'
   }
   }
 </config>

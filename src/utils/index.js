@@ -1,12 +1,32 @@
 import apis from '../apis';
+import * as localStorage from './localStorage';
+
 /**
  *
  * @type {string[]}
  */
 const urls = [
-  'house/v1/file/static/userfile/202003/13/1238374760268992512.jpg',
-  'house/v1/file/static/userfile/202002/09/1226431602998263808.png'
+  '/house/v1/file/static/userfile/202003/13/1238374760268992512.jpg',
+  '/house/v1/file/static/userfile/202002/09/1226431602998263808.png'
 ];
+/**
+ *
+ * @param key
+ * @returns {string}
+ */
+export const getToken = (key) => {
+  const accessToken = localStorage.getItem(key) || '';
+  const token = 'Bearer ' + accessToken;
+  return token;
+};
+/**
+ *
+ * @returns {any}
+ */
+export const getUser = () => {
+  const user = localStorage.getItem('user');
+  return user;
+};
 /**
  *
  * @returns {boolean}

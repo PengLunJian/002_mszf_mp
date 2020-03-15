@@ -109,24 +109,22 @@
           .then((res) => {
             this.hideLoading();
             res = res || {};
-            const {payload} = res;
-            const {error, success} = payload || {};
+            const {error, success, data} = res.payload;
             if (success) {
-              const data = {
-                username: this.username,
-                password: this.password
-              };
+              const {at, rt, user} = data;
+              localStorage.setItem('accessToken', at);
+              localStorage.setItem('refreshToken', rt);
               if (this.checked) {
-                localStorage.setItem('data', data);
+                localStorage.setItem('user', user);
               } else {
-                localStorage.removeItem('data', data);
+                localStorage.removeItem('user', user);
               }
               wx.redirectTo({
                 url: $routes.INDEX.path
               });
             } else {
               const {errorMessage} = error || {};
-              const message = errorMessage || '系统错误，请重试';
+              const message = errorMessage || '登录失败，请重试';
               this.showToast(message);
             }
             console.log(res);
@@ -140,11 +138,11 @@
     },
 
     onLoad() {
-      const user = localStorage.getItem('data');
-      const {username, password} = user || {};
-      if (username && password) {
-        this.username = username;
-        this.password = password;
+      const user = localStorage.getItem('user');
+      const {account, pwd} = user || {};
+      if (account && pwd) {
+        this.username = account;
+        this.password = pwd;
         this.checked = true;
       }
     }

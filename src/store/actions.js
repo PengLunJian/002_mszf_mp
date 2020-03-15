@@ -48,7 +48,7 @@ export const ajaxRequestInsertHouse = createAction(
           const {data, success} = res;
           if (success) {
             commit(actionTypes.INSERT_HOUSE_SUCCESS, data);
-            commit(actionTypes.RESET_INSERT_HOUSE, data);
+            commit(actionTypes.INSERT_HOUSE_REPLACE, data);
           } else {
             commit(actionTypes.INSERT_HOUSE_FAILURE);
           }
@@ -71,7 +71,7 @@ export const ajaxRequestDeleteHouse = createAction(
           const {data, success} = res;
           if (success) {
             commit(actionTypes.DELETE_HOUSE_SUCCESS, data);
-            commit(actionTypes.RESET_DELETE_HOUSE, params);
+            commit(actionTypes.DELETE_HOUSE_REPLACE, params);
           } else {
             commit(actionTypes.DELETE_HOUSE_FAILURE);
           }
@@ -84,12 +84,12 @@ export const ajaxRequestDeleteHouse = createAction(
     });
   });
 
-export const ajaxRequestUploadImage = createAction(
-  'uploadImage', (params) => {
-    commit(actionTypes.UPLOAD_IMAGE_REQUEST);
+export const ajaxRequestInsertImage = createAction(
+  'insertImage', (params) => {
+    commit(actionTypes.INSERT_IMAGE_REQUEST);
     return new Promise((resolve, reject) => {
       const {count, filePath} = params;
-      const url = apis.baseUrl + apis.uploadImage.url;
+      const url = apis.baseUrl + apis.insertImage.url;
       const header = {'Content-Type': 'multipart/form-data'};
       wx.uploadFile({
         url: url,
@@ -101,14 +101,14 @@ export const ajaxRequestUploadImage = createAction(
           const resData = JSON.parse(res.data);
           const {success, data} = resData;
           if (success) {
-            commit(actionTypes.UPLOAD_IMAGE_SUCCESS, data);
+            commit(actionTypes.INSERT_IMAGE_SUCCESS, data);
           } else {
-            commit(actionTypes.UPLOAD_IMAGE_FAILURE);
+            commit(actionTypes.INSERT_IMAGE_FAILURE);
           }
           resolve(resData);
         },
         fail: (err) => {
-          commit(actionTypes.UPLOAD_IMAGE_FAILURE);
+          commit(actionTypes.INSERT_IMAGE_FAILURE);
           reject(err);
         }
       });
@@ -125,7 +125,7 @@ export const ajaxRequestUpdateHouse = createAction(
           const {data, success} = res;
           if (success) {
             commit(actionTypes.UPDATE_HOUSE_SUCCESS, data);
-            commit(actionTypes.RESET_UPDATE_HOUSE, data);
+            commit(actionTypes.UPDATE_HOUSE_REPLACE, data);
           } else {
             commit(actionTypes.UPDATE_HOUSE_FAILURE);
           }
@@ -192,6 +192,7 @@ export const ajaxRequestInsertAgent = createAction(
           const {data, success} = res;
           if (success) {
             commit(actionTypes.INSERT_AGENT_SUCCESS, data);
+            commit(actionTypes.INSERT_AGENT_REPLACE, data);
           } else {
             commit(actionTypes.INSERT_AGENT_FAILURE);
           }
@@ -208,12 +209,13 @@ export const ajaxRequestDeleteAgent = createAction(
   'deleteAgent', (params) => {
     commit(actionTypes.DELETE_AGENT_REQUEST);
     return new Promise((resolve, reject) => {
-      axios.post(apis.deleteAgent, {params})
+      axios.post(apis.deleteAgent, params)
         .then((res) => {
           res = res || {};
           const {data, success} = res;
           if (success) {
             commit(actionTypes.DELETE_AGENT_SUCCESS, data);
+            commit(actionTypes.DELETE_AGENT_REPLACE, params);
           } else {
             commit(actionTypes.DELETE_AGENT_FAILURE);
           }
@@ -230,12 +232,13 @@ export const ajaxRequestUpdateAgent = createAction(
   'updateAgent', (params) => {
     commit(actionTypes.UPDATE_AGENT_REQUEST);
     return new Promise((resolve, reject) => {
-      axios.get(apis.updateAgent, {params})
+      axios.post(apis.updateAgent, params)
         .then((res) => {
           res = res || {};
           const {data, success} = res;
           if (success) {
             commit(actionTypes.UPDATE_AGENT_SUCCESS, data);
+            commit(actionTypes.UPDATE_AGENT_REPLACE, data);
           } else {
             commit(actionTypes.UPDATE_AGENT_FAILURE);
           }
@@ -265,6 +268,28 @@ export const ajaxRequestSelectAgent = createAction(
         })
         .catch((err) => {
           commit(actionTypes.SELECT_AGENT_FAILURE);
+          reject(err);
+        });
+    });
+  });
+
+export const ajaxRequestSelectAgentDetail = createAction(
+  'selectAgentDetail', (params) => {
+    commit(actionTypes.SELECT_AGENT_DETAIL_REQUEST);
+    return new Promise((resolve, reject) => {
+      axios.get(apis.selectAgentDetail, {params})
+        .then((res) => {
+          res = res || {};
+          const {data, success} = res;
+          if (success) {
+            commit(actionTypes.SELECT_AGENT_DETAIL_SUCCESS, data);
+          } else {
+            commit(actionTypes.SELECT_AGENT_DETAIL_FAILURE);
+          }
+          resolve(res);
+        })
+        .catch((err) => {
+          commit(actionTypes.SELECT_AGENT_DETAIL_FAILURE);
           reject(err);
         });
     });

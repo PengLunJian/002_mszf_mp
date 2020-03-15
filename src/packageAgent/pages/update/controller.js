@@ -1,15 +1,13 @@
 import * as actions from '../../../store/actions';
-import * as actionTypes from '../../../store/actionTypes';
 
 export const STATES = {
-  isLoading: state => state.SELECT_HOUSE_REDUCER.isLoading,
-  isSuccess: state => state.SELECT_HOUSE_REDUCER.isSuccess,
-  isFailure: state => state.SELECT_HOUSE_REDUCER.isFailure,
-  isData: state => state.SELECT_HOUSE_REDUCER.data
+  isLoading: state => state.UPDATE_AGENT_REDUCER.isLoading,
+  isSuccess: state => state.UPDATE_AGENT_REDUCER.isSuccess,
+  isFailure: state => state.UPDATE_AGENT_REDUCER.isFailure,
+  isData: state => state.UPDATE_AGENT_REDUCER.data
 };
 
 export const ACTIONS = {
-  resetSelectHouse: actionTypes.RESET_SELECT_HOUSE,
-  ajaxSelectHouse: params => actions.ajaxRequestSelectHouse(params),
-  ajaxDeleteHouse: params => actions.ajaxRequestDeleteHouse(params)
+  ajaxUpdateAgent: params => actions.ajaxRequestUpdateAgent(params),
+  ajaxInsertImage: params => actions.ajaxRequestInsertImage(params)
 };

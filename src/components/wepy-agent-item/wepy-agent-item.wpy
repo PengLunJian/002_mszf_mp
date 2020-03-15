@@ -1,0 +1,101 @@
+<template>
+  <div class="item">
+    <div class="item-row row">
+      <div class="item-col col-2">
+        <div class="item-img">
+          <lazy-image src="{{item.pic_url}}" mode="aspectFill"/>
+        </div>
+      </div>
+      <div class="item-col col-3">
+        <div class="item-name">{{item.name}}</div>
+      </div>
+      <div class="item-col col-4">
+        <div class="item-phone">{{item.tel}}</div>
+      </div>
+      <div class="item-col col-3">
+        <span class="btn-update" @tap="onHandleUpdateAgent">修改</span> /
+        <span class="btn-delete" @tap="onHandleDeleteAgent">删除</span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+  import * as $routes from '../../router';
+
+  wepy.component({
+    data: {},
+    props: {
+      item: {
+        type: Object,
+        default: {}
+      }
+    },
+    events: {},
+    watch: {},
+    methods: {
+      onHandleDeleteAgent() {
+        const params = {id: this.item.id};
+        this.$parent.onHandleDeleteAgent(params);
+      },
+      onHandleUpdateAgent() {
+        const query = '?item=' + JSON.stringify(this.item);
+        wx.navigateTo({
+          url: $routes.UPDATE_AGENT.path + query
+        });
+      },
+      onHandleDetailAgent(id) {
+        // wx.navigateTo({
+        //   url: $routes.DETAIL_AGENT.path + '?id=' + id
+        // });
+      }
+    },
+    created() {
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../assets/less/common";
+  @import "../../assets/less/variable";
+
+  .item {
+    .item-row {
+      line-height: unit(110, rpx);
+      border-bottom: 0.5px solid @borderColor1;
+      background-color: @white;
+      font-size: @fontSize28;
+      text-align: center;
+      color: @fontColor2;
+      .item-img {
+        overflow: hidden;
+        width: unit(70, rpx);
+        height: unit(70, rpx);
+        display: inline-block;
+        vertical-align: middle;
+        border-radius: @borderRadius100;
+      }
+      .item-col {
+        border-right: 0.5px solid @borderColor1;
+        .btn-update {
+          color: @btnUpdate;
+        }
+        .btn-delete {
+          color: @btnDelete;
+        }
+        &:first-child {
+          border-left: 0.5px solid @borderColor1;
+        }
+      }
+    }
+  }
+</style>
+
+<config>
+  {
+  usingComponents: {
+  'lazy-image': '../lazy-image/lazy-image'
+  }
+  }
+</config>

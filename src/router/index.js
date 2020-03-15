@@ -11,6 +11,11 @@ export const UPLOAD = {
   path: '/pages/upload/index'
 };
 
+export const EDIT_CONTENT = {
+  name: '文本编辑',
+  path: '/pages/edit/index'
+};
+
 export const SELECT_USER = {
   name: '用户管理',
   path: '/packageUser/pages/user/index'

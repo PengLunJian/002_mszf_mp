@@ -8,7 +8,8 @@ const actions = {
       ...state,
       isLoading: true,
       isSuccess: false,
-      isFailure: false
+      isFailure: false,
+      data: null
     };
   },
   [actionTypes.SELECT_AGENT_SUCCESS](state, action) {
@@ -26,6 +27,35 @@ const actions = {
       isLoading: false,
       isSuccess: false,
       isFailure: true
+    };
+  },
+  [actionTypes.INSERT_AGENT_REPLACE](state, params) {
+    const oldData = state.data || [];
+    const newData = params.data;
+    const data = oldData.concat(newData);
+    return {
+      ...state,
+      data
+    };
+  },
+  [actionTypes.DELETE_AGENT_REPLACE](state, params) {
+    const oldData = state.data || [];
+    const newData = params.data;
+    const data = oldData.filter((item) => {
+      return item.id !== newData.id;
+    });
+    return {
+      ...state,
+      data
+    };
+  },
+  [actionTypes.UPDATE_AGENT_REPLACE](state, params) {
+    const oldData = state.data || [];
+    const newData = params.data;
+    console.log(state);
+    console.log(params);
+    return {
+      ...state
     };
   }
 };

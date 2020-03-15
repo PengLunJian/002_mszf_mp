@@ -303,7 +303,7 @@
                               </div>
                             </div>
                             <div class="module-col col-4">
-                              <div class="module-btn btn btn-image" @tap="onHandleUploadImage">
+                              <div class="module-btn btn btn-image" @tap="onHandleInsertImage">
                                 <div class="module-icon iconfont icon-insert"></div>
                               </div>
                             </div>
@@ -591,7 +591,7 @@
       totalUrls: [],
       image: {
         count: 0,
-        baseUrl: ''
+        baseUrl: apis.baseUrl
       }
     },
 
@@ -782,15 +782,15 @@
         this.fagnwupeizhi.value = arr.join(' ');
         arr = null;
       },
-      onHandleUploadImage() {
+      onHandleInsertImage() {
         wx.navigateTo({
           url: $routes.UPLOAD.path
         });
       },
       onHandleSubmitHouse() {
-        this.showLoading('正在加载');
+        this.showLoading();
         if (this.newUrls.length) {
-          this.exeAjaxUploadImage();
+          this.exeAjaxInsertImage();
         } else {
           this.exeAjaxUpdateHouse();
         }
@@ -851,7 +851,7 @@
         this.leixing.value = leixing;
         this.kanfangshijian.value = kanfangshijian;
         this.agents.value = agents;
-        this.tags.value = tags;
+        this.tags.value = tags.join(' ');
         this.tags.items.map((item) => {
           if (tags.indexOf(item.label) !== -1) {
             item.checked = true;
@@ -865,26 +865,7 @@
         });
         this.oldUrls = pic_url;
         this.totalUrls = pic_url.concat(this.newUrls);
-      },
-      exeAjaxSelectDetail(params) {
-        this.showLoading('正在加载');
-        this.ajaxSelectHouseDetail(params)
-          .then((res) => {
-            res = res || {};
-            const {success, data} = res.payload;
-            if (success) {
-              this.onHandleRenderHouse(data);
-              this.onHandleCheckEmpty();
-            } else {
-              this.showToast('加载失败，请重试');
-            }
-            this.hideLoading();
-          })
-          .catch((err) => {
-            this.showToast('加载失败，请重试');
-            this.hideLoading();
-            console.log(err);
-          });
+        this.onHandleCheckEmpty();
       },
       exeAjaxUpdateHouse() {
         const params = this.getParams();
@@ -911,11 +892,11 @@
             console.log(err);
           });
       },
-      exeAjaxUploadImage() {
+      exeAjaxInsertImage() {
         let {count, baseUrl} = this.image;
         const filePath = this.newUrls[count];
         const params = {count, filePath};
-        this.ajaxUploadImage(params)
+        this.ajaxInsertImage(params)
           .then((res) => {
             res = res || {};
             const {success, data} = res.payload;
@@ -926,7 +907,7 @@
             if (this.image.count === this.newUrls.length) {
               this.exeAjaxUpdateHouse();
             } else {
-              this.exeAjaxUploadImage();
+              this.exeAjaxInsertImage();
             }
             console.log(res);
           })
@@ -936,7 +917,7 @@
             if (this.image.count === this.newUrls.length) {
               this.exeAjaxUpdateHouse();
             } else {
-              this.exeAjaxUploadImage();
+              this.exeAjaxInsertImage();
             }
             console.log(err);
           });
@@ -986,9 +967,9 @@
     },
 
     onLoad(option) {
-      this.exeAjaxSelectDetail(option);
-      const end = apis.baseUrl.lastIndexOf('/');
-      this.image.baseUrl = apis.baseUrl.substring(0, end);
+      const {item} = option;
+      const data = JSON.parse(item);
+      this.onHandleRenderHouse(data);
     }
   });
 </script>

@@ -34,7 +34,7 @@ const actions = {
       isFailure: true
     };
   },
-  [actionTypes.RESET_INSERT_HOUSE](state, params) {
+  [actionTypes.INSERT_HOUSE_REPLACE](state, params) {
     const {rows, totalCount} = state.data;
     const newRow = utils.dataFilter([params.data]);
     rows.unshift(newRow[0]);
@@ -46,7 +46,7 @@ const actions = {
       data
     };
   },
-  [actionTypes.RESET_DELETE_HOUSE](state, params) {
+  [actionTypes.DELETE_HOUSE_REPLACE](state, params) {
     const {rows, totalCount} = state.data;
     const {id} = params.data;
     const newRows = rows.filter((item) => {
@@ -60,7 +60,7 @@ const actions = {
       data
     };
   },
-  [actionTypes.RESET_UPDATE_HOUSE](state, params) {
+  [actionTypes.UPDATE_HOUSE_REPLACE](state, params) {
     const {rows} = state.data;
     const newRow = utils.dataFilter([params.data]);
     const {id} = newRow[0];

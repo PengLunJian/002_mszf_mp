@@ -1,13 +1,14 @@
 const apis = {
-  baseUrl: 'http://sersms.com:7000/',
+  baseUrl: 'http://sersms.com:7000',
   method: 'POST',
   timeout: 5000,
   dataType: 'json',
   headers: {
+    'Authorization': '',
     'Content-Type': 'application/json; charset=UTF-8'
   },
   insertHouse: {
-    url: 'house/v1/agency/house/detail',
+    url: '/house/v1/agency/house/detail',
     params: {
       pic_url: [
         '/pic/a.jpg',
@@ -42,20 +43,20 @@ const apis = {
     }
   },
   selectLogin: {
-    url: 'auth/account/login',
+    url: '/auth/account/login',
     params: {
       account: '',
       pwd: ''
     }
   },
   deleteHouse: {
-    url: 'house/v1/agency/house/delete',
+    url: '/house/v1/agency/house/delete',
     params: {
       id: 0
     }
   },
   updateHouse: {
-    url: 'house/v1/agency/house/detail',
+    url: '/house/v1/agency/house/detail',
     params: {
       pic_url: [
         '/pic/a.jpg',
@@ -90,7 +91,7 @@ const apis = {
     }
   },
   selectHouse: {
-    url: 'house/v1/houser/house/list',
+    url: '/house/v1/houser/house/list',
     params: {
       page: {
         pageSize: 10,
@@ -111,12 +112,12 @@ const apis = {
       ]
     }
   },
-  uploadImage: {
-    url: 'house/v1/file/uploadfile',
+  insertImage: {
+    url: '/house/v1/file/uploadfile',
     params: {}
   },
   insertAgent: {
-    url: 'auth/company/agency/create',
+    url: '/auth/company/agency/create',
     params: {
       id: 1,
       com_id: 1,
@@ -126,23 +127,23 @@ const apis = {
     }
   },
   deleteAgent: {
-    url: 'auth/company/agency/delete',
+    url: '/auth/company/agency/delete',
     params: {
       id: 1
     }
   },
   updateAgent: {
-    url: 'auth/company/agency/update',
+    url: '/auth/company/agency/update',
     params: {
       id: 1
     }
   },
   selectAgent: {
-    url: 'auth/company/agency/list',
+    url: '/auth/company/agency/list',
     params: {}
   },
   selectHouseDetail: {
-    url: 'house/v1/houser/house/detail',
+    url: '/house/v1/houser/house/detail',
     params: {
       house_id: 2
     }

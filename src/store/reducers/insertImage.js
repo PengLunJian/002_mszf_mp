@@ -3,7 +3,7 @@ import * as actionTypes from '../actionTypes';
 import * as states from '../states';
 
 const actions = {
-  [actionTypes.SELECT_LOGIN_REQUEST](state) {
+  [actionTypes.INSERT_IMAGE_REQUEST](state) {
     return {
       ...state,
       isLoading: true,
@@ -11,7 +11,7 @@ const actions = {
       isFailure: false
     };
   },
-  [actionTypes.SELECT_LOGIN_SUCCESS](state, action) {
+  [actionTypes.INSERT_IMAGE_SUCCESS](state, action) {
     return {
       ...state,
       isLoading: false,
@@ -20,7 +20,7 @@ const actions = {
       data: action.data
     };
   },
-  [actionTypes.SELECT_LOGIN_FAILURE](state) {
+  [actionTypes.INSERT_IMAGE_FAILURE](state) {
     return {
       ...state,
       isLoading: false,
@@ -30,6 +30,6 @@ const actions = {
   }
 };
 
-const LOGIN_REDUCER = handleActions(actions, states.LOGIN_STATE);
+const INSERT_IMAGE_REDUCER = handleActions(actions, states.INSERT_IMAGE_STATE);
 
-export default LOGIN_REDUCER;
+export default INSERT_IMAGE_REDUCER;

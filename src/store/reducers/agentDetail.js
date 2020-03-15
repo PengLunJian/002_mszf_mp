@@ -3,7 +3,7 @@ import * as actionTypes from '../actionTypes';
 import * as states from '../states';
 
 const actions = {
-  [actionTypes.UPLOAD_IMAGE_REQUEST](state) {
+  [actionTypes.SELECT_AGENT_DETAIL_REQUEST](state) {
     return {
       ...state,
       isLoading: true,
@@ -11,7 +11,7 @@ const actions = {
       isFailure: false
     };
   },
-  [actionTypes.UPLOAD_IMAGE_SUCCESS](state, action) {
+  [actionTypes.SELECT_AGENT_DETAIL_SUCCESS](state, action) {
     return {
       ...state,
       isLoading: false,
@@ -20,7 +20,7 @@ const actions = {
       data: action.data
     };
   },
-  [actionTypes.UPLOAD_IMAGE_FAILURE](state) {
+  [actionTypes.SELECT_AGENT_DETAIL_FAILURE](state) {
     return {
       ...state,
       isLoading: false,
@@ -30,6 +30,6 @@ const actions = {
   }
 };
 
-const UPLOAD_IMAGE_REDUCER = handleActions(actions, states.UPLOAD_IMAGE_STATE);
+const SELECT_AGENT_DETAIL_REDUCER = handleActions(actions, states.SELECT_AGENT_DETAIL_STATE);
 
-export default UPLOAD_IMAGE_REDUCER;
+export default SELECT_AGENT_DETAIL_REDUCER;
