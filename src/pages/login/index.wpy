@@ -235,7 +235,7 @@
                       text-align: center;
                       color: #DEDEDE;
                       &.checked {
-                        background-color: @theme2;
+                        background: -webkit-linear-gradient(left, @theme1, @theme2);
                         color: @white;
                       }
                     }
