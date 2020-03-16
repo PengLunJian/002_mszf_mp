@@ -9,19 +9,19 @@
           <div class="module-item col-6">
             <div class="item-info">
               <div class="item-label">总数(新房)</div>
-              <div class="item-value">118</div>
+              <div class="item-value">{{isData.resNew.data.totalCount||0}}</div>
             </div>
           </div>
           <div class="module-item col-6">
             <div class="item-info">
               <div class="item-label">总数(二手房)</div>
-              <div class="item-value">320</div>
+              <div class="item-value">{{isData.resSecond.data.totalCount||0}}</div>
             </div>
           </div>
           <div class="module-item col-6">
             <div class="item-info">
               <div class="item-label">总数(租房)</div>
-              <div class="item-value">518</div>
+              <div class="item-value">{{isData.resRent.data.totalCount||0}}</div>
             </div>
           </div>
           <div class="module-item col-6">
@@ -42,11 +42,16 @@
 
   wepy.component({
     data: {},
-    props: {},
+    props: {
+      isData: {
+        type: Object,
+        default: {}
+      }
+    },
     events: {},
     watch: {},
     methods: {},
-    onLoad() {
+    created() {
     }
   });
 </script>

@@ -1,14 +1,5 @@
-import apis from '../apis';
 import * as localStorage from './localStorage';
 
-/**
- *
- * @type {string[]}
- */
-const urls = [
-  '/house/v1/file/static/userfile/202003/13/1238374760268992512.jpg',
-  '/house/v1/file/static/userfile/202002/09/1226431602998263808.png'
-];
 /**
  *
  * @param key
@@ -69,13 +60,11 @@ export const stringify = (params) => {
  */
 export const dataFilter = (data) => {
   data.map((item) => {
-    let {browsing_time, pic_url, tags} = item;
+    let {browsing_time, tags} = item;
     browsing_time = dateFormat(browsing_time, 'yyyy/mm/dd');
-    pic_url = pic_url.length ? pic_url : [defaultUrl];
     tags = tags.split(' ');
 
     item.browsing_time = browsing_time;
-    item.pic_url = pic_url;
     item.tags = tags;
   });
   return data;
@@ -122,8 +111,3 @@ export const dateFormat = (date, format) => {
   }
   return dateStr;
 };
-/**
- *
- * @type {string}
- */
-export const defaultUrl = apis.baseUrl + urls[0];

@@ -16,6 +16,56 @@ const commit = (type, data) => {
   });
 };
 
+const ajaxRequestSelectCount = (value) => {
+  const params = {
+    filter: [
+      {
+        field: 'type',
+        opt: '=',
+        value
+      }
+    ],
+    sort: [
+      {
+        field: 'id',
+        asc: false
+      }
+    ],
+    only_my: true
+  };
+  return axios.get(apis.selectHouse, {params})
+    .then((res) => {
+      res = res || {};
+      return res;
+    });
+};
+
+export const ajaxRequestSelectIndex = createAction(
+  'selectIndex', () => {
+    commit(actionTypes.SELECT_INDEX_REQUEST);
+    return new Promise((resolve, reject) => {
+      axios.all([
+        ajaxRequestSelectCount(1),
+        ajaxRequestSelectCount(2),
+        ajaxRequestSelectCount(3)
+      ])
+        .then(axios.spread((resNew, resSecond, resRent) => {
+          const newData = {resNew, resSecond, resRent};
+          const success = resNew.success && resSecond.success && resRent.success;
+          if (success) {
+            commit(actionTypes.SELECT_INDEX_SUCCESS, newData);
+          } else {
+            commit(actionTypes.SELECT_INDEX_FAILURE);
+          }
+          resolve(newData);
+        }))
+        .catch((err) => {
+          commit(actionTypes.SELECT_INDEX_FAILURE);
+          reject(err);
+        });
+    });
+  });
+
 export const ajaxRequestSelectLogin = createAction(
   'selectLogin', (params) => {
     commit(actionTypes.SELECT_LOGIN_REQUEST);
@@ -88,13 +138,13 @@ export const ajaxRequestInsertImage = createAction(
   'insertImage', (params) => {
     commit(actionTypes.INSERT_IMAGE_REQUEST);
     return new Promise((resolve, reject) => {
-      const {count, filePath} = params;
+      const {INDEX, filePath} = params;
       const url = apis.baseUrl + apis.insertImage.url;
       const header = {'Content-Type': 'multipart/form-data'};
       wx.uploadFile({
         url: url,
         filePath: filePath,
-        name: 'file' + count,
+        name: 'file' + INDEX,
         header: header,
         success: (res) => {
           res = res || {};
@@ -155,28 +205,6 @@ export const ajaxRequestSelectHouse = createAction(
         })
         .catch((err) => {
           commit(actionTypes.SELECT_HOUSE_FAILURE);
-          reject(err);
-        });
-    });
-  });
-
-export const ajaxRequestSelectHouseDetail = createAction(
-  'selectHouseDetail', (params) => {
-    commit(actionTypes.SELECT_HOUSE_DETAIL_REQUEST);
-    return new Promise((resolve, reject) => {
-      axios.get(apis.selectHouseDetail, {params})
-        .then((res) => {
-          res = res || {};
-          const {data, success} = res;
-          if (success) {
-            commit(actionTypes.SELECT_HOUSE_DETAIL_SUCCESS, data);
-          } else {
-            commit(actionTypes.SELECT_HOUSE_DETAIL_FAILURE);
-          }
-          resolve(res);
-        })
-        .catch((err) => {
-          commit(actionTypes.SELECT_HOUSE_DETAIL_FAILURE);
           reject(err);
         });
     });
@@ -268,6 +296,28 @@ export const ajaxRequestSelectAgent = createAction(
         })
         .catch((err) => {
           commit(actionTypes.SELECT_AGENT_FAILURE);
+          reject(err);
+        });
+    });
+  });
+
+export const ajaxRequestSelectHouseDetail = createAction(
+  'selectHouseDetail', (params) => {
+    commit(actionTypes.SELECT_HOUSE_DETAIL_REQUEST);
+    return new Promise((resolve, reject) => {
+      axios.get(apis.selectHouseDetail, {params})
+        .then((res) => {
+          res = res || {};
+          const {data, success} = res;
+          if (success) {
+            commit(actionTypes.SELECT_HOUSE_DETAIL_SUCCESS, data);
+          } else {
+            commit(actionTypes.SELECT_HOUSE_DETAIL_FAILURE);
+          }
+          resolve(res);
+        })
+        .catch((err) => {
+          commit(actionTypes.SELECT_HOUSE_DETAIL_FAILURE);
           reject(err);
         });
     });

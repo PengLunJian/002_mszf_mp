@@ -3,7 +3,7 @@
     <div class="item-row row">
       <div class="item-col col-2">
         <div class="item-img">
-          <lazy-image src="{{item.pic_url}}" mode="aspectFill"/>
+          <lazy-image src="{{item.photo||defaultAgent}}" mode="aspectFill"/>
         </div>
       </div>
       <div class="item-col col-3">
@@ -23,9 +23,12 @@
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
   import * as $routes from '../../router';
+  import * as $config from '../../config';
 
   wepy.component({
-    data: {},
+    data: {
+      defaultAgent: $config.DEFAULT_AGENT
+    },
     props: {
       item: {
         type: Object,

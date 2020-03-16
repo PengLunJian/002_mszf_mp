@@ -123,7 +123,8 @@
         name: '',
         tel: '',
         remarks: '',
-        pic_url: ''
+        photo: '',
+        detail: ''
       },
       urls: [],
       image: {
@@ -215,7 +216,7 @@
             res = res || {};
             const {success, data} = res.payload;
             if (success) {
-              this.params.pic_url = baseUrl + data;
+              this.params.photo = baseUrl + data;
             }
             this.image.count++;
             if (this.image.count === this.urls.length) {

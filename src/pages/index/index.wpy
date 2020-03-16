@@ -5,12 +5,12 @@
         <top-bar title="码上找房" :isIcon="false"></top-bar>
       </div>
       <div class="body">
-        <div class="context fade">
+        <div class="context fade" v-if="isSuccess">
           <scroll-view
             class="scroll-view"
             scroll-y="{{true}}">
             <div class="scroll-inner">
-              <module-info></module-info>
+              <module-info :isData="isData"></module-info>
               <module-menu></module-menu>
             </div>
           </scroll-view>
@@ -26,11 +26,13 @@
   import store from '../../store';
   import {mapState, mapActions} from '@wepy/redux';
   import * as controller from './controller';
+  import Toast from '../../mixins/toast';
+  import Loading from '../../mixins/loading';
 
   wepy.page({
     store,
 
-    mixins: [],
+    mixins: [Toast, Loading],
 
     data: {},
 
@@ -39,10 +41,45 @@
     },
 
     methods: {
-      ...mapActions(controller.ACTIONS)
+      ...mapActions(controller.ACTIONS),
+      exeAjaxSelectIndex() {
+        this.showLoading();
+        this.ajaxSelectIndex()
+          .then((res) => {
+            this.hideLoading();
+            res = res || {};
+            const {resNew, resSecond, resRent} = res.payload;
+            const success = resNew.success && resSecond.success && resRent.success;
+            if (!success) {
+              this.showToast('加载失败，请重试');
+            }
+            console.log(res);
+          })
+          .catch((err) => {
+            this.hideLoading();
+            this.showToast('加载失败，请重试');
+            console.log(err);
+          });
+      },
+      exeAjaxSelectAgent() {
+        this.ajaxSelectAgent()
+          .then((res) => {
+            res = res || {};
+            const {success} = res.payload;
+            if (!success) {
+              this.showToast('加载失败，请重试');
+            }
+          })
+          .catch((err) => {
+            this.showToast('加载失败，请重试');
+            console.log(err);
+          });
+      }
     },
 
     onLoad() {
+      this.exeAjaxSelectIndex();
+      this.exeAjaxSelectAgent();
     }
   });
 </script>

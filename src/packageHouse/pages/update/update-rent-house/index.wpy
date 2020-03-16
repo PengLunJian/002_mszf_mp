@@ -226,11 +226,11 @@
                                  :key="index" @tap="onHandleAgentSelector(index)">
                               <div class="item-agent flex" :class="{'checked':item.checked}">
                                 <div class="item-img">
-                                  <lazy-image :src="item.url" loadStyle="border-radius:100%;"></lazy-image>
+                                  <lazy-image :src="item.photo||defaultAgent" loadStyle="border-radius:100%;"/>
                                 </div>
                                 <div class="item-info">
-                                  <div class="item-name">{{item.name}}</div>
-                                  <div class="item-phone">{{item.phone}}</div>
+                                  <div class="item-name">{{item.name||noData}}</div>
+                                  <div class="item-phone">{{item.tel||noData}}</div>
                                 </div>
                                 <div class="item-check iconfont icon-right"></div>
                               </div>
@@ -336,8 +336,9 @@
   import {mapState, mapActions} from '@wepy/redux';
   import Toast from '../../../../mixins/toast';
   import Loading from '../../../../mixins/loading';
+  import * as $routes from '../../../../router';
+  import * as $config from '../../../../config';
   import * as controller from './controller';
-  import * as $routes from '../../../../router/index';
 
   wepy.page({
     store,
@@ -345,6 +346,8 @@
     mixins: [Toast, Loading],
 
     data: {
+      noData: '暂无数据',
+      defaultAgent: $config.DEFAULT_AGENT,
       tab: {
         activeIndex: 0,
         items: ['基本信息', '房源配置', '图片上传']
@@ -437,30 +440,8 @@
         ]
       },
       agents: {
-        value: '',
-        items: [
-          {
-            id: 1001,
-            url: '../../assets/images/agent.jpg',
-            name: '彭伦健',
-            phone: '18130278679',
-            checked: false
-          },
-          {
-            id: 1002,
-            url: '../../assets/images/agent.jpg',
-            name: '彭伦健',
-            phone: '18130278679',
-            checked: false
-          },
-          {
-            id: 1003,
-            url: '../../assets/images/agent.jpg',
-            name: '彭伦健',
-            phone: '18130278679',
-            checked: false
-          }
-        ]
+        value: [],
+        items: []
       },
       tags: {
         value: '',
@@ -624,8 +605,8 @@
             this.leixing.value &&
             this.kanfangshijian.value
           );
-        let isAgentEmpty = this.agents.value;
         let isTagsEmpty = this.tags.value;
+        let isAgentEmpty = this.agents.value.length;
         this.isDisable = isBaseEmpty && isAgentEmpty && isTagsEmpty;
         return {
           isBaseEmpty,
@@ -739,11 +720,13 @@
 
         this.agents.items.map((item) => {
           if (item.checked) {
-            arr.push(item.id);
+            const temp = Object.assign({}, item);
+            delete temp.checked;
+            arr.push(temp);
           }
         });
 
-        this.agents.value = arr.join(' ');
+        this.agents.value = arr;
         this.onHandleCheckEmpty();
         arr = null;
       },
@@ -829,7 +812,7 @@
           huxing, mianji, chaoxiang, leixing, zhaungxiu,
           louceng, xiaoqu, status, addr, addr_sheng,
           addr_shi, addr_qu, zhifufangshi, chuzufangshi, kanfangshijian,
-          agents, tags, fagnwupeizhi, pic_url
+          agency, tags, fagnwupeizhi, pic_url
         } = data;
         this.id = id;
         this.xiaoqu = xiaoqu;
@@ -850,12 +833,24 @@
         this.chuzufangshi.value = chuzufangshi;
         this.leixing.value = leixing;
         this.kanfangshijian.value = kanfangshijian;
-        this.agents.value = agents;
         this.tags.value = tags.join(' ');
         this.tags.items.map((item) => {
           if (tags.indexOf(item.label) !== -1) {
             item.checked = true;
           }
+        });
+        this.agents.value = agency || [];
+        const agents = this.isAgent.map((item) => {
+          const temp = Object.assign({checked: false}, item);
+          return temp;
+        });
+        this.agents.items = agents;
+        this.agents.value.map((j) => {
+          this.agents.items.map((k) => {
+            if (j.id === k.id) {
+              k.checked = true;
+            }
+          });
         });
         this.fagnwupeizhi.value = fagnwupeizhi;
         this.fagnwupeizhi.items.map((item) => {
@@ -948,7 +943,7 @@
           zhifufangshi: this.zhifu.value,
           chuzufangshi: this.chuzufangshi.value,
           tags: this.tags.value,
-          agents: this.agents.value,
+          agency: this.agents.value,
           fagnwupeizhi: this.fagnwupeizhi.value,
           pic_url: this.oldUrls
         };

@@ -216,13 +216,13 @@
                             <div class="module-col col-12"
                                  v-for="(item,index) in agents.items"
                                  :key="index" @tap="onHandleAgentSelector(index)">
-                              <div class="item-agent flex" :class="{'checked':item.checked}">
+                              <div class="item-agent row" :class="{'checked':item.checked}">
                                 <div class="item-img">
-                                  <lazy-image :src="item.url" loadStyle="border-radius:100%;"></lazy-image>
+                                  <lazy-image :src="item.photo||defaultAgent" loadStyle="border-radius:100%;"/>
                                 </div>
                                 <div class="item-info">
-                                  <div class="item-name">{{item.name}}</div>
-                                  <div class="item-phone">{{item.phone}}</div>
+                                  <div class="item-name">{{item.name||noData}}</div>
+                                  <div class="item-phone">{{item.tel||noData}}</div>
                                 </div>
                                 <div class="item-check iconfont icon-right"></div>
                               </div>
@@ -328,8 +328,9 @@
   import {mapState, mapActions} from '@wepy/redux';
   import Toast from '../../../../mixins/toast';
   import Loading from '../../../../mixins/loading';
+  import * as $routes from '../../../../router';
+  import * as $config from '../../../../config';
   import * as controller from './controller';
-  import * as $routes from '../../../../router/index';
 
   wepy.page({
     store,
@@ -337,6 +338,8 @@
     mixins: [Toast, Loading],
 
     data: {
+      noData: '暂无数据',
+      defaultAgent: $config.DEFAULT_AGENT,
       tab: {
         activeIndex: 0,
         items: ['基本信息', '房源配置', '图片上传']
@@ -407,30 +410,8 @@
         ]
       },
       agents: {
-        value: '',
-        items: [
-          {
-            id: 1001,
-            url: '../../assets/images/agent.jpg',
-            name: '彭伦健',
-            phone: '18130278679',
-            checked: false
-          },
-          {
-            id: 1002,
-            url: '../../assets/images/agent.jpg',
-            name: '彭伦健',
-            phone: '18130278679',
-            checked: false
-          },
-          {
-            id: 1003,
-            url: '../../assets/images/agent.jpg',
-            name: '彭伦健',
-            phone: '18130278679',
-            checked: false
-          }
-        ]
+        value: [],
+        items: []
       },
       tags: {
         value: '',
@@ -596,8 +577,8 @@
             this.zhuangxiu.value &&
             this.kanfangshijian.value
           );
-        let isAgentEmpty = this.agents.value;
         let isTagsEmpty = this.tags.value;
+        let isAgentEmpty = this.agents.value.length;
         this.isDisable = isBaseEmpty && isAgentEmpty && isTagsEmpty;
         return {
           isBaseEmpty,
@@ -697,11 +678,12 @@
 
         this.agents.items.map((item) => {
           if (item.checked) {
-            arr.push(item.id);
+            const temp = Object.assign({}, item);
+            delete temp.checked;
+            arr.push(temp);
           }
         });
-
-        this.agents.value = arr.join(' ');
+        this.agents.value = arr;
         this.onHandleCheckEmpty();
         arr = null;
       },
@@ -754,7 +736,7 @@
         }
       },
       onHandleSubmitHouse() {
-        this.showLoading('正在加载');
+        this.showLoading();
         if (this.items.length) {
           this.exeAjaxInsertImage();
         } else {
@@ -774,6 +756,13 @@
       },
       onHandleDeleteImage(index) {
         this.items.splice(index, 1);
+      },
+      onHandleRenderAgent() {
+        const items = this.isAgent.map((item) => {
+          const temp = Object.assign({checked: false}, item);
+          return temp;
+        });
+        this.agents.items = items;
       },
       exeAjaxInsertHouse() {
         const params = this.getParams();
@@ -856,7 +845,7 @@
           agency_com_name: '广进房产',
           kanfangshijian: this.kanfangshijian.value,
           tags: this.tags.value,
-          agents: this.agents.value,
+          agency: this.agents.value,
           fagnwupeizhi: this.fagnwupeizhi.value,
           pic_url: this.pic_url
         };
@@ -874,6 +863,7 @@
     },
 
     onLoad() {
+      this.onHandleRenderAgent();
     }
   });
 </script>

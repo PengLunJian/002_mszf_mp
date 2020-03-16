@@ -175,7 +175,8 @@
               field: 'id',
               asc: false
             }
-          ]
+          ],
+          only_my: true
         };
         return params;
       }

@@ -1,5 +1,5 @@
 const apis = {
-  baseUrl: 'http://sersms.com:7000',
+  baseUrl: 'http://fang.sersms.com:7000',
   method: 'POST',
   timeout: 5000,
   dataType: 'json',
@@ -109,7 +109,8 @@ const apis = {
           field: 'id',
           asc: false
         }
-      ]
+      ],
+      only_my: true
     }
   },
   insertImage: {

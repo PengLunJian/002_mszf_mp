@@ -123,7 +123,8 @@
         name: '',
         tel: '',
         remarks: '',
-        pic_url: ''
+        photo: '',
+        detail: ''
       },
       urls: [],
       image: {
@@ -175,6 +176,7 @@
       },
       onHandleDeleteImage(index) {
         this.urls.splice(index, 1);
+        this.params.photo = '';
       },
       onHandleInsertImage() {
         wx.navigateTo({
@@ -183,14 +185,15 @@
       },
       onHandleRenderAgent(data) {
         const {
-          id, com_id, name, tel, remarks, pic_url
+          id, com_id, name, tel, remarks, photo
         } = data;
         this.params.id = id;
         this.params.tel = tel;
         this.params.name = name;
         this.params.com_id = com_id;
         this.params.remarks = remarks;
-        this.params.pic_url = pic_url;
+        this.params.photo = photo;
+        this.urls = photo ? [photo] : [];
         this.onHandleCheckEmpty();
       },
       exeAjaxInsertImage() {
@@ -202,11 +205,11 @@
             res = res || {};
             const {success, data} = res.payload;
             if (success) {
-              this.params.pic_url = baseUrl + data;
+              this.params.photo = baseUrl + data;
             }
             this.image.count++;
-            if (this.image.count === this.urls.length) {
-              this.exeAjaxInsertAgent();
+            if (this.image.count >= this.urls.length) {
+              this.exeAjaxUpdateAgent();
             } else {
               this.exeAjaxInsertImage();
             }
@@ -215,8 +218,8 @@
           .catch((err) => {
             this.showToast('第' + count + '张图片上传失败');
             this.image.count++;
-            if (this.image.count === this.urls.length) {
-              this.exeAjaxInsertAgent();
+            if (this.image.count >= this.urls.length) {
+              this.exeAjaxUpdateAgent();
             } else {
               this.exeAjaxInsertImage();
             }

@@ -81,3 +81,10 @@ export const SELECT_AGENT_DETAIL_STATE = {
   isFailure: false,
   data: null
 };
+
+export const SELECT_INDEX_STATE = {
+  isLoading: true,
+  isSuccess: false,
+  isFailure: false,
+  data: null
+};

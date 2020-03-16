@@ -52,10 +52,15 @@ const actions = {
   [actionTypes.UPDATE_AGENT_REPLACE](state, params) {
     const oldData = state.data || [];
     const newData = params.data;
-    console.log(state);
-    console.log(params);
+    const data = oldData.map((item) => {
+      if (item.id === newData.id) {
+        item = newData;
+      }
+      return item;
+    });
     return {
-      ...state
+      ...state,
+      data
     };
   }
 };

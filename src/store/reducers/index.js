@@ -9,6 +9,7 @@ import INSERT_AGENT_REDUCER from './insertAgent';
 import DELETE_AGENT_REDUCER from './deleteAgent';
 import UPDATE_AGENT_REDUCER from './updateAgent';
 import SELECT_AGENT_REDUCER from './selectAgent';
+import SELECT_INDEX_REDUCER from './selectIndex';
 import SELECT_HOUSE_DETAIL_REDUCER from './houseDetail';
 import SELECT_AGENT_DETAIL_REDUCER from './agentDetail';
 
@@ -23,6 +24,7 @@ export default combineReducers({
   DELETE_AGENT_REDUCER,
   UPDATE_AGENT_REDUCER,
   SELECT_AGENT_REDUCER,
+  SELECT_INDEX_REDUCER,
   SELECT_HOUSE_DETAIL_REDUCER,
   SELECT_AGENT_DETAIL_REDUCER
 });

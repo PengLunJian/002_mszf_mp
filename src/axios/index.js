@@ -11,7 +11,7 @@ import wepyAxiosAdapter from 'wepy-plugin-axios/dist/adapter';
 const getConfig = (config) => {
   const {method} = config;
   const opts = config.url;
-  const {url, params} = opts;
+  const {url} = opts;
   const token = utils.getToken('accessToken');
   config.timeout = apis.timeout;
   config.headers = apis.headers;
@@ -19,7 +19,7 @@ const getConfig = (config) => {
   config.adapter = wepyAxiosAdapter(Axios);
   config.url = apis.baseUrl + url;
   if (method === 'get') {
-    config.params = Object.assign(params, config.params);
+    config.params = Object.assign({}, config.params);
     config.params = utils.stringify(config.params);
   }
   return config;
@@ -39,14 +39,14 @@ Axios.interceptors.response.use(
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(response.data);
-      }, 1000);
+      }, 500);
     });
   },
   (error) => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(error.response);
-      }, 1000);
+      }, 500);
     });
   });
 
