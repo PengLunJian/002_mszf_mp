@@ -106,6 +106,9 @@ export const dateFormat = (date, format) => {
       case 'yyyy-mm-dd':
         dateStr = year + '-' + monthStr + '-' + dayStr;
         break;
+      case 'zh-cn':
+        dateStr = year + '年' + monthStr + '月' + dayStr + '日';
+        break;
     }
     newDate = null;
   }

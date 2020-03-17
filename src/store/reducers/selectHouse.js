@@ -35,26 +35,24 @@ const actions = {
     };
   },
   [actionTypes.INSERT_HOUSE_REPLACE](state, params) {
-    const {rows, totalCount} = state.data;
+    let {rows, totalCount} = state.data;
     const newRow = utils.dataFilter([params.data]);
     rows.unshift(newRow[0]);
-    const newTotalCount = totalCount + 1;
-    const newData = {rows: rows, totalCount: newTotalCount};
-    const data = Object.assign(state.data, newData);
+    totalCount++;
+    const data = {rows, totalCount};
     return {
       ...state,
       data
     };
   },
   [actionTypes.DELETE_HOUSE_REPLACE](state, params) {
-    const {rows, totalCount} = state.data;
+    let {rows, totalCount} = state.data;
     const {id} = params.data;
     const newRows = rows.filter((item) => {
       return item.id !== id;
     });
-    const newTotalCount = totalCount - 1;
-    const newData = {rows: newRows, totalCount: newTotalCount};
-    const data = Object.assign(state.data, newData);
+    totalCount--;
+    const data = {rows: newRows, totalCount};
     return {
       ...state,
       data
@@ -69,8 +67,7 @@ const actions = {
         rows[index] = newRow[0];
       }
     });
-    const newData = {rows: rows};
-    const data = Object.assign(state.data, newData);
+    const data = {rows};
     return {
       ...state,
       data

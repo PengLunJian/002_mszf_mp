@@ -3,7 +3,7 @@
     <div class="item-row row">
       <div class="item-col col-2">
         <div class="item-img">
-          <lazy-image src="{{item.photo||defaultAgent}}" mode="aspectFill"/>
+          <lazy-image src="{{item.photo||defaultAgent}}" loadStyle="border-radius:100%;"/>
         </div>
       </div>
       <div class="item-col col-3">

@@ -121,7 +121,7 @@ export const ajaxRequestDeleteHouse = createAction(
           const {data, success} = res;
           if (success) {
             commit(actionTypes.DELETE_HOUSE_SUCCESS, data);
-            commit(actionTypes.DELETE_HOUSE_REPLACE, params);
+            commit(actionTypes.DELETE_HOUSE_REPLACE, data);
           } else {
             commit(actionTypes.DELETE_HOUSE_FAILURE);
           }

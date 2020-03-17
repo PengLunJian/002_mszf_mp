@@ -67,7 +67,7 @@
                     <div class="module-body">
                       <div class="module-images">
                         <div class="module-row row">
-                          <div class="module-col col-4" v-for="(item,index) in urls" :key="index">
+                          <div class="module-col col-4" v-for="(item,index) in totalUrls" :key="index">
                             <div class="module-item" @tap="onHandleShowImage(index)">
                               <div class="btn-delete iconfont icon-delete"
                                    @tap.stop="onHandleDeleteImage(index)"></div>
@@ -126,7 +126,9 @@
         photo: '',
         detail: ''
       },
-      urls: [],
+      oldUrls: [],
+      newUrls: [],
+      totalUrls: [],
       image: {
         count: 0,
         baseUrl: apis.baseUrl
@@ -162,20 +164,23 @@
       },
       onHandleSubmitAgent() {
         this.showLoading();
-        if (this.urls.length) {
+        if (this.newUrls.length) {
           this.exeAjaxInsertImage();
         } else {
           this.exeAjaxUpdateAgent();
         }
       },
       onHandleShowImage(index) {
+        const {totalUrls} = this;
         wx.previewImage({
-          current: this.urls[index],
-          urls: this.urls
+          current: totalUrls[index],
+          urls: totalUrls
         });
       },
-      onHandleDeleteImage(index) {
-        this.urls.splice(index, 1);
+      onHandleDeleteImage() {
+        this.oldUrls = [];
+        this.newUrls = [];
+        this.totalUrls = [];
         this.params.photo = '';
       },
       onHandleInsertImage() {
@@ -193,12 +198,13 @@
         this.params.com_id = com_id;
         this.params.remarks = remarks;
         this.params.photo = photo;
-        this.urls = photo ? [photo] : [];
+        this.oldUrls = photo ? [photo] : [];
+        this.totalUrls = this.oldUrls;
         this.onHandleCheckEmpty();
       },
       exeAjaxInsertImage() {
         let {count, baseUrl} = this.image;
-        const filePath = this.urls[count];
+        const filePath = this.newUrls[count];
         const params = {count, filePath};
         this.ajaxInsertImage(params)
           .then((res) => {
@@ -208,7 +214,7 @@
               this.params.photo = baseUrl + data;
             }
             this.image.count++;
-            if (this.image.count >= this.urls.length) {
+            if (this.image.count === this.newUrls.length) {
               this.exeAjaxUpdateAgent();
             } else {
               this.exeAjaxInsertImage();
@@ -218,7 +224,7 @@
           .catch((err) => {
             this.showToast('第' + count + '张图片上传失败');
             this.image.count++;
-            if (this.image.count >= this.urls.length) {
+            if (this.image.count === this.newUrls.length) {
               this.exeAjaxUpdateAgent();
             } else {
               this.exeAjaxInsertImage();
@@ -260,7 +266,8 @@
       const {$path} = this.$app;
       if ($path) {
         const {path} = $path;
-        this.urls = [path];
+        this.newUrls = [path];
+        this.totalUrls = this.newUrls;
         this.$app.$path = null;
       }
     },

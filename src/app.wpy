@@ -35,10 +35,12 @@
       'pages': [
         'pages/select/index',
         'pages/detail/index',
-        'pages/insert/insert-rent-house/index',
-        'pages/update/update-rent-house/index',
+        'pages/insert/insert-new-house/index',
+        'pages/update/update-new-house/index',
         'pages/insert/insert-second-house/index',
-        'pages/update/update-second-house/index'
+        'pages/update/update-second-house/index',
+        'pages/insert/insert-rent-house/index',
+        'pages/update/update-rent-house/index'
       ]
     },
     {
