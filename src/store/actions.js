@@ -138,14 +138,14 @@ export const ajaxRequestInsertImage = createAction(
   'insertImage', (params) => {
     commit(actionTypes.INSERT_IMAGE_REQUEST);
     return new Promise((resolve, reject) => {
-      const {INDEX, filePath} = params;
+      const {filePath} = params;
       const url = apis.baseUrl + apis.insertImage.url;
       const header = {'Content-Type': 'multipart/form-data'};
       wx.uploadFile({
         url: url,
-        filePath: filePath,
-        name: 'file' + INDEX,
+        name: 'file',
         header: header,
+        filePath: filePath,
         success: (res) => {
           res = res || {};
           const resData = JSON.parse(res.data);

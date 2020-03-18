@@ -80,3 +80,8 @@ export const SELECT_AGENT = {
   name: '经纪人管理',
   path: '/packageAgent/pages/select/index'
 };
+
+export const INSERT_LAYOUT = {
+  name: '主力户型',
+  path: '/packageHouse/pages/layout/index'
+};

@@ -1,8 +1,7 @@
 <template>
   <div class="weui-cells">
     <mp-slideview buttons="{{slideButtons}}" @buttontap="onHandleSlideView">
-      <div class="item"
-           @tap="onHandleSelectDetail(item.id)">
+      <div class="item" @tap="onHandleSelectDetail(item.id)">
         <div class="item-inner">
           <div class="item-img">
             <lazy-image src="{{item.pic_url[0]||defaultHouse}}" mode="aspectFill"/>
@@ -131,8 +130,8 @@
             height: unit(40, rpx);
             line-height: unit(40, rpx);
             font-size: @fontSize32;
-            font-weight: bold;
             color: @fontColor1;
+            font-weight: bold;
           }
           .item-addr,
           .item-size {

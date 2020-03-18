@@ -93,7 +93,7 @@
       </div>
       <div class="footer">
         <div class="btn btn-insert{{isDisable?'':' disable'}}"
-             @tap="onHandleInsertAgent">添加经纪人
+             @tap="onHandleInsertAgent">保存
         </div>
       </div>
     </div>
@@ -347,7 +347,7 @@
                               padding: unit(20, rpx);
                               border: 0.5px solid @borderColor2;
                               border-radius: @borderRadius10;
-                              background-color: @bgColor;
+                              background-color: @bgEdit;
                               font-size: @fontSize32;
                               color: @fontColor1;
                               .textarea {

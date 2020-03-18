@@ -25,18 +25,18 @@
                           <div class="form-row row">
                             <div class="form-col col-12">
                               <div class="form-group">
-                                <label class="form-label">小区名</label>
-                                <input class="form-input" v-model="xiaoqu" type="text"
-                                       placeholder="金峰万象"
-                                       @input="onHandleCheckEmpty"/>
+                                <label class="form-label">状态</label>
+                                <input class="form-input" v-model="status.items[status.value]"
+                                       disabled="{{true}}" type="text" placeholder="小区"
+                                       @tap="onHandleShowStatus"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
                             <div class="form-col col-12">
                               <div class="form-group">
-                                <label class="form-label">房源简介</label>
-                                <input class="form-input" v-model="title" type="text"
-                                       placeholder="万象小区 南向两居室 精装修"
+                                <label class="form-label">小区名</label>
+                                <input class="form-input" v-model="xiaoqu" type="text"
+                                       placeholder="金峰万象"
                                        @input="onHandleCheckEmpty"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
@@ -75,33 +75,33 @@
                           <div class="form-row row">
                             <div class="form-col col-12">
                               <div class="form-group">
-                                <label class="form-label">房主称谓</label>
-                                <input class="form-input" v-model="owner" type="text" placeholder="彭先生"
+                                <label class="form-label">联系人</label>
+                                <input class="form-input" v-model="owner" type="text" placeholder="房源联系人姓名"
                                        @input="onHandleCheckEmpty"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
                             <div class="form-col col-12">
                               <div class="form-group">
-                                <label class="form-label">房主电话</label>
+                                <label class="form-label">电话</label>
                                 <input class="form-input" v-model="phone" type="number"
-                                       placeholder="18130278679"
+                                       placeholder="房源联系人电话"
                                        @input="onHandleCheckEmpty"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
                             <div class="form-col col-12">
                               <div class="form-group">
-                                <label class="form-label">租金</label>
+                                <label class="form-label">售价</label>
                                 <input class="form-input" v-model="price" type="number"
-                                       placeholder="元/月"
+                                       placeholder="元/m²"
                                        @input="onHandleCheckEmpty"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
                             <div class="form-col col-12">
                               <div class="form-group">
-                                <label class="form-label">面积</label>
+                                <label class="form-label">建面</label>
                                 <input class="form-input" v-model="mianji" type="digit"
                                        placeholder="m²"
                                        @input="onHandleCheckEmpty"/>
@@ -120,40 +120,40 @@
                         <div class="module-base">
                           <div class="form-row row">
                             <div class="form-col col-12">
-                              <picker mode="multiSelector" @change="onHandleHuXingChange"
-                                      value="{{huxing.index}}" range="{{huxing.items}}">
+                              <div class="form-group">
+                                <label class="form-label">户型</label>
+                                <input class="form-input" v-model="huxing" type="text"
+                                       placeholder="1/2/3室"/>
+                                <span class="form-next iconfont icon-next"></span>
+                              </div>
+                            </div>
+                            <div class="form-col col-12">
+                              <div class="form-group">
+                                <label class="form-label">类型</label>
+                                <input class="form-input" v-model="leixing.value" disabled="{{true}}" type="text"
+                                       placeholder="小区"
+                                       @tap="onHandleShowLeiXing"/>
+                                <span class="form-next iconfont icon-next"></span>
+                              </div>
+                            </div>
+                            <div class="form-col col-12">
+                              <picker mode="date" fields="day" value="{{kaipan}}"
+                                      @change="onHandleShowKaiPan">
                                 <div class="form-group">
-                                  <label class="form-label">户型</label>
-                                  <input class="form-input" v-model="huxing.value" disabled="{{true}}" type="text"
-                                         placeholder="2室1厅1卫"/>
+                                  <label class="form-label">开盘</label>
+                                  <input class="form-input" v-model="kaipan" disabled="{{true}}" type="text"
+                                         placeholder="2019年01月01日"/>
                                   <span class="form-next iconfont icon-next"></span>
                                 </div>
                               </picker>
                             </div>
                             <div class="form-col col-12">
-                              <div class="form-group">
-                                <label class="form-label">朝向</label>
-                                <input class="form-input" v-model="chaoxiang.value" disabled="{{true}}" type="text"
-                                       placeholder="朝南" @tap="onHandleShowChaoXiang"/>
-                                <span class="form-next iconfont icon-next"></span>
-                              </div>
-                            </div>
-                            <div class="form-col col-12">
-                              <div class="form-group">
-                                <label class="form-label">看房</label>
-                                <input class="form-input" v-model="kanfangshijian.value" disabled="{{true}}" type="text"
-                                       placeholder="随时看房"
-                                       @tap="onHandleShowKanFangShiJian"/>
-                                <span class="form-next iconfont icon-next"></span>
-                              </div>
-                            </div>
-                            <div class="form-col col-12">
-                              <picker mode="multiSelector" @change="onHandleZhiFuChange"
-                                      value="{{zhifu.index}}" range="{{zhifu.items}}">
+                              <picker mode="date" fields="day" value="{{jiaofang}}"
+                                      @change="onHandleShowJiaoFang">
                                 <div class="form-group">
-                                  <label class="form-label">支付</label>
-                                  <input class="form-input" v-model="zhifu.value" disabled="{{true}}" type="text"
-                                         placeholder="押1付3"/>
+                                  <label class="form-label">交房</label>
+                                  <input class="form-input" v-model="jiaofang" disabled="{{true}}" type="text"
+                                         placeholder="2019年01月01日"/>
                                   <span class="form-next iconfont icon-next"></span>
                                 </div>
                               </picker>
@@ -166,43 +166,17 @@
                   </div>
                   <div class="module">
                     <div class="module-content">
+                      <div class="module-header">
+                        <div class="module-title">房源简介</div>
+                      </div>
                       <div class="module-body">
-                        <div class="module-base">
+                        <div class="module-edit">
                           <div class="form-row row">
                             <div class="form-col col-12">
                               <div class="form-group">
-                                <label class="form-label">楼层</label>
-                                <input class="form-input" v-model="louceng.value" disabled="{{true}}" type="text"
-                                       placeholder="低楼层"
-                                       @tap="onHandleShowLouCeng"/>
-                                <span class="form-next iconfont icon-next"></span>
-                              </div>
-                            </div>
-                            <div class="form-col col-12">
-                              <div class="form-group">
-                                <label class="form-label">装修</label>
-                                <input class="form-input" v-model="zhuangxiu.value" disabled="{{true}}" type="text"
-                                       placeholder="精装"
-                                       @tap="onHandleShowZhuangXiu"/>
-                                <span class="form-next iconfont icon-next"></span>
-                              </div>
-                            </div>
-                            <div class="form-col col-12">
-                              <div class="form-group">
-                                <label class="form-label">方式</label>
-                                <input class="form-input" v-model="chuzufangshi.value" disabled="{{true}}" type="text"
-                                       placeholder="整租"
-                                       @tap="onHandleShowChuZuFangShi"/>
-                                <span class="form-next iconfont icon-next"></span>
-                              </div>
-                            </div>
-                            <div class="form-col col-12">
-                              <div class="form-group">
-                                <label class="form-label">类型</label>
-                                <input class="form-input" v-model="leixing.value" disabled="{{true}}" type="text"
-                                       placeholder="小区"
-                                       @tap="onHandleShowLeiXing"/>
-                                <span class="form-next iconfont icon-next"></span>
+                                <textarea class="textarea" v-model="title" type="text"
+                                          placeholder="万象小区 南向两居室 精装修 拎包入住"
+                                          @input="onHandleCheckEmpty"/>
                               </div>
                             </div>
                           </div>
@@ -216,7 +190,7 @@
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
-                        <div class="module-title">推荐经纪人</div>
+                        <div class="module-title">置业顾问</div>
                       </div>
                       <div class="module-body">
                         <div class="module-agents">
@@ -224,7 +198,7 @@
                             <div class="module-col col-12"
                                  v-for="(item,index) in agents.items"
                                  :key="index" @tap="onHandleAgentSelector(index)">
-                              <div class="item-agent flex" :class="{'checked':item.checked}">
+                              <div class="module-item row" :class="{'checked':item.checked}">
                                 <div class="item-img">
                                   <lazy-image :src="item.photo||defaultAgent" loadStyle="border-radius:100%;"/>
                                 </div>
@@ -233,6 +207,11 @@
                                   <div class="item-phone">{{item.tel||noData}}</div>
                                 </div>
                                 <div class="item-check iconfont icon-right"></div>
+                              </div>
+                            </div>
+                            <div class="module-col col-4" v-if="!isAgent">
+                              <div class="module-btn btn btn-agent" @tap="onHandleInsertAgent">
+                                <div class="module-icon iconfont icon-insert"></div>
                               </div>
                             </div>
                           </div>
@@ -265,18 +244,33 @@
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
-                        <div class="module-title">房源配置</div>
+                        <div class="module-title">主力户型</div>
                       </div>
                       <div class="module-body">
-                        <div class="module-configs">
+                        <div class="module-layouts">
                           <div class="module-row row">
-                            <div class="module-col col-3"
-                                 v-for="(item,index) in fagnwupeizhi.items"
-                                 :key="index" @tap="onHandleConfigSelector(index)">
-                              <div class="item-config" :class="{'checked':item.checked}">
-                                <div class="item-check iconfont icon-right"></div>
-                                <div class="item-icon iconfont {{item.icon}}"></div>
-                                <div class="item-label">{{item.label}}</div>
+                            <div class="module-col col-4"
+                                 v-for="(item,index) in layouts" :key="index">
+                              <div class="module-item">
+                                <div class="item-img">
+                                  <lazy-image :src="item.pic"/>
+                                </div>
+                                <div class="item-info">
+                                  <div class="item-row row">
+                                    <div class="item-title">{{item.title}}</div>
+                                    <div class="item-size">{{item.mianji}}m²</div>
+                                  </div>
+                                  <div class="item-row row">
+                                    <div class="item-state state1" v-if="item.tags==='在售'">{{item.tags}}</div>
+                                    <div class="item-state state2" v-if="item.tags==='待售'">{{item.tags}}</div>
+                                    <div class="item-state state3" v-if="item.tags==='售罄'">{{item.tags}}</div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="module-col col-4">
+                              <div class="module-btn btn btn-layout" @tap="onHandleInsertLayout">
+                                <div class="module-icon iconfont icon-insert"></div>
                               </div>
                             </div>
                           </div>
@@ -295,7 +289,7 @@
                       <div class="module-body">
                         <div class="module-images">
                           <div class="module-row row">
-                            <div class="module-col col-4" v-for="(item,index) in totalUrls" :key="index">
+                            <div class="module-col col-4" v-for="(item,index) in items" :key="index">
                               <div class="module-item" @tap="onHandleShowImage(index)">
                                 <div class="btn-delete iconfont icon-delete"
                                      @tap.stop="onHandleDeleteImage(index)"></div>
@@ -321,8 +315,8 @@
         </div>
       </div>
       <div class="footer">
-        <div class="btn btn-update{{isDisable?'':' disable'}}"
-             @tap="onHandleUpdateHouse">提交保存
+        <div class="btn btn-insert{{isDisable?'':' disable'}}"
+             @tap="onHandleInsertHouse">添加房源
         </div>
       </div>
     </div>
@@ -338,6 +332,7 @@
   import Loading from '../../../../mixins/loading';
   import * as $routes from '../../../../router';
   import * as $config from '../../../../config';
+  import * as utils from '../../../../utils';
   import * as controller from './controller';
 
   wepy.page({
@@ -357,71 +352,19 @@
       phone: '',
       price: '',
       title: '',
-      status: 1,
-      mianji: '',
       owner: '',
-      id: -1,
+      mianji: '',
+      kaipan: '',
+      huxing: '',
+      jiaofang: '',
       xiangxidizhi: '',
-      huxing: {
-        value: '',
-        items: [
-          ['1室', '2室', '3室', '4室', '5室', '6室', '7室', '8室', '9室', '10室', '11室', '12室'],
-          ['0厅', '1厅', '2厅', '3厅', '4厅', '5厅', '6厅', '7厅', '8厅', '9厅', '10厅', '11厅', '12厅'],
-          ['0卫', '1卫', '2卫', '3卫', '4卫', '5卫', '6卫', '7卫', '8卫', '9卫', '10卫', '11卫', '12卫']
-        ],
-        index: [1, 1, 1]
+      status: {
+        value: 0,
+        items: ['在售', '待售']
       },
       dizhi: {
         value: '',
         items: ['安徽省', '宣城市', '广德县']
-      },
-      zhifu: {
-        value: '',
-        items: [
-          [
-            '押1', '押2', '押3', '押4', '押5', '押6',
-            '押7', '押8', '押9', '押10', '押11', '押12'
-          ],
-          [
-            '付1', '付2', '付3', '付4', '付5', '付6',
-            '付7', '付8', '付9', '付10', '付11', '付12'
-          ]
-        ],
-        index: [0, 0]
-      },
-      chaoxiang: {
-        value: '',
-        items: [
-          '朝东',
-          '朝西',
-          '朝南',
-          '朝北'
-        ]
-      },
-      louceng: {
-        value: '',
-        items: [
-          '低楼层',
-          '中楼层',
-          '高楼层'
-        ]
-      },
-      zhuangxiu: {
-        value: '',
-        items: [
-          '毛坯',
-          '简装',
-          '精装',
-          '豪装'
-        ]
-      },
-      chuzufangshi: {
-        value: '',
-        items: [
-          '整租',
-          '合租',
-          '转租'
-        ]
       },
       leixing: {
         value: '',
@@ -432,13 +375,6 @@
           '商铺'
         ]
       },
-      kanfangshijian: {
-        value: '',
-        items: [
-          '随时看房',
-          '电话预约'
-        ]
-      },
       agents: {
         value: [],
         items: []
@@ -447,43 +383,51 @@
         value: '',
         items: [
           {
+            label: '大阳台',
+            checked: false
+          },
+          {
+            label: '大户型',
+            checked: false
+          },
+          {
+            label: '低容积',
+            checked: false
+          },
+          {
             label: '南北通透',
             checked: false
           },
           {
-            label: '精装修',
+            label: '三房朝南',
             checked: false
           },
           {
-            label: '豪华装修',
+            label: '厨卫全明',
             checked: false
           },
           {
-            label: '拎包入住',
+            label: '主卧套房',
             checked: false
           },
           {
-            label: '随时看房',
+            label: '全景飘窗',
             checked: false
           },
           {
-            label: '近地铁',
+            label: '交通便利',
             checked: false
           },
           {
-            label: '集中供暖',
+            label: '人气楼盘',
             checked: false
           },
           {
-            label: '有电梯',
+            label: '今年交房',
             checked: false
           },
           {
-            label: '车位充足',
-            checked: false
-          },
-          {
-            label: '免物业费',
+            label: '装修交付',
             checked: false
           },
           {
@@ -492,84 +436,9 @@
           }
         ]
       },
-      fagnwupeizhi: {
-        value: '',
-        items: [
-          {
-            icon: 'icon-item01',
-            label: '卫生间',
-            checked: false
-          },
-          {
-            icon: 'icon-item02',
-            label: '洗衣机',
-            checked: false
-          },
-          {
-            icon: 'icon-item03',
-            label: '可做饭',
-            checked: false
-          },
-          {
-            icon: 'icon-item04',
-            label: '热水器',
-            checked: false
-          },
-          {
-            icon: 'icon-item05',
-            label: '阳台',
-            checked: false
-          },
-          {
-            icon: 'icon-item06',
-            label: '冰箱',
-            checked: false
-          },
-          {
-            icon: 'icon-item07',
-            label: '电梯',
-            checked: false
-          },
-          {
-            icon: 'icon-item08',
-            label: '沙发',
-            checked: false
-          },
-          {
-            icon: 'icon-item09',
-            label: '宽带',
-            checked: false
-          },
-          {
-            icon: 'icon-item10',
-            label: '衣柜',
-            checked: false
-          },
-          {
-            icon: 'icon-item11',
-            label: '暖气',
-            checked: false
-          },
-          {
-            icon: 'icon-item12',
-            label: '床',
-            checked: false
-          },
-          {
-            icon: 'icon-item13',
-            label: '空调',
-            checked: false
-          },
-          {
-            icon: 'icon-item14',
-            label: '电视',
-            checked: false
-          }
-        ]
-      },
-      oldUrls: [],
-      newUrls: [],
-      totalUrls: [],
+      layouts: [],
+      items: [],
+      pic_url: [],
       image: {
         count: 0,
         baseUrl: apis.baseUrl
@@ -593,17 +462,12 @@
             this.price &&
             this.title &&
             this.owner &&
-            this.huxing.value &&
             this.mianji &&
+            this.kaipan &&
             this.dizhi.value &&
+            this.huxing.value &&
             this.xiangxidizhi &&
-            this.zhifu.value &&
-            this.chaoxiang.value &&
-            this.louceng.value &&
-            this.zhuangxiu.value &&
-            this.chuzufangshi.value &&
-            this.leixing.value &&
-            this.kanfangshijian.value
+            this.leixing.value
           );
         let isTagsEmpty = this.tags.value;
         let isAgentEmpty = this.agents.value.length;
@@ -614,75 +478,11 @@
           isTagsEmpty
         };
       },
-      onHandleHuXingChange(e) {
-        const index = e.$wx.detail.value;
-        const items = this.huxing.items;
-        this.huxing.value = items[0][index[0]] + items[1][index[1]] + items[2][index[2]];
-        this.onHandleCheckEmpty();
-      },
-      onHandleZhiFuChange(e) {
-        const index = e.$wx.detail.value;
-        const items = this.zhifu.items;
-        this.zhifu.value = items[0][index[0]] + items[1][index[1]];
-        this.onHandleCheckEmpty();
-      },
       onHandleDiZhiChange(e) {
         const items = e.$wx.detail.value;
         this.dizhi.items = items;
         this.dizhi.value = items.join('、');
         this.onHandleCheckEmpty();
-      },
-      onHandleShowChaoXiang() {
-        wx.showActionSheet({
-          itemList: this.chaoxiang.items,
-          success: (res) => {
-            const value = this.chaoxiang.items[res.tapIndex];
-            this.chaoxiang.value = value;
-            this.onHandleCheckEmpty();
-          },
-          fail: (err) => {
-            console.log(err);
-          }
-        });
-      },
-      onHandleShowLouCeng() {
-        wx.showActionSheet({
-          itemList: this.louceng.items,
-          success: (res) => {
-            const value = this.louceng.items[res.tapIndex];
-            this.louceng.value = value;
-            this.onHandleCheckEmpty();
-          },
-          fail: (err) => {
-            console.log(err);
-          }
-        });
-      },
-      onHandleShowZhuangXiu() {
-        wx.showActionSheet({
-          itemList: this.zhuangxiu.items,
-          success: (res) => {
-            const value = this.zhuangxiu.items[res.tapIndex];
-            this.zhuangxiu.value = value;
-            this.onHandleCheckEmpty();
-          },
-          fail: (err) => {
-            console.log(err);
-          }
-        });
-      },
-      onHandleShowChuZuFangShi() {
-        wx.showActionSheet({
-          itemList: this.chuzufangshi.items,
-          success: (res) => {
-            const value = this.chuzufangshi.items[res.tapIndex];
-            this.chuzufangshi.value = value;
-            this.onHandleCheckEmpty();
-          },
-          fail: (err) => {
-            console.log(err);
-          }
-        });
       },
       onHandleShowLeiXing() {
         wx.showActionSheet({
@@ -697,18 +497,27 @@
           }
         });
       },
-      onHandleShowKanFangShiJian() {
+      onHandleShowStatus() {
         wx.showActionSheet({
-          itemList: this.kanfangshijian.items,
+          itemList: this.status.items,
           success: (res) => {
-            const value = this.kanfangshijian.items[res.tapIndex];
-            this.kanfangshijian.value = value;
+            this.status.value = res.tapIndex;
             this.onHandleCheckEmpty();
           },
           fail: (err) => {
             console.log(err);
           }
         });
+      },
+      onHandleShowKaiPan(e) {
+        const value = e.$wx.detail.value;
+        this.kaipan = utils.dateFormat(value, 'zh-cn');
+        this.onHandleCheckEmpty();
+      },
+      onHandleShowJiaoFang(e) {
+        const value = e.$wx.detail.value;
+        this.jiaofang = utils.dateFormat(value, 'zh-cn');
+        this.onHandleCheckEmpty();
       },
       onHandleAgentSelector(index) {
         let arr = [];
@@ -725,7 +534,6 @@
             arr.push(temp);
           }
         });
-
         this.agents.value = arr;
         this.onHandleCheckEmpty();
         arr = null;
@@ -748,37 +556,12 @@
         this.onHandleCheckEmpty();
         arr = null;
       },
-      onHandleConfigSelector(index) {
-        let arr = [];
-        if (this.fagnwupeizhi.items[index].checked) {
-          this.fagnwupeizhi.items[index].checked = false;
-        } else {
-          this.fagnwupeizhi.items[index].checked = true;
-        }
-
-        this.fagnwupeizhi.items.map((item) => {
-          if (item.checked) {
-            arr.push(item.label);
-          }
-        });
-
-        this.fagnwupeizhi.value = arr.join(' ');
-        arr = null;
-      },
-      onHandleInsertImage() {
+      onHandleInsertLayout() {
         wx.navigateTo({
-          url: $routes.UPLOAD.path
+          url: $routes.INSERT_LAYOUT.path
         });
       },
-      onHandleSubmitHouse() {
-        this.showLoading();
-        if (this.newUrls.length) {
-          this.exeAjaxInsertImage();
-        } else {
-          this.exeAjaxUpdateHouse();
-        }
-      },
-      onHandleUpdateHouse() {
+      onHandleInsertHouse() {
         const isCheckEmpty = this.onHandleCheckEmpty();
         const {isBaseEmpty, isAgentEmpty, isTagsEmpty} = isCheckEmpty;
         if (!isBaseEmpty) {
@@ -791,116 +574,79 @@
           this.onHandleSubmitHouse();
         }
       },
+      onHandleSubmitHouse() {
+        this.showLoading();
+        if (this.items.length) {
+          this.exeAjaxInsertImage();
+        } else {
+          this.exeAjaxInsertHouse();
+        }
+      },
+      onHandleInsertImage() {
+        wx.navigateTo({
+          url: $routes.UPLOAD.path
+        });
+      },
       onHandleShowImage(index) {
-        const {totalUrls} = this;
         wx.previewImage({
-          current: totalUrls[index],
-          urls: totalUrls
+          current: this.items[index],
+          urls: this.items
         });
       },
       onHandleDeleteImage(index) {
-        if ((index + 1) <= this.oldUrls.length) {
-          this.oldUrls.splice(index, 1);
-        } else {
-          this.newUrls.splice(index - this.oldUrls.length, 1);
-        }
-        this.totalUrls = this.oldUrls.concat(this.newUrls);
+        this.items.splice(index, 1);
       },
-      onHandleRenderHouse(data) {
-        const {
-          id, owner, phone, title, price,
-          huxing, mianji, chaoxiang, leixing, zhaungxiu,
-          louceng, xiaoqu, status, addr, addr_sheng,
-          addr_shi, addr_qu, zhifufangshi, chuzufangshi, kanfangshijian,
-          agency, tags, fagnwupeizhi, pic_url
-        } = data;
-        this.id = id;
-        this.xiaoqu = xiaoqu;
-        this.phone = phone;
-        this.price = price;
-        this.title = title;
-        this.owner = owner;
-        this.status = status;
-        this.mianji = mianji;
-        this.xiangxidizhi = addr;
-        this.huxing.value = huxing;
-        this.dizhi.items = [addr_sheng, addr_shi, addr_qu];
-        this.dizhi.value = this.dizhi.items.join('、');
-        this.zhifu.value = zhifufangshi;
-        this.chaoxiang.value = chaoxiang;
-        this.louceng.value = louceng;
-        this.zhuangxiu.value = zhaungxiu;
-        this.chuzufangshi.value = chuzufangshi;
-        this.leixing.value = leixing;
-        this.kanfangshijian.value = kanfangshijian;
-        this.tags.value = tags.join(' ');
-        this.tags.items.map((item) => {
-          if (tags.indexOf(item.label) !== -1) {
-            item.checked = true;
-          }
+      onHandleInsertAgent() {
+        wx.navigateTo({
+          url: $routes.INSERT_AGENT.path
         });
-        this.agents.value = agency || [];
-        const agents = this.isAgent.map((item) => {
+      },
+      onHandleRenderAgent() {
+        const items = (this.isAgent || []).map((item) => {
           const temp = Object.assign({checked: false}, item);
           return temp;
         });
-        this.agents.items = agents;
-        this.agents.value.map((j) => {
-          this.agents.items.map((k) => {
-            if (j.id === k.id) {
-              k.checked = true;
-            }
-          });
-        });
-        this.fagnwupeizhi.value = fagnwupeizhi;
-        this.fagnwupeizhi.items.map((item) => {
-          if (fagnwupeizhi.indexOf(item.label) !== -1) {
-            item.checked = true;
-          }
-        });
-        this.oldUrls = pic_url;
-        this.totalUrls = pic_url.concat(this.newUrls);
-        this.onHandleCheckEmpty();
+        this.agents.items = items;
       },
-      exeAjaxUpdateHouse() {
+      exeAjaxInsertHouse() {
         const params = this.getParams();
-        this.ajaxUpdateHouse(params)
+        this.ajaxInsertHouse(params)
           .then((res) => {
             this.hideLoading();
             res = res || {};
             const {success} = res.payload;
             if (success) {
-              this.showToast('房源修改成功');
+              this.showToast('房源新增成功');
               setTimeout(() => {
                 wx.navigateBack({
                   delta: 1
                 });
               }, 1000);
             } else {
-              this.showToast('修改失败，请重试');
+              this.showToast('新增失败，请重试');
             }
             console.log(res);
           })
           .catch((err) => {
             this.hideLoading();
-            this.showToast('修改失败，请重试');
+            this.showToast('新增失败，请重试');
             console.log(err);
           });
       },
       exeAjaxInsertImage() {
         let {count, baseUrl} = this.image;
-        const filePath = this.newUrls[count];
+        const filePath = this.items[count];
         const params = {count, filePath};
         this.ajaxInsertImage(params)
           .then((res) => {
             res = res || {};
             const {success, data} = res.payload;
             if (success) {
-              this.oldUrls.push(baseUrl + data);
+              this.pic_url.push(baseUrl + data);
             }
             this.image.count++;
-            if (this.image.count === this.newUrls.length) {
-              this.exeAjaxUpdateHouse();
+            if (this.image.count === this.items.length) {
+              this.exeAjaxInsertHouse();
             } else {
               this.exeAjaxInsertImage();
             }
@@ -909,8 +655,8 @@
           .catch((err) => {
             this.showToast('第' + count + '张图片上传失败');
             this.image.count++;
-            if (this.image.count === this.newUrls.length) {
-              this.exeAjaxUpdateHouse();
+            if (this.image.count === this.items.length) {
+              this.exeAjaxInsertHouse();
             } else {
               this.exeAjaxInsertImage();
             }
@@ -919,52 +665,48 @@
       },
       getParams() {
         const params = {
-          type: 3,
-          status: 1,
-          id: this.id,
+          type: 1,
           owner: this.owner,
           phone: this.phone,
           title: this.title,
           price: this.price,
-          huxing: this.huxing.value,
           mianji: this.mianji,
-          chaoxiang: this.chaoxiang.value,
-          leixing: this.leixing.value,
-          zhaungxiu: this.zhuangxiu.value,
-          louceng: this.louceng.value,
           xiaoqu: this.xiaoqu,
-          addr: this.xiangxidizhi,
+          huxing: this.huxing,
+          zhulihuxing: this.layouts,
+          leixing: this.leixing.value,
+          status: this.status.value + 1,
           addr_sheng: this.dizhi.items[0],
           addr_shi: this.dizhi.items[1],
           addr_qu: this.dizhi.items[2],
+          addr: this.xiangxidizhi,
           agency_phone: '18130278679',
           agency_com_name: '广进房产',
-          kanfangshijian: this.kanfangshijian.value,
-          zhifufangshi: this.zhifu.value,
-          chuzufangshi: this.chuzufangshi.value,
           tags: this.tags.value,
           agency: this.agents.value,
-          fagnwupeizhi: this.fagnwupeizhi.value,
-          pic_url: this.oldUrls
+          pic_url: this.pic_url
         };
         return params;
       }
     },
 
     onShow() {
-      const {$path} = this.$app;
+      const {$path, $layout} = this.$app;
       if ($path) {
         const {path} = $path;
-        this.newUrls.push(path);
-        this.totalUrls = this.oldUrls.concat(this.newUrls);
+        this.items.push(path);
         this.$app.$path = null;
       }
+      if ($layout) {
+        const {layout} = $layout;
+        this.layouts.push(layout);
+        this.$app.$layout = null;
+      }
+      this.onHandleRenderAgent();
     },
 
-    onLoad(option) {
-      const {item} = option;
-      const data = JSON.parse(item);
-      this.onHandleRenderHouse(data);
+    onLoad() {
+      this.onHandleRenderAgent();
     }
   });
 </script>
@@ -1093,12 +835,36 @@
                             }
                           }
                         }
+                        .module-edit {
+                          .form-row {
+                            padding: unit(15, rpx);
+                            .form-col {
+                              padding: unit(15, rpx);
+                              .form-group {
+                                padding: unit(20, rpx);
+                                border: 0.5px solid @borderColor2;
+                                border-radius: @borderRadius10;
+                                background-color: @bgEdit;
+                                font-size: @fontSize32;
+                                color: @fontColor1;
+                                .textarea {
+                                  width: 100%;
+                                  height: unit(260, rpx);
+                                  text-align: justify;
+                                }
+                              }
+                              &:last-child {
+                                border: none;
+                              }
+                            }
+                          }
+                        }
                         .module-agents {
                           .module-row {
                             padding: unit(15, rpx);
                             .module-col {
-                              padding: unit(20, rpx) unit(15, rpx);
-                              .item-agent {
+                              padding: unit(15, rpx);
+                              .module-item {
                                 position: relative;
                                 .item-img {
                                   overflow: hidden;
@@ -1143,13 +909,23 @@
                                 }
                               }
                             }
+                            .module-btn {
+                              height: unit(200, rpx);
+                              line-height: unit(200, rpx);
+                              background-color: #F0F0F0;
+                              text-align: center;
+                              .module-icon {
+                                font-size: @fontSize50;
+                                color: @fontColor5;
+                              }
+                            }
                           }
                         }
                         .module-tags {
                           .module-row {
                             padding: unit(15, rpx);
                             .module-col {
-                              padding: unit(20, rpx) unit(15, rpx);
+                              padding: unit(15, rpx);
                               text-align: center;
                               .item-tag {
                                 height: unit(60, rpx);
@@ -1166,42 +942,55 @@
                             }
                           }
                         }
-                        .module-configs {
-                          text-align: center;
-                          color: @fontColor1;
+                        .module-layouts {
                           .module-row {
                             padding: unit(15, rpx);
                             .module-col {
                               padding: unit(15, rpx);
-                              .item-config {
+                              .module-item {
                                 position: relative;
-                                .item-icon {
-                                  font-size: @fontSize60;
+                                .item-img {
+                                  width: 100%;
+                                  height: unit(200, rpx);
                                 }
-                                .item-label {
-                                  height: unit(40, rpx);
-                                  line-height: unit(40, rpx);
+                                .item-info {
                                   font-size: @fontSize24;
-                                }
-                                .item-check {
-                                  position: absolute;
-                                  left: 0;
-                                  bottom: 0;
-                                  z-index: 1;
-                                  width: unit(44, rpx);
-                                  height: unit(44, rpx);
-                                  line-height: unit(44, rpx);
-                                  transition: all 150ms ease;
-                                  border-radius: @borderRadius100;
-                                  background-color: @unCheck;
-                                  font-size: @fontSize20;
-                                  color: @borderColor1;
-                                }
-                                &.checked {
-                                  .item-check {
-                                    background: -webkit-linear-gradient(left, @theme1, @theme2);
-                                    color: @white;
+                                  color: @fontColor1;
+                                  text-align: left;
+                                  .item-title {
+                                    height: unit(50, rpx);
+                                    line-height: unit(50, rpx);
                                   }
+                                  .item-size {
+                                    height: unit(50, rpx);
+                                    line-height: unit(50, rpx);
+                                    margin-left: unit(10, rpx);
+                                  }
+                                  .item-state {
+                                    height: unit(40, rpx);
+                                    line-height: unit(40, rpx);
+                                    padding: 0 unit(10, rpx);
+                                    color: @white;
+                                    &.state1 {
+                                      background-color: @stateColor1;
+                                    }
+                                    &.state2 {
+                                      background-color: @stateColor2;
+                                    }
+                                    &.state3 {
+                                      background-color: @stateColor3;
+                                    }
+                                  }
+                                }
+                              }
+                              .module-btn {
+                                height: unit(200, rpx);
+                                line-height: unit(200, rpx);
+                                background-color: #F0F0F0;
+                                text-align: center;
+                                .module-icon {
+                                  font-size: @fontSize50;
+                                  color: @fontColor5;
                                 }
                               }
                             }
@@ -1274,7 +1063,7 @@
         padding: unit(30, rpx);
         background-color: @white;
         box-shadow: 0 0 15px @boxShadow05;
-        .btn-update {
+        .btn-insert {
           overflow: hidden;
           height: unit(100, rpx);
           line-height: unit(100, rpx);

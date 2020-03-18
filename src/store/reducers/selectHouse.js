@@ -48,18 +48,18 @@ const actions = {
   [actionTypes.DELETE_HOUSE_REPLACE](state, params) {
     let {rows, totalCount} = state.data;
     const {id} = params.data;
-    const newRows = rows.filter((item) => {
+    rows = rows.filter((item) => {
       return item.id !== id;
     });
     totalCount--;
-    const data = {rows: newRows, totalCount};
+    const data = {rows, totalCount};
     return {
       ...state,
       data
     };
   },
   [actionTypes.UPDATE_HOUSE_REPLACE](state, params) {
-    const {rows} = state.data;
+    let {rows, totalCount} = state.data;
     const newRow = utils.dataFilter([params.data]);
     const {id} = newRow[0];
     rows.map((item, index) => {
@@ -67,7 +67,7 @@ const actions = {
         rows[index] = newRow[0];
       }
     });
-    const data = {rows};
+    const data = {rows, totalCount};
     return {
       ...state,
       data

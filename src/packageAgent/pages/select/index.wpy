@@ -2,7 +2,7 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="经纪人查询"></top-bar>
+        <top-bar title="置业顾问"></top-bar>
       </div>
       <div class="body">
         <div class="context fade">

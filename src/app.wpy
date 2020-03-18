@@ -35,6 +35,7 @@
       'pages': [
         'pages/select/index',
         'pages/detail/index',
+        'pages/layout/index',
         'pages/insert/insert-new-house/index',
         'pages/update/update-new-house/index',
         'pages/insert/insert-second-house/index',

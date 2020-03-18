@@ -2,7 +2,7 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="经纪人修改"></top-bar>
+        <top-bar title="主力户型"></top-bar>
       </div>
       <div class="body">
         <div class="context fade">
@@ -17,41 +17,33 @@
                         <div class="form-row row">
                           <div class="form-col col-12">
                             <div class="form-group">
-                              <label class="form-label">姓名</label>
-                              <input class="form-input" v-model="params.name" type="text"
-                                     placeholder="彭伦健"
-                                     @input="onHandleCheckEmpty"/>
+                              <label class="form-label">状态</label>
+                              <input class="form-input" v-model="status.value"
+                                     disabled="{{true}}" type="text" placeholder="在售"
+                                     @tap="onHandleShowStatus"/>
                               <span class="form-next iconfont icon-next"></span>
                             </div>
                           </div>
                           <div class="form-col col-12">
                             <div class="form-group">
-                              <label class="form-label">电话</label>
-                              <input class="form-input" v-model="params.tel" type="number"
-                                     placeholder="18130278679"
+                              <label class="form-label">面积</label>
+                              <input class="form-input" v-model="mianji" type="digit"
+                                     placeholder="m²"
                                      @input="onHandleCheckEmpty"/>
                               <span class="form-next iconfont icon-next"></span>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="module-footer"></div>
-                  </div>
-                </div>
-                <div class="module">
-                  <div class="module-content">
-                    <div class="module-header">
-                      <div class="module-title">个人简介</div>
-                    </div>
-                    <div class="module-body">
-                      <div class="module-edit">
-                        <div class="form-row row">
                           <div class="form-col col-12">
-                            <div class="form-group">
-                        <textarea class="textarea" v-model="params.remarks" type="text"
-                                  placeholder="请输入内容"/>
-                            </div>
+                            <picker mode="multiSelector" @change="onHandleShowHuXing"
+                                    value="{{huxing.index}}" range="{{huxing.items}}">
+                              <div class="form-group">
+                                <label class="form-label">户型</label>
+                                <input class="form-input" v-model="huxing.value"
+                                       disabled="{{true}}" type="text"
+                                       placeholder="2室1厅1卫"/>
+                                <span class="form-next iconfont icon-next"></span>
+                              </div>
+                            </picker>
                           </div>
                         </div>
                       </div>
@@ -67,7 +59,7 @@
                     <div class="module-body">
                       <div class="module-images">
                         <div class="module-row row">
-                          <div class="module-col col-4" v-for="(item,index) in totalUrls" :key="index">
+                          <div class="module-col col-4" v-for="(item,index) in image.items" :key="index">
                             <div class="module-item" @tap="onHandleShowImage(index)">
                               <div class="btn-delete iconfont icon-delete"
                                    @tap.stop="onHandleDeleteImage(index)"></div>
@@ -75,7 +67,7 @@
                             </div>
                           </div>
                           <div class="module-col col-4">
-                            <div class="module-btn btn btn-image" @tap="onHandleInsertImage">
+                            <div class="module-btn btn btn-image" @tap="onHandleShowUpload">
                               <div class="module-icon iconfont icon-insert"></div>
                             </div>
                           </div>
@@ -93,7 +85,7 @@
       </div>
       <div class="footer">
         <div class="btn btn-insert{{isDisable?'':' disable'}}"
-             @tap="onHandleUpdateAgent">保存
+             @tap="onHandleSaveLayout">保存
         </div>
       </div>
     </div>
@@ -105,10 +97,11 @@
   import apis from '../../../apis/index';
   import store from '../../../store/index';
   import {mapState, mapActions} from '@wepy/redux';
-  import * as controller from './controller';
-  import * as $routes from '../../../router';
   import Toast from '../../../mixins/toast';
   import Loading from '../../../mixins/loading';
+  import * as $config from '../../../config/index';
+  import * as controller from './controller';
+  import * as $routes from '../../../router';
 
   wepy.page({
     store,
@@ -116,23 +109,29 @@
     mixins: [Toast, Loading],
 
     data: {
+      noData: '暂无数据',
+      defaultAgent: $config.DEFAULT_AGENT,
       isDisable: false,
-      params: {
-        id: '',
-        com_id: '',
-        name: '',
-        tel: '',
-        remarks: '',
-        photo: '',
-        detail: ''
+      mianji: '',
+      status: {
+        value: '',
+        items: ['在售', '待售', '售罄']
       },
-      oldUrls: [],
-      newUrls: [],
-      totalUrls: [],
+      huxing: {
+        value: '',
+        items: [
+          ['1室', '2室', '3室', '4室', '5室', '6室', '7室', '8室', '9室', '10室', '11室', '12室'],
+          ['0厅', '1厅', '2厅', '3厅', '4厅', '5厅', '6厅', '7厅', '8厅', '9厅', '10厅', '11厅', '12厅'],
+          ['0卫', '1卫', '2卫', '3卫', '4卫', '5卫', '6卫', '7卫', '8卫', '9卫', '10卫', '11卫', '12卫']
+        ],
+        index: [1, 1, 1]
+      },
       image: {
-        count: 0,
+        pic: '',
+        items: [],
         baseUrl: apis.baseUrl
-      }
+      },
+      layout: null
     },
 
     computed: {
@@ -142,123 +141,103 @@
     methods: {
       ...mapActions(controller.ACTIONS),
       onHandleCheckEmpty() {
-        const {name, tel} = this.params;
         let isBaseEmpty =
           (
-            name &&
-            tel
+            this.mianji &&
+            this.huxing.value &&
+            this.status.value
           );
         this.isDisable = isBaseEmpty;
         return {
           isBaseEmpty
         };
       },
-      onHandleUpdateAgent() {
+      onHandleShowStatus() {
+        wx.showActionSheet({
+          itemList: this.status.items,
+          success: (res) => {
+            const index = res.tapIndex;
+            this.status.value = this.status.items[index];
+            this.onHandleCheckEmpty();
+          },
+          fail: (err) => {
+            console.log(err);
+          }
+        });
+      },
+      onHandleShowHuXing(e) {
+        const index = e.$wx.detail.value;
+        const items = this.huxing.items;
+        this.huxing.value = items[0][index[0]] + items[1][index[1]] + items[2][index[2]];
+        this.onHandleCheckEmpty();
+      },
+      onHandleShowUpload() {
+        wx.navigateTo({
+          url: $routes.UPLOAD.path
+        });
+      },
+      onHandleShowImage(index) {
+        const {items} = this.image;
+        wx.previewImage({
+          current: items[index],
+          urls: items
+        });
+      },
+      onHandleDeleteImage(index) {
+        this.image.items.splice(index, 1);
+      },
+      onHandleSaveLayout() {
         const isCheckEmpty = this.onHandleCheckEmpty();
         const {isBaseEmpty} = isCheckEmpty;
         if (!isBaseEmpty) {
           this.showToast('基本信息填写不完整');
         } else {
-          this.onHandleSubmitAgent();
+          const {items} = this.image;
+          if (items.length) {
+            this.exeAjaxInsertImage();
+          } else {
+            this.onHandleBackLayout();
+          }
         }
       },
-      onHandleSubmitAgent() {
-        this.showLoading();
-        if (this.newUrls.length) {
-          this.exeAjaxInsertImage();
-        } else {
-          this.exeAjaxUpdateAgent();
-        }
-      },
-      onHandleShowImage(index) {
-        const {totalUrls} = this;
-        wx.previewImage({
-          current: totalUrls[index],
-          urls: totalUrls
+      onHandleBackLayout() {
+        this.layout = this.getParams();
+        this.$app.$layout = {layout: this.layout};
+        wx.navigateBack({
+          delta: 1
         });
-      },
-      onHandleDeleteImage() {
-        this.oldUrls = [];
-        this.newUrls = [];
-        this.totalUrls = [];
-        this.params.photo = '';
-      },
-      onHandleInsertImage() {
-        wx.navigateTo({
-          url: $routes.UPLOAD.path
-        });
-      },
-      onHandleRenderAgent(data) {
-        const {
-          id, com_id, name, tel, remarks, photo
-        } = data;
-        this.params.id = id;
-        this.params.tel = tel;
-        this.params.name = name;
-        this.params.com_id = com_id;
-        this.params.remarks = remarks;
-        this.params.photo = photo;
-        this.oldUrls = photo ? [photo] : [];
-        this.totalUrls = this.oldUrls;
-        this.onHandleCheckEmpty();
       },
       exeAjaxInsertImage() {
-        let {count, baseUrl} = this.image;
-        const filePath = this.newUrls[count];
-        const params = {count, filePath};
+        this.showLoading();
+        const {baseUrl, items} = this.image;
+        const params = {filePath: items[0]};
         this.ajaxInsertImage(params)
           .then((res) => {
             res = res || {};
             const {success, data} = res.payload;
             if (success) {
-              this.params.photo = baseUrl + data;
-            }
-            this.image.count++;
-            if (this.image.count === this.newUrls.length) {
-              this.exeAjaxUpdateAgent();
+              this.image.pic = baseUrl + data;
+              this.onHandleBackLayout();
             } else {
-              this.exeAjaxInsertImage();
+              this.showToast('图片上传失败');
             }
-            console.log(res);
-          })
-          .catch((err) => {
-            this.showToast('第' + count + '张图片上传失败');
-            this.image.count++;
-            if (this.image.count === this.newUrls.length) {
-              this.exeAjaxUpdateAgent();
-            } else {
-              this.exeAjaxInsertImage();
-            }
-            console.log(err);
-          });
-      },
-      exeAjaxUpdateAgent() {
-        const params = this.getParams();
-        this.ajaxUpdateAgent(params)
-          .then((res) => {
             this.hideLoading();
-            res = res || {};
-            const {success} = res.payload;
-            if (success) {
-              this.showToast('经纪人修改成功');
-              setTimeout(() => {
-                wx.navigateBack({
-                  delta: 1
-                });
-              }, 1000);
-            } else {
-              this.showToast('修改失败，请重试');
-            }
             console.log(res);
           })
           .catch((err) => {
             this.hideLoading();
-            this.showToast('修改失败，请重试');
+            this.showToast('图片上传失败');
             console.log(err);
           });
       },
       getParams() {
-        return this.params;
+        const params = {
+          pic: this.image.pic,
+          mianji: this.mianji,
+          tags: this.status.value,
+          title: this.huxing.value
+        };
+        return params;
       }
     },
 
@@ -266,23 +245,19 @@
       const {$path} = this.$app;
       if ($path) {
         const {path} = $path;
-        this.newUrls = [path];
-        this.totalUrls = this.newUrls;
+        this.image.items = [path];
         this.$app.$path = null;
       }
     },
 
-    onLoad(option) {
-      const {item} = option;
-      const data = JSON.parse(item);
-      this.onHandleRenderAgent(data);
+    onLoad() {
     }
   });
 </script>
 
 <style scoped lang="less">
   @import "../../../assets/less/variable";
-  @import "../../../assets/less/iconfont";
+  @import "../../../assets/less/@media";
 
   @height: unit(120, rpx);
 
@@ -352,30 +327,6 @@
                                 padding-left: unit(10, rpx);
                                 line-height: @height;
                                 color: @iconNext;
-                              }
-                            }
-                            &:last-child {
-                              border: none;
-                            }
-                          }
-                        }
-                      }
-                      .module-edit {
-                        .form-row {
-                          padding: unit(15, rpx);
-                          .form-col {
-                            padding: unit(15, rpx);
-                            .form-group {
-                              padding: unit(20, rpx);
-                              border: 0.5px solid @borderColor2;
-                              border-radius: @borderRadius10;
-                              background-color: @bgEdit;
-                              font-size: @fontSize32;
-                              color: @fontColor1;
-                              .textarea {
-                                width: 100%;
-                                height: unit(260, rpx);
-                                text-align: justify;
                               }
                             }
                             &:last-child {
@@ -462,6 +413,8 @@
       }
     }
   }
+
+
 </style>
 
 <config>
@@ -469,7 +422,7 @@
   navigationStyle:'custom',
   usingComponents: {
   'top-bar': '../../../components/top-bar/top-bar',
-  'lazy-image': '../../../components/lazy-image/lazy-image',
+  'lazy-image': '../../../components/lazy-image/lazy-image'
   }
   }
 </config>

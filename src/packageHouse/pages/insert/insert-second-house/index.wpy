@@ -33,15 +33,6 @@
                               </div>
                             </div>
                             <div class="form-col col-12">
-                              <div class="form-group">
-                                <label class="form-label">房源简介</label>
-                                <input class="form-input" v-model="title" type="text"
-                                       placeholder="万象小区 南向两居室 精装修"
-                                       @input="onHandleCheckEmpty"/>
-                                <span class="form-next iconfont icon-next"></span>
-                              </div>
-                            </div>
-                            <div class="form-col col-12">
                               <div class="form-picker">
                                 <picker mode="region" @change="onHandleDiZhiChange" value="{{dizhi.items}}">
                                   <div class="form-group">
@@ -75,17 +66,17 @@
                           <div class="form-row row">
                             <div class="form-col col-12">
                               <div class="form-group">
-                                <label class="form-label">房主称谓</label>
-                                <input class="form-input" v-model="owner" type="text" placeholder="彭先生"
+                                <label class="form-label">联系人</label>
+                                <input class="form-input" v-model="owner" type="text" placeholder="房源联系人姓名"
                                        @input="onHandleCheckEmpty"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
                             <div class="form-col col-12">
                               <div class="form-group">
-                                <label class="form-label">房主电话</label>
+                                <label class="form-label">电话</label>
                                 <input class="form-input" v-model="phone" type="number"
-                                       placeholder="18130278679"
+                                       placeholder="房源联系人电话"
                                        @input="onHandleCheckEmpty"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
@@ -203,12 +194,33 @@
                       <div class="module-footer"></div>
                     </div>
                   </div>
+                  <div class="module">
+                    <div class="module-content">
+                      <div class="module-header">
+                        <div class="module-title">房源简介</div>
+                      </div>
+                      <div class="module-body">
+                        <div class="module-edit">
+                          <div class="form-row row">
+                            <div class="form-col col-12">
+                              <div class="form-group">
+                                <textarea class="textarea" v-model="title" type="text"
+                                          placeholder="万象小区 南向两居室 精装修 拎包入住"
+                                          @input="onHandleCheckEmpty"/>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="module-footer"></div>
+                    </div>
+                  </div>
                 </div>
                 <div class="tab-content{{tab.activeIndex===1?' active':''}}">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
-                        <div class="module-title">推荐经纪人</div>
+                        <div class="module-title">置业顾问</div>
                       </div>
                       <div class="module-body">
                         <div class="module-agents">
@@ -992,11 +1004,35 @@
                             }
                           }
                         }
+                        .module-edit {
+                          .form-row {
+                            padding: unit(15, rpx);
+                            .form-col {
+                              padding: unit(15, rpx);
+                              .form-group {
+                                padding: unit(20, rpx);
+                                border: 0.5px solid @borderColor2;
+                                border-radius: @borderRadius10;
+                                background-color: @bgEdit;
+                                font-size: @fontSize32;
+                                color: @fontColor1;
+                                .textarea {
+                                  width: 100%;
+                                  height: unit(260, rpx);
+                                  text-align: justify;
+                                }
+                              }
+                              &:last-child {
+                                border: none;
+                              }
+                            }
+                          }
+                        }
                         .module-agents {
                           .module-row {
                             padding: unit(15, rpx);
                             .module-col {
-                              padding: unit(20, rpx) unit(15, rpx);
+                              padding: unit(15, rpx);
                               .item-agent {
                                 position: relative;
                                 .item-img {
@@ -1048,7 +1084,7 @@
                           .module-row {
                             padding: unit(15, rpx);
                             .module-col {
-                              padding: unit(20, rpx) unit(15, rpx);
+                              padding: unit(15, rpx);
                               text-align: center;
                               .item-tag {
                                 height: unit(60, rpx);
