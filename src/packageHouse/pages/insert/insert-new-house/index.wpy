@@ -17,7 +17,7 @@
             <div class="scroll-content">
               <div class="scroll-header"></div>
               <div class="scroll-body">
-                <div class="tab-content{{tab.activeIndex===0?' active':''}}">
+                <div class="tab-content" v-if="tab.activeIndex===0">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-body">
@@ -186,7 +186,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="tab-content{{tab.activeIndex===1?' active':''}}">
+                <div class="tab-content" v-if="tab.activeIndex===1">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
@@ -280,7 +280,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="tab-content{{tab.activeIndex===2?' active':''}}">
+                <div class="tab-content" v-if="tab.activeIndex===2">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
@@ -316,7 +316,7 @@
       </div>
       <div class="footer">
         <div class="btn btn-insert{{isDisable?'':' disable'}}"
-             @tap="onHandleInsertHouse">添加房源
+             @tap="onHandleInsertHouse">保存
         </div>
       </div>
     </div>
@@ -786,10 +786,6 @@
               }
               .scroll-body {
                 .tab-content {
-                  display: none !important;
-                  &.active {
-                    display: block !important;
-                  }
                   .module {
                     .module-content {
                       .module-header {
@@ -963,7 +959,7 @@
                                   height: unit(200, rpx);
                                 }
                                 .item-info {
-                                  font-size: @fontSize24;
+                                  font-size: @fontSize26;
                                   color: @fontColor1;
                                   text-align: left;
                                   .item-title {
@@ -979,6 +975,7 @@
                                     height: unit(40, rpx);
                                     line-height: unit(40, rpx);
                                     padding: 0 unit(10, rpx);
+                                    font-size: @fontSize24;
                                     color: @white;
                                     &.state1 {
                                       background-color: @stateColor1;

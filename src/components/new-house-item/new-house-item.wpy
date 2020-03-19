@@ -81,9 +81,23 @@
         $parent.onHandleDeleteHouse(params);
       },
       onHandleUpdateHouse() {
+        this.item.zhulihuxing = [
+          {
+            pic: '',
+            tags: '在售',
+            mainji: '80',
+            title: '2室1厅1卫'
+          },
+          {
+            pic: '',
+            tags: '在售',
+            mainji: '80',
+            title: '2室1厅1卫'
+          }
+        ];
         const query = '?item=' + JSON.stringify(this.item);
         wx.navigateTo({
-          url: $routes.UPDATE_HOUSE.rentHouse.path + query
+          url: $routes.UPDATE_HOUSE.newHouse.path + query
         });
       },
       onHandleSelectDetail(id) {

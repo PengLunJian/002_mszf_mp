@@ -17,7 +17,7 @@
             <div class="scroll-content">
               <div class="scroll-header"></div>
               <div class="scroll-body">
-                <div class="tab-content{{tab.activeIndex===0?' active':''}}">
+                <div class="tab-content" v-if="tab.activeIndex===0">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-body">
@@ -26,8 +26,8 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">状态</label>
-                                <input class="form-input" v-model="status.items[status.value]"
-                                       disabled="{{true}}" type="text" placeholder="小区"
+                                <input class="form-input" v-model="status.value"
+                                       disabled="{{true}}" type="text" placeholder="在售"
                                        @tap="onHandleShowStatus"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
@@ -92,7 +92,7 @@
                             </div>
                             <div class="form-col col-12">
                               <div class="form-group">
-                                <label class="form-label">售价</label>
+                                <label class="form-label">单价</label>
                                 <input class="form-input" v-model="price" type="number"
                                        placeholder="元/m²"
                                        @input="onHandleCheckEmpty"/>
@@ -102,8 +102,8 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">建面</label>
-                                <input class="form-input" v-model="mianji" type="digit"
-                                       placeholder="m²"
+                                <input class="form-input" v-model="mianji" type="text"
+                                       placeholder="90-150m²"
                                        @input="onHandleCheckEmpty"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
@@ -186,7 +186,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="tab-content{{tab.activeIndex===1?' active':''}}">
+                <div class="tab-content" v-if="tab.activeIndex===1">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
@@ -280,7 +280,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="tab-content{{tab.activeIndex===2?' active':''}}">
+                <div class="tab-content" v-if="tab.activeIndex===2">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
@@ -359,8 +359,9 @@
       jiaofang: '',
       xiangxidizhi: '',
       status: {
-        value: 0,
-        items: ['在售', '待售']
+        value: '',
+        items: ['在售', '待售', '售罄'],
+        index: 0
       },
       dizhi: {
         value: '',
@@ -464,8 +465,10 @@
             this.owner &&
             this.mianji &&
             this.kaipan &&
+            this.huxing &&
+            this.status &&
+            this.jiaofang &&
             this.dizhi.value &&
-            this.huxing.value &&
             this.xiangxidizhi &&
             this.leixing.value
           );
@@ -498,10 +501,13 @@
         });
       },
       onHandleShowStatus() {
+        const {items} = this.status;
         wx.showActionSheet({
-          itemList: this.status.items,
+          itemList: items,
           success: (res) => {
-            this.status.value = res.tapIndex;
+            const index = res.tapIndex;
+            this.status.index = index;
+            this.status.value = items[index];
             this.onHandleCheckEmpty();
           },
           fail: (err) => {
@@ -601,14 +607,63 @@
           url: $routes.INSERT_AGENT.path
         });
       },
+      onHandleRenderHouse(data) {
+        const {
+          id, owner, phone, title, price,
+          huxing, mianji, leixing, xiaoqu, status,
+          addr, addr_sheng, addr_shi, addr_qu, agency,
+          tags, pic_url, kaipan, jiaofang, zhulihuxing
+        } = data;
+        this.id = id;
+        this.xiaoqu = xiaoqu;
+        this.phone = phone;
+        this.price = price;
+        this.title = title;
+        this.owner = owner;
+        this.mianji = mianji;
+        this.huxing = huxing;
+        this.kaipan = kaipan;
+        this.jiaofang = jiaofang;
+        this.xiangxidizhi = addr;
+        this.layouts = zhulihuxing;
+        this.status.value = this.status.items[status - 1];
+        this.dizhi.items = [addr_sheng, addr_shi, addr_qu];
+        this.dizhi.value = this.dizhi.items.join('、');
+        this.leixing.value = leixing;
+        this.tags.value = tags.join(' ');
+        this.tags.items.map((item) => {
+          if (tags.indexOf(item.label) !== -1) {
+            item.checked = true;
+          }
+        });
+        this.agents.value = agency || [];
+        this.agents.items = (this.isAgent || []).map((item) => {
+          return {
+            ...item,
+            checked: false
+          };
+        });
+        this.agents.value.map((j) => {
+          this.agents.items.map((k) => {
+            if (j.id === k.id) {
+              k.checked = true;
+            }
+          });
+        });
+        this.oldUrls = pic_url;
+        this.totalUrls = pic_url.concat(this.newUrls);
+        this.onHandleCheckEmpty();
+      },
       onHandleRenderAgent() {
         const items = (this.isAgent || []).map((item) => {
-          const temp = Object.assign({checked: false}, item);
-          return temp;
+          return {
+            ...item,
+            checked: false
+          };
         });
-        this.agents.items = items;
+        this.agents.items = items || [];
       },
-      exeAjaxInsertHouse() {
+      exeAjaxUpdateHouse() {
         const params = this.getParams();
         this.ajaxInsertHouse(params)
           .then((res) => {
@@ -673,9 +728,11 @@
           mianji: this.mianji,
           xiaoqu: this.xiaoqu,
           huxing: this.huxing,
+          kaipan: this.kaipan,
+          jiaofang: this.jiaofang,
           zhulihuxing: this.layouts,
           leixing: this.leixing.value,
-          status: this.status.value + 1,
+          status: this.status.index + 1,
           addr_sheng: this.dizhi.items[0],
           addr_shi: this.dizhi.items[1],
           addr_qu: this.dizhi.items[2],
@@ -702,11 +759,12 @@
         this.layouts.push(layout);
         this.$app.$layout = null;
       }
-      this.onHandleRenderAgent();
     },
 
-    onLoad() {
-      this.onHandleRenderAgent();
+    onLoad(option) {
+      const {item} = option;
+      const data = JSON.parse(item);
+      this.onHandleRenderHouse(data);
     }
   });
 </script>
@@ -777,10 +835,6 @@
               }
               .scroll-body {
                 .tab-content {
-                  display: none !important;
-                  &.active {
-                    display: block !important;
-                  }
                   .module {
                     .module-content {
                       .module-header {
@@ -954,7 +1008,7 @@
                                   height: unit(200, rpx);
                                 }
                                 .item-info {
-                                  font-size: @fontSize24;
+                                  font-size: @fontSize26;
                                   color: @fontColor1;
                                   text-align: left;
                                   .item-title {
@@ -970,6 +1024,7 @@
                                     height: unit(40, rpx);
                                     line-height: unit(40, rpx);
                                     padding: 0 unit(10, rpx);
+                                    font-size: @fontSize24;
                                     color: @white;
                                     &.state1 {
                                       background-color: @stateColor1;
@@ -1081,6 +1136,7 @@
       }
     }
   }
+
 
 </style>
 

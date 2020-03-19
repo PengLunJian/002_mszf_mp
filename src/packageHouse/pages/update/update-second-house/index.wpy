@@ -17,7 +17,7 @@
             <div class="scroll-content">
               <div class="scroll-header"></div>
               <div class="scroll-body">
-                <div class="tab-content{{tab.activeIndex===0?' active':''}}">
+                <div class="tab-content" v-if="tab.activeIndex===0">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-body">
@@ -216,7 +216,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="tab-content{{tab.activeIndex===1?' active':''}}">
+                <div class="tab-content" v-if="tab.activeIndex===1">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
@@ -290,7 +290,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="tab-content{{tab.activeIndex===2?' active':''}}">
+                <div class="tab-content" v-if="tab.activeIndex===2">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
@@ -802,11 +802,12 @@
           }
         });
         this.agents.value = agency || [];
-        const agents = this.isAgent.map((item) => {
-          const temp = Object.assign({checked: false}, item);
-          return temp;
+        this.agents.items = (this.isAgent || []).map((item) => {
+          return {
+            ...item,
+            checked: false
+          };
         });
-        this.agents.items = agents;
         this.agents.value.map((j) => {
           this.agents.items.map((k) => {
             if (j.id === k.id) {
@@ -1006,10 +1007,6 @@
               }
               .scroll-body {
                 .tab-content {
-                  display: none !important;
-                  &.active {
-                    display: block !important;
-                  }
                   .module {
                     .module-content {
                       .module-header {
