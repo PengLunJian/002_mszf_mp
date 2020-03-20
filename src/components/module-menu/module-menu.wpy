@@ -29,22 +29,22 @@
         {
           name: '房源管理',
           icon: 'icon-house',
-          path: $routes.SELECT_HOUSE.path
+          path: $routes.HOUSE.SELECT.path
         },
         {
-          name: '用户管理',
+          name: '客户管理',
           icon: 'icon-user',
-          path: $routes.SELECT_USER.path
+          path: $routes.CUSTOMER.path
         },
         {
           name: '置业顾问',
           icon: 'icon-agent',
-          path: $routes.SELECT_AGENT.path
+          path: $routes.AGENT.SELECT.path
         },
         {
           name: '商户管理',
           icon: 'icon-business',
-          path: $routes.SELECT_BUSINESS.path
+          path: $routes.BUSINESS.path
         }
       ]
     },

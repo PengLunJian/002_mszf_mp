@@ -4,7 +4,7 @@
       <div class="item" @tap="onHandleSelectDetail(item.id)">
         <div class="item-inner">
           <div class="item-img">
-            <lazy-image src="{{item.pic_url[0]||defaultHouse}}" mode="aspectFill"/>
+            <lazy-image src="{{item.pic_url[0]?baseUrl+item.pic_url[0]:url}}" mode="aspectFill"/>
           </div>
           <div class="item-info">
             <div class="item-row">
@@ -20,7 +20,7 @@
             <div class="item-row row">
               <div class="item-normal price">{{item.price||0}}</div>
               <div class="item-normal unit">元/m²</div>
-              <div class="item-normal">建面{{item.mianji||0}}m²</div>
+              <div class="item-normal">建面{{item.mianjifanwen||0}}m²</div>
             </div>
             <div class="item-row row">
               <div class="item-col">
@@ -45,6 +45,7 @@
   import store from '../../store';
   import * as $routes from '../../router';
   import * as $config from '../../config';
+  import apis from '../../apis';
 
   wepy.component({
     store,
@@ -61,7 +62,8 @@
           extClass: 'btn-delete'
         }
       ],
-      defaultHouse: $config.DEFAULT_HOUSE
+      baseUrl: apis.baseUrl,
+      url: $config.DEFAULT_HOUSE
     },
     props: {
       item: {
@@ -81,30 +83,12 @@
         $parent.onHandleDeleteHouse(params);
       },
       onHandleUpdateHouse() {
-        this.item.zhulihuxing = [
-          {
-            pic: '',
-            tags: '在售',
-            mainji: '80',
-            title: '2室1厅1卫'
-          },
-          {
-            pic: '',
-            tags: '在售',
-            mainji: '80',
-            title: '2室1厅1卫'
-          }
-        ];
         const query = '?item=' + JSON.stringify(this.item);
         wx.navigateTo({
-          url: $routes.UPDATE_HOUSE.newHouse.path + query
+          url: $routes.HOUSE.UPDATE.NEW_HOUSE.path + query
         });
       },
-      onHandleSelectDetail(id) {
-        // wx.navigateTo({
-        //   url: $routes.DETAIL.path + '?house_id=' + id
-        // });
-      },
+      onHandleSelectDetail(id) {},
       onHandleSlideView(e) {
         const {index} = e.$wx.detail;
         if (index) {

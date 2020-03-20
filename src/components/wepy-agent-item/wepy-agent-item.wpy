@@ -3,7 +3,7 @@
     <div class="item-row row">
       <div class="item-col col-2">
         <div class="item-img">
-          <lazy-image src="{{item.photo||defaultAgent}}" loadStyle="border-radius:100%;"/>
+          <lazy-image-agent src="{{item.photo?baseUrl+item.photo:url}}"/>
         </div>
       </div>
       <div class="item-col col-3">
@@ -24,10 +24,12 @@
   import wepy from '@wepy/core';
   import * as $routes from '../../router';
   import * as $config from '../../config';
+  import apis from '../../apis';
 
   wepy.component({
     data: {
-      defaultAgent: $config.DEFAULT_AGENT
+      baseUrl: apis.baseUrl,
+      url: $config.DEFAULT_AGENT
     },
     props: {
       item: {
@@ -45,13 +47,10 @@
       onHandleUpdateAgent() {
         const query = '?item=' + JSON.stringify(this.item);
         wx.navigateTo({
-          url: $routes.UPDATE_AGENT.path + query
+          url: $routes.AGENT.UPDATE.path + query
         });
       },
       onHandleDetailAgent(id) {
-        // wx.navigateTo({
-        //   url: $routes.DETAIL_AGENT.path + '?id=' + id
-        // });
       }
     },
     created() {
@@ -98,7 +97,7 @@
 <config>
   {
   usingComponents: {
-  'lazy-image': '../lazy-image/lazy-image'
+  'lazy-image-agent': '../lazy-image-agent/lazy-image-agent'
   }
   }
 </config>

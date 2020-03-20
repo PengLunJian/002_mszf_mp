@@ -1,0 +1,474 @@
+<template>
+  <div class="container">
+    <div class="content">
+      <div class="header">
+        <top-bar title="图片裁剪" styl="{{topBar.style}}"></top-bar>
+      </div>
+      <div class="body">
+        <div class="context">
+          <div class="upload">
+            <div class="upload-content">
+              <div class="upload-header"></div>
+              <div class="upload-body">
+                <div class="upload-cut">
+                  <div class="upload-cut-touch"
+                       @touchstart="onHandleTouchStart"
+                       @touchmove="onHandleTouchMove"
+                       @touchend="onHandleTouchEnd"
+                       @tap="onHandleShowImage"></div>
+                  <div class="upload-cut-border">
+                    <div class="upload-border"></div>
+                    <div class="upload-border"></div>
+                    <div class="upload-border"></div>
+                    <div class="upload-border"></div>
+                  </div>
+                  <div class="upload-cut-mask"></div>
+                  <div class="upload-cut-image">
+                    <img class="upload-image"
+                         :src="touchImage.src"
+                         style="{{touchImage.style}}"
+                         @load="onHandleLoaderImage"/>
+                  </div>
+                  <div class="upload-cut-canvas">
+                    <canvas canvas-id="canvas" class="canvas"/>
+                  </div>
+                </div>
+              </div>
+              <div class="upload-footer"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="footer-row row">
+          <div class="footer-col col-6">
+            <div class="btn btn-upload" @tap="onHandleChooseImage">上传图片</div>
+          </div>
+          <div class="footer-col col-6">
+            <div class="btn btn-confirm" @tap="onHandleConfirmImage">生成图片</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+  import store from '../../../store/index';
+  import Toast from '../../../mixins/toast';
+  import Loading from '../../../mixins/loading';
+  import * as $config from '../../../config';
+
+  wepy.page({
+    store,
+
+    mixins: [Toast, Loading],
+
+    data: {
+      topBar: {
+        style: 'background-color:transparent;color:#FFFFFF;'
+      },
+      touchImage: {
+        src: '',
+        style: '',
+        width: '',
+        height: '',
+        initStyle: ''
+      },
+      touches: {
+        length: 0,
+        clientX: 0,
+        clientY: 0,
+        offsetX: 0,
+        offsetY: 0,
+        totalOffsetX: 0,
+        totalOffsetY: 0,
+        storageOffsetX: 0,
+        storageOffsetY: 0
+      },
+      canvas: {
+        ctx: null,
+        width: 400,
+        height: 400,
+        destWidth: 400,
+        destHeight: 400,
+        selector: 'canvas',
+        mark: {
+          path: '',
+          width: 0,
+          height: 0
+        }
+      }
+    },
+
+    computed: {},
+
+    methods: {
+      onHandleChooseImage() {
+        wx.chooseImage({
+          count: 1,
+          sizeType: ['original'],
+          success: (res) => {
+            this.showLoading();
+            this.touchImage.src = res.tempFilePaths[0];
+            wx.getImageInfo({
+              src: this.touchImage.src,
+              success: (res) => {
+                res = res || {};
+                this.onHandleClearTouches();
+                this.onHandleRenderImage(res);
+                console.log(res);
+              },
+              fail: (err) => {
+                console.log(err);
+              }
+            });
+            console.log(res);
+          },
+          fail: (err) => {
+            console.log(err);
+          }
+        });
+      },
+      onHandleConfirmImage() {
+        const {src} = this.touchImage;
+        if (src) {
+          this.onHandleDrawImage();
+          this.onHandleBackImage();
+        } else {
+          this.showToast('请先选择上传图片');
+        }
+      },
+      onHandleRenderImage(res) {
+        let rateWidth = 0;
+        let rateHeight = 0;
+        const {width, height} = res;
+        const rate = width / height;
+        if (width > height) {
+          rateHeight = 520;
+          rateWidth = 520 * rate;
+        } else if (width < height) {
+          rateWidth = 520;
+          rateHeight = 520 / rate;
+        } else {
+          rateWidth = 520;
+          rateHeight = 520;
+        }
+        this.touchImage.width = rateWidth / 2;
+        this.touchImage.height = rateHeight / 2;
+        this.touchImage.style =
+          'width:' + (rateWidth / 2) + 'px;' +
+          'height:' + (rateHeight / 2) + 'px;' +
+          'margin-left:' + (-rateWidth / 2 / 2) + 'px;' +
+          'margin-top:' + (-rateHeight / 2 / 2) + 'px;';
+        this.touchImage.initStyle = this.touchImage.style;
+      },
+      onHandleDrawImage() {
+        const {selector} = this.canvas;
+        const {src, width, height} = this.touchImage;
+        const {storageOffsetX, storageOffsetY} = this.touches;
+        const offsetX = (width - 520 / 2) / 2 + storageOffsetX;
+        const offsetY = (height - 520 / 2) / 2 + storageOffsetY;
+        const rate = this.canvas.width / (520 / 2);
+        this.canvas.ctx = wx.createCanvasContext(selector);
+        this.canvas.ctx.draw();
+        this.canvas.ctx.drawImage(src, -offsetX * rate, -offsetY * rate, width * rate, height * rate);
+      },
+      onHandleShowImage() {
+        const {src} = this.touchImage;
+        if (src) {
+          this.onHandleDrawImage();
+          this.onHandlePreviewImage();
+        }
+      },
+      onHandleBackImage() {
+        this.onHandleTempFilePath()
+          .then((res) => {
+            res = res || {};
+            const {tempFilePath} = res;
+            this.$app.$path = {path: tempFilePath};
+            wx.navigateBack({
+              delta: 1
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      },
+      onHandlePreviewImage() {
+        this.onHandleTempFilePath()
+          .then((res) => {
+            res = res || {};
+            const {tempFilePath} = res;
+            wx.previewImage({
+              current: tempFilePath,
+              urls: [tempFilePath]
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      },
+      onHandleLoaderImage() {
+        this.hideLoading();
+      },
+      onHandleTouchStart(e) {
+        const {touches} = e.$wx;
+        this.touches.length = touches.length;
+        if (touches.length === 1) {
+          const {clientX, clientY} = touches[0];
+          this.touches.clientX = clientX;
+          this.touches.clientY = clientY;
+        }
+      },
+      onHandleTouchMove(e) {
+        const {touches} = e.$wx;
+        if (this.touches.length === 1) {
+          const {clientX, clientY} = touches[0];
+          this.touches.offsetX = this.touches.clientX - clientX;
+          this.touches.offsetY = this.touches.clientY - clientY;
+          let totalOffsetX = this.touches.offsetX + this.touches.storageOffsetX;
+          let totalOffsetY = this.touches.offsetY + this.touches.storageOffsetY;
+
+          let moveOffsetX = (this.touchImage.width - 520 / 2) / 2;
+          let moveOffsetY = (this.touchImage.height - 520 / 2) / 2;
+          moveOffsetX = totalOffsetX > 0 ? moveOffsetX : -moveOffsetX;
+          moveOffsetY = totalOffsetY > 0 ? moveOffsetY : -moveOffsetY;
+          totalOffsetX = Math.abs(totalOffsetX) >= Math.abs(moveOffsetX) ? moveOffsetX : totalOffsetX;
+          totalOffsetY = Math.abs(totalOffsetY) >= Math.abs(moveOffsetY) ? moveOffsetY : totalOffsetY;
+
+          this.touches.totalOffsetX = totalOffsetX;
+          this.touches.totalOffsetY = totalOffsetY;
+
+          this.touchImage.style = this.touchImage.initStyle +
+            'transform:translate3d(' + (-totalOffsetX) +
+            'px,' + (-totalOffsetY) + 'px,0);';
+        }
+      },
+      onHandleTouchEnd() {
+        const totalOffsetX = this.touches.storageOffsetX + this.touches.offsetX;
+        const totalOffsetY = this.touches.storageOffsetY + this.touches.offsetY;
+
+        let moveOffsetX = (this.touchImage.width - 520 / 2) / 2;
+        let moveOffsetY = (this.touchImage.height - 520 / 2) / 2;
+        moveOffsetX = totalOffsetX > 0 ? moveOffsetX : -moveOffsetX;
+        moveOffsetY = totalOffsetY > 0 ? moveOffsetY : -moveOffsetY;
+        this.touches.storageOffsetX = Math.abs(totalOffsetX) >= Math.abs(moveOffsetX) ? moveOffsetX : totalOffsetX;
+        this.touches.storageOffsetY = Math.abs(totalOffsetY) >= Math.abs(moveOffsetY) ? moveOffsetY : totalOffsetY;
+
+        this.touches.length = 0;
+        this.touches.offsetX = 0;
+        this.touches.offsetY = 0;
+        this.touches.clientX = 0;
+        this.touches.clientY = 0;
+      },
+      onHandleTempFilePath() {
+        return new Promise((resolve, reject) => {
+          const {selector, width, height, destWidth, destHeight} = this.canvas;
+          this.canvas.ctx.draw(true, () => {
+            wx.canvasToTempFilePath({
+              width,
+              height,
+              destWidth,
+              destHeight,
+              fileType: 'jpg',
+              canvasId: selector,
+              success: (res) => {
+                resolve(res);
+              },
+              fail: (err) => {
+                reject(err);
+              }
+            });
+          });
+        });
+      },
+      onHandleClearTouches() {
+        for (let key in this.touches) {
+          this.touches[key] = 0;
+        }
+      }
+    },
+
+    onLoad() {}
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../../assets/less/variable";
+  @import "../../../assets/less/@media";
+
+  @btnHeight: unit(90, rpx);
+
+  .container {
+    min-height: 100vh;
+    .content {
+      height: 100vh;
+      .header {
+      }
+      .body {
+        height: 100%;
+        position: relative;
+        .context {
+          height: 100%;
+          padding-top: 65px;
+          padding-bottom: 105px;
+          .upload {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 900;
+            background-color: #000000;
+            .upload-content {
+              .upload-header {
+              }
+              .upload-body {
+                .upload-cut {
+                  width: 260px;
+                  height: 260px;
+                  position: fixed;
+                  top: 50%;
+                  left: 50%;
+                  z-index: 901;
+                  margin-top: -130px;
+                  margin-left: -130px;
+                  background-color: rgba(255, 255, 255, .15);
+                  .upload-cut-touch {
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: 905;
+                  }
+                  .upload-cut-border {
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: 904;
+                    .upload-border {
+                      position: absolute;
+                      width: 15px;
+                      height: 15px;
+                      border-color: @theme2 !important;
+                      &:nth-child(1) {
+                        top: -2px;
+                        left: -2px;
+                        border-top: 2px solid @white;
+                        border-left: 2px solid @white;
+                      }
+                      &:nth-child(2) {
+                        top: -2px;
+                        right: -2px;
+                        border-top: 2px solid @white;
+                        border-right: 2px solid @white;
+                      }
+                      &:nth-child(3) {
+                        bottom: -2px;
+                        left: -2px;
+                        border-bottom: 2px solid @white;
+                        border-left: 2px solid @white;
+                      }
+                      &:nth-child(4) {
+                        bottom: -2px;
+                        right: -2px;
+                        border-bottom: 2px solid @white;
+                        border-right: 2px solid @white;
+                      }
+                    }
+                  }
+                  .upload-cut-mask {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    z-index: 903;
+                    width: 100%;
+                    height: 100%;
+                    background-color: @transparent;
+                    border-left: calc((100vw - 260px) / 2) solid rgba(0, 0, 0, .5);
+                    border-right: calc((100vw - 260px) / 2) solid rgba(0, 0, 0, 0.5);
+                    border-top: calc((100vh - 260px) / 2) solid rgba(0, 0, 0, .5);
+                    border-bottom: calc((100vh - 260px) / 2) solid rgba(0, 0, 0, 0.5);
+                  }
+                  .upload-cut-image {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: 902;
+                    width: 100%;
+                    height: 100%;
+                    .upload-image {
+                      position: absolute;
+                      top: 50%;
+                      left: 50%;
+                      width: 100%;
+                      height: 100%;
+                    }
+                  }
+                  .upload-cut-canvas {
+                    position: fixed;
+                    top: -400px;
+                    left: 0;
+                    z-index: 1000;
+                    width: 400px;
+                    height: 400px;
+                    visibility: hidden;
+                    .canvas {
+                      width: 100%;
+                      height: 100%;
+                      background-color: transparent;
+                    }
+                  }
+                }
+              }
+              .upload-footer {
+              }
+            }
+          }
+        }
+      }
+      .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        z-index: 1000;
+        .footer-row {
+          padding: unit(30, rpx);
+          .footer-col {
+            padding: unit(30, rpx);
+          }
+        }
+        .btn {
+          margin: 0 auto;
+          overflow: hidden;
+          height: @btnHeight;
+          line-height: @btnHeight;
+          border-radius: @btnHeight;
+          box-shadow: 0 0 15px @boxShadow05;
+          background: -webkit-linear-gradient(left, @theme1, @theme2);
+          font-size: @fontSize32;
+          text-align: center;
+          color: @white;
+        }
+      }
+    }
+  }
+
+</style>
+
+<config>
+  {
+  disableScroll:true,
+  navigationStyle:'custom',
+  navigationBarTextStyle:'white',
+  usingComponents: {
+  'top-bar': '../../../components/top-bar/top-bar'
+  }
+  }
+</config>

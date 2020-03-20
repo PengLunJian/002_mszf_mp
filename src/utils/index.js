@@ -1,4 +1,4 @@
-import * as localStorage from './localStorage';
+import * as storage from './storage';
 
 /**
  *
@@ -6,7 +6,7 @@ import * as localStorage from './localStorage';
  * @returns {string}
  */
 export const getToken = (key) => {
-  const accessToken = localStorage.getItem(key) || '';
+  const accessToken = storage.getItem(key) || '';
   const token = 'Bearer ' + accessToken;
   return token;
 };
@@ -15,7 +15,7 @@ export const getToken = (key) => {
  * @returns {any}
  */
 export const getUser = () => {
-  const user = localStorage.getItem('user');
+  const user = storage.getItem('user');
   return user;
 };
 /**
@@ -65,7 +65,6 @@ export const dataFilter = (data) => {
     jiaofang = jiaofang ? dateFormat(jiaofang, 'zh-cn') : '';
     kaipan = kaipan ? dateFormat(kaipan, 'zh-cn') : '';
     tags = tags.split(' ');
-
     item.browsing_time = browsing_time;
     item.jiaofang = jiaofang;
     item.kaipan = kaipan;

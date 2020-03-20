@@ -50,7 +50,7 @@
   import wepy from '@wepy/core';
   import store from '../../store';
   import {mapState, mapActions} from '@wepy/redux';
-  import * as localStorage from '../../utils/localStorage';
+  import * as storage from '../../utils/storage';
   import * as controller from './controller';
   import * as $routes from '../../router';
   import Toast from '../../mixins/toast';
@@ -112,12 +112,12 @@
             const {error, success, data} = res.payload;
             if (success) {
               const {at, rt, user} = data;
-              localStorage.setItem('accessToken', at);
-              localStorage.setItem('refreshToken', rt);
+              storage.setItem('accessToken', at);
+              storage.setItem('refreshToken', rt);
               if (this.checked) {
-                localStorage.setItem('user', user);
+                storage.setItem('user', user);
               } else {
-                localStorage.removeItem('user', user);
+                storage.removeItem('user', user);
               }
               wx.redirectTo({
                 url: $routes.INDEX.path
@@ -138,7 +138,7 @@
     },
 
     onLoad() {
-      const user = localStorage.getItem('user');
+      const user = storage.getItem('user');
       const {account, pwd} = user || {};
       if (account && pwd) {
         this.username = account;

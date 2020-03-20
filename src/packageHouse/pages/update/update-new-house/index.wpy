@@ -17,7 +17,7 @@
             <div class="scroll-content">
               <div class="scroll-header"></div>
               <div class="scroll-body">
-                <div class="tab-content" v-if="tab.activeIndex===0">
+                <div class="tab-content{{tab.activeIndex===0?' active':''}}">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-body">
@@ -102,7 +102,7 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">建面</label>
-                                <input class="form-input" v-model="mianji" type="text"
+                                <input class="form-input" v-model="mianjifanwen" type="text"
                                        placeholder="90-150m²"
                                        @input="onHandleCheckEmpty"/>
                                 <span class="form-next iconfont icon-next"></span>
@@ -186,7 +186,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="tab-content" v-if="tab.activeIndex===1">
+                <div class="tab-content{{tab.activeIndex===1?' active':''}}">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
@@ -200,18 +200,13 @@
                                  :key="index" @tap="onHandleAgentSelector(index)">
                               <div class="module-item row" :class="{'checked':item.checked}">
                                 <div class="item-img">
-                                  <lazy-image :src="item.photo||defaultAgent" loadStyle="border-radius:100%;"/>
+                                  <lazy-image-agent :src="item.photo?baseUrl+item.photo:url"/>
                                 </div>
                                 <div class="item-info">
                                   <div class="item-name">{{item.name||noData}}</div>
                                   <div class="item-phone">{{item.tel||noData}}</div>
                                 </div>
                                 <div class="item-check iconfont icon-right"></div>
-                              </div>
-                            </div>
-                            <div class="module-col col-4" v-if="!isAgent">
-                              <div class="module-btn btn btn-agent" @tap="onHandleInsertAgent">
-                                <div class="module-icon iconfont icon-insert"></div>
                               </div>
                             </div>
                           </div>
@@ -251,9 +246,9 @@
                           <div class="module-row row">
                             <div class="module-col col-4"
                                  v-for="(item,index) in layouts" :key="index">
-                              <div class="module-item">
+                              <div class="module-item" @tap="onHandleUpdateLayout(item,index)">
                                 <div class="item-img">
-                                  <lazy-image :src="item.pic"/>
+                                  <lazy-image :src="baseUrl+item.pic" mode="aspectFill"/>
                                 </div>
                                 <div class="item-info">
                                   <div class="item-row row">
@@ -266,6 +261,8 @@
                                     <div class="item-state state3" v-if="item.tags==='售罄'">{{item.tags}}</div>
                                   </div>
                                 </div>
+                                <div class="btn-delete iconfont icon-delete"
+                                     @tap.stop="onHandleDeleteLayout(index)"></div>
                               </div>
                             </div>
                             <div class="module-col col-4">
@@ -280,7 +277,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="tab-content" v-if="tab.activeIndex===2">
+                <div class="tab-content{{tab.activeIndex===2?' active':''}}">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
@@ -289,11 +286,11 @@
                       <div class="module-body">
                         <div class="module-images">
                           <div class="module-row row">
-                            <div class="module-col col-4" v-for="(item,index) in items" :key="index">
+                            <div class="module-col col-4" v-for="(item,index) in totalUrls" :key="index">
                               <div class="module-item" @tap="onHandleShowImage(index)">
                                 <div class="btn-delete iconfont icon-delete"
                                      @tap.stop="onHandleDeleteImage(index)"></div>
-                                <lazy-image src="{{item}}" mode="aspectFill"/>
+                                <lazy-image :src="item" mode="aspectFill"/>
                               </div>
                             </div>
                             <div class="module-col col-4">
@@ -316,7 +313,7 @@
       </div>
       <div class="footer">
         <div class="btn btn-insert{{isDisable?'':' disable'}}"
-             @tap="onHandleInsertHouse">添加房源
+             @tap="onHandleUpdateHouse">保存
         </div>
       </div>
     </div>
@@ -325,7 +322,6 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import apis from '../../../../apis/index';
   import store from '../../../../store/index';
   import {mapState, mapActions} from '@wepy/redux';
   import Toast from '../../../../mixins/toast';
@@ -334,6 +330,7 @@
   import * as $config from '../../../../config';
   import * as utils from '../../../../utils';
   import * as controller from './controller';
+  import apis from '../../../../apis';
 
   wepy.page({
     store,
@@ -342,21 +339,23 @@
 
     data: {
       noData: '暂无数据',
-      defaultAgent: $config.DEFAULT_AGENT,
+      baseUrl: apis.baseUrl,
+      url: $config.DEFAULT_AGENT,
       tab: {
         activeIndex: 0,
         items: ['基本信息', '房源配置', '图片上传']
       },
       isDisable: false,
+      id: -1,
       xiaoqu: '',
       phone: '',
       price: '',
       title: '',
       owner: '',
-      mianji: '',
       kaipan: '',
       huxing: '',
       jiaofang: '',
+      mianjifanwen: '',
       xiangxidizhi: '',
       status: {
         value: '',
@@ -439,11 +438,11 @@
       },
       layouts: [],
       items: [],
-      pic_url: [],
-      image: {
-        count: 0,
-        baseUrl: apis.baseUrl
-      }
+      oldUrls: [],
+      newUrls: [],
+      tempUrls: [],
+      totalUrls: [],
+      count: 0
     },
 
     computed: {
@@ -463,12 +462,12 @@
             this.price &&
             this.title &&
             this.owner &&
-            this.mianji &&
             this.kaipan &&
             this.huxing &&
             this.status &&
             this.jiaofang &&
             this.dizhi.value &&
+            this.mianjifanwen &&
             this.xiangxidizhi &&
             this.leixing.value
           );
@@ -564,10 +563,20 @@
       },
       onHandleInsertLayout() {
         wx.navigateTo({
-          url: $routes.INSERT_LAYOUT.path
+          url: $routes.HOUSE.LAYOUT.path
         });
       },
-      onHandleInsertHouse() {
+      onHandleDeleteLayout(index) {
+        this.layouts.splice(index, 1);
+      },
+      onHandleUpdateLayout(item, index) {
+        const query = '?item=' + JSON.stringify(item) +
+          '&type=修改&index=' + index;
+        wx.navigateTo({
+          url: $routes.HOUSE.LAYOUT.path + query
+        });
+      },
+      onHandleUpdateHouse() {
         const isCheckEmpty = this.onHandleCheckEmpty();
         const {isBaseEmpty, isAgentEmpty, isTagsEmpty} = isCheckEmpty;
         if (!isBaseEmpty) {
@@ -582,35 +591,42 @@
       },
       onHandleSubmitHouse() {
         this.showLoading();
-        if (this.items.length) {
+        if (this.newUrls.length) {
           this.exeAjaxInsertImage();
         } else {
-          this.exeAjaxInsertHouse();
+          this.exeAjaxUpdateHouse();
         }
       },
       onHandleInsertImage() {
         wx.navigateTo({
-          url: $routes.UPLOAD.path
+          url: $routes.HOUSE.UPLOAD.path
         });
       },
       onHandleShowImage(index) {
+        const {totalUrls} = this;
         wx.previewImage({
-          current: this.items[index],
-          urls: this.items
+          current: totalUrls[index],
+          urls: totalUrls
         });
       },
       onHandleDeleteImage(index) {
-        this.items.splice(index, 1);
+        if ((index + 1) <= this.oldUrls.length) {
+          this.oldUrls.splice(index, 1);
+          this.tempUrls.splice(index, 1);
+        } else {
+          this.newUrls.splice(index - this.oldUrls.length, 1);
+        }
+        this.totalUrls = this.tempUrls.concat(this.newUrls);
       },
       onHandleInsertAgent() {
         wx.navigateTo({
-          url: $routes.INSERT_AGENT.path
+          url: $routes.AGENT.INSERT.path
         });
       },
       onHandleRenderHouse(data) {
         const {
           id, owner, phone, title, price,
-          huxing, mianji, leixing, xiaoqu, status,
+          huxing, mianjifanwen, leixing, xiaoqu, status,
           addr, addr_sheng, addr_shi, addr_qu, agency,
           tags, pic_url, kaipan, jiaofang, zhulihuxing
         } = data;
@@ -620,12 +636,12 @@
         this.price = price;
         this.title = title;
         this.owner = owner;
-        this.mianji = mianji;
         this.huxing = huxing;
         this.kaipan = kaipan;
         this.jiaofang = jiaofang;
         this.xiangxidizhi = addr;
-        this.layouts = zhulihuxing;
+        this.layouts = zhulihuxing || [];
+        this.mianjifanwen = mianjifanwen;
         this.status.value = this.status.items[status - 1];
         this.dizhi.items = [addr_sheng, addr_shi, addr_qu];
         this.dizhi.value = this.dizhi.items.join('、');
@@ -651,7 +667,10 @@
           });
         });
         this.oldUrls = pic_url;
-        this.totalUrls = pic_url.concat(this.newUrls);
+        this.tempUrls = pic_url.map((item) => {
+          return apis.baseUrl + item;
+        });
+        this.totalUrls = this.tempUrls;
         this.onHandleCheckEmpty();
       },
       onHandleRenderAgent() {
@@ -665,43 +684,43 @@
       },
       exeAjaxUpdateHouse() {
         const params = this.getParams();
-        this.ajaxInsertHouse(params)
+        this.ajaxUpdateHouse(params)
           .then((res) => {
             this.hideLoading();
             res = res || {};
             const {success} = res.payload;
             if (success) {
-              this.showToast('房源新增成功');
+              this.showToast('房源修改成功');
               setTimeout(() => {
                 wx.navigateBack({
                   delta: 1
                 });
               }, 1000);
             } else {
-              this.showToast('新增失败，请重试');
+              this.showToast('修改失败，请重试');
             }
             console.log(res);
           })
           .catch((err) => {
             this.hideLoading();
-            this.showToast('新增失败，请重试');
+            this.showToast('修改失败，请重试');
             console.log(err);
           });
       },
       exeAjaxInsertImage() {
-        let {count, baseUrl} = this.image;
-        const filePath = this.items[count];
-        const params = {count, filePath};
+        let {count} = this;
+        const filePath = this.newUrls[count];
+        const params = {filePath};
         this.ajaxInsertImage(params)
           .then((res) => {
             res = res || {};
             const {success, data} = res.payload;
             if (success) {
-              this.pic_url.push(baseUrl + data);
+              this.oldUrls.push(data);
             }
-            this.image.count++;
-            if (this.image.count === this.items.length) {
-              this.exeAjaxInsertHouse();
+            count++;
+            if (count === this.newUrls.length) {
+              this.exeAjaxUpdateHouse();
             } else {
               this.exeAjaxInsertImage();
             }
@@ -709,9 +728,9 @@
           })
           .catch((err) => {
             this.showToast('第' + count + '张图片上传失败');
-            this.image.count++;
-            if (this.image.count === this.items.length) {
-              this.exeAjaxInsertHouse();
+            count++;
+            if (count === this.newUrls.length) {
+              this.exeAjaxUpdateHouse();
             } else {
               this.exeAjaxInsertImage();
             }
@@ -721,11 +740,11 @@
       getParams() {
         const params = {
           type: 1,
+          id: this.id,
           owner: this.owner,
           phone: this.phone,
           title: this.title,
           price: this.price,
-          mianji: this.mianji,
           xiaoqu: this.xiaoqu,
           huxing: this.huxing,
           kaipan: this.kaipan,
@@ -733,6 +752,7 @@
           zhulihuxing: this.layouts,
           leixing: this.leixing.value,
           status: this.status.index + 1,
+          mianjifanwen: this.mianjifanwen,
           addr_sheng: this.dizhi.items[0],
           addr_shi: this.dizhi.items[1],
           addr_qu: this.dizhi.items[2],
@@ -741,7 +761,7 @@
           agency_com_name: '广进房产',
           tags: this.tags.value,
           agency: this.agents.value,
-          pic_url: this.pic_url
+          pic_url: this.oldUrls
         };
         return params;
       }
@@ -751,7 +771,8 @@
       const {$path, $layout} = this.$app;
       if ($path) {
         const {path} = $path;
-        this.items.push(path);
+        this.newUrls.push(path);
+        this.totalUrls = this.tempUrls.concat(this.newUrls);
         this.$app.$path = null;
       }
       if ($layout) {
@@ -835,6 +856,10 @@
               }
               .scroll-body {
                 .tab-content {
+                  display: none !important;
+                  &.active {
+                    display: block !important;
+                  }
                   .module {
                     .module-content {
                       .module-header {
@@ -1037,6 +1062,19 @@
                                     }
                                   }
                                 }
+                                .btn-delete {
+                                  position: absolute;
+                                  top: 0;
+                                  right: 0;
+                                  z-index: 10;
+                                  width: unit(50, rpx);
+                                  height: unit(50, rpx);
+                                  line-height: unit(50, rpx);
+                                  background-color: rgba(0, 0, 0, .6);
+                                  font-size: @fontSize36;
+                                  text-align: center;
+                                  color: @btnDelete;
+                                }
                               }
                               .module-btn {
                                 height: unit(200, rpx);
@@ -1136,8 +1174,6 @@
       }
     }
   }
-
-
 </style>
 
 <config>
@@ -1145,7 +1181,8 @@
   navigationStyle:'custom',
   usingComponents: {
   'top-bar': '../../../../components/top-bar/top-bar',
-  'lazy-image': '../../../../components/lazy-image/lazy-image'
+  'lazy-image': '../../../../components/lazy-image/lazy-image',
+  'lazy-image-agent': '../../../../components/lazy-image-agent/lazy-image-agent'
   }
   }
 </config>

@@ -5,7 +5,7 @@
            @tap="onHandleSelectDetail(item.id)">
         <div class="item-inner">
           <div class="item-img">
-            <lazy-image src="{{item.pic_url[0]||defaultHouse}}" mode="aspectFill"/>
+            <lazy-image src="{{item.pic_url[0]?baseUrl+item.pic_url[0]:url}}" mode="aspectFill"/>
           </div>
           <div class="item-info">
             <div class="item-row">
@@ -42,6 +42,7 @@
   import store from '../../store';
   import * as $routes from '../../router';
   import * as $config from '../../config';
+  import apis from '../../apis';
 
   wepy.component({
     store,
@@ -58,7 +59,8 @@
           extClass: 'btn-delete'
         }
       ],
-      defaultHouse: $config.DEFAULT_HOUSE
+      baseUrl: apis.baseUrl,
+      url: $config.DEFAULT_HOUSE
     },
     props: {
       item: {
@@ -80,14 +82,10 @@
       onHandleUpdateHouse() {
         const query = '?item=' + JSON.stringify(this.item);
         wx.navigateTo({
-          url: $routes.UPDATE_HOUSE.secondHouse.path + query
+          url: $routes.HOUSE.UPDATE.SECOND_HOUSE.path + query
         });
       },
-      onHandleSelectDetail(id) {
-        // wx.navigateTo({
-        //   url: $routes.DETAIL.path + '?house_id=' + id
-        // });
-      },
+      onHandleSelectDetail(id) {},
       onHandleSlideView(e) {
         const {index} = e.$wx.detail;
         if (index) {
@@ -97,7 +95,7 @@
         }
       }
     },
-    onLoad() {
+    created() {
     }
   });
 </script>

@@ -112,7 +112,7 @@
       },
       onHandleInsertAgent() {
         wx.navigateTo({
-          url: $routes.INSERT_AGENT.path
+          url: $routes.AGENT.INSERT.path
         });
       },
       onHandleDeleteAgent(params) {
@@ -220,7 +220,6 @@
   usingComponents: {
   'modal':'../../../components/modal/modal',
   'top-bar': '../../../components/top-bar/top-bar',
-  'lazy-image': '../../../components/lazy-image/lazy-image',
   'wepy-agent-item': '../../../components/wepy-agent-item/wepy-agent-item'
   }
   }

@@ -71,7 +71,7 @@
                             <div class="module-item" @tap="onHandleShowImage(index)">
                               <div class="btn-delete iconfont icon-delete"
                                    @tap.stop="onHandleDeleteImage(index)"></div>
-                              <lazy-image src="{{item}}" mode="aspectFill"/>
+                              <lazy-image :src="item" mode="aspectFill"/>
                             </div>
                           </div>
                           <div class="module-col col-4">
@@ -102,7 +102,7 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import apis from '../../../apis/index';
+  import apis from '../../../apis';
   import store from '../../../store/index';
   import {mapState, mapActions} from '@wepy/redux';
   import * as controller from './controller';
@@ -129,10 +129,7 @@
       oldUrls: [],
       newUrls: [],
       totalUrls: [],
-      image: {
-        count: 0,
-        baseUrl: apis.baseUrl
-      }
+      count: 0
     },
 
     computed: {
@@ -185,7 +182,7 @@
       },
       onHandleInsertImage() {
         wx.navigateTo({
-          url: $routes.UPLOAD.path
+          url: $routes.AGENT.UPLOAD.path
         });
       },
       onHandleRenderAgent(data) {
@@ -198,23 +195,23 @@
         this.params.com_id = com_id;
         this.params.remarks = remarks;
         this.params.photo = photo;
-        this.oldUrls = photo ? [photo] : [];
+        this.oldUrls = photo ? [apis.baseUrl + photo] : [];
         this.totalUrls = this.oldUrls;
         this.onHandleCheckEmpty();
       },
       exeAjaxInsertImage() {
-        let {count, baseUrl} = this.image;
+        let {count} = this;
         const filePath = this.newUrls[count];
-        const params = {count, filePath};
+        const params = {filePath};
         this.ajaxInsertImage(params)
           .then((res) => {
             res = res || {};
             const {success, data} = res.payload;
             if (success) {
-              this.params.photo = baseUrl + data;
+              this.params.photo = data;
             }
-            this.image.count++;
-            if (this.image.count === this.newUrls.length) {
+            count++;
+            if (count === this.newUrls.length) {
               this.exeAjaxUpdateAgent();
             } else {
               this.exeAjaxInsertImage();
@@ -223,8 +220,8 @@
           })
           .catch((err) => {
             this.showToast('第' + count + '张图片上传失败');
-            this.image.count++;
-            if (this.image.count === this.newUrls.length) {
+            count++;
+            if (count === this.newUrls.length) {
               this.exeAjaxUpdateAgent();
             } else {
               this.exeAjaxInsertImage();

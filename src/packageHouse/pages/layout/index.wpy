@@ -59,7 +59,7 @@
                     <div class="module-body">
                       <div class="module-images">
                         <div class="module-row row">
-                          <div class="module-col col-4" v-for="(item,index) in image.items" :key="index">
+                          <div class="module-col col-4" v-for="(item,index) in totalUrls" :key="index">
                             <div class="module-item" @tap="onHandleShowImage(index)">
                               <div class="btn-delete iconfont icon-delete"
                                    @tap.stop="onHandleDeleteImage(index)"></div>
@@ -94,14 +94,13 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import apis from '../../../apis/index';
   import store from '../../../store/index';
   import {mapState, mapActions} from '@wepy/redux';
   import Toast from '../../../mixins/toast';
   import Loading from '../../../mixins/loading';
-  import * as $config from '../../../config/index';
   import * as controller from './controller';
   import * as $routes from '../../../router';
+  import apis from '../../../apis';
 
   wepy.page({
     store,
@@ -110,7 +109,7 @@
 
     data: {
       noData: '暂无数据',
-      defaultAgent: $config.DEFAULT_AGENT,
+      baseUrl: apis.baseUrl,
       isDisable: false,
       mianji: '',
       status: {
@@ -126,11 +125,10 @@
         ],
         index: [1, 1, 1]
       },
-      image: {
-        pic: '',
-        items: [],
-        baseUrl: apis.baseUrl
-      },
+      pic: '',
+      oldUrls: [],
+      newUrls: [],
+      totalUrls: [],
       layout: null
     },
 
@@ -173,18 +171,20 @@
       },
       onHandleShowUpload() {
         wx.navigateTo({
-          url: $routes.UPLOAD.path
+          url: $routes.HOUSE.UPLOAD.path
         });
       },
       onHandleShowImage(index) {
-        const {items} = this.image;
+        const {totalUrls} = this;
         wx.previewImage({
-          current: items[index],
-          urls: items
+          current: totalUrls[index],
+          urls: totalUrls
         });
       },
-      onHandleDeleteImage(index) {
-        this.image.items.splice(index, 1);
+      onHandleDeleteImage() {
+        this.oldUrls = [];
+        this.newUrls = [];
+        this.totalUrls = [];
       },
       onHandleSaveLayout() {
         const isCheckEmpty = this.onHandleCheckEmpty();
@@ -192,8 +192,7 @@
         if (!isBaseEmpty) {
           this.showToast('基本信息填写不完整');
         } else {
-          const {items} = this.image;
-          if (items.length) {
+          if (this.newUrls.length) {
             this.exeAjaxInsertImage();
           } else {
             this.onHandleBackLayout();
@@ -207,16 +206,26 @@
           delta: 1
         });
       },
+      onHandleRenderLayout(data) {
+        const {mianji, pic, tags, title} = data;
+        this.mianji = mianji;
+        this.pic = pic;
+        this.status.value = tags;
+        this.huxing.value = title;
+        this.oldUrls = [apis.baseUrl + pic];
+        this.totalUrls = [apis.baseUrl + pic];
+        this.layout = data;
+        this.onHandleCheckEmpty();
+      },
       exeAjaxInsertImage() {
         this.showLoading();
-        const {baseUrl, items} = this.image;
-        const params = {filePath: items[0]};
+        const params = {filePath: this.newUrls[0]};
         this.ajaxInsertImage(params)
           .then((res) => {
             res = res || {};
             const {success, data} = res.payload;
             if (success) {
-              this.image.pic = baseUrl + data;
+              this.pic = data;
               this.onHandleBackLayout();
             } else {
               this.showToast('图片上传失败');
@@ -232,7 +241,7 @@
       },
       getParams() {
         const params = {
-          pic: this.image.pic,
+          pic: this.pic,
           mianji: this.mianji,
           tags: this.status.value,
           title: this.huxing.value
@@ -245,12 +254,21 @@
       const {$path} = this.$app;
       if ($path) {
         const {path} = $path;
-        this.image.items = [path];
+        this.oldUrls = [];
+        this.newUrls = [path];
+        this.totalUrls = [path];
         this.$app.$path = null;
       }
     },
 
-    onLoad() {
+    onLoad(option) {
+      if (option.item) {
+        let {item, index, type} = option;
+        item = JSON.parse(item);
+        index = parseInt(index);
+        const params = {...item, index, type};
+        this.onHandleRenderLayout(params);
+      }
     }
   });
 </script>

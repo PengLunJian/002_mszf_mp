@@ -17,7 +17,7 @@
             <div class="scroll-content">
               <div class="scroll-header"></div>
               <div class="scroll-body">
-                <div class="tab-content" v-if="tab.activeIndex===0">
+                <div class="tab-content{{tab.activeIndex===0?' active':''}}">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-body">
@@ -216,7 +216,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="tab-content" v-if="tab.activeIndex===1">
+                <div class="tab-content{{tab.activeIndex===1?' active':''}}">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
@@ -230,7 +230,7 @@
                                  :key="index" @tap="onHandleAgentSelector(index)">
                               <div class="item-agent row" :class="{'checked':item.checked}">
                                 <div class="item-img">
-                                  <lazy-image :src="item.photo||defaultAgent" loadStyle="border-radius:100%;"/>
+                                  <lazy-image-agent :src="item.photo?baseUrl+item.photo:url"/>
                                 </div>
                                 <div class="item-info">
                                   <div class="item-name">{{item.name||noData}}</div>
@@ -290,7 +290,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="tab-content" v-if="tab.activeIndex===2">
+                <div class="tab-content{{tab.activeIndex===2?' active':''}}">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
@@ -335,7 +335,6 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import apis from '../../../../apis/index';
   import store from '../../../../store/index';
   import {mapState, mapActions} from '@wepy/redux';
   import Toast from '../../../../mixins/toast';
@@ -343,6 +342,7 @@
   import * as $routes from '../../../../router';
   import * as $config from '../../../../config';
   import * as controller from './controller';
+  import apis from '../../../../apis';
 
   wepy.page({
     store,
@@ -351,7 +351,8 @@
 
     data: {
       noData: '暂无数据',
-      defaultAgent: $config.DEFAULT_AGENT,
+      baseUrl: apis.baseUrl,
+      url: $config.DEFAULT_AGENT,
       tab: {
         activeIndex: 0,
         items: ['基本信息', '房源配置', '图片上传']
@@ -553,11 +554,9 @@
       },
       oldUrls: [],
       newUrls: [],
+      tempUrls: [],
       totalUrls: [],
-      image: {
-        count: 0,
-        baseUrl: apis.baseUrl
-      }
+      count: 0
     },
 
     computed: {
@@ -736,7 +735,7 @@
       },
       onHandleInsertImage() {
         wx.navigateTo({
-          url: $routes.UPLOAD.path
+          url: $routes.HOUSE.UPLOAD.path
         });
       },
       onHandleSubmitHouse() {
@@ -822,16 +821,20 @@
           }
         });
         this.oldUrls = pic_url;
-        this.totalUrls = pic_url.concat(this.newUrls);
+        this.tempUrls = pic_url.map((item) => {
+          return apis.baseUrl + item;
+        });
+        this.totalUrls = this.tempUrls;
         this.onHandleCheckEmpty();
       },
       onHandleDeleteImage(index) {
         if ((index + 1) <= this.oldUrls.length) {
           this.oldUrls.splice(index, 1);
+          this.tempUrls.splice(index, 1);
         } else {
           this.newUrls.splice(index - this.oldUrls.length, 1);
         }
-        this.totalUrls = this.oldUrls.concat(this.newUrls);
+        this.totalUrls = this.tempUrls.concat(this.newUrls);
       },
       exeAjaxUpdateHouse() {
         const params = this.getParams();
@@ -859,18 +862,18 @@
           });
       },
       exeAjaxInsertImage() {
-        let {count, baseUrl} = this.image;
+        let {count} = this;
         const filePath = this.newUrls[count];
-        const params = {count, filePath};
+        const params = {filePath};
         this.ajaxInsertImage(params)
           .then((res) => {
             res = res || {};
             const {success, data} = res.payload;
             if (success) {
-              this.oldUrls.push(baseUrl + data);
+              this.oldUrls.push(data);
             }
-            this.image.count++;
-            if (this.image.count === this.newUrls.length) {
+            count++;
+            if (count === this.newUrls.length) {
               this.exeAjaxUpdateHouse();
             } else {
               this.exeAjaxInsertImage();
@@ -879,8 +882,8 @@
           })
           .catch((err) => {
             this.showToast('第' + count + '张图片上传失败');
-            this.image.count++;
-            if (this.image.count === this.newUrls.length) {
+            count++;
+            if (count === this.newUrls.length) {
               this.exeAjaxUpdateHouse();
             } else {
               this.exeAjaxInsertImage();
@@ -928,7 +931,7 @@
       if ($path) {
         const {path} = $path;
         this.newUrls.push(path);
-        this.totalUrls = this.oldUrls.concat(this.newUrls);
+        this.totalUrls = this.tempUrls.concat(this.newUrls);
         this.$app.$path = null;
       }
     },
@@ -1007,6 +1010,10 @@
               }
               .scroll-body {
                 .tab-content {
+                  display: none !important;
+                  &.active {
+                    display: block !important;
+                  }
                   .module {
                     .module-content {
                       .module-header {
@@ -1284,7 +1291,6 @@
       }
     }
   }
-
 </style>
 
 <config>
@@ -1292,7 +1298,8 @@
   navigationStyle:'custom',
   usingComponents: {
   'top-bar': '../../../../components/top-bar/top-bar',
-  'lazy-image': '../../../../components/lazy-image/lazy-image'
+  'lazy-image': '../../../../components/lazy-image/lazy-image',
+  'lazy-image-agent': '../../../../components/lazy-image-agent/lazy-image-agent'
   }
   }
 </config>
