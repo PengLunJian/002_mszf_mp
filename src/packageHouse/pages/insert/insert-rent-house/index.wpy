@@ -334,7 +334,7 @@
       </div>
       <div class="footer">
         <div class="btn btn-insert{{isDisable?'':' disable'}}"
-             @tap="onHandleInsertHouse">添加房源
+             @tap="onHandleInsertHouse">保存
         </div>
       </div>
     </div>

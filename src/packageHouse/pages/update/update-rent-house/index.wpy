@@ -334,7 +334,7 @@
       </div>
       <div class="footer">
         <div class="btn btn-update{{isDisable?'':' disable'}}"
-             @tap="onHandleUpdateHouse">提交保存
+             @tap="onHandleUpdateHouse">保存
         </div>
       </div>
     </div>
@@ -851,19 +851,20 @@
             item.checked = true;
           }
         });
-        this.agents.value = agency || [];
         this.agents.items = (this.isAgent || []).map((item) => {
+          let checked = false;
+          for (let i in agency || []) {
+            if (agency[i].id === item.id) {
+              checked = true;
+            }
+          }
+          if (checked) {
+            this.agents.value.push(item);
+          }
           return {
             ...item,
-            checked: false
+            checked
           };
-        });
-        this.agents.value.map((j) => {
-          this.agents.items.map((k) => {
-            if (j.id === k.id) {
-              k.checked = true;
-            }
-          });
         });
         this.fagnwupeizhi.value = fagnwupeizhi;
         this.fagnwupeizhi.items.map((item) => {
@@ -942,14 +943,14 @@
           phone: this.phone,
           title: this.title,
           price: this.price,
-          huxing: this.huxing.value,
           mianji: this.mianji,
-          chaoxiang: this.chaoxiang.value,
-          leixing: this.leixing.value,
-          zhaungxiu: this.zhuangxiu.value,
-          louceng: this.louceng.value,
           xiaoqu: this.xiaoqu,
           addr: this.xiangxidizhi,
+          huxing: this.huxing.value,
+          leixing: this.leixing.value,
+          louceng: this.louceng.value,
+          chaoxiang: this.chaoxiang.value,
+          zhaungxiu: this.zhuangxiu.value,
           addr_sheng: this.dizhi.items[0],
           addr_shi: this.dizhi.items[1],
           addr_qu: this.dizhi.items[2],

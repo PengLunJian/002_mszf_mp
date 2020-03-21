@@ -652,19 +652,20 @@
             item.checked = true;
           }
         });
-        this.agents.value = agency || [];
         this.agents.items = (this.isAgent || []).map((item) => {
+          let checked = false;
+          for (let i in agency || []) {
+            if (agency[i].id === item.id) {
+              checked = true;
+            }
+          }
+          if (checked) {
+            this.agents.value.push(item);
+          }
           return {
             ...item,
-            checked: false
+            checked
           };
-        });
-        this.agents.value.map((j) => {
-          this.agents.items.map((k) => {
-            if (j.id === k.id) {
-              k.checked = true;
-            }
-          });
         });
         this.oldUrls = pic_url;
         this.tempUrls = pic_url.map((item) => {
