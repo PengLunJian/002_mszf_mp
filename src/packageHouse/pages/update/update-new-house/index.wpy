@@ -245,7 +245,7 @@
                         <div class="module-layouts">
                           <div class="module-row row">
                             <div class="module-col col-4"
-                                 v-for="(item,index) in layouts" :key="index">
+                                 v-for="(item,index) in isLayout" :key="index">
                               <div class="module-item" @tap="onHandleUpdateLayout(item,index)">
                                 <div class="item-img">
                                   <lazy-image :src="baseUrl+item.pic" mode="aspectFill"/>
@@ -567,11 +567,10 @@
         });
       },
       onHandleDeleteLayout(index) {
-        this.layouts.splice(index, 1);
+        this.deleteLayoutReplace(index);
       },
       onHandleUpdateLayout(item, index) {
-        const query = '?item=' + JSON.stringify(item) +
-          '&type=修改&index=' + index;
+        const query = '?&type=修改&index=' + index;
         wx.navigateTo({
           url: $routes.HOUSE.LAYOUT.path + query
         });
@@ -673,6 +672,7 @@
         });
         this.totalUrls = this.tempUrls;
         this.onHandleCheckEmpty();
+        this.selectLayoutReplace(zhulihuxing);
       },
       onHandleRenderAgent() {
         const items = (this.isAgent || []).map((item) => {
@@ -769,17 +769,12 @@
     },
 
     onShow() {
-      const {$path, $layout} = this.$app;
+      const {$path} = this.$app;
       if ($path) {
         const {path} = $path;
         this.newUrls.push(path);
         this.totalUrls = this.tempUrls.concat(this.newUrls);
         this.$app.$path = null;
-      }
-      if ($layout) {
-        const {layout} = $layout;
-        this.layouts.push(layout);
-        this.$app.$layout = null;
       }
     },
 
@@ -1032,6 +1027,7 @@
                                 .item-img {
                                   width: 100%;
                                   height: unit(200, rpx);
+                                  background-color: @lazyBgColor;
                                 }
                                 .item-info {
                                   font-size: @fontSize26;

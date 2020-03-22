@@ -16,14 +16,13 @@ export const setItem = (key, value) => {
  * @returns {any}
  */
 export const getItem = (key) => {
+  let value = null;
   try {
-    const value = wx.getStorageSync(key);
-    if (value) {
-      return value;
-    }
+    value = wx.getStorageSync(key);
   } catch (e) {
     console.log(e);
   }
+  return value;
 };
 /**
  *

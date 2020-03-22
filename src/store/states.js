@@ -88,3 +88,7 @@ export const SELECT_INDEX_STATE = {
   isFailure: false,
   data: null
 };
+
+export const SELECT_LAYOUT_STATE = {
+  data: []
+};

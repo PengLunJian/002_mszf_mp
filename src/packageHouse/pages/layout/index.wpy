@@ -129,7 +129,9 @@
       oldUrls: [],
       newUrls: [],
       totalUrls: [],
-      layout: null
+      layout: null,
+      index: -1,
+      type: '新增'
     },
 
     computed: {
@@ -185,6 +187,7 @@
         this.oldUrls = [];
         this.newUrls = [];
         this.totalUrls = [];
+        this.pic = '';
       },
       onHandleSaveLayout() {
         const isCheckEmpty = this.onHandleCheckEmpty();
@@ -195,13 +198,19 @@
           if (this.newUrls.length) {
             this.exeAjaxInsertImage();
           } else {
-            this.onHandleBackLayout();
+            this.onHandleUpdateLayout();
           }
         }
       },
-      onHandleBackLayout() {
-        this.layout = this.getParams();
-        this.$app.$layout = {layout: this.layout};
+      onHandleUpdateLayout() {
+        const {index, type} = this;
+        const data = this.getParams();
+        if (type === '修改') {
+          const params = {data, index};
+          this.updateLayoutReplace(params);
+        } else {
+          this.insertLayoutReplace(data);
+        }
         wx.navigateBack({
           delta: 1
         });
@@ -212,8 +221,8 @@
         this.pic = pic;
         this.status.value = tags;
         this.huxing.value = title;
-        this.oldUrls = [apis.baseUrl + pic];
-        this.totalUrls = [apis.baseUrl + pic];
+        this.oldUrls = pic ? [apis.baseUrl + pic] : [];
+        this.totalUrls = this.oldUrls;
         this.layout = data;
         this.onHandleCheckEmpty();
       },
@@ -226,7 +235,7 @@
             const {success, data} = res.payload;
             if (success) {
               this.pic = data;
-              this.onHandleBackLayout();
+              this.onHandleUpdateLayout();
             } else {
               this.showToast('图片上传失败');
             }
@@ -262,12 +271,13 @@
     },
 
     onLoad(option) {
-      if (option.item) {
-        let {item, index, type} = option;
-        item = JSON.parse(item);
-        index = parseInt(index);
-        const params = {...item, index, type};
-        this.onHandleRenderLayout(params);
+      const {type, index} = option;
+      if (type === '修改') {
+        this.index = index;
+        this.type = '修改';
+        const {isLayout} = this;
+        const data = isLayout[index];
+        this.onHandleRenderLayout(data);
       }
     }
   });

@@ -344,3 +344,23 @@ export const ajaxRequestSelectAgentDetail = createAction(
         });
     });
   });
+
+export const insertLayoutReplace = createAction(
+  'insertLayoutReplace', (params) => {
+    commit(actionTypes.INSERT_LAYOUT_REPLACE, params);
+  });
+
+export const deleteLayoutReplace = createAction(
+  'deleteLayoutReplace', (params) => {
+    commit(actionTypes.DELETE_LAYOUT_REPLACE, params);
+  });
+
+export const updateLayoutReplace = createAction(
+  'updateLayoutReplace', (params) => {
+    commit(actionTypes.UPDATE_LAYOUT_REPLACE, params);
+  });
+
+export const selectLayoutReplace = createAction(
+  'selectLayoutReplace', (params) => {
+    commit(actionTypes.SELECT_LAYOUT_REPLACE, params);
+  });
