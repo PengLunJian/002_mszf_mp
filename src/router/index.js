@@ -84,6 +84,8 @@ export const CUSTOMER = {
 };
 
 export const BUSINESS = {
-  url: '商户管理',
-  path: ''
+  SELECT: {
+    url: '商户管理',
+    path: '/packageBusiness/pages/select/index'
+  }
 };

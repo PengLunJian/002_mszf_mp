@@ -3,7 +3,7 @@
     <div class="item-row row">
       <div class="item-col col-2">
         <div class="item-img">
-          <lazy-image-agent src="{{item.photo?baseUrl+item.photo:url}}"/>
+          <lazy-image src="{{item.photo?baseUrl+item.photo:url}}"/>
         </div>
       </div>
       <div class="item-col col-3">
@@ -77,6 +77,9 @@
         display: inline-block;
         vertical-align: middle;
         border-radius: @borderRadius100;
+        image{
+          border-radius: @borderRadius100;
+        }
       }
       .item-col {
         border-right: 0.5px solid @borderColor1;
@@ -97,7 +100,7 @@
 <config>
   {
   usingComponents: {
-  'lazy-image-agent': '../lazy-image-agent/lazy-image-agent'
+  'lazy-image': '../lazy-image/lazy-image'
   }
   }
 </config>

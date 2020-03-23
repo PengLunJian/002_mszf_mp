@@ -52,6 +52,12 @@
         'pages/detail/index',
         'pages/upload/index'
       ]
+    },
+    {
+      'root': 'packageBusiness',
+      'pages': [
+        'pages/select/index'
+      ]
     }
   ],
   window: {

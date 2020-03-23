@@ -31,15 +31,17 @@
               <div class="scroll-footer"></div>
             </div>
           </scroll-view>
-          <modal :isEnter="isEnter"
-                 :isLeave="isLeave"
-                 @onConfirm="onHandleConfirm"/>
         </div>
       </div>
       <div class="footer">
         <div class="btn-insert iconfont icon-insert"
              @tap="onHandleInsertAgent"></div>
       </div>
+      <modal :isEnter="isEnter"
+             :isLeave="isLeave"
+             title="确认删除该经纪人吗?"
+             context="删除此经纪人同时删除所有信息"
+             @onConfirm="onHandleConfirm"/>
     </div>
   </div>
 </template>

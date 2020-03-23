@@ -2,7 +2,7 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="经纪人添加"></top-bar>
+        <top-bar title="商户管理"></top-bar>
       </div>
       <div class="body">
         <div class="context fade">
@@ -17,19 +17,22 @@
                         <div class="form-row row">
                           <div class="form-col col-12">
                             <div class="form-group">
-                              <label class="form-label">姓名</label>
-                              <input class="form-input" v-model="params.name" type="text"
-                                     placeholder="彭伦健"
-                                     @input="onHandleCheckEmpty"/>
+                              <label class="form-label">名称</label>
+                              <input class="form-input" v-model="isData.name" disabled="{{true}}" type="text"/>
                               <span class="form-next iconfont icon-next"></span>
                             </div>
                           </div>
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">电话</label>
-                              <input class="form-input" v-model="params.tel" type="number"
-                                     placeholder="18130278679"
-                                     @input="onHandleCheckEmpty"/>
+                              <input class="form-input" v-model="isData.tel" disabled="{{true}}" type="text"/>
+                              <span class="form-next iconfont icon-next"></span>
+                            </div>
+                          </div>
+                          <div class="form-col col-12">
+                            <div class="form-group">
+                              <label class="form-label">地址</label>
+                              <input class="form-input" v-model="isData.addr" disabled="{{true}}" type="text"/>
                               <span class="form-next iconfont icon-next"></span>
                             </div>
                           </div>
@@ -42,15 +45,14 @@
                 <div class="module">
                   <div class="module-content">
                     <div class="module-header">
-                      <div class="module-title">个人简介</div>
+                      <div class="module-title">商家简介</div>
                     </div>
                     <div class="module-body">
                       <div class="module-edit">
                         <div class="form-row row">
                           <div class="form-col col-12">
                             <div class="form-group">
-                        <textarea class="textarea" v-model="params.remarks" type="text"
-                                  placeholder="请输入内容"/>
+                              <textarea class="textarea" v-model="isData.ext" disabled="{{true}}" type="text"/>
                             </div>
                           </div>
                         </div>
@@ -62,21 +64,14 @@
                 <div class="module">
                   <div class="module-content">
                     <div class="module-header">
-                      <div class="module-title">图片上传</div>
+                      <div class="module-title">营业执照</div>
                     </div>
                     <div class="module-body">
                       <div class="module-images">
                         <div class="module-row row">
-                          <div class="module-col col-4" v-for="(item,index) in urls" :key="index">
-                            <div class="module-item" @tap="onHandleShowImage(index)">
-                              <div class="btn-delete iconfont icon-delete"
-                                   @tap.stop="onHandleDeleteImage(index)"></div>
-                              <lazy-image src="{{item}}" mode="aspectFill"/>
-                            </div>
-                          </div>
-                          <div class="module-col col-4">
-                            <div class="module-btn btn btn-image" @tap="onHandleInsertImage">
-                              <div class="module-icon iconfont icon-insert"></div>
+                          <div class="module-col col-4" :key="index">
+                            <div class="module-item" @tap="onHandleShowImage">
+                              <lazy-image src="{{baseUrl+isData.pic}}" mode="aspectFill"/>
                             </div>
                           </div>
                         </div>
@@ -91,24 +86,20 @@
           </scroll-view>
         </div>
       </div>
-      <div class="footer">
-        <div class="btn btn-insert{{isDisable?'':' disable'}}"
-             @tap="onHandleInsertAgent">保存
-        </div>
-      </div>
+      <div class="footer"></div>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
+  import apis from '../../../apis';
   import store from '../../../store/index';
   import {mapState, mapActions} from '@wepy/redux';
-  import * as controller from './controller';
-  import * as $routes from '../../../router';
-  import * as utils from '../../../utils';
   import Toast from '../../../mixins/toast';
   import Loading from '../../../mixins/loading';
+  import * as controller from './controller';
+  import * as utils from '../../../utils';
 
   wepy.page({
     store,
@@ -116,17 +107,7 @@
     mixins: [Toast, Loading],
 
     data: {
-      isDisable: false,
-      params: {
-        com_id: 1,
-        name: '',
-        tel: '',
-        remarks: '',
-        photo: '',
-        detail: ''
-      },
-      urls: [],
-      count: 0
+      baseUrl: apis.baseUrl
     },
 
     computed: {
@@ -135,121 +116,47 @@
 
     methods: {
       ...mapActions(controller.ACTIONS),
-      onHandleCheckEmpty() {
-        const {name, tel} = this.params;
-        let isBaseEmpty =
-          (
-            name &&
-            tel
-          );
-        this.isDisable = isBaseEmpty;
-        return {
-          isBaseEmpty
-        };
-      },
-      onHandleInsertAgent() {
-        const isCheckEmpty = this.onHandleCheckEmpty();
-        const {isBaseEmpty} = isCheckEmpty;
-        if (!isBaseEmpty) {
-          this.showToast('基本信息填写不完整');
-        } else {
-          this.onHandleSubmitAgent();
-        }
-      },
-      onHandleSubmitAgent() {
-        this.showLoading();
-        if (this.urls.length) {
-          this.exeAjaxInsertImage();
-        } else {
-          this.exeAjaxInsertAgent();
-        }
-      },
-      onHandleShowImage(index) {
-        wx.previewImage({
-          current: this.urls[index],
-          urls: this.urls
-        });
-      },
-      onHandleDeleteImage(index) {
-        this.urls.splice(index, 1);
-      },
-      onHandleInsertImage() {
-        wx.navigateTo({
-          url: $routes.AGENT.UPLOAD.path
-        });
-      },
-      exeAjaxInsertAgent() {
+      exeAjaxSelectBusiness() {
         this.showLoading();
         const params = this.getParams();
-        this.ajaxInsertAgent(params)
-          .then((res) => {
-            this.hideLoading();
-            res = res || {};
-            const {success} = res.payload;
-            if (success) {
-              this.showToast('经纪人添加成功');
-              setTimeout(() => {
-                wx.navigateBack({
-                  delta: 1
-                });
-              }, 1000);
-            } else {
-              this.showToast('添加失败，请重试');
-            }
-          })
-          .catch((err) => {
-            this.hideLoading();
-            this.showToast('添加失败，请重试');
-            console.log(err);
-          });
-      },
-      exeAjaxInsertImage() {
-        let {count} = this;
-        const filePath = this.urls[count];
-        const params = {filePath};
-        this.ajaxInsertImage(params)
+        this.ajaxSelectBusiness(params)
           .then((res) => {
             res = res || {};
             const {success, data} = res.payload;
             if (success) {
-              this.params.photo = data;
-            }
-            count++;
-            if (count === this.urls.length) {
-              this.exeAjaxInsertAgent();
+              console.log(data);
             } else {
-              this.exeAjaxInsertImage();
+              this.showToast('加载失败，请重试');
             }
-            console.log(res);
+            this.hideLoading();
           })
           .catch((err) => {
-            this.showToast('第' + count + '张图片上传失败');
-            count++;
-            if (count === this.urls.length) {
-              this.exeAjaxInsertAgent();
-            } else {
-              this.exeAjaxInsertImage();
-            }
+            this.hideLoading();
+            this.showToast('加载失败，请重试');
             console.log(err);
           });
       },
+      onHandleShowImage() {
+        const {pic} = this.isData;
+        wx.previewImage({
+          current: [0],
+          urls: [pic]
+        });
+      },
       getParams() {
-        return this.params;
+        const {com_id} = utils.getUser();
+        const params = {
+          com_id
+        };
+        return params;
       }
     },
 
     onShow() {
-      const {$path} = this.$app;
-      if ($path) {
-        const {path} = $path;
-        this.urls = [path];
-        this.$app.$path = null;
-      }
     },
 
     onLoad() {
-      const {com_id} = utils.getUser();
-      this.params.com_id = com_id;
+      this.exeAjaxSelectBusiness();
     }
   });
 </script>
@@ -272,7 +179,6 @@
         .context {
           height: 100%;
           padding-top: 65px;
-          padding-bottom: unit(160, rpx);
           .scroll-view {
             height: 100%;
             .scroll-content {
@@ -410,29 +316,6 @@
         }
       }
       .footer {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        z-index: 1000;
-        padding: unit(30, rpx);
-        background-color: @white;
-        box-shadow: 0 0 15px @boxShadow05;
-        .btn-insert {
-          overflow: hidden;
-          height: unit(100, rpx);
-          line-height: unit(100, rpx);
-          border-radius: @borderRadius10;
-          background: -webkit-linear-gradient(left, @theme1, @theme2);
-          font-size: @fontSize32;
-          letter-spacing: 1px;
-          text-align: center;
-          color: @white;
-          &.disable {
-            background: @disable;
-            color: @fontColor3;
-          }
-        }
       }
     }
   }

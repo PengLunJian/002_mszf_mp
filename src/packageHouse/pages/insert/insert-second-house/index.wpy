@@ -230,7 +230,7 @@
                                  :key="index" @tap="onHandleAgentSelector(index)">
                               <div class="item-agent row" :class="{'checked':item.checked}">
                                 <div class="item-img">
-                                  <lazy-image-agent :src="item.photo?baseUrl+item.photo:url"/>
+                                  <lazy-image :src="item.photo?baseUrl+item.photo:url"/>
                                 </div>
                                 <div class="item-info">
                                   <div class="item-name">{{item.name||noData}}</div>
@@ -1040,6 +1040,9 @@
                                   width: unit(80, rpx);
                                   height: unit(80, rpx);
                                   border-radius: @borderRadius100;
+                                  image {
+                                    border-radius: @borderRadius100;
+                                  }
                                 }
                                 .item-info {
                                   padding: 0 unit(30, rpx);
@@ -1235,8 +1238,7 @@
   navigationStyle:'custom',
   usingComponents: {
   'top-bar': '../../../../components/top-bar/top-bar',
-  'lazy-image': '../../../../components/lazy-image/lazy-image',
-  'lazy-image-agent': '../../../../components/lazy-image-agent/lazy-image-agent'
+  'lazy-image': '../../../../components/lazy-image/lazy-image'
   }
   }
 </config>

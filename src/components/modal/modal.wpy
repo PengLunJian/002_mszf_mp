@@ -3,10 +3,10 @@
     <div class="modal-mask" @tap="onHandleHideModal"></div>
     <div class="modal-content">
       <div class="modal-header">
-        <div class="modal-title">确认删除该房源吗?</div>
+        <div class="modal-title">{{title}}</div>
       </div>
       <div class="modal-body">
-        <div class="modal-context">删除此房源同时删除所有信息</div>
+        <div class="modal-context">{{context}}</div>
       </div>
       <div class="modal-footer">
         <div class="modal-btns row">
@@ -31,6 +31,14 @@
       isLeave: {
         type: Boolean,
         default: false
+      },
+      title: {
+        type: String,
+        default: ''
+      },
+      context: {
+        type: String,
+        default: ''
       }
     },
     methods: {

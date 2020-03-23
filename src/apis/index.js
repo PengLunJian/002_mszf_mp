@@ -143,6 +143,12 @@ const apis = {
     url: '/auth/company/agency/list',
     params: {}
   },
+  selectBusiness: {
+    url: '/auth/company/detail',
+    params: {
+      com_id: 1
+    }
+  },
   selectHouseDetail: {
     url: '/house/v1/houser/house/detail',
     params: {

@@ -92,3 +92,10 @@ export const SELECT_INDEX_STATE = {
 export const SELECT_LAYOUT_STATE = {
   data: []
 };
+
+export const SELECT_BUSINESS_STATE = {
+  isLoading: true,
+  isSuccess: false,
+  isFailure: false,
+  data: null
+};

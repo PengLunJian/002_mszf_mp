@@ -20,15 +20,17 @@
             <module-house-item :items="isData.rows"/>
             <loading-more :length="isData.rows.length" :totalCount="isData.totalCount"/>
           </scroll-view>
-          <modal :isEnter="isEnter"
-                 :isLeave="isLeave"
-                 @onConfirm="onHandleConfirm"/>
         </div>
       </div>
       <div class="footer">
         <div class="btn-insert iconfont icon-insert"
              @tap="onHandleInsertHouse"></div>
       </div>
+      <modal :isEnter="isEnter"
+             :isLeave="isLeave"
+             title="确认删除该房源吗?"
+             context="删除此房源同时删除所有信息"
+             @onConfirm="onHandleConfirm"/>
     </div>
   </div>
 </template>

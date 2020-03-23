@@ -44,7 +44,7 @@
         {
           name: '商户管理',
           icon: 'icon-business',
-          path: $routes.BUSINESS.path
+          path: $routes.BUSINESS.SELECT.path
         }
       ]
     },

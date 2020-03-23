@@ -200,7 +200,7 @@
                                  :key="index" @tap="onHandleAgentSelector(index)">
                               <div class="module-item row" :class="{'checked':item.checked}">
                                 <div class="item-img">
-                                  <lazy-image-agent :src="item.photo?baseUrl+item.photo:url"/>
+                                  <lazy-image :src="item.photo?baseUrl+item.photo:url"/>
                                 </div>
                                 <div class="item-info">
                                   <div class="item-name">{{item.name||noData}}</div>
@@ -245,10 +245,10 @@
                         <div class="module-layouts">
                           <div class="module-row row">
                             <div class="module-col col-4"
-                                 v-for="(item,index) in layouts" :key="index">
-                              <div class="module-item">
+                                 v-for="(item,index) in isLayout" :key="index">
+                              <div class="module-item" @tap="onHandleUpdateLayout(item,index)">
                                 <div class="item-img">
-                                  <lazy-image :src="item.pic"/>
+                                  <lazy-image :src="baseUrl+item.pic" mode="aspectFill"/>
                                 </div>
                                 <div class="item-info">
                                   <div class="item-row row">
@@ -261,6 +261,8 @@
                                     <div class="item-state state3" v-if="item.tags==='售罄'">{{item.tags}}</div>
                                   </div>
                                 </div>
+                                <div class="btn-delete iconfont icon-delete"
+                                     @tap.stop="onHandleDeleteLayout(index)"></div>
                               </div>
                             </div>
                             <div class="module-col col-4">
@@ -433,7 +435,6 @@
           }
         ]
       },
-      layouts: [],
       items: [],
       pic_url: [],
       count: 0
@@ -560,6 +561,15 @@
           url: $routes.HOUSE.LAYOUT.path
         });
       },
+      onHandleDeleteLayout(index) {
+        this.deleteLayoutReplace(index);
+      },
+      onHandleUpdateLayout(item, index) {
+        const query = '?&type=修改&index=' + index;
+        wx.navigateTo({
+          url: $routes.HOUSE.LAYOUT.path + query
+        });
+      },
       onHandleInsertHouse() {
         const isCheckEmpty = this.onHandleCheckEmpty();
         const {isBaseEmpty, isAgentEmpty, isTagsEmpty} = isCheckEmpty;
@@ -675,7 +685,7 @@
           huxing: this.huxing,
           kaipan: this.kaipan,
           jiaofang: this.jiaofang,
-          zhulihuxing: this.layouts,
+          zhulihuxing: this.isLayout,
           leixing: this.leixing.value,
           status: this.status.index + 1,
           mianjifanwen: this.mianjifanwen,
@@ -694,21 +704,17 @@
     },
 
     onShow() {
-      const {$path, $layout} = this.$app;
+      const {$path} = this.$app;
       if ($path) {
         const {path} = $path;
         this.items.push(path);
         this.$app.$path = null;
       }
-      if ($layout) {
-        const {layout} = $layout;
-        this.layouts.push(layout);
-        this.$app.$layout = null;
-      }
     },
 
     onLoad() {
       this.onHandleRenderAgent();
+      this.selectLayoutReplace([]);
     }
   });
 </script>
@@ -786,10 +792,11 @@
                   .module {
                     .module-content {
                       .module-header {
+                        position: relative;
                         padding: unit(30, rpx) unit(30, rpx) 0;
                         .module-title {
-                          height: unit(32, rpx);
-                          line-height: unit(32, rpx);
+                          height: unit(30, rpx);
+                          line-height: unit(30, rpx);
                           padding-left: unit(20, rpx);
                           border-left: 4px solid @theme2;
                           font-size: @fontSize32;
@@ -873,6 +880,9 @@
                                   width: unit(80, rpx);
                                   height: unit(80, rpx);
                                   border-radius: @borderRadius100;
+                                  image {
+                                    border-radius: @borderRadius100;
+                                  }
                                 }
                                 .item-info {
                                   padding: 0 unit(30, rpx);
@@ -985,6 +995,19 @@
                                     }
                                   }
                                 }
+                                .btn-delete {
+                                  position: absolute;
+                                  top: 0;
+                                  right: 0;
+                                  z-index: 10;
+                                  width: unit(50, rpx);
+                                  height: unit(50, rpx);
+                                  line-height: unit(50, rpx);
+                                  background-color: rgba(0, 0, 0, .6);
+                                  font-size: @fontSize36;
+                                  text-align: center;
+                                  color: @btnDelete;
+                                }
                               }
                               .module-btn {
                                 height: unit(200, rpx);
@@ -1084,8 +1107,6 @@
       }
     }
   }
-
-
 </style>
 
 <config>
@@ -1093,8 +1114,7 @@
   navigationStyle:'custom',
   usingComponents: {
   'top-bar': '../../../../components/top-bar/top-bar',
-  'lazy-image': '../../../../components/lazy-image/lazy-image',
-  'lazy-image-agent': '../../../../components/lazy-image-agent/lazy-image-agent'
+  'lazy-image': '../../../../components/lazy-image/lazy-image'
   }
   }
 </config>
