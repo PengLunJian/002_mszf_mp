@@ -7,28 +7,10 @@
       <div class="body">
         <div class="context fade">
           <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
-            <div class="scroll-content">
-              <div class="scroll-header"></div>
-              <div class="scroll-body">
-                <div class="module">
-                  <div class="module-content">
-                    <div class="module-header">
-                      <div class="module-title">
-                        <div class="module-row row">
-                          <div class="module-col col-2">照片</div>
-                          <div class="module-col col-3">姓名</div>
-                          <div class="module-col col-4">电话</div>
-                          <div class="module-col col-3">操作</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="module-body">
-                      <wepy-agent-item v-for="(item,index) in isData" :item="item" :key="index"/>
-                    </div>
-                  </div>
-                </div>
+            <div class="scroll-row row">
+              <div class="scroll-col col-6" v-for="(item,index) in isData">
+                <agent-item :item="item" :key="index"/>
               </div>
-              <div class="scroll-footer"></div>
             </div>
           </scroll-view>
         </div>
@@ -152,43 +134,10 @@
           padding-top: unit(130, rpx);
           .scroll-view {
             height: 100%;
-            .scroll-content {
-              padding: unit(20, rpx) 0;
-              .scroll-header {
-              }
-              .scroll-body {
-                .module {
-                  .module-content {
-                    padding: unit(30, rpx);
-                    .module-header {
-                      line-height: unit(100, rpx);
-                      border-top: 0.5px solid @borderColor1;
-                      border-bottom: 0.5px solid @borderColor1;
-                      background-color: #F5F5F5;
-                      font-size: @fontSize26;
-                      text-align: center;
-                      color: @fontColor2;
-                      font-weight: bold;
-                      .module-row {
-                        .module-col {
-                          border-right: 0.5px solid @borderColor1;
-                          &:first-child {
-                            border-left: 0.5px solid @borderColor1;
-                          }
-                        }
-                      }
-                    }
-                    .module-body {
-                    }
-                    .module-footer {
-                    }
-                  }
-                  &:first-child {
-                    margin: 0;
-                  }
-                }
-              }
-              .scroll-footer {
+            .scroll-row {
+              padding: unit(15, rpx);
+              .scroll-col {
+                padding: unit(15, rpx);
               }
             }
           }
@@ -222,7 +171,7 @@
   usingComponents: {
   'modal':'../../../components/modal/modal',
   'top-bar': '../../../components/top-bar/top-bar',
-  'wepy-agent-item': '../../../components/wepy-agent-item/wepy-agent-item'
+  'agent-item': '../../../components/agent-item/agent-item'
   }
   }
 </config>

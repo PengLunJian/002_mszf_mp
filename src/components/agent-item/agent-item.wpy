@@ -1,0 +1,123 @@
+<template>
+  <div class="item">
+    <div class="item-img">
+      <lazy-image src="{{item.photo?baseUrl+item.photo:url}}" mode="aspectFill"/>
+      <div class="item-btns">
+        <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateAgent"></div>
+        <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteAgent"></div>
+      </div>
+    </div>
+    <div class="item-info">
+      <div class="item-row row">
+        <div class="item-col label">姓名：</div>
+        <div class="item-col value name">{{item.name}}</div>
+      </div>
+      <div class="item-row row">
+        <div class="item-col label">电话：</div>
+        <div class="item-col value">{{item.tel}}</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+  import * as $routes from '../../router';
+  import * as $config from '../../config';
+  import apis from '../../apis';
+
+  wepy.component({
+    data: {
+      baseUrl: apis.baseUrl,
+      url: $config.DEFAULT_AGENT
+    },
+    props: {
+      item: {
+        type: Object,
+        default: {}
+      }
+    },
+    events: {},
+    watch: {},
+    methods: {
+      onHandleDeleteAgent() {
+        const params = {id: this.item.id};
+        this.$parent.onHandleDeleteAgent(params);
+      },
+      onHandleUpdateAgent() {
+        const query = '?item=' + JSON.stringify(this.item);
+        wx.navigateTo({
+          url: $routes.AGENT.UPDATE.path + query
+        });
+      },
+      onHandleDetailAgent(id) {
+      }
+    },
+    created() {
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../assets/less/common";
+  @import "../../assets/less/variable";
+
+  .item {
+    overflow: hidden;
+    background-color: @white;
+    border-radius: @borderRadius20;
+    .item-img {
+      position: relative;
+      height: unit(300, rpx);
+      image {
+        border-top-left-radius: @borderRadius20;
+        border-top-right-radius: @borderRadius20;
+      }
+      .item-btns {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        .item-btn {
+          width: unit(60, rpx);
+          height: unit(60, rpx);
+          line-height: unit(60, rpx);
+          font-size: @fontSize36;
+          text-align: center;
+          &.btn-update {
+            color: @btnUpdate;
+          }
+          &.btn-delete {
+            color: @btnDelete;
+          }
+        }
+      }
+    }
+    .item-info {
+      padding: unit(20, rpx);
+      line-height: unit(40, rpx);
+      font-size: @fontSize28;
+      .item-col {
+        &.label {
+          font-weight: bold;
+          color: @fontColor1;
+        }
+        &.value {
+          color: @fontColor3;
+          &.name {
+            font-weight: bold;
+            color: @fontColor1;
+          }
+        }
+      }
+    }
+  }
+</style>
+
+<config>
+  {
+  usingComponents: {
+  'lazy-image': '../lazy-image/lazy-image'
+  }
+  }
+</config>

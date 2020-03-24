@@ -1,0 +1,193 @@
+<template>
+  <div class="item" v-if="item.type===1" @tap="onHandleSelectDetail(item.id)">
+    <div class="item-img">
+      <lazy-image src="{{item.pic_url[0]?baseUrl+item.pic_url[0]:url}}"/>
+      <div class="item-btns">
+        <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
+        <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
+      </div>
+    </div>
+    <div class="item-info">
+      <div class="item-row row">
+        <div class="item-title ellipsis">{{item.title||noData}}</div>
+      </div>
+      <div class="item-row row">
+        <div class="item-normal">{{item.huxing||noData}}室</div>
+        <div class="item-normal">{{item.mianjifanwen||0}}m²</div>
+      </div>
+      <div class="item-row row">
+        <div class="item-normal price">{{item.price||0}}/m²</div>
+      </div>
+    </div>
+  </div>
+  <div class="item" v-if="item.type===2" @tap="onHandleSelectDetail(item.id)">
+    <div class="item-img">
+      <lazy-image src="{{item.pic_url[0]?baseUrl+item.pic_url[0]:url}}" mode="aspectFill"/>
+      <div class="item-btns">
+        <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
+        <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
+      </div>
+    </div>
+    <div class="item-info">
+      <div class="item-row row">
+        <div class="item-title ellipsis">{{item.title||noData}}</div>
+      </div>
+      <div class="item-row row">
+        <div class="item-normal">{{item.huxing||noData}}</div>
+        <div class="item-normal">{{item.mianji||noData}}m²</div>
+      </div>
+      <div class="item-row row">
+        <div class="item-normal price">{{item.total_price||0}}万</div>
+        <div class="item-normal">{{item.price||0}}/m²</div>
+      </div>
+    </div>
+  </div>
+  <div class="item" v-if="item.type===3" @tap="onHandleSelectDetail(item.id)">
+    <div class="item-img">
+      <lazy-image src="{{item.pic_url[0]?baseUrl+item.pic_url[0]:url}}"/>
+      <div class="item-btns">
+        <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
+        <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
+      </div>
+    </div>
+    <div class="item-info">
+      <div class="item-row row">
+        <div class="item-title ellipsis">{{item.title||noData}}</div>
+      </div>
+      <div class="item-row row">
+        <div class="item-normal">{{item.huxing||noData}}</div>
+        <div class="item-normal">{{item.mianji||noData}}m²</div>
+      </div>
+      <div class="item-row row">
+        <div class="item-normal price">{{item.price||0}}元/月</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+  import store from '../../store';
+  import * as $routes from '../../router';
+  import * as $config from '../../config';
+  import apis from '../../apis';
+
+  wepy.component({
+    store,
+    data: {
+      noData: '暂无数据',
+      baseUrl: apis.baseUrl,
+      url: $config.DEFAULT_HOUSE
+    },
+    props: {
+      item: {
+        type: Object,
+        default: {}
+      }
+    },
+    computed: {},
+    methods: {
+      onHandleDeleteHouse() {
+        const params = {id: this.item.id};
+        this.$parent.onHandleDeleteHouse(params);
+      },
+      onHandleUpdateHouse() {
+        let url = '';
+        const {type} = this.item;
+        const query = '?item=' + JSON.stringify(this.item);
+        switch (type) {
+          case 1:
+            url = $routes.HOUSE.UPDATE.NEW_HOUSE.path;
+            break;
+          case 2:
+            url = $routes.HOUSE.UPDATE.SECOND_HOUSE.path;
+            break;
+          case 3:
+            url = $routes.HOUSE.UPDATE.RENT_HOUSE.path;
+            break;
+        }
+        url = url + query;
+        wx.navigateTo({
+          url
+        });
+      },
+      onHandleSelectDetail(id) {
+      }
+    },
+    created() {
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../assets/less/variable";
+  @import "../../assets/less/common";
+
+  .item {
+    overflow: hidden;
+    background-color: @white;
+    border-radius: @borderRadius20;
+    .item-img {
+      position: relative;
+      height: unit(300, rpx);
+      image {
+        border-top-left-radius: @borderRadius20;
+        border-top-right-radius: @borderRadius20;
+      }
+      .item-btns {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        .item-btn {
+          width: unit(60, rpx);
+          height: unit(60, rpx);
+          line-height: unit(60, rpx);
+          font-size: @fontSize36;
+          text-align: center;
+          &.btn-update {
+            color: @btnUpdate;
+          }
+          &.btn-delete {
+            color: @btnDelete;
+          }
+        }
+      }
+    }
+    .item-info {
+      padding: unit(20, rpx);
+      line-height: unit(40, rpx);
+      font-size: @fontSize28;
+      .item-row {
+        .item-title {
+          font-size: @fontSize32;
+          color: @fontColor1;
+          font-weight: bold;
+        }
+        .item-normal {
+          height: unit(50, rpx);
+          line-height: unit(50, rpx);
+          margin-right: unit(10, rpx);
+          font-size: @fontSize32;
+          color: @fontColor3;
+          &.price {
+            font-size: @fontSize36;
+            color: @priceColor;
+            font-weight: bold;
+          }
+          &:last-child {
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+</style>
+
+<config>
+  {
+  usingComponents: {
+  'lazy-image': '../lazy-image/lazy-image'
+  }
+  }
+</config>

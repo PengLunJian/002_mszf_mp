@@ -802,7 +802,7 @@
           });
       },
       exeAjaxInsertImage() {
-        let {count} = this.image;
+        let {count} = this;
         const filePath = this.items[count];
         const params = {filePath};
         this.ajaxInsertImage(params)
@@ -1230,7 +1230,6 @@
       }
     }
   }
-
 </style>
 
 <config>

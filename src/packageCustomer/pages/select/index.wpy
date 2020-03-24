@@ -2,10 +2,10 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="商户管理"></top-bar>
+        <top-bar title="客户管理"></top-bar>
       </div>
       <div class="body">
-        <div class="context fade" v-if="isSuccess">
+        <div class="context fade">
           <scroll-view class="scroll-view" scroll-y="{{true}}">
             <div class="scroll-content">
               <div class="scroll-header"></div>
@@ -155,9 +155,7 @@
     onShow() {
     },
 
-    onLoad() {
-      this.exeAjaxSelectBusiness();
-    }
+    onLoad() {}
   });
 </script>
 
