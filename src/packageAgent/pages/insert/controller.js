@@ -4,10 +4,11 @@ export const STATES = {
   isLoading: state => state.INSERT_AGENT_REDUCER.isLoading,
   isSuccess: state => state.INSERT_AGENT_REDUCER.isSuccess,
   isFailure: state => state.INSERT_AGENT_REDUCER.isFailure,
-  isData: state => state.INSERT_AGENT_REDUCER.data
+  isData: state => state.INSERT_AGENT_REDUCER.data,
+  isImage: state => state.INSERT_IMAGE_REDUCER.data
 };
 
 export const ACTIONS = {
   ajaxInsertAgent: params => actions.ajaxRequestInsertAgent(params),
-  ajaxInsertImage: params => actions.ajaxRequestInsertImage(params)
+  removeImageReplace: () => actions.removeImageReplace()
 };

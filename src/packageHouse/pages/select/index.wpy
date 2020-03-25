@@ -133,7 +133,7 @@
       },
       onHandleChange(index) {
         this.tab.initIndex = index;
-        this.resetSelectHouse();
+        this.removeHouseReplace();
         this.pageIndex = 1;
         this.exeAjaxSelectHouse();
       },
@@ -189,7 +189,7 @@
     },
 
     onLoad() {
-      this.resetSelectHouse();
+      this.removeHouseReplace();
       this.exeAjaxSelectHouse();
     }
   });

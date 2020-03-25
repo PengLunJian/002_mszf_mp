@@ -1,7 +1,7 @@
 <template>
   <div class="item">
     <div class="item-img">
-      <lazy-image src="{{item.photo?baseUrl+item.photo:url}}" mode="aspectFill"/>
+      <lazy-image src="{{item.photo?baseUrl+item.photo:url}}" width="50%" mode="aspectFill"/>
       <div class="item-btns">
         <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateAgent"></div>
         <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteAgent"></div>

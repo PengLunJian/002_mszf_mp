@@ -59,11 +59,11 @@
                     <div class="module-body">
                       <div class="module-images">
                         <div class="module-row row">
-                          <div class="module-col col-4" v-for="(item,index) in totalUrls" :key="index">
+                          <div class="module-col col-4" v-for="(item,index) in urls" :key="index">
                             <div class="module-item" @tap="onHandleShowImage(index)">
                               <div class="btn-delete iconfont icon-delete"
                                    @tap.stop="onHandleDeleteImage(index)"></div>
-                              <lazy-image src="{{item}}" mode="aspectFill"/>
+                              <lazy-image src="{{baseUrl+item}}" mode="aspectFill"/>
                             </div>
                           </div>
                           <div class="module-col col-4">
@@ -94,7 +94,7 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import store from '../../../store/index';
+  import store from '../../../store';
   import {mapState, mapActions} from '@wepy/redux';
   import Toast from '../../../mixins/toast';
   import Loading from '../../../mixins/loading';
@@ -125,11 +125,7 @@
         ],
         index: [1, 1, 1]
       },
-      pic: '',
-      oldUrls: [],
-      newUrls: [],
-      totalUrls: [],
-      layout: null,
+      urls: [],
       index: -1,
       type: '新增'
     },
@@ -177,17 +173,16 @@
         });
       },
       onHandleShowImage(index) {
-        const {totalUrls} = this;
+        const urls = this.urls.map((item) => {
+          return this.baseUrl + item;
+        });
         wx.previewImage({
-          current: totalUrls[index],
-          urls: totalUrls
+          current: urls[index],
+          urls: urls
         });
       },
-      onHandleDeleteImage() {
-        this.oldUrls = [];
-        this.newUrls = [];
-        this.totalUrls = [];
-        this.pic = '';
+      onHandleDeleteImage(index) {
+        this.urls.splice(index, 1);
       },
       onHandleSaveLayout() {
         const isCheckEmpty = this.onHandleCheckEmpty();
@@ -195,11 +190,7 @@
         if (!isBaseEmpty) {
           this.showToast('基本信息填写不完整');
         } else {
-          if (this.newUrls.length) {
-            this.exeAjaxInsertImage();
-          } else {
-            this.onHandleUpdateLayout();
-          }
+          this.onHandleUpdateLayout();
         }
       },
       onHandleUpdateLayout() {
@@ -217,56 +208,30 @@
       },
       onHandleRenderLayout(data) {
         const {mianji, pic, tags, title} = data;
+        this.urls = [pic];
         this.mianji = mianji;
-        this.pic = pic;
         this.status.value = tags;
         this.huxing.value = title;
-        this.oldUrls = pic ? [apis.baseUrl + pic] : [];
-        this.totalUrls = this.oldUrls;
-        this.layout = data;
         this.onHandleCheckEmpty();
       },
-      exeAjaxInsertImage() {
-        this.showLoading();
-        const params = {filePath: this.newUrls[0]};
-        this.ajaxInsertImage(params)
-          .then((res) => {
-            res = res || {};
-            const {success, data} = res.payload;
-            if (success) {
-              this.pic = data;
-              this.onHandleUpdateLayout();
-            } else {
-              this.showToast('图片上传失败');
-            }
-            this.hideLoading();
-            console.log(res);
-          })
-          .catch((err) => {
-            this.hideLoading();
-            this.showToast('图片上传失败');
-            console.log(err);
-          });
-      },
       getParams() {
+        const {mianji, status, huxing, urls} = this;
+        const pic = urls.length ? urls[0] : '';
         const params = {
-          pic: this.pic,
-          mianji: this.mianji,
-          tags: this.status.value,
-          title: this.huxing.value
+          pic,
+          mianji,
+          tags: status.value,
+          title: huxing.value
         };
         return params;
       }
     },
 
     onShow() {
-      const {$path} = this.$app;
-      if ($path) {
-        const {path} = $path;
-        this.oldUrls = [];
-        this.newUrls = [path];
-        this.totalUrls = [path];
-        this.$app.$path = null;
+      const {isImage} = this;
+      if (isImage) {
+        this.urls = [isImage];
+        this.removeImageReplace();
       }
     },
 

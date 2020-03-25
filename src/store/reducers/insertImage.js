@@ -27,6 +27,12 @@ const actions = {
       isSuccess: false,
       isFailure: true
     };
+  },
+  [actionTypes.REMOVE_IMAGE_REPLACE](state) {
+    return {
+      ...state,
+      data: null
+    };
   }
 };
 

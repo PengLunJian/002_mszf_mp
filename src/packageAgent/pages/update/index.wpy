@@ -18,7 +18,7 @@
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">姓名</label>
-                              <input class="form-input" v-model="params.name" type="text"
+                              <input class="form-input" v-model="name" type="text"
                                      placeholder="彭伦健"
                                      @input="onHandleCheckEmpty"/>
                               <span class="form-next iconfont icon-next"></span>
@@ -27,7 +27,7 @@
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">电话</label>
-                              <input class="form-input" v-model="params.tel" type="number"
+                              <input class="form-input" v-model="tel" type="number"
                                      placeholder="18130278679"
                                      @input="onHandleCheckEmpty"/>
                               <span class="form-next iconfont icon-next"></span>
@@ -49,7 +49,7 @@
                         <div class="form-row row">
                           <div class="form-col col-12">
                             <div class="form-group">
-                        <textarea class="textarea" v-model="params.remarks" type="text"
+                        <textarea class="textarea" v-model="remarks" type="text"
                                   placeholder="请输入内容"/>
                             </div>
                           </div>
@@ -67,15 +67,15 @@
                     <div class="module-body">
                       <div class="module-images">
                         <div class="module-row row">
-                          <div class="module-col col-4" v-for="(item,index) in totalUrls" :key="index">
+                          <div class="module-col col-4" v-for="(item,index) in urls" :key="index">
                             <div class="module-item" @tap="onHandleShowImage(index)">
                               <div class="btn-delete iconfont icon-delete"
                                    @tap.stop="onHandleDeleteImage(index)"></div>
-                              <lazy-image :src="item" mode="aspectFill"/>
+                              <lazy-image src="{{baseUrl+item}}" mode="aspectFill"/>
                             </div>
                           </div>
                           <div class="module-col col-4">
-                            <div class="module-btn btn btn-image" @tap="onHandleInsertImage">
+                            <div class="module-btn btn btn-image" @tap="onHandleUploadImage">
                               <div class="module-icon iconfont icon-insert"></div>
                             </div>
                           </div>
@@ -102,13 +102,13 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import apis from '../../../apis';
-  import store from '../../../store/index';
+  import store from '../../../store';
   import {mapState, mapActions} from '@wepy/redux';
-  import * as controller from './controller';
-  import * as $routes from '../../../router';
   import Toast from '../../../mixins/toast';
   import Loading from '../../../mixins/loading';
+  import * as controller from './controller';
+  import * as $routes from '../../../router';
+  import apis from '../../../apis';
 
   wepy.page({
     store,
@@ -116,20 +116,16 @@
     mixins: [Toast, Loading],
 
     data: {
+      baseUrl: apis.baseUrl,
       isDisable: false,
-      params: {
-        id: '',
-        com_id: '',
-        name: '',
-        tel: '',
-        remarks: '',
-        photo: '',
-        detail: ''
-      },
-      oldUrls: [],
-      newUrls: [],
-      totalUrls: [],
-      count: 0
+      id: '',
+      com_id: '',
+      name: '',
+      tel: '',
+      remarks: '',
+      photo: '',
+      detail: '',
+      urls: []
     },
 
     computed: {
@@ -139,7 +135,7 @@
     methods: {
       ...mapActions(controller.ACTIONS),
       onHandleCheckEmpty() {
-        const {name, tel} = this.params;
+        const {name, tel} = this;
         let isBaseEmpty =
           (
             name &&
@@ -156,31 +152,22 @@
         if (!isBaseEmpty) {
           this.showToast('基本信息填写不完整');
         } else {
-          this.onHandleSubmitAgent();
-        }
-      },
-      onHandleSubmitAgent() {
-        this.showLoading();
-        if (this.newUrls.length) {
-          this.exeAjaxInsertImage();
-        } else {
           this.exeAjaxUpdateAgent();
         }
       },
       onHandleShowImage(index) {
-        const {totalUrls} = this;
+        const urls = this.urls.map((item) => {
+          return this.baseUrl + item;
+        });
         wx.previewImage({
-          current: totalUrls[index],
-          urls: totalUrls
+          current: urls[index],
+          urls: urls
         });
       },
       onHandleDeleteImage() {
-        this.oldUrls = [];
-        this.newUrls = [];
-        this.totalUrls = [];
-        this.params.photo = '';
+        this.urls = [];
       },
-      onHandleInsertImage() {
+      onHandleUploadImage() {
         wx.navigateTo({
           url: $routes.AGENT.UPLOAD.path
         });
@@ -189,47 +176,16 @@
         const {
           id, com_id, name, tel, remarks, photo
         } = data;
-        this.params.id = id;
-        this.params.tel = tel;
-        this.params.name = name;
-        this.params.com_id = com_id;
-        this.params.remarks = remarks;
-        this.params.photo = photo;
-        this.oldUrls = photo ? [apis.baseUrl + photo] : [];
-        this.totalUrls = this.oldUrls;
+        this.id = id;
+        this.tel = tel;
+        this.name = name;
+        this.com_id = com_id;
+        this.remarks = remarks;
+        this.urls = photo ? [photo] : [];
         this.onHandleCheckEmpty();
       },
-      exeAjaxInsertImage() {
-        let {count} = this;
-        const filePath = this.newUrls[count];
-        const params = {filePath};
-        this.ajaxInsertImage(params)
-          .then((res) => {
-            res = res || {};
-            const {success, data} = res.payload;
-            if (success) {
-              this.params.photo = data;
-            }
-            count++;
-            if (count === this.newUrls.length) {
-              this.exeAjaxUpdateAgent();
-            } else {
-              this.exeAjaxInsertImage();
-            }
-            console.log(res);
-          })
-          .catch((err) => {
-            this.showToast('第' + count + '张图片上传失败');
-            count++;
-            if (count === this.newUrls.length) {
-              this.exeAjaxUpdateAgent();
-            } else {
-              this.exeAjaxInsertImage();
-            }
-            console.log(err);
-          });
-      },
       exeAjaxUpdateAgent() {
+        this.showLoading();
         const params = this.getParams();
         this.ajaxUpdateAgent(params)
           .then((res) => {
@@ -255,17 +211,25 @@
           });
       },
       getParams() {
-        return this.params;
+        const {id, com_id, name, tel, remarks, detail, urls} = this;
+        const photo = urls.length ? urls[0] : '';
+        return {
+          id,
+          com_id,
+          name,
+          tel,
+          remarks,
+          photo,
+          detail
+        };
       }
     },
 
     onShow() {
-      const {$path} = this.$app;
-      if ($path) {
-        const {path} = $path;
-        this.newUrls = [path];
-        this.totalUrls = this.newUrls;
-        this.$app.$path = null;
+      const {isImage} = this;
+      if (isImage) {
+        this.urls = [isImage];
+        this.removeImageReplace();
       }
     },
 

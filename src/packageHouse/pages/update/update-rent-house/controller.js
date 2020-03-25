@@ -5,10 +5,11 @@ export const STATES = {
   isSuccess: state => state.UPDATE_HOUSE_REDUCER.isSuccess,
   isFailure: state => state.UPDATE_HOUSE_REDUCER.isFailure,
   isData: state => state.UPDATE_HOUSE_REDUCER.data,
-  isAgent: state => state.SELECT_AGENT_REDUCER.data
+  isAgent: state => state.SELECT_AGENT_REDUCER.data,
+  isImage: state => state.INSERT_IMAGE_REDUCER.data
 };
 
 export const ACTIONS = {
   ajaxUpdateHouse: params => actions.ajaxRequestUpdateHouse(params),
-  ajaxInsertImage: params => actions.ajaxRequestInsertImage(params)
+  removeImageReplace: () => actions.removeImageReplace()
 };

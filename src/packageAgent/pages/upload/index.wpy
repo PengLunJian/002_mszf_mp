@@ -55,10 +55,11 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import store from '../../../store/index';
+  import store from '../../../store';
+  import {mapState, mapActions} from '@wepy/redux';
   import Toast from '../../../mixins/toast';
   import Loading from '../../../mixins/loading';
-  import * as $config from '../../../config';
+  import * as controller from './controller';
 
   wepy.page({
     store,
@@ -102,9 +103,12 @@
       }
     },
 
-    computed: {},
+    computed: {
+      ...mapState(controller.STATES)
+    },
 
     methods: {
+      ...mapActions(controller.ACTIONS),
       onHandleChooseImage() {
         wx.chooseImage({
           count: 1,
@@ -135,7 +139,7 @@
         const {src} = this.touchImage;
         if (src) {
           this.onHandleDrawImage();
-          this.onHandleBackImage();
+          this.exeAjaxInsertImage();
         } else {
           this.showToast('请先选择上传图片');
         }
@@ -181,20 +185,6 @@
           this.onHandleDrawImage();
           this.onHandlePreviewImage();
         }
-      },
-      onHandleBackImage() {
-        this.onHandleTempFilePath()
-          .then((res) => {
-            res = res || {};
-            const {tempFilePath} = res;
-            this.$app.$path = {path: tempFilePath};
-            wx.navigateBack({
-              delta: 1
-            });
-          })
-          .catch((err) => {
-            console.log(err);
-          });
       },
       onHandlePreviewImage() {
         this.onHandleTempFilePath()
@@ -288,10 +278,40 @@
         for (let key in this.touches) {
           this.touches[key] = 0;
         }
+      },
+      exeAjaxInsertImage() {
+        this.onHandleTempFilePath()
+          .then((res) => {
+            res = res || {};
+            const {tempFilePath} = res;
+            const params = {filePath: tempFilePath};
+            this.showLoading('正在上传');
+            this.ajaxInsertImage(params)
+              .then((res) => {
+                this.hideLoading();
+                res = res || {};
+                const {success} = res.payload;
+                if (success) {
+                  wx.navigateBack({
+                    delta: 1
+                  });
+                }
+                console.log(res);
+              })
+              .catch((err) => {
+                this.hideLoading();
+                this.showToast('图片上传失败，请重试');
+                console.log(err);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     },
 
-    onLoad() {}
+    onLoad() {
+    }
   });
 </script>
 

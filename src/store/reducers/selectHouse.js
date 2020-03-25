@@ -73,7 +73,7 @@ const actions = {
       data
     };
   },
-  [actionTypes.RESET_SELECT_HOUSE](state) {
+  [actionTypes.REMOVE_HOUSE_REPLACE](state) {
     return {
       ...state,
       isLoading: false,

@@ -36,6 +36,12 @@ const actions = {
       ...state,
       data
     };
+  },
+  [actionTypes.REMOVE_LAYOUT_REPLACE](state) {
+    return {
+      ...state,
+      data: []
+    };
   }
 };
 

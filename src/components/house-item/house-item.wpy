@@ -1,7 +1,7 @@
 <template>
   <div class="item" v-if="item.type===1" @tap="onHandleSelectDetail(item.id)">
     <div class="item-img">
-      <lazy-image src="{{item.pic_url[0]?baseUrl+item.pic_url[0]:url}}"/>
+      <lazy-image src="{{item.pic_url[0]?baseUrl+item.pic_url[0]:url}}" width="50%" mode="aspectFill"/>
       <div class="item-btns">
         <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
         <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
@@ -22,7 +22,7 @@
   </div>
   <div class="item" v-if="item.type===2" @tap="onHandleSelectDetail(item.id)">
     <div class="item-img">
-      <lazy-image src="{{item.pic_url[0]?baseUrl+item.pic_url[0]:url}}" mode="aspectFill"/>
+      <lazy-image src="{{item.pic_url[0]?baseUrl+item.pic_url[0]:url}}" width="50%" mode="aspectFill"/>
       <div class="item-btns">
         <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
         <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
@@ -44,7 +44,7 @@
   </div>
   <div class="item" v-if="item.type===3" @tap="onHandleSelectDetail(item.id)">
     <div class="item-img">
-      <lazy-image src="{{item.pic_url[0]?baseUrl+item.pic_url[0]:url}}"/>
+      <lazy-image src="{{item.pic_url[0]?baseUrl+item.pic_url[0]:url}}" width="50%" mode="aspectFill"/>
       <div class="item-btns">
         <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
         <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
@@ -156,7 +156,7 @@
     }
     .item-info {
       padding: unit(20, rpx);
-      line-height: unit(40, rpx);
+      line-height: unit(48, rpx);
       font-size: @fontSize28;
       .item-row {
         .item-title {
@@ -165,10 +165,8 @@
           font-weight: bold;
         }
         .item-normal {
-          height: unit(50, rpx);
-          line-height: unit(50, rpx);
           margin-right: unit(10, rpx);
-          font-size: @fontSize32;
+          font-size: @fontSize28;
           color: @fontColor3;
           &.price {
             font-size: @fontSize36;

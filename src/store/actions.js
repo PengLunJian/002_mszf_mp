@@ -386,3 +386,18 @@ export const selectLayoutReplace = createAction(
   'selectLayoutReplace', (params) => {
     commit(actionTypes.SELECT_LAYOUT_REPLACE, params);
   });
+
+export const removeLayoutReplace = createAction(
+  'removeLayoutReplace', () => {
+    commit(actionTypes.REMOVE_LAYOUT_REPLACE);
+  });
+
+export const removeHouseReplace = createAction(
+  'removeHouseReplace', () => {
+    commit(actionTypes.REMOVE_HOUSE_REPLACE);
+  });
+
+export const removeImageReplace = createAction(
+  'removeImageReplace', () => {
+    commit(actionTypes.REMOVE_IMAGE_REPLACE);
+  });

@@ -299,15 +299,15 @@
                       <div class="module-body">
                         <div class="module-images">
                           <div class="module-row row">
-                            <div class="module-col col-4" v-for="(item,index) in items" :key="index">
+                            <div class="module-col col-4" v-for="(item,index) in urls" :key="index">
                               <div class="module-item" @tap="onHandleShowImage(index)">
                                 <div class="btn-delete iconfont icon-delete"
                                      @tap.stop="onHandleDeleteImage(index)"></div>
-                                <lazy-image src="{{item}}" mode="aspectFill"/>
+                                <lazy-image src="{{baseUrl+item}}" mode="aspectFill"/>
                               </div>
                             </div>
                             <div class="module-col col-4">
-                              <div class="module-btn btn btn-image" @tap="onHandleInsertImage">
+                              <div class="module-btn btn btn-image" @tap="onHandleUploadImage">
                                 <div class="module-icon iconfont icon-insert"></div>
                               </div>
                             </div>
@@ -481,82 +481,9 @@
       },
       fagnwupeizhi: {
         value: '',
-        items: [
-          {
-            icon: 'icon-item01',
-            label: '卫生间',
-            checked: false
-          },
-          {
-            icon: 'icon-item02',
-            label: '洗衣机',
-            checked: false
-          },
-          {
-            icon: 'icon-item03',
-            label: '可做饭',
-            checked: false
-          },
-          {
-            icon: 'icon-item04',
-            label: '热水器',
-            checked: false
-          },
-          {
-            icon: 'icon-item05',
-            label: '阳台',
-            checked: false
-          },
-          {
-            icon: 'icon-item06',
-            label: '冰箱',
-            checked: false
-          },
-          {
-            icon: 'icon-item07',
-            label: '电梯',
-            checked: false
-          },
-          {
-            icon: 'icon-item08',
-            label: '沙发',
-            checked: false
-          },
-          {
-            icon: 'icon-item09',
-            label: '宽带',
-            checked: false
-          },
-          {
-            icon: 'icon-item10',
-            label: '衣柜',
-            checked: false
-          },
-          {
-            icon: 'icon-item11',
-            label: '暖气',
-            checked: false
-          },
-          {
-            icon: 'icon-item12',
-            label: '床',
-            checked: false
-          },
-          {
-            icon: 'icon-item13',
-            label: '空调',
-            checked: false
-          },
-          {
-            icon: 'icon-item14',
-            label: '电视',
-            checked: false
-          }
-        ]
+        items: $config.DEFAULT_CONFIG
       },
-      items: [],
-      pic_url: [],
-      count: 0
+      urls: []
     },
 
     computed: {
@@ -742,30 +669,25 @@
         } else if (!isTagsEmpty) {
           this.showToast('请选择房源特色');
         } else {
-          this.onHandleSubmitHouse();
-        }
-      },
-      onHandleSubmitHouse() {
-        this.showLoading();
-        if (this.items.length) {
-          this.exeAjaxInsertImage();
-        } else {
           this.exeAjaxInsertHouse();
         }
       },
-      onHandleInsertImage() {
+      onHandleUploadImage() {
         wx.navigateTo({
           url: $routes.HOUSE.UPLOAD.path
         });
       },
       onHandleShowImage(index) {
+        const urls = this.urls.map((item) => {
+          return this.baseUrl + item;
+        });
         wx.previewImage({
-          current: this.items[index],
-          urls: this.items
+          current: urls[index],
+          urls: urls
         });
       },
       onHandleDeleteImage(index) {
-        this.items.splice(index, 1);
+        this.urls.splice(index, 1);
       },
       onHandleRenderAgent() {
         const items = (this.isAgent || []).map((item) => {
@@ -777,6 +699,7 @@
         this.agents.items = items;
       },
       exeAjaxInsertHouse() {
+        this.showLoading();
         const params = this.getParams();
         this.ajaxInsertHouse(params)
           .then((res) => {
@@ -798,36 +721,6 @@
           .catch((err) => {
             this.hideLoading();
             this.showToast('新增失败，请重试');
-            console.log(err);
-          });
-      },
-      exeAjaxInsertImage() {
-        let {count} = this;
-        const filePath = this.items[count];
-        const params = {filePath};
-        this.ajaxInsertImage(params)
-          .then((res) => {
-            res = res || {};
-            const {success, data} = res.payload;
-            if (success) {
-              this.pic_url.push(data);
-            }
-            count++;
-            if (count === this.items.length) {
-              this.exeAjaxInsertHouse();
-            } else {
-              this.exeAjaxInsertImage();
-            }
-            console.log(res);
-          })
-          .catch((err) => {
-            this.showToast('第' + count + '张图片上传失败');
-            count++;
-            if (count === this.items.length) {
-              this.exeAjaxInsertHouse();
-            } else {
-              this.exeAjaxInsertImage();
-            }
             console.log(err);
           });
       },
@@ -859,18 +752,17 @@
           tags: this.tags.value,
           agency: this.agents.value,
           fagnwupeizhi: this.fagnwupeizhi.value,
-          pic_url: this.pic_url
+          pic_url: this.urls
         };
         return params;
       }
     },
 
     onShow() {
-      const {$path} = this.$app;
-      if ($path) {
-        const {path} = $path;
-        this.items.push(path);
-        this.$app.$path = null;
+      const {isImage} = this;
+      if (isImage) {
+        this.urls.push(isImage);
+        this.removeImageReplace();
       }
     },
 
