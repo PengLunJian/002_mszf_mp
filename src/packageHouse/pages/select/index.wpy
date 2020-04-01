@@ -6,7 +6,7 @@
         <div class="tab-bar">
           <div class="tab-item" v-for="(item,index) in tab.items"
                :class="{'active':index===tab.initIndex}" :key="index"
-               @tap="onHandleChange(index)">
+               @tap="onHandleTabChange(index)">
             <div class="tab-text">{{item.name}}</div>
           </div>
         </div>
@@ -65,17 +65,14 @@
         items: [
           {
             name: '新房',
-            icon: 'icon-new',
             path: $routes.HOUSE.INSERT.NEW_HOUSE.path
           },
           {
             name: '二手房',
-            icon: 'icon-house',
             path: $routes.HOUSE.INSERT.SECOND_HOUSE.path
           },
           {
             name: '租房',
-            icon: 'icon-rent',
             path: $routes.HOUSE.INSERT.RENT_HOUSE.path
           }
         ]
@@ -131,7 +128,7 @@
             console.log(err);
           });
       },
-      onHandleChange(index) {
+      onHandleTabChange(index) {
         this.tab.initIndex = index;
         this.removeHouseReplace();
         this.pageIndex = 1;

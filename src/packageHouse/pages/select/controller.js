@@ -8,7 +8,7 @@ export const STATES = {
 };
 
 export const ACTIONS = {
-  removeHouseReplace: () => actions.removeHouseReplace(),
+  removeHouseReplace: actions.removeHouseReplace,
   ajaxSelectHouse: params => actions.ajaxRequestSelectHouse(params),
   ajaxDeleteHouse: params => actions.ajaxRequestDeleteHouse(params)
 };
