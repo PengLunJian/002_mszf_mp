@@ -10,5 +10,5 @@ export const STATES = {
 
 export const ACTIONS = {
   ajaxInsertAgent: params => actions.ajaxRequestInsertAgent(params),
-  removeImageReplace: () => actions.removeImageReplace()
+  removeImageReplace: actions.removeImageReplace
 };

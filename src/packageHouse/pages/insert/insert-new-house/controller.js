@@ -13,6 +13,6 @@ export const STATES = {
 export const ACTIONS = {
   ajaxInsertHouse: params => actions.ajaxRequestInsertHouse(params),
   deleteLayoutReplace: params => actions.deleteLayoutReplace(params),
-  removeLayoutReplace: () => actions.removeLayoutReplace(),
-  removeImageReplace: () => actions.removeImageReplace()
+  removeLayoutReplace: actions.removeLayoutReplace,
+  removeImageReplace: actions.removeImageReplace
 };

@@ -11,5 +11,5 @@ export const STATES = {
 
 export const ACTIONS = {
   ajaxInsertHouse: params => actions.ajaxRequestInsertHouse(params),
-  removeImageReplace: () => actions.removeImageReplace()
+  removeImageReplace: actions.removeImageReplace
 };

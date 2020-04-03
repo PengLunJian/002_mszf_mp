@@ -8,5 +8,5 @@ export const STATES = {
 export const ACTIONS = {
   insertLayoutReplace: params => actions.insertLayoutReplace(params),
   updateLayoutReplace: params => actions.updateLayoutReplace(params),
-  removeImageReplace: () => actions.removeImageReplace()
+  removeImageReplace: actions.removeImageReplace
 };

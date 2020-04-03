@@ -15,5 +15,5 @@ export const ACTIONS = {
   ajaxInsertImage: params => actions.ajaxRequestInsertImage(params),
   deleteLayoutReplace: params => actions.deleteLayoutReplace(params),
   selectLayoutReplace: params => actions.selectLayoutReplace(params),
-  removeImageReplace: () => actions.removeImageReplace()
+  removeImageReplace: actions.removeImageReplace
 };
