@@ -5,29 +5,19 @@
         <div class="module-title">数据总览</div>
       </div>
       <div class="module-body">
-        <div class="module-info row">
-          <div class="module-item col-6">
-            <div class="item-info">
-              <div class="item-label">总数(新房)</div>
+        <div class="module-info">
+          <div class="module-row row">
+            <div class="module-col col-4">
               <div class="item-value">{{isData.resNew.data.totalCount||0}}</div>
+              <div class="item-label">新房</div>
             </div>
-          </div>
-          <div class="module-item col-6">
-            <div class="item-info">
-              <div class="item-label">总数(二手房)</div>
+            <div class="module-col col-4">
               <div class="item-value">{{isData.resSecond.data.totalCount||0}}</div>
+              <div class="item-label">二手房</div>
             </div>
-          </div>
-          <div class="module-item col-6">
-            <div class="item-info">
-              <div class="item-label">总数(租房)</div>
+            <div class="module-col col-4">
               <div class="item-value">{{isData.resRent.data.totalCount||0}}</div>
-            </div>
-          </div>
-          <div class="module-item col-6">
-            <div class="item-info">
-              <div class="item-label">用户总数</div>
-              <div class="item-value">0</div>
+              <div class="item-label">租房</div>
             </div>
           </div>
         </div>
@@ -79,27 +69,26 @@
       }
       .module-body {
         .module-info {
-          padding: unit(15, rpx);
+          padding: unit(30, rpx);
           text-align: center;
-          .module-item {
-            padding: unit(15, rpx);
-            .item-info {
-              padding: unit(30, rpx) 0;
-              background-color: #F0F0F0;
-              letter-spacing: 0.5px;
+          .module-row {
+            border-radius: @borderRadius15;
+            background: -webkit-linear-gradient(-45deg, @theme1, @theme2);
+            .module-col {
+              padding: unit(50, rpx) 0;
+              .item-value {
+                height: unit(60, rpx);
+                line-height: unit(60, rpx);
+                margin-bottom: unit(10, rpx);
+                font-size: @fontSize60;
+                font-weight: bold;
+                color: @white;
+              }
               .item-label {
                 height: unit(40, rpx);
                 line-height: unit(40, rpx);
-                margin-bottom: unit(10, rpx);
                 font-size: @fontSize32;
-                color: @fontColor2;
-              }
-              .item-value {
-                height: unit(50, rpx);
-                line-height: unit(50, rpx);
-                font-size: @fontSize50;
-                font-weight: bold;
-                color: @theme2;
+                color: @white;
               }
             }
           }

@@ -10,8 +10,8 @@
             class="scroll-view"
             scroll-y="{{true}}">
             <div class="scroll-inner">
-              <module-info :isData="isData"></module-info>
-              <module-menu></module-menu>
+              <information :isData="isData"></information>
+              <navigation></navigation>
             </div>
           </scroll-view>
         </div>
@@ -34,7 +34,9 @@
 
     mixins: [Toast, Loading],
 
-    data: {},
+    data: {
+      ec: {lazyLoad: true}
+    },
 
     computed: {
       ...mapState(controller.STATES)
@@ -106,6 +108,36 @@
             height: 100%;
             .scroll-inner {
               padding-top: unit(20, rpx);
+              .module {
+                margin: 0;
+                .module-content {
+                  .module-header {
+                    padding: unit(30, rpx) unit(30, rpx) 0;
+                    .module-title {
+                      height: unit(32, rpx);
+                      line-height: unit(32, rpx);
+                      padding-left: unit(20, rpx);
+                      border-left: 4px solid @theme2;
+                      font-size: @fontSize32;
+                      letter-spacing: 0.5px;
+                      font-weight: bold;
+                      color: @fontColor1;
+                    }
+                  }
+                  .module-body {
+                    .module-echarts {
+                      padding: unit(30, rpx);
+                      .ec-canvas {
+                        width: 100%;
+                        height: unit(400, rpx);
+                      }
+                    }
+                  }
+                  .module-footer {
+
+                  }
+                }
+              }
             }
           }
         }
@@ -122,8 +154,8 @@
   navigationStyle:'custom',
   usingComponents: {
   'top-bar': '../../components/top-bar/top-bar',
-  'module-info': '../../components/module-info/module-info',
-  'module-menu': '../../components/module-menu/module-menu'
+  'information': '../../components/information/information',
+  'navigation': '../../components/navigation/navigation'
   }
   }
 </config>

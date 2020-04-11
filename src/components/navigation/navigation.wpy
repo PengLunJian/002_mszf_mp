@@ -5,8 +5,8 @@
         <div class="module-title">系统菜单</div>
       </div>
       <div class="module-body">
-        <div class="module-menu row">
-          <div class="module-item col-6" v-for="(item,index) in items" :key="index">
+        <div class="module-row row">
+          <div class="module-col col-6" v-for="(item,index) in items" :key="index">
             <div class="btn btn-item" @tap="onHandleRouter(item)">
               <div class="item-icon iconfont {{item.icon}}"></div>
               <div class="item-text">{{item.name}}</div>
@@ -58,7 +58,8 @@
         });
       }
     },
-    created() {}
+    created() {
+    }
   });
 </script>
 
@@ -83,15 +84,16 @@
         }
       }
       .module-body {
-        .module-menu {
+        .module-row {
           padding: unit(15, rpx);
           text-align: center;
           color: @white;
-          .module-item {
+          .module-col {
             padding: unit(15, rpx);
             .btn-item {
+              overflow: hidden;
               padding: unit(30, rpx) 0;
-              box-shadow: 0 0 15px @boxShadow05;
+              border-radius: @borderRadius15;
               background: -webkit-linear-gradient(-45deg, @theme1, @theme2);
             }
             .item-icon {

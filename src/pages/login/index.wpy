@@ -7,7 +7,9 @@
           <div class="login-container">
             <div class="login-content">
               <div class="login-header">
-                <div class="login-title">欢迎，请登录</div>
+                <div class="login-title">
+                  <img src="../../assets/images/logo@2x.png" mode="aspectFit"/>
+                </div>
               </div>
               <div class="login-body">
                 <div class="form-group">
@@ -20,7 +22,7 @@
                 </div>
                 <div class="form-group">
                   <div class="form-row row">
-                    <div class="form-col col-6 flex">
+                    <div class="form-col col-6">
                       <div class="form-check" @tap="onHandleCheck">
                         <div class="form-check-icon iconfont icon-right"
                              :class="{'checked':checked}"></div>
@@ -32,16 +34,24 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-group">
-                  <div class="btn btn-login" @tap="onHandleLogin">登录</div>
-                </div>
               </div>
-              <div class="login-footer"></div>
+              <div class="login-footer">
+                <div class="btn btn-login" @tap="onHandleLogin">登录</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="footer"></div>
+      <div class="footer">
+        <div class="footer-row row">
+          <div class="footer-col col-6">
+            <div class="footer-text">技术支持</div>
+          </div>
+          <div class="footer-col col-6">
+            <img class="footer-logo" src="../../assets/images/company@2x.png" mode="aspectFit"/>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -152,7 +162,6 @@
 <style scoped lang="less">
   @import "../../assets/less/variable";
   @import "../../assets/less/common";
-  @import "../../assets/less/@media";
 
   @height: unit(100, rpx);
 
@@ -170,6 +179,8 @@
           .login-container {
             height: 100%;
             position: relative;
+            padding: 0 unit(40, rpx);
+            background: -webkit-linear-gradient(-45deg, @theme1, @theme2);
             font-size: 0;
             &:before {
               content: '';
@@ -179,20 +190,30 @@
             }
             .login-content {
               width: 100%;
+              position: relative;
               display: inline-block;
               vertical-align: middle;
-              padding: unit(50, rpx);
+              padding: unit(40, rpx);
+              background-color: @white;
+              border-radius: @borderRadius20;
               font-size: @fontSize32;
               color: @fontColor1;
               .login-header {
+                margin-bottom: unit(100, rpx);
                 .login-title {
-                  height: @height;
-                  line-height: @height;
-                  padding: 0 unit(10, rpx);
-                  margin-bottom: unit(30, rpx);
-                  font-size: @fontSize50;
-                  letter-spacing: 1px;
-                  font-weight: bold;
+                  position: absolute;
+                  top: unit(-70, rpx);
+                  left: 50%;
+                  width: unit(400, rpx);
+                  height: unit(200, rpx);
+                  padding: 0 unit(90, rpx);
+                  margin-left: unit(-200, rpx);
+                  background-color: @white;
+                  border-radius: 100%;
+                  image {
+                    width: 100%;
+                    height: 100%;
+                  }
                 }
               }
               .login-body {
@@ -203,59 +224,45 @@
                     position: absolute;
                     top: 0;
                     left: 0;
-                    width: @height;
+                    width: unit(60, rpx);
                     height: @height;
                     line-height: @height;
                     font-size: @fontSize46;
-                    text-align: center;
+                    text-align: left;
                   }
                   .form-input {
                     height: @height;
-                    padding-left: @height;
-                    border-radius: @height;
-                    background-color: @white;
+                    padding-left: unit(60, rpx);
+                    border-bottom: 0.5px solid @borderColor1;
                   }
                   .form-forget {
                     float: right;
-                    height: unit(48, rpx);
-                    line-height: unit(48, rpx);
-                    padding-right: unit(10, rpx);
+                    height: unit(44, rpx);
+                    line-height: unit(44, rpx);
                     text-decoration: underline;
                   }
                   .form-check {
                     display: flex;
                     .form-check-icon {
-                      width: unit(48, rpx);
-                      height: unit(48, rpx);
-                      line-height: unit(48, rpx);
-                      background-color: #F0F0F0;
+                      width: unit(44, rpx);
+                      height: unit(44, rpx);
+                      line-height: unit(44, rpx);
+                      background-color: @unCheck;
                       border-radius: @borderRadius100;
                       transition: all 150ms ease;
-                      font-size: @fontSize24;
+                      font-size: @fontSize20;
+                      color: @borderColor1;
                       text-align: center;
-                      color: #DEDEDE;
                       &.checked {
                         background: -webkit-linear-gradient(left, @theme1, @theme2);
                         color: @white;
                       }
                     }
                     .form-check-text {
-                      height: unit(48, rpx);
-                      line-height: unit(48, rpx);
+                      height: unit(44, rpx);
+                      line-height: unit(44, rpx);
                       padding-left: unit(10, rpx);
                     }
-                  }
-                  .btn-login {
-                    height: @height;
-                    overflow: hidden;
-                    line-height: @height;
-                    border-radius: @height;
-                    box-shadow: 0 0 15px @boxShadow05;
-                    background: -webkit-linear-gradient(left, @theme1, @theme2);
-                    font-size: @fontSize40;
-                    letter-spacing: 2px;
-                    text-align: center;
-                    color: @white;
                   }
                   &:last-child {
                     margin: 0;
@@ -263,12 +270,54 @@
                 }
               }
               .login-footer {
+                margin-bottom: unit(40, rpx);
+                .btn-login {
+                  height: @height;
+                  overflow: hidden;
+                  line-height: @height;
+                  border-radius: @height;
+                  margin-top: unit(50, rpx);
+                  box-shadow: 0 0 15px @boxShadow05;
+                  background: -webkit-linear-gradient(left, @theme1, @theme2);
+                  font-size: @fontSize40;
+                  letter-spacing: 2px;
+                  text-align: center;
+                  color: @white;
+                }
               }
             }
           }
         }
       }
       .footer {
+        .footer-row {
+          position: fixed;
+          left: 0;
+          bottom: unit(50, rpx);
+          z-index: 1000;
+          width: 100%;
+          .footer-col {
+            padding: 0 unit(20, rpx);
+            &:first-child {
+              border-right: 0.5px solid @borderColor1;
+            }
+            .footer-text {
+              height: unit(30, rpx);
+              line-height: unit(30, rpx);
+              font-size: @fontSize26;
+              color: @fontColor4;
+              text-align: right;
+            }
+            .footer-logo {
+              width: unit(115, rpx);
+              height: unit(30, rpx);
+              image {
+                width: 100%;
+                height: 100%;
+              }
+            }
+          }
+        }
       }
     }
   }
