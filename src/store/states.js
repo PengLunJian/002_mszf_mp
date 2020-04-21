@@ -82,7 +82,7 @@ export const SELECT_AGENT_DETAIL_STATE = {
   data: null
 };
 
-export const SELECT_INDEX_STATE = {
+export const SELECT_COUNT_STATE = {
   isLoading: true,
   isSuccess: false,
   isFailure: false,

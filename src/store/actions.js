@@ -16,51 +16,23 @@ const commit = (type, data) => {
   });
 };
 
-const ajaxRequestSelectCount = (value) => {
-  const params = {
-    filter: [
-      {
-        field: 'type',
-        opt: '=',
-        value
-      }
-    ],
-    sort: [
-      {
-        field: 'id',
-        asc: false
-      }
-    ],
-    only_my: true
-  };
-  return axios.get(apis.selectHouse, {params})
-    .then((res) => {
-      res = res || {};
-      return res;
-    });
-};
-
-export const ajaxRequestSelectIndex = createAction(
-  'selectIndex', () => {
-    commit(actionTypes.SELECT_INDEX_REQUEST);
+export const ajaxRequestSelectCount = createAction(
+  'selectCount', (params) => {
+    commit(actionTypes.SELECT_COUNT_REQUEST);
     return new Promise((resolve, reject) => {
-      axios.all([
-        ajaxRequestSelectCount(1),
-        ajaxRequestSelectCount(2),
-        ajaxRequestSelectCount(3)
-      ])
-        .then(axios.spread((resNew, resSecond, resRent) => {
-          const newData = {resNew, resSecond, resRent};
-          const success = resNew.success && resSecond.success && resRent.success;
+      axios.post(apis.selectCount, params)
+        .then((res) => {
+          res = res || {};
+          const {data, success} = res;
           if (success) {
-            commit(actionTypes.SELECT_INDEX_SUCCESS, newData);
+            commit(actionTypes.SELECT_COUNT_SUCCESS, data);
           } else {
-            commit(actionTypes.SELECT_INDEX_FAILURE);
+            commit(actionTypes.SELECT_COUNT_FAILURE);
           }
-          resolve(newData);
-        }))
+          resolve(res);
+        })
         .catch((err) => {
-          commit(actionTypes.SELECT_INDEX_FAILURE);
+          commit(actionTypes.SELECT_COUNT_FAILURE);
           reject(err);
         });
     });
@@ -280,10 +252,10 @@ export const ajaxRequestUpdateAgent = createAction(
   });
 
 export const ajaxRequestSelectAgent = createAction(
-  'selectAgent', () => {
+  'selectAgent', (params) => {
     commit(actionTypes.SELECT_AGENT_REQUEST);
     return new Promise((resolve, reject) => {
-      axios.get(apis.selectAgent)
+      axios.post(apis.selectAgent, params)
         .then((res) => {
           res = res || {};
           const {data, success} = res;

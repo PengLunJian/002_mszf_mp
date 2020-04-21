@@ -14,11 +14,11 @@
               <div class="login-body">
                 <div class="form-group">
                   <label class="form-label iconfont icon-username"></label>
-                  <input class="form-input" v-model="username" type="text" placeholder="请输入用户名"/>
+                  <input class="form-input" v-model="userName" type="text" placeholder="请输入用户名"/>
                 </div>
                 <div class="form-group">
                   <label class="form-label iconfont icon-password"></label>
-                  <input class="form-input" v-model="password" type="text" :password="true" placeholder="请输入密码"/>
+                  <input class="form-input" v-model="passWord" type="text" :password="true" placeholder="请输入密码"/>
                 </div>
                 <div class="form-group">
                   <div class="form-row row">
@@ -72,8 +72,8 @@
     mixins: [Toast, Loading],
 
     data: {
-      username: '',
-      password: '',
+      userName: '',
+      passWord: '',
       checked: false
     },
 
@@ -83,11 +83,12 @@
 
     methods: {
       ...mapActions(controller.ACTIONS),
-      checkNotNull() {
+      checkNotEmpty() {
         let result = false;
-        if (!this.username) {
+        const {userName, passWord} = this;
+        if (!userName) {
           this.showToast('请输入用户名');
-        } else if (!this.password) {
+        } else if (!passWord) {
           this.showToast('请输入密码');
         } else {
           result = true;
@@ -95,7 +96,7 @@
         return result;
       },
       checkAccount() {
-        if (this.checkNotNull()) {
+        if (this.checkNotEmpty()) {
           this.exeAjaxSelectLogin();
         }
       },
@@ -111,31 +112,27 @@
       },
       exeAjaxSelectLogin() {
         this.showLoading();
+        const {userName, passWord, checked} = this;
         const params = {
-          account: this.username,
-          pwd: this.password
+          userName,
+          passWord
         };
         this.ajaxSelectLogin(params)
           .then((res) => {
             this.hideLoading();
             res = res || {};
-            const {error, success, data} = res.payload;
+            const {success, data} = res.payload;
             if (success) {
-              const {at, rt, user} = data;
-              storage.setItem('accessToken', at);
-              storage.setItem('refreshToken', rt);
-              if (this.checked) {
-                storage.setItem('user', user);
+              if (checked) {
+                storage.setItem('user', data);
               } else {
-                storage.removeItem('user', user);
+                storage.removeItem('user', data);
               }
               wx.redirectTo({
                 url: $routes.INDEX.path
               });
             } else {
-              const {errorMessage} = error || {};
-              const message = errorMessage || '登录失败，请重试';
-              this.showToast(message);
+              this.showToast('登录失败，请重试');
             }
             console.log(res);
           })
@@ -149,10 +146,10 @@
 
     onLoad() {
       const user = storage.getItem('user');
-      const {account, pwd} = user || {};
-      if (account && pwd) {
-        this.username = account;
-        this.password = pwd;
+      const {userName, passWord} = user || {};
+      if (userName && passWord) {
+        this.userName = userName;
+        this.passWord = passWord;
         this.checked = true;
       }
     }

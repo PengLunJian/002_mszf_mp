@@ -18,7 +18,7 @@
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">姓名</label>
-                              <input class="form-input" v-model="name" type="text"
+                              <input class="form-input" v-model="jingjirenName" type="text"
                                      placeholder="彭伦健"
                                      @input="onHandleCheckEmpty"/>
                               <span class="form-next iconfont icon-next"></span>
@@ -27,7 +27,7 @@
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">电话</label>
-                              <input class="form-input" v-model="tel" type="number"
+                              <input class="form-input" v-model="telNo" type="number"
                                      placeholder="18130278679"
                                      @input="onHandleCheckEmpty"/>
                               <span class="form-next iconfont icon-next"></span>
@@ -49,7 +49,7 @@
                         <div class="form-row row">
                           <div class="form-col col-12">
                             <div class="form-group">
-                        <textarea class="textarea" v-model="remarks" type="text"
+                        <textarea class="textarea" v-model="remark" type="text"
                                   placeholder="请输入内容"/>
                             </div>
                           </div>
@@ -119,12 +119,10 @@
       baseUrl: apis.baseUrl,
       isDisable: false,
       id: '',
-      com_id: '',
-      name: '',
-      tel: '',
-      remarks: '',
-      photo: '',
-      detail: '',
+      jingjirenCode: '',
+      jingjirenName: '',
+      telNo: '',
+      remark: '',
       urls: []
     },
 
@@ -135,11 +133,11 @@
     methods: {
       ...mapActions(controller.ACTIONS),
       onHandleCheckEmpty() {
-        const {name, tel} = this;
+        const {jingjirenName, telNo} = this;
         let isBaseEmpty =
           (
-            name &&
-            tel
+            jingjirenName &&
+            telNo
           );
         this.isDisable = isBaseEmpty;
         return {
@@ -174,14 +172,19 @@
       },
       onHandleRenderAgent(data) {
         const {
-          id, com_id, name, tel, remarks, photo
+          id,
+          jingjirenCode,
+          jingjirenName,
+          telNo,
+          remark,
+          picUrl
         } = data;
         this.id = id;
-        this.tel = tel;
-        this.name = name;
-        this.com_id = com_id;
-        this.remarks = remarks;
-        this.urls = photo ? [photo] : [];
+        this.telNo = telNo;
+        this.remark = remark;
+        this.jingjirenCode = jingjirenCode;
+        this.jingjirenName = jingjirenName;
+        this.urls = picUrl ? [picUrl] : [];
         this.onHandleCheckEmpty();
       },
       exeAjaxUpdateAgent() {
@@ -211,16 +214,15 @@
           });
       },
       getParams() {
-        const {id, com_id, name, tel, remarks, detail, urls} = this;
-        const photo = urls.length ? urls[0] : '';
+        const {id, jingjirenCode, jingjirenName, telNo, remark, urls} = this;
+        const picUrl = urls.length ? urls[0] : '';
         return {
           id,
-          com_id,
-          name,
-          tel,
-          remarks,
-          photo,
-          detail
+          jingjirenCode,
+          jingjirenName,
+          telNo,
+          remark,
+          picUrl
         };
       }
     },

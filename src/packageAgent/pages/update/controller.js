@@ -4,7 +4,7 @@ export const STATES = {
   isLoading: state => state.UPDATE_AGENT_REDUCER.isLoading,
   isSuccess: state => state.UPDATE_AGENT_REDUCER.isSuccess,
   isFailure: state => state.UPDATE_AGENT_REDUCER.isFailure,
-  isData: state => state.UPDATE_AGENT_REDUCER.data,
+  isAgent: state => state.UPDATE_AGENT_REDUCER.data,
   isImage: state => state.INSERT_IMAGE_REDUCER.data
 };
 

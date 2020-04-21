@@ -10,7 +10,7 @@
             class="scroll-view"
             scroll-y="{{true}}">
             <div class="scroll-inner">
-              <information :isData="isData"></information>
+              <information :isData="isCount"></information>
               <navigation></navigation>
             </div>
           </scroll-view>
@@ -34,9 +34,7 @@
 
     mixins: [Toast, Loading],
 
-    data: {
-      ec: {lazyLoad: true}
-    },
+    data: {},
 
     computed: {
       ...mapState(controller.STATES)
@@ -44,14 +42,15 @@
 
     methods: {
       ...mapActions(controller.ACTIONS),
-      exeAjaxSelectIndex() {
+      exeAjaxSelectCount() {
         this.showLoading();
-        this.ajaxSelectIndex()
+        const {busCode} = this.isLogin;
+        const params = {busCode};
+        this.ajaxSelectCount(params)
           .then((res) => {
             this.hideLoading();
             res = res || {};
-            const {resNew, resSecond, resRent} = res.payload;
-            const success = resNew.success && resSecond.success && resRent.success;
+            const {success} = res.payload;
             if (!success) {
               this.showToast('加载失败，请重试');
             }
@@ -64,7 +63,9 @@
           });
       },
       exeAjaxSelectAgent() {
-        this.ajaxSelectAgent()
+        const {busCode} = this.isLogin;
+        const params = {busCode};
+        this.ajaxSelectAgent(params)
           .then((res) => {
             res = res || {};
             const {success} = res.payload;
@@ -80,7 +81,7 @@
     },
 
     onLoad() {
-      this.exeAjaxSelectIndex();
+      this.exeAjaxSelectCount();
       this.exeAjaxSelectAgent();
     }
   });

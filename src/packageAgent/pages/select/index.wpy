@@ -8,7 +8,7 @@
         <div class="context fade">
           <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
             <div class="scroll-row row">
-              <div class="scroll-col col-6" v-for="(item,index) in isData">
+              <div class="scroll-col col-6" v-for="(item,index) in isAgent">
                 <agent-item :item="item" :key="index"/>
               </div>
             </div>
@@ -56,7 +56,9 @@
       ...mapActions(controller.ACTIONS),
       exeAjaxSelectAgent() {
         this.showLoading();
-        this.ajaxSelectAgent()
+        const {busCode} = this.isLogin;
+        const params = {busCode};
+        this.ajaxSelectAgent(params)
           .then((res) => {
             this.hideLoading();
             res = res || {};

@@ -4,7 +4,8 @@ export const STATES = {
   isLoading: state => state.SELECT_AGENT_REDUCER.isLoading,
   isSuccess: state => state.SELECT_AGENT_REDUCER.isSuccess,
   isFailure: state => state.SELECT_AGENT_REDUCER.isFailure,
-  isData: state => state.SELECT_AGENT_REDUCER.data
+  isAgent: state => state.SELECT_AGENT_REDUCER.data,
+  isLogin: state => state.SELECT_LOGIN_REDUCER.data
 };
 
 export const ACTIONS = {

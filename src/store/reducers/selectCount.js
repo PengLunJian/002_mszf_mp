@@ -3,7 +3,7 @@ import * as actionTypes from '../actionTypes';
 import * as states from '../states';
 
 const actions = {
-  [actionTypes.SELECT_INDEX_REQUEST](state) {
+  [actionTypes.SELECT_COUNT_REQUEST](state) {
     return {
       ...state,
       isLoading: true,
@@ -11,7 +11,7 @@ const actions = {
       isFailure: false
     };
   },
-  [actionTypes.SELECT_INDEX_SUCCESS](state, action) {
+  [actionTypes.SELECT_COUNT_SUCCESS](state, action) {
     return {
       ...state,
       isLoading: false,
@@ -20,7 +20,7 @@ const actions = {
       data: action.data
     };
   },
-  [actionTypes.SELECT_INDEX_FAILURE](state) {
+  [actionTypes.SELECT_COUNT_FAILURE](state) {
     return {
       ...state,
       isLoading: false,
@@ -87,6 +87,6 @@ const actions = {
   }
 };
 
-const SELECT_INDEX_REDUCER = handleActions(actions, states.SELECT_INDEX_STATE);
+const SELECT_COUNT_REDUCER = handleActions(actions, states.SELECT_COUNT_STATE);
 
-export default SELECT_INDEX_REDUCER;
+export default SELECT_COUNT_REDUCER;

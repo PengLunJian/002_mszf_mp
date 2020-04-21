@@ -53,10 +53,7 @@ const actions = {
     const oldData = state.data || [];
     const newData = params.data;
     const data = oldData.map((item) => {
-      if (item.id === newData.id) {
-        item = newData;
-      }
-      return item;
+      return item.id === newData.id ? newData : item;
     });
     return {
       ...state,

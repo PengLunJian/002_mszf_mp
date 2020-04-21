@@ -1,7 +1,7 @@
 <template>
   <div class="item">
     <div class="item-img">
-      <lazy-image src="{{item.photo?baseUrl+item.photo:url}}" width="50%" mode="aspectFill"/>
+      <lazy-image src="{{item.picUrl?baseUrl+item.picUrl:url}}" width="50%" mode="aspectFill"/>
       <div class="item-btns">
         <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateAgent"></div>
         <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteAgent"></div>
@@ -10,11 +10,11 @@
     <div class="item-info">
       <div class="item-row row">
         <div class="item-col label">姓名：</div>
-        <div class="item-col value name">{{item.name}}</div>
+        <div class="item-col value name">{{item.jingjirenName}}</div>
       </div>
       <div class="item-row row">
         <div class="item-col label">电话：</div>
-        <div class="item-col value">{{item.tel}}</div>
+        <div class="item-col value">{{item.telNo}}</div>
       </div>
     </div>
   </div>

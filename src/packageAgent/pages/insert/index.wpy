@@ -18,7 +18,7 @@
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">姓名</label>
-                              <input class="form-input" v-model="name" type="text"
+                              <input class="form-input" v-model="jingjirenName" type="text"
                                      placeholder="彭伦健"
                                      @input="onHandleCheckEmpty"/>
                               <span class="form-next iconfont icon-next"></span>
@@ -27,7 +27,7 @@
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">电话</label>
-                              <input class="form-input" v-model="tel" type="number"
+                              <input class="form-input" v-model="telNo" type="number"
                                      placeholder="18130278679"
                                      @input="onHandleCheckEmpty"/>
                               <span class="form-next iconfont icon-next"></span>
@@ -49,7 +49,7 @@
                         <div class="form-row row">
                           <div class="form-col col-12">
                             <div class="form-group">
-                        <textarea class="textarea" v-model="remarks" type="text"
+                        <textarea class="textarea" v-model="remark" type="text"
                                   placeholder="请输入内容"/>
                             </div>
                           </div>
@@ -108,7 +108,6 @@
   import Loading from '../../../mixins/loading';
   import * as controller from './controller';
   import * as $routes from '../../../router';
-  import * as utils from '../../../utils';
   import apis from '../../../apis';
 
   wepy.page({
@@ -119,12 +118,9 @@
     data: {
       isDisable: false,
       baseUrl: apis.baseUrl,
-      com_id: 1,
-      name: '',
-      tel: '',
-      remarks: '',
-      photo: '',
-      detail: '',
+      jingjirenName: '',
+      telNo: '',
+      remark: '',
       urls: []
     },
 
@@ -135,11 +131,11 @@
     methods: {
       ...mapActions(controller.ACTIONS),
       onHandleCheckEmpty() {
-        const {name, tel} = this;
+        const {jingjirenName, telNo} = this;
         let isBaseEmpty =
           (
-            name &&
-            tel
+            jingjirenName &&
+            telNo
           );
         this.isDisable = isBaseEmpty;
         return {
@@ -198,16 +194,15 @@
           });
       },
       getParams() {
-        const {com_id} = utils.getUser();
-        const {name, tel, remarks, detail, urls} = this;
-        const photo = urls.length ? urls[0] : '';
+        const {busCode} = this.isLogin;
+        const {jingjirenName, telNo, remark, urls} = this;
+        const picUrl = urls.length ? urls[0] : '';
         return {
-          com_id,
-          name,
-          tel,
-          remarks,
-          photo,
-          detail
+          busCode,
+          jingjirenName,
+          picUrl,
+          telNo,
+          remark
         };
       }
     },

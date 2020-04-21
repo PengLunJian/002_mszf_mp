@@ -1,13 +1,14 @@
 import * as actions from '../../store/actions';
 
 export const STATES = {
-  isLoading: state => state.SELECT_INDEX_REDUCER.isLoading,
-  isSuccess: state => state.SELECT_INDEX_REDUCER.isSuccess,
-  isFailure: state => state.SELECT_INDEX_REDUCER.isFailure,
-  isData: state => state.SELECT_INDEX_REDUCER.data
+  isLoading: state => state.SELECT_COUNT_REDUCER.isLoading,
+  isSuccess: state => state.SELECT_COUNT_REDUCER.isSuccess,
+  isFailure: state => state.SELECT_COUNT_REDUCER.isFailure,
+  isCount: state => state.SELECT_COUNT_REDUCER.data,
+  isLogin: state => state.SELECT_LOGIN_REDUCER.data
 };
 
 export const ACTIONS = {
-  ajaxSelectIndex: () => actions.ajaxRequestSelectIndex(),
-  ajaxSelectAgent: () => actions.ajaxRequestSelectAgent()
+  ajaxSelectCount: params => actions.ajaxRequestSelectCount(params),
+  ajaxSelectAgent: params => actions.ajaxRequestSelectAgent(params)
 };
