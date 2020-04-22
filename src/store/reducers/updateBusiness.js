@@ -3,7 +3,7 @@ import * as actionTypes from '../actionTypes';
 import * as states from '../states';
 
 const actions = {
-  [actionTypes.SELECT_BUSINESS_REQUEST](state) {
+  [actionTypes.UPDATE_BUSINESS_REQUEST](state) {
     return {
       ...state,
       isLoading: true,
@@ -12,7 +12,7 @@ const actions = {
       data: null
     };
   },
-  [actionTypes.SELECT_BUSINESS_SUCCESS](state, action) {
+  [actionTypes.UPDATE_BUSINESS_SUCCESS](state, action) {
     return {
       ...state,
       isLoading: false,
@@ -21,23 +21,16 @@ const actions = {
       data: action.data
     };
   },
-  [actionTypes.SELECT_BUSINESS_FAILURE](state) {
+  [actionTypes.UPDATE_BUSINESS_FAILURE](state) {
     return {
       ...state,
       isLoading: false,
       isSuccess: false,
       isFailure: true
     };
-  },
-  [actionTypes.UPDATE_BUSINESS_REPLACE](state, params) {
-    const data = params.data;
-    return {
-      ...state,
-      data
-    };
   }
 };
 
-const SELECT_BUSINESS_REDUCER = handleActions(actions, states.SELECT_BUSINESS_STATE);
+const UPDATE_BUSINESS_REDUCER = handleActions(actions, states.UPDATE_BUSINESS_STATE);
 
-export default SELECT_BUSINESS_REDUCER;
+export default UPDATE_BUSINESS_REDUCER;

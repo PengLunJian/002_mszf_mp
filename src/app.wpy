@@ -56,7 +56,8 @@
     {
       'root': 'packageBusiness',
       'pages': [
-        'pages/select/index'
+        'pages/select/index',
+        'pages/upload/index'
       ]
     }
   ],

@@ -56,8 +56,8 @@
       ...mapActions(controller.ACTIONS),
       exeAjaxSelectAgent() {
         this.showLoading();
-        const {busCode} = this.isLogin;
-        const params = {busCode};
+        const {busId} = this.isLogin;
+        const params = {id: busId};
         this.ajaxSelectAgent(params)
           .then((res) => {
             this.hideLoading();

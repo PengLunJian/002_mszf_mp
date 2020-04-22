@@ -1,6 +1,6 @@
 const apis = {
   baseUrl: 'http://118.190.202.38:8181/api',
-  fileUrl: '',
+  fileUrl: 'http://47.103.197.178:8080',
   method: 'POST',
   timeout: 5000,
   dataType: 'json',
@@ -18,7 +18,7 @@ const apis = {
   selectCount: {
     url: '/house/total',
     params: {
-      busCode: ''
+      id: ''
     }
   },
   insertHouse: {
@@ -57,7 +57,7 @@ const apis = {
     }
   },
   deleteHouse: {
-    url: '/house/isdel',
+    url: '/house/delete',
     params: {
       id: 0
     }
@@ -125,7 +125,7 @@ const apis = {
     params: {}
   },
   insertAgent: {
-    url: '/Jjiren/insert',
+    url: '/jingjiren/insert',
     params: {
       busCode: '',
       jingjirenName: '',
@@ -147,15 +147,21 @@ const apis = {
     }
   },
   selectAgent: {
-    url: '/jingjiren/queryAll',
+    url: '/jingjiren/select',
     params: {
       busCode: ''
     }
   },
   selectBusiness: {
-    url: '/auth/company/detail',
+    url: '/business/select',
     params: {
-      com_id: 1
+      id: 1
+    }
+  },
+  updateBusiness: {
+    url: '/business/update',
+    params: {
+      id: 1
     }
   },
   selectHouseDetail: {

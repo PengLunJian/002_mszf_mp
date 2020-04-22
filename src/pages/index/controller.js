@@ -9,6 +9,7 @@ export const STATES = {
 };
 
 export const ACTIONS = {
+  ajaxSelectBusiness: params => actions.ajaxRequestSelectBusiness(params),
   ajaxSelectCount: params => actions.ajaxRequestSelectCount(params),
   ajaxSelectAgent: params => actions.ajaxRequestSelectAgent(params)
 };

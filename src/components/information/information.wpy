@@ -8,15 +8,15 @@
         <div class="module-info">
           <div class="module-row row">
             <div class="module-col col-4">
-              <div class="item-value">{{isData.resNew.data.totalCount||0}}</div>
+              <div class="item-value">{{isData[0].total||0}}</div>
               <div class="item-label">新房</div>
             </div>
             <div class="module-col col-4">
-              <div class="item-value">{{isData.resSecond.data.totalCount||0}}</div>
+              <div class="item-value">{{isData[1].total||0}}</div>
               <div class="item-label">二手房</div>
             </div>
             <div class="module-col col-4">
-              <div class="item-value">{{isData.resRent.data.totalCount||0}}</div>
+              <div class="item-value">{{isData[2].total||0}}</div>
               <div class="item-label">租房</div>
             </div>
           </div>

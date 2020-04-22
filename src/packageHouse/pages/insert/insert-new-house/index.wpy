@@ -200,7 +200,7 @@
                                  :key="index" @tap="onHandleAgentSelector(index)">
                               <div class="module-item row" :class="{'checked':item.checked}">
                                 <div class="item-img">
-                                  <lazy-image :src="item.photo?baseUrl+item.photo:url"/>
+                                  <lazy-image :src="item.photo?fileUrl+item.photo:url"/>
                                 </div>
                                 <div class="item-info">
                                   <div class="item-name">{{item.name||noData}}</div>
@@ -248,7 +248,7 @@
                                  v-for="(item,index) in isLayout" :key="index">
                               <div class="module-item" @tap="onHandleUpdateLayout(item,index)">
                                 <div class="item-img">
-                                  <lazy-image src="{{baseUrl+item.pic}}" mode="aspectFill"/>
+                                  <lazy-image src="{{fileUrl+item.pic}}" mode="aspectFill"/>
                                 </div>
                                 <div class="item-info">
                                   <div class="item-row row">
@@ -290,7 +290,7 @@
                               <div class="module-item" @tap="onHandleShowImage(index)">
                                 <div class="btn-delete iconfont icon-delete"
                                      @tap.stop="onHandleDeleteImage(index)"></div>
-                                <lazy-image src="{{baseUrl+item}}" mode="aspectFill"/>
+                                <lazy-image src="{{fileUrl+item}}" mode="aspectFill"/>
                               </div>
                             </div>
                             <div class="module-col col-4">
@@ -339,7 +339,7 @@
 
     data: {
       noData: '暂无数据',
-      baseUrl: apis.baseUrl,
+      fileUrl: apis.fileUrl,
       url: $config.DEFAULT_AGENT,
       tab: {
         activeIndex: 0,
@@ -588,7 +588,7 @@
       },
       onHandleShowImage(index) {
         const urls = this.urls.map((item) => {
-          return this.baseUrl + item;
+          return this.fileUrl + item;
         });
         wx.previewImage({
           current: urls[index],

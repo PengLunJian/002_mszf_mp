@@ -11,11 +11,7 @@
               <div class="upload-header"></div>
               <div class="upload-body">
                 <div class="upload-cut">
-                  <div class="upload-cut-touch"
-                       @touchstart="onHandleTouchStart"
-                       @touchmove="onHandleTouchMove"
-                       @touchend="onHandleTouchEnd"
-                       @tap="onHandleShowImage"></div>
+                  <div class="upload-cut-touch" @tap="onHandleShowImage"></div>
                   <div class="upload-cut-border">
                     <div class="upload-border"></div>
                     <div class="upload-border"></div>
@@ -152,11 +148,11 @@
         const {width, height} = res;
         const rate = width / height;
         if (width > height) {
-          rateHeight = 520;
-          rateWidth = 520 * rate;
-        } else if (width < height) {
           rateWidth = 520;
           rateHeight = 520 / rate;
+        } else if (width < height) {
+          rateWidth = 520 * rate;
+          rateHeight = 520;
         } else {
           rateWidth = 520;
           rateHeight = 520;
@@ -179,8 +175,8 @@
             this.canvas.mark = {path, width, height};
           },
           fail: (err) => {
-            const errorMessage = err || '图片加载失败';
-            this.showToast(errorMessage);
+            console.log(err);
+            this.showToast('图片加载失败');
           }
         });
       },
@@ -225,56 +221,6 @@
       },
       onHandleLoadImage() {
         this.hideLoading();
-      },
-      onHandleTouchStart(e) {
-        const {touches} = e.$wx;
-        this.touches.length = touches.length;
-        if (touches.length === 1) {
-          const {clientX, clientY} = touches[0];
-          this.touches.clientX = clientX;
-          this.touches.clientY = clientY;
-        }
-      },
-      onHandleTouchMove(e) {
-        const {touches} = e.$wx;
-        if (this.touches.length === 1) {
-          const {clientX, clientY} = touches[0];
-          this.touches.offsetX = this.touches.clientX - clientX;
-          this.touches.offsetY = this.touches.clientY - clientY;
-          let totalOffsetX = this.touches.offsetX + this.touches.storageOffsetX;
-          let totalOffsetY = this.touches.offsetY + this.touches.storageOffsetY;
-
-          let moveOffsetX = (this.touchImage.width - 520 / 2) / 2;
-          let moveOffsetY = (this.touchImage.height - 520 / 2) / 2;
-          moveOffsetX = totalOffsetX > 0 ? moveOffsetX : -moveOffsetX;
-          moveOffsetY = totalOffsetY > 0 ? moveOffsetY : -moveOffsetY;
-          totalOffsetX = Math.abs(totalOffsetX) >= Math.abs(moveOffsetX) ? moveOffsetX : totalOffsetX;
-          totalOffsetY = Math.abs(totalOffsetY) >= Math.abs(moveOffsetY) ? moveOffsetY : totalOffsetY;
-
-          this.touches.totalOffsetX = totalOffsetX;
-          this.touches.totalOffsetY = totalOffsetY;
-
-          this.touchImage.style = this.touchImage.initStyle +
-            'transform:translate3d(' + (-totalOffsetX) +
-            'px,' + (-totalOffsetY) + 'px,0);';
-        }
-      },
-      onHandleTouchEnd() {
-        const totalOffsetX = this.touches.storageOffsetX + this.touches.offsetX;
-        const totalOffsetY = this.touches.storageOffsetY + this.touches.offsetY;
-
-        let moveOffsetX = (this.touchImage.width - 520 / 2) / 2;
-        let moveOffsetY = (this.touchImage.height - 520 / 2) / 2;
-        moveOffsetX = totalOffsetX > 0 ? moveOffsetX : -moveOffsetX;
-        moveOffsetY = totalOffsetY > 0 ? moveOffsetY : -moveOffsetY;
-        this.touches.storageOffsetX = Math.abs(totalOffsetX) >= Math.abs(moveOffsetX) ? moveOffsetX : totalOffsetX;
-        this.touches.storageOffsetY = Math.abs(totalOffsetY) >= Math.abs(moveOffsetY) ? moveOffsetY : totalOffsetY;
-
-        this.touches.length = 0;
-        this.touches.offsetX = 0;
-        this.touches.offsetY = 0;
-        this.touches.clientX = 0;
-        this.touches.clientY = 0;
       },
       onHandleTempFilePath() {
         return new Promise((resolve, reject) => {

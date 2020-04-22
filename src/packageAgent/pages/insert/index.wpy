@@ -71,7 +71,7 @@
                             <div class="module-item" @tap="onHandleShowImage(index)">
                               <div class="btn-delete iconfont icon-delete"
                                    @tap.stop="onHandleDeleteImage(index)"></div>
-                              <lazy-image src="{{baseUrl+item}}" mode="aspectFill"/>
+                              <lazy-image src="{{fileUrl+item}}" mode="aspectFill"/>
                             </div>
                           </div>
                           <div class="module-col col-4">
@@ -117,7 +117,7 @@
 
     data: {
       isDisable: false,
-      baseUrl: apis.baseUrl,
+      fileUrl: apis.fileUrl,
       jingjirenName: '',
       telNo: '',
       remark: '',
@@ -153,7 +153,7 @@
       },
       onHandleShowImage(index) {
         const urls = this.urls.map((item) => {
-          return this.baseUrl + item;
+          return this.fileUrl + item;
         });
         wx.previewImage({
           current: urls[index],
@@ -194,11 +194,11 @@
           });
       },
       getParams() {
-        const {busCode} = this.isLogin;
+        const {busId} = this.isLogin;
         const {jingjirenName, telNo, remark, urls} = this;
         const picUrl = urls.length ? urls[0] : '';
         return {
-          busCode,
+          id: busId,
           jingjirenName,
           picUrl,
           telNo,

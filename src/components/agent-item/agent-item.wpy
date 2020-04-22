@@ -1,7 +1,7 @@
 <template>
   <div class="item">
     <div class="item-img">
-      <lazy-image src="{{item.picUrl?baseUrl+item.picUrl:url}}" width="50%" mode="aspectFill"/>
+      <lazy-image src="{{item.picUrl?fileUrl+item.picUrl:url}}" width="50%" mode="aspectFill"/>
       <div class="item-btns">
         <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateAgent"></div>
         <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteAgent"></div>
@@ -28,7 +28,7 @@
 
   wepy.component({
     data: {
-      baseUrl: apis.baseUrl,
+      fileUrl: apis.fileUrl,
       url: $config.DEFAULT_AGENT
     },
     props: {

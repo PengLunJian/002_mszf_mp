@@ -87,5 +87,9 @@ export const BUSINESS = {
   SELECT: {
     url: '商户管理',
     path: '/packageBusiness/pages/select/index'
+  },
+  UPLOAD: {
+    name: '图片上传',
+    path: '/packageBusiness/pages/upload/index'
   }
 };

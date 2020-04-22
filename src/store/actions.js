@@ -164,7 +164,7 @@ export const ajaxRequestSelectHouse = createAction(
   'selectHouse', (params) => {
     commit(actionTypes.SELECT_HOUSE_REQUEST);
     return new Promise((resolve, reject) => {
-      axios.get(apis.selectHouse, {params})
+      axios.post(apis.selectHouse, params)
         .then((res) => {
           res = res || {};
           const {data, success} = res;
@@ -277,7 +277,7 @@ export const ajaxRequestSelectBusiness = createAction(
   'selectBusiness', (params) => {
     commit(actionTypes.SELECT_BUSINESS_REQUEST);
     return new Promise((resolve, reject) => {
-      axios.get(apis.selectBusiness, {params})
+      axios.post(apis.selectBusiness, params)
         .then((res) => {
           res = res || {};
           const {data, success} = res;
@@ -290,6 +290,29 @@ export const ajaxRequestSelectBusiness = createAction(
         })
         .catch((err) => {
           commit(actionTypes.SELECT_BUSINESS_FAILURE);
+          reject(err);
+        });
+    });
+  });
+
+export const ajaxRequestUpdateBusiness = createAction(
+  'selectBusiness', (params) => {
+    commit(actionTypes.UPDATE_BUSINESS_REQUEST);
+    return new Promise((resolve, reject) => {
+      axios.post(apis.updateBusiness, params)
+        .then((res) => {
+          res = res || {};
+          const {data, success} = res;
+          if (success) {
+            commit(actionTypes.UPDATE_BUSINESS_REPLACE, data);
+            commit(actionTypes.UPDATE_BUSINESS_SUCCESS, data);
+          } else {
+            commit(actionTypes.UPDATE_BUSINESS_FAILURE);
+          }
+          resolve(res);
+        })
+        .catch((err) => {
+          commit(actionTypes.UPDATE_BUSINESS_FAILURE);
           reject(err);
         });
     });

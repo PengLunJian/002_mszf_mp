@@ -5,7 +5,7 @@
         <top-bar title="商户管理"></top-bar>
       </div>
       <div class="body">
-        <div class="context fade" v-if="isSuccess">
+        <div class="context fade">
           <scroll-view class="scroll-view" scroll-y="{{true}}">
             <div class="scroll-content">
               <div class="scroll-header"></div>
@@ -18,21 +18,39 @@
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">名称</label>
-                              <input class="form-input" v-model="isData.name" disabled="{{true}}" type="text"/>
+                              <input class="form-input" v-model="busName" type="text"
+                                     placeholder="请输入中介名称"
+                                     @input="onHandleCheckEmpty"/>
                               <span class="form-next iconfont icon-next"></span>
                             </div>
                           </div>
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">电话</label>
-                              <input class="form-input" v-model="isData.tel" disabled="{{true}}" type="text"/>
+                              <input class="form-input" v-model="phoneNo" type="number"
+                                     placeholder="请输入手机号"
+                                     @input="onHandleCheckEmpty"/>
                               <span class="form-next iconfont icon-next"></span>
                             </div>
                           </div>
                           <div class="form-col col-12">
+                            <div class="form-picker">
+                              <picker mode="region" @change="onHandleDiZhiChange" value="{{dizhi.items}}">
+                                <div class="form-group">
+                                  <label class="form-label">地址</label>
+                                  <input class="form-input" v-model="dizhi.value" disabled="{{true}}" type="text"
+                                         placeholder="安徽省、宣城市、广德县"/>
+                                  <span class="form-next iconfont icon-next"></span>
+                                </div>
+                              </picker>
+                            </div>
+                          </div>
+                          <div class="form-col col-12">
                             <div class="form-group">
-                              <label class="form-label">地址</label>
-                              <input class="form-input" v-model="isData.addr" disabled="{{true}}" type="text"/>
+                              <label class="form-label">详细地址</label>
+                              <input class="form-input" v-model="address" type="text"
+                                     placeholder="街道、小区、门牌号"
+                                     @input="onHandleCheckEmpty"/>
                               <span class="form-next iconfont icon-next"></span>
                             </div>
                           </div>
@@ -45,14 +63,14 @@
                 <div class="module">
                   <div class="module-content">
                     <div class="module-header">
-                      <div class="module-title">商家简介</div>
+                      <div class="module-title">商户简介</div>
                     </div>
                     <div class="module-body">
                       <div class="module-edit">
                         <div class="form-row row">
                           <div class="form-col col-12">
                             <div class="form-group">
-                              <textarea class="textarea" v-model="isData.ext" disabled="{{true}}" type="text"/>
+                              <textarea class="textarea" v-model="remark" type="text"/>
                             </div>
                           </div>
                         </div>
@@ -69,9 +87,16 @@
                     <div class="module-body">
                       <div class="module-images">
                         <div class="module-row row">
-                          <div class="module-col col-4" :key="index">
-                            <div class="module-item" @tap="onHandleShowImage">
-                              <lazy-image src="{{baseUrl+isData.pic}}" mode="aspectFill"/>
+                          <div class="module-col col-4" v-for="(item,index) in urls" :key="index">
+                            <div class="module-item" @tap="onHandleShowImage(index)">
+                              <div class="btn-delete iconfont icon-delete"
+                                   @tap.stop="onHandleDeleteImage(index)"></div>
+                              <lazy-image src="{{fileUrl+item}}" mode="aspectFill"/>
+                            </div>
+                          </div>
+                          <div class="module-col col-4">
+                            <div class="module-btn btn btn-image" @tap="onHandleUploadImage">
+                              <div class="module-icon iconfont icon-insert"></div>
                             </div>
                           </div>
                         </div>
@@ -86,7 +111,11 @@
           </scroll-view>
         </div>
       </div>
-      <div class="footer"></div>
+      <div class="footer">
+        <div class="btn btn-update{{isDisable?'':' disable'}}"
+             @tap="onHandleUpdateBusiness">保存
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -99,7 +128,7 @@
   import Toast from '../../../mixins/toast';
   import Loading from '../../../mixins/loading';
   import * as controller from './controller';
-  import * as utils from '../../../utils';
+  import * as $routes from '../../../router';
 
   wepy.page({
     store,
@@ -107,7 +136,22 @@
     mixins: [Toast, Loading],
 
     data: {
-      baseUrl: apis.baseUrl
+      isDisable: false,
+      fileUrl: apis.fileUrl,
+      id: '',
+      busName: '',
+      phoneNo: '',
+      province: '',
+      city: '',
+      area: '',
+      address: '',
+      picUrl: '',
+      remark: '',
+      dizhi: {
+        value: '',
+        items: ['安徽省', '宣城市', '广德县']
+      },
+      urls: []
     },
 
     computed: {
@@ -116,47 +160,140 @@
 
     methods: {
       ...mapActions(controller.ACTIONS),
-      exeAjaxSelectBusiness() {
+      onHandleCheckEmpty() {
+        const {busName, phoneNo, province, city, area, address, picUrl} = this;
+        let isBaseEmpty =
+          (
+            busName &&
+            phoneNo &&
+            province &&
+            city &&
+            area &&
+            address &&
+            picUrl
+          );
+        this.isDisable = isBaseEmpty;
+        return {
+          isBaseEmpty
+        };
+      },
+      onHandleDiZhiChange(e) {
+        const items = e.$wx.detail.value;
+        this.dizhi.items = items;
+        this.dizhi.value = items.join('、');
+        this.province = items[0];
+        this.city = items[1];
+        this.area = items[2];
+        this.onHandleCheckEmpty();
+      },
+      onHandleShowImage(index) {
+        const urls = this.urls.map((item) => {
+          return this.fileUrl + item;
+        });
+        wx.previewImage({
+          current: urls[index],
+          urls: urls
+        });
+      },
+      onHandleDeleteImage(index) {
+        this.picUrl = '';
+        this.urls.splice(index, 1);
+        this.onHandleCheckEmpty();
+      },
+      onHandleUploadImage() {
+        wx.navigateTo({
+          url: $routes.BUSINESS.UPLOAD.path
+        });
+      },
+      onHandleUpdateBusiness() {
+        const isCheckEmpty = this.onHandleCheckEmpty();
+        const {isBaseEmpty} = isCheckEmpty;
+        if (!isBaseEmpty) {
+          this.showToast('商户信息填写不完整');
+        } else {
+          this.exeAjaxUpdateBusiness();
+        }
+      },
+      onHandleRenderBusiness() {
+        const {busId} = this.isLogin;
+        this.id = busId;
+        if (this.isBusiness) {
+          const {
+            busName, phoneNo, province, city,
+            area, address, picUrl, remark
+          } = this.isBusiness;
+          this.busName = busName;
+          this.phoneNo = phoneNo;
+          this.province = province;
+          this.city = city;
+          this.area = area;
+          this.address = address;
+          this.picUrl = picUrl;
+          this.remark = remark;
+          this.urls = [picUrl];
+          this.dizhi.items = [province, city, area];
+          this.dizhi.value = province + '、' + city + '、' + area;
+        }
+        this.onHandleCheckEmpty();
+      },
+      exeAjaxUpdateBusiness() {
         this.showLoading();
         const params = this.getParams();
-        this.ajaxSelectBusiness(params)
+        this.ajaxUpdateBusiness(params)
           .then((res) => {
             res = res || {};
-            const {success, data} = res.payload;
+            const {success} = res.payload;
             if (success) {
-              console.log(data);
+              this.showToast('商户信息保存成功');
+              setTimeout(() => {
+                wx.navigateBack({
+                  delta: 1
+                });
+              }, 1000);
             } else {
-              this.showToast('加载失败，请重试');
+              this.showToast('保存失败，请重试');
             }
             this.hideLoading();
           })
           .catch((err) => {
             this.hideLoading();
-            this.showToast('加载失败，请重试');
+            this.showToast('保存失败，请重试');
             console.log(err);
           });
       },
-      onHandleShowImage() {
-        const {pic} = this.isData;
-        wx.previewImage({
-          current: [0],
-          urls: [pic]
-        });
-      },
       getParams() {
-        const {com_id} = utils.getUser();
+        const {busId} = this.isLogin;
+        const {
+          busName, phoneNo, province,
+          city, area, address, remark, picUrl
+        } = this;
         const params = {
-          com_id
+          id: busId,
+          busName,
+          phoneNo,
+          province,
+          city,
+          area,
+          remark,
+          address,
+          picUrl
         };
         return params;
       }
     },
 
     onShow() {
+      const {isImage} = this;
+      if (isImage) {
+        this.picUrl = isImage;
+        this.urls = [isImage];
+        this.onHandleCheckEmpty();
+        this.removeImageReplace();
+      }
     },
 
     onLoad() {
-      this.exeAjaxSelectBusiness();
+      this.onHandleRenderBusiness();
     }
   });
 </script>
@@ -179,6 +316,7 @@
         .context {
           height: 100%;
           padding-top: 65px;
+          padding-bottom: unit(160, rpx);
           .scroll-view {
             height: 100%;
             .scroll-content {
@@ -316,6 +454,29 @@
         }
       }
       .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        z-index: 1000;
+        padding: unit(30, rpx);
+        background-color: @white;
+        box-shadow: 0 0 15px @boxShadow05;
+        .btn-update {
+          overflow: hidden;
+          height: unit(100, rpx);
+          line-height: unit(100, rpx);
+          border-radius: @borderRadius10;
+          background: -webkit-linear-gradient(left, @theme1, @theme2);
+          font-size: @fontSize32;
+          letter-spacing: 1px;
+          text-align: center;
+          color: @white;
+          &.disable {
+            background: @disable;
+            color: @fontColor3;
+          }
+        }
       }
     }
   }

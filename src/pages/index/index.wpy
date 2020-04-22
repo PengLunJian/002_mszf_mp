@@ -42,10 +42,26 @@
 
     methods: {
       ...mapActions(controller.ACTIONS),
+      exeAjaxSelectBusiness() {
+        const {busId} = this.isLogin;
+        const params = {id: busId};
+        this.ajaxSelectBusiness(params)
+          .then((res) => {
+            res = res || {};
+            const {success} = res.payload;
+            if (!success) {
+              this.showToast('加载失败，请重试');
+            }
+          })
+          .catch((err) => {
+            this.showToast('加载失败，请重试');
+            console.log(err);
+          });
+      },
       exeAjaxSelectCount() {
         this.showLoading();
-        const {busCode} = this.isLogin;
-        const params = {busCode};
+        const {busId} = this.isLogin;
+        const params = {id: busId};
         this.ajaxSelectCount(params)
           .then((res) => {
             this.hideLoading();
@@ -63,8 +79,8 @@
           });
       },
       exeAjaxSelectAgent() {
-        const {busCode} = this.isLogin;
-        const params = {busCode};
+        const {busId} = this.isLogin;
+        const params = {id: busId};
         this.ajaxSelectAgent(params)
           .then((res) => {
             res = res || {};
@@ -81,6 +97,7 @@
     },
 
     onLoad() {
+      this.exeAjaxSelectBusiness();
       this.exeAjaxSelectCount();
       this.exeAjaxSelectAgent();
     }
