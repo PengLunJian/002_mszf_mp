@@ -139,6 +139,7 @@
       isDisable: false,
       fileUrl: apis.fileUrl,
       id: '',
+      accountId: -1,
       busName: '',
       phoneNo: '',
       province: '',
@@ -215,8 +216,9 @@
         }
       },
       onHandleRenderBusiness() {
-        const {busId} = this.isLogin;
+        const {busId, id} = this.isLogin;
         this.id = busId;
+        this.accountId = id;
         if (this.isBusiness) {
           const {
             busName, phoneNo, province, city,
@@ -264,11 +266,12 @@
       getParams() {
         const {busId} = this.isLogin;
         const {
-          busName, phoneNo, province,
+          accountId, busName, phoneNo, province,
           city, area, address, remark, picUrl
         } = this;
         const params = {
           id: busId,
+          accountId,
           busName,
           phoneNo,
           province,
