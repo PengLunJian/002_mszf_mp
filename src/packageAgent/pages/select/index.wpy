@@ -57,7 +57,7 @@
       exeAjaxSelectAgent() {
         this.showLoading();
         const {busId} = this.isLogin;
-        const params = {id: busId};
+        const params = {busId};
         this.ajaxSelectAgent(params)
           .then((res) => {
             this.hideLoading();

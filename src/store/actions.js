@@ -112,7 +112,7 @@ export const ajaxRequestInsertImage = createAction(
     return new Promise((resolve, reject) => {
       const {filePath} = params;
       const url = apis.baseUrl + apis.insertImage.url;
-      const header = {'Content-Type': 'multipart/form-data'};
+      const header = {'Content-Type': 'multipart/form-data;'};
       wx.uploadFile({
         url: url,
         name: 'file',
@@ -141,7 +141,7 @@ export const ajaxRequestUpdateHouse = createAction(
   'updateHouse', (params) => {
     commit(actionTypes.UPDATE_HOUSE_REQUEST);
     return new Promise((resolve, reject) => {
-      axios.put(apis.updateHouse, params)
+      axios.post(apis.updateHouse, params)
         .then((res) => {
           res = res || {};
           const {data, success} = res;
@@ -322,7 +322,7 @@ export const ajaxRequestSelectHouseDetail = createAction(
   'selectHouseDetail', (params) => {
     commit(actionTypes.SELECT_HOUSE_DETAIL_REQUEST);
     return new Promise((resolve, reject) => {
-      axios.get(apis.selectHouseDetail, {params})
+      axios.post(apis.selectHouseDetail, {params})
         .then((res) => {
           res = res || {};
           const {data, success} = res;
@@ -344,7 +344,7 @@ export const ajaxRequestSelectAgentDetail = createAction(
   'selectAgentDetail', (params) => {
     commit(actionTypes.SELECT_AGENT_DETAIL_REQUEST);
     return new Promise((resolve, reject) => {
-      axios.get(apis.selectAgentDetail, {params})
+      axios.post(apis.selectAgentDetail, {params})
         .then((res) => {
           res = res || {};
           const {data, success} = res;

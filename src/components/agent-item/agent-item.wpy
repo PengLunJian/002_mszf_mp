@@ -10,7 +10,7 @@
     <div class="item-info">
       <div class="item-row row">
         <div class="item-col label">姓名：</div>
-        <div class="item-col value name">{{item.jingjirenName}}</div>
+        <div class="item-col value name">{{item.agentName}}</div>
       </div>
       <div class="item-row row">
         <div class="item-col label">电话：</div>

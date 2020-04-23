@@ -61,7 +61,7 @@
       exeAjaxSelectCount() {
         this.showLoading();
         const {busId} = this.isLogin;
-        const params = {id: busId};
+        const params = {busId};
         this.ajaxSelectCount(params)
           .then((res) => {
             this.hideLoading();
@@ -80,7 +80,7 @@
       },
       exeAjaxSelectAgent() {
         const {busId} = this.isLogin;
-        const params = {id: busId};
+        const params = {busId};
         this.ajaxSelectAgent(params)
           .then((res) => {
             res = res || {};

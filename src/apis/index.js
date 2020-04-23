@@ -125,7 +125,7 @@ const apis = {
     params: {}
   },
   insertAgent: {
-    url: '/jingjiren/insert',
+    url: '/agent/insert',
     params: {
       busCode: '',
       jingjirenName: '',
@@ -135,19 +135,19 @@ const apis = {
     }
   },
   deleteAgent: {
-    url: '/jingjiren/delete',
+    url: '/agent/delete',
     params: {
       id: 1
     }
   },
   updateAgent: {
-    url: '/jingjiren/update',
+    url: '/agent/update',
     params: {
       id: 1
     }
   },
   selectAgent: {
-    url: '/jingjiren/select',
+    url: '/agent/select',
     params: {
       busCode: ''
     }

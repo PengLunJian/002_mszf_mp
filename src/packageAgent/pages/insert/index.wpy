@@ -18,7 +18,7 @@
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">姓名</label>
-                              <input class="form-input" v-model="jingjirenName" type="text"
+                              <input class="form-input" v-model="agentName" type="text"
                                      placeholder="彭伦健"
                                      @input="onHandleCheckEmpty"/>
                               <span class="form-next iconfont icon-next"></span>
@@ -118,7 +118,7 @@
     data: {
       isDisable: false,
       fileUrl: apis.fileUrl,
-      jingjirenName: '',
+      agentName: '',
       telNo: '',
       remark: '',
       urls: []
@@ -131,10 +131,10 @@
     methods: {
       ...mapActions(controller.ACTIONS),
       onHandleCheckEmpty() {
-        const {jingjirenName, telNo} = this;
+        const {agentName, telNo} = this;
         let isBaseEmpty =
           (
-            jingjirenName &&
+            agentName &&
             telNo
           );
         this.isDisable = isBaseEmpty;
@@ -195,11 +195,11 @@
       },
       getParams() {
         const {busId} = this.isLogin;
-        const {jingjirenName, telNo, remark, urls} = this;
+        const {agentName, telNo, remark, urls} = this;
         const picUrl = urls.length ? urls[0] : '';
         return {
-          id: busId,
-          jingjirenName,
+          busId,
+          agentName,
           picUrl,
           telNo,
           remark
