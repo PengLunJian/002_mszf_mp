@@ -64,7 +64,7 @@ export const dataFilter = (data) => {
     browsing_time = dateFormat(browsing_time, 'yyyy/mm/dd');
     jiaofang = jiaofang ? dateFormat(jiaofang, 'zh-cn') : '';
     kaipan = kaipan ? dateFormat(kaipan, 'zh-cn') : '';
-    tags = tags.split(' ');
+    tags = (tags || '').split(' ');
     item.browsing_time = browsing_time;
     item.jiaofang = jiaofang;
     item.kaipan = kaipan;

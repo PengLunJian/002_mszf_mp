@@ -1,7 +1,7 @@
 <template>
   <div class="item" v-if="item.type===1" @tap="onHandleSelectDetail(item.id)">
     <div class="item-img">
-      <lazy-image src="{{item.pic_url[0]?fileUrl+item.pic_url[0]:url}}" width="50%" mode="aspectFill"/>
+      <lazy-image src="{{item.picUrl[0]?fileUrl+item.picUrl[0]:url}}" width="50%" mode="aspectFill"/>
       <div class="item-btns">
         <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
         <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
@@ -22,7 +22,7 @@
   </div>
   <div class="item" v-if="item.type===2" @tap="onHandleSelectDetail(item.id)">
     <div class="item-img">
-      <lazy-image src="{{item.pic_url[0]?fileUrl+item.pic_url[0]:url}}" width="50%" mode="aspectFill"/>
+      <lazy-image src="{{item.picUrl[0]?fileUrl+item.picUrl[0]:url}}" width="50%" mode="aspectFill"/>
       <div class="item-btns">
         <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
         <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
@@ -44,7 +44,7 @@
   </div>
   <div class="item" v-if="item.type===3" @tap="onHandleSelectDetail(item.id)">
     <div class="item-img">
-      <lazy-image src="{{item.pic_url[0]?fileUrl+item.pic_url[0]:url}}" width="50%" mode="aspectFill"/>
+      <lazy-image src="{{item.picUrl[0]?fileUrl+item.picUrl[0]:url}}" width="50%" mode="aspectFill"/>
       <div class="item-btns">
         <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
         <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>

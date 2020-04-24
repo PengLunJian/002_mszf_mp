@@ -18,11 +18,11 @@
             scroll-y="{{isScroll}}"
             @scrolltolower="onHandleScrollToLower">
             <div class="scroll-row row">
-              <div class="scroll-col col-6" v-for="(item,index) in isData.rows">
+              <div class="scroll-col col-6" v-for="(item,index) in isHouse.rows">
                 <house-item :item="item" :key="index"/>
               </div>
             </div>
-            <loading-more :length="isData.rows.length" :totalCount="isData.totalCount"/>
+            <loading-more :length="isHouse.rows.length" :totalCount="isHouse.totalCount"/>
           </scroll-view>
         </div>
       </div>
@@ -137,11 +137,11 @@
       onHandleScrollToLower() {
         if (this.timer) return;
         this.timer = setTimeout(() => {
-          const {rows, totalCount} = this.isData;
+          const {rows, totalCount} = this.isHouse;
           if (rows.length < totalCount) {
             this.exeAjaxSelectHouse();
           }
-        }, 500);
+        }, 0);
       },
       onHandleInsertHouse() {
         const {items, initIndex} = this.tab;
@@ -160,26 +160,14 @@
         this.exeAjaxDeleteHouse();
       },
       getParams() {
-        const type = this.tab.initIndex + 1;
+        const {busId} = this.isLogin;
+        const {pageSize, pageIndex, tab} = this;
+        const type = tab.initIndex + 1;
         const params = {
-          page: {
-            pageSize: this.pageSize,
-            pageIndex: this.pageIndex
-          },
-          filter: [
-            {
-              field: 'type',
-              opt: '=',
-              value: type
-            }
-          ],
-          sort: [
-            {
-              field: 'id',
-              asc: false
-            }
-          ],
-          only_my: true
+          busId,
+          pageSize,
+          pageIndex,
+          type
         };
         return params;
       }
