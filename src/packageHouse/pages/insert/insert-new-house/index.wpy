@@ -28,7 +28,7 @@
                                 <label class="form-label">状态</label>
                                 <input class="form-input" v-model="status.value"
                                        disabled="{{true}}" type="text" placeholder="在售"
-                                       @tap="onHandleShowStatus"/>
+                                       @tap="onHandleShowState"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
@@ -492,7 +492,7 @@
           }
         });
       },
-      onHandleShowStatus() {
+      onHandleShowState() {
         const {items} = this.status;
         wx.showActionSheet({
           itemList: items,

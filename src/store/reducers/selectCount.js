@@ -29,57 +29,19 @@ const actions = {
     };
   },
   [actionTypes.INSERT_HOUSE_REPLACE](state, params) {
-    const oldData = state.data;
+    const data = state.data;
     const newData = params.data;
-    const {resNew, resSecond, resRent} = oldData;
-    switch (newData.type) {
-      case 1:
-        resNew.data.rows.unshift(newData);
-        resNew.data.totalCount++;
-        break;
-      case 2:
-        resSecond.data.rows.unshift(newData);
-        resSecond.data.totalCount++;
-        break;
-      case 3:
-        resRent.data.rows.unshift(newData);
-        resRent.data.totalCount++;
-        break;
-    }
-    const data = {resNew, resSecond, resRent};
+    const {type} = newData;
+    data[type - 1].totalCount++;
     return {
       ...state,
       data
     };
   },
   [actionTypes.DELETE_HOUSE_REPLACE](state, params) {
-    const oldData = state.data;
-    const {id, type} = params.data;
-    let {resNew, resSecond, resRent} = oldData;
-    switch (type) {
-      case 1:
-        const resNewRows = resNew.data.rows.filter((item) => {
-          return item.id !== id;
-        });
-        resNew.data.totalCount--;
-        resNew.data.rows = resNewRows;
-        break;
-      case 2:
-        const resSecondRows = resSecond.data.rows.filter((item) => {
-          return item.id !== id;
-        });
-        resSecond.data.totalCount--;
-        resSecond.data.rows = resSecondRows;
-        break;
-      case 3:
-        const resRentRows = resRent.data.rows.filter((item) => {
-          return item.id !== id;
-        });
-        resRent.data.totalCount--;
-        resRent.data.rows = resRentRows;
-        break;
-    }
-    const data = {resNew, resSecond, resRent};
+    const data = state.data;
+    const {type} = params.data;
+    data[type - 1].totalCount--;
     return {
       ...state,
       data

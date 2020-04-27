@@ -109,7 +109,7 @@
           });
       },
       exeAjaxDeleteHouse() {
-        this.showLoading('正在加载');
+        this.showLoading();
         this.ajaxDeleteHouse(this.params)
           .then((res) => {
             this.hideLoading();

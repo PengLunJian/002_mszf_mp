@@ -87,7 +87,8 @@ export const ajaxRequestDeleteHouse = createAction(
   'deleteHouse', (params) => {
     commit(actionTypes.DELETE_HOUSE_REQUEST);
     return new Promise((resolve, reject) => {
-      axios.post(apis.deleteHouse, params)
+      const {id} = params;
+      axios.post(apis.deleteHouse, {id})
         .then((res) => {
           res = res || {};
           const {data, success} = res;

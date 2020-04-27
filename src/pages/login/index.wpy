@@ -160,7 +160,7 @@
   @import "../../assets/less/variable";
   @import "../../assets/less/common";
 
-  @height: unit(100, rpx);
+  @height: unit(110, rpx);
 
   .container {
     min-height: 100vh;
@@ -177,7 +177,6 @@
             height: 100%;
             position: relative;
             padding: 0 unit(40, rpx);
-            background: -webkit-linear-gradient(-45deg, @theme1, @theme2);
             font-size: 0;
             &:before {
               content: '';
@@ -192,7 +191,7 @@
               vertical-align: middle;
               padding: unit(40, rpx);
               background-color: @white;
-              border-radius: @borderRadius20;
+              border-radius: @borderRadius30;
               font-size: @fontSize32;
               color: @fontColor1;
               .login-header {
@@ -261,19 +260,15 @@
                       padding-left: unit(10, rpx);
                     }
                   }
-                  &:last-child {
-                    margin: 0;
-                  }
                 }
               }
               .login-footer {
                 margin-bottom: unit(40, rpx);
                 .btn-login {
-                  height: @height;
+                  height: unit(100, rpx);
                   overflow: hidden;
-                  line-height: @height;
-                  border-radius: @height;
-                  margin-top: unit(50, rpx);
+                  line-height: unit(100, rpx);
+                  border-radius: unit(100, rpx);
                   box-shadow: 0 0 15px @boxShadow05;
                   background: -webkit-linear-gradient(left, @theme1, @theme2);
                   font-size: @fontSize40;
@@ -290,7 +285,7 @@
         .footer-row {
           position: fixed;
           left: 0;
-          bottom: unit(50, rpx);
+          bottom: unit(40, rpx);
           z-index: 1000;
           width: 100%;
           .footer-col {

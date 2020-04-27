@@ -2,13 +2,15 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="基本信息"></top-bar>
-        <div class="tab-bar row">
-          <div class="tab-item col-4{{tab.activeIndex===index?' active':''}}"
-               v-for="(item,index) in tab.items" :key="index"
-               @tap="onHandleTabChange(index)">
-            <div class="tab-label">{{item}}</div>
-          </div>
+        <top-bar title="房源新增"></top-bar>
+        <div class="tab-bar">
+          <scroll-view class="scroll-view" scroll-x="{{true}}">
+            <div class="tab-item{{tab.activeIndex===index?' active':''}}"
+                 v-for="(item,index) in tab.items" :key="index"
+                 @tap="onHandleTabChange(index)">
+              <div class="tab-label">{{item}}</div>
+            </div>
+          </scroll-view>
         </div>
       </div>
       <div class="body">
@@ -26,7 +28,7 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">小区名</label>
-                                <input class="form-input" v-model="xiaoqu" type="text"
+                                <input class="form-input" v-model="houseName" type="text"
                                        placeholder="金峰万象"
                                        @input="onHandleCheckEmpty"/>
                                 <span class="form-next iconfont icon-next"></span>
@@ -34,10 +36,10 @@
                             </div>
                             <div class="form-col col-12">
                               <div class="form-picker">
-                                <picker mode="region" @change="onHandleDiZhiChange" value="{{dizhi.items}}">
+                                <picker mode="region" @change="onHandleAddressChange" value="{{address.items}}">
                                   <div class="form-group">
                                     <label class="form-label">地址</label>
-                                    <input class="form-input" v-model="dizhi.value" disabled="{{true}}" type="text"
+                                    <input class="form-input" v-model="address.value" disabled="{{true}}" type="text"
                                            placeholder="安徽省、宣城市、广德县"/>
                                     <span class="form-next iconfont icon-next"></span>
                                   </div>
@@ -47,7 +49,7 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">详细地址</label>
-                                <input class="form-input" v-model="xiangxidizhi" type="text"
+                                <input class="form-input" v-model="detailAddress" type="text"
                                        placeholder="街道、小区、门牌号"
                                        @input="onHandleCheckEmpty"/>
                                 <span class="form-next iconfont icon-next"></span>
@@ -67,7 +69,8 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">联系人</label>
-                                <input class="form-input" v-model="owner" type="text" placeholder="房源联系人姓名"
+                                <input class="form-input" v-model="contact" type="text"
+                                       placeholder="房源联系人姓名"
                                        @input="onHandleCheckEmpty"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
@@ -84,7 +87,7 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">总价</label>
-                                <input class="form-input" v-model="total_price" type="digit"
+                                <input class="form-input" v-model="totalPrice" type="digit"
                                        placeholder="万元"
                                        @input="onHandleCheckEmpty"/>
                                 <span class="form-next iconfont icon-next"></span>
@@ -93,7 +96,7 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">面积</label>
-                                <input class="form-input" v-model="mianji" type="digit"
+                                <input class="form-input" v-model="floorArea" type="digit"
                                        placeholder="m²"
                                        @input="onHandleCheckEmpty"/>
                                 <span class="form-next iconfont icon-next"></span>
@@ -111,11 +114,11 @@
                         <div class="module-base">
                           <div class="form-row row">
                             <div class="form-col col-12">
-                              <picker mode="multiSelector" @change="onHandleHuXingChange"
-                                      value="{{huxing.index}}" range="{{huxing.items}}">
+                              <picker mode="multiSelector" @change="onHandleApartChange"
+                                      value="{{apart.index}}" range="{{apart.items}}">
                                 <div class="form-group">
                                   <label class="form-label">户型</label>
-                                  <input class="form-input" v-model="huxing.value" disabled="{{true}}" type="text"
+                                  <input class="form-input" v-model="apart.value" disabled="{{true}}" type="text"
                                          placeholder="2室1厅1卫"/>
                                   <span class="form-next iconfont icon-next"></span>
                                 </div>
@@ -124,27 +127,28 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">朝向</label>
-                                <input class="form-input" v-model="chaoxiang.value" disabled="{{true}}" type="text"
-                                       placeholder="朝南" @tap="onHandleShowChaoXiang"/>
+                                <input class="form-input" v-model="direction.value" disabled="{{true}}" type="text"
+                                       placeholder="朝南"
+                                       @tap="onHandleShowDirection"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">看房</label>
-                                <input class="form-input" v-model="kanfangshijian.value" disabled="{{true}}" type="text"
+                                <input class="form-input" v-model="seeHouse.value" disabled="{{true}}" type="text"
                                        placeholder="随时看房"
-                                       @tap="onHandleShowKanFangShiJian"/>
+                                       @tap="onHandleShowSeeHouse"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
                             <div class="form-col col-12">
                               <picker mode="date" fields="year" start="1900" end="2020"
-                                      @change="onHandleNianFenChange"
-                                      value="{{nianfen}}">
+                                      @change="onHandleHouseYearChange"
+                                      value="{{houseYear}}">
                                 <div class="form-group">
                                   <label class="form-label">年份</label>
-                                  <input class="form-input" v-model="nianfen" disabled="{{true}}" type="text"
+                                  <input class="form-input" v-model="houseYear" disabled="{{true}}" type="text"
                                          placeholder="2019年"/>
                                   <span class="form-next iconfont icon-next"></span>
                                 </div>
@@ -164,27 +168,27 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">楼层</label>
-                                <input class="form-input" v-model="louceng.value" disabled="{{true}}" type="text"
+                                <input class="form-input" v-model="floors.value" disabled="{{true}}" type="text"
                                        placeholder="低楼层"
-                                       @tap="onHandleShowLouCeng"/>
+                                       @tap="onHandleShowFloors"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">装修</label>
-                                <input class="form-input" v-model="zhuangxiu.value" disabled="{{true}}" type="text"
+                                <input class="form-input" v-model="renovation.value" disabled="{{true}}" type="text"
                                        placeholder="精装"
-                                       @tap="onHandleShowZhuangXiu"/>
+                                       @tap="onHandleShowRenovation"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">类型</label>
-                                <input class="form-input" v-model="leixing.value" disabled="{{true}}" type="text"
+                                <input class="form-input" v-model="quality.value" disabled="{{true}}" type="text"
                                        placeholder="小区"
-                                       @tap="onHandleShowLeiXing"/>
+                                       @tap="onHandleShowQuality"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
@@ -225,17 +229,11 @@
                       <div class="module-body">
                         <div class="module-agents">
                           <div class="module-row row">
-                            <div class="module-col col-12"
+                            <div class="module-col col-6"
                                  v-for="(item,index) in agents.items"
                                  :key="index" @tap="onHandleAgentSelector(index)">
-                              <div class="item-agent row" :class="{'checked':item.checked}">
-                                <div class="item-img">
-                                  <lazy-image :src="item.photo?fileUrl+item.photo:url"/>
-                                </div>
-                                <div class="item-info">
-                                  <div class="item-name">{{item.name||noData}}</div>
-                                  <div class="item-phone">{{item.tel||noData}}</div>
-                                </div>
+                              <div class="module-item" :class="{'checked':item.checked}">
+                                <agent-item :item="item" :key="index" isBtns="{{false}}"/>
                                 <div class="item-check iconfont icon-right"></div>
                               </div>
                             </div>
@@ -245,6 +243,8 @@
                       <div class="module-footer"></div>
                     </div>
                   </div>
+                </div>
+                <div class="tab-content{{tab.activeIndex===2?' active':''}}">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
@@ -266,6 +266,8 @@
                       </div>
                     </div>
                   </div>
+                </div>
+                <div class="tab-content{{tab.activeIndex===3?' active':''}}">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
@@ -275,7 +277,7 @@
                         <div class="module-configs">
                           <div class="module-row row">
                             <div class="module-col col-3"
-                                 v-for="(item,index) in fagnwupeizhi.items"
+                                 v-for="(item,index) in config.items"
                                  :key="index" @tap="onHandleConfigSelector(index)">
                               <div class="item-config" :class="{'checked':item.checked}">
                                 <div class="item-check iconfont icon-right"></div>
@@ -290,7 +292,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="tab-content{{tab.activeIndex===2?' active':''}}">
+                <div class="tab-content{{tab.activeIndex===4?' active':''}}">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
@@ -355,23 +357,29 @@
       url: $config.DEFAULT_AGENT,
       tab: {
         activeIndex: 0,
-        items: ['基本信息', '房源配置', '图片上传']
+        items: [
+          '基本信息',
+          '置业顾问',
+          '房源特色',
+          '房源配置',
+          '图片上传'
+        ]
       },
       isDisable: false,
-      xiaoqu: '',
+      houseName: '',
       phone: '',
       price: '',
       title: '',
-      owner: '',
-      mianji: '',
-      nianfen: '',
-      total_price: '',
-      xiangxidizhi: '',
-      dizhi: {
+      contact: '',
+      floorArea: '',
+      houseYear: '',
+      totalPrice: '',
+      detailAddress: '',
+      address: {
         value: '',
         items: ['安徽省', '宣城市', '广德县']
       },
-      huxing: {
+      apart: {
         value: '',
         items: [
           ['1室', '2室', '3室', '4室', '5室', '6室', '7室', '8室', '9室', '10室', '11室', '12室'],
@@ -380,7 +388,7 @@
         ],
         index: [1, 1, 1]
       },
-      chaoxiang: {
+      direction: {
         value: '',
         items: [
           '朝东',
@@ -389,7 +397,7 @@
           '朝北'
         ]
       },
-      louceng: {
+      floors: {
         value: '',
         items: [
           '低楼层',
@@ -397,7 +405,7 @@
           '高楼层'
         ]
       },
-      zhuangxiu: {
+      renovation: {
         value: '',
         items: [
           '毛坯',
@@ -406,7 +414,7 @@
           '豪装'
         ]
       },
-      leixing: {
+      quality: {
         value: '',
         items: [
           '小区',
@@ -415,7 +423,7 @@
           '商铺'
         ]
       },
-      kanfangshijian: {
+      seeHouse: {
         value: '',
         items: [
           '随时看房',
@@ -479,7 +487,7 @@
           }
         ]
       },
-      fagnwupeizhi: {
+      config: {
         value: '',
         items: $config.DEFAULT_CONFIG
       },
@@ -500,19 +508,19 @@
           (
             this.phone &&
             this.title &&
-            this.owner &&
-            this.xiaoqu &&
-            this.mianji &&
-            this.nianfen &&
-            this.total_price &&
-            this.dizhi.value &&
-            this.huxing.value &&
-            this.xiangxidizhi &&
-            this.louceng.value &&
-            this.leixing.value &&
-            this.chaoxiang.value &&
-            this.zhuangxiu.value &&
-            this.kanfangshijian.value
+            this.contact &&
+            this.houseName &&
+            this.floorArea &&
+            this.houseYear &&
+            this.totalPrice &&
+            this.address.value &&
+            this.apart.value &&
+            this.detailAddress &&
+            this.floors.value &&
+            this.quality.value &&
+            this.direction.value &&
+            this.renovation.value &&
+            this.seeHouse.value
           );
         let isTagsEmpty = this.tags.value;
         let isAgentEmpty = this.agents.value.length;
@@ -523,24 +531,24 @@
           isTagsEmpty
         };
       },
-      onHandleHuXingChange(e) {
+      onHandleApartChange(e) {
         const index = e.$wx.detail.value;
-        const items = this.huxing.items;
-        this.huxing.value = items[0][index[0]] + items[1][index[1]] + items[2][index[2]];
+        const items = this.apart.items;
+        this.apart.value = items[0][index[0]] + items[1][index[1]] + items[2][index[2]];
         this.onHandleCheckEmpty();
       },
-      onHandleDiZhiChange(e) {
+      onHandleAddressChange(e) {
         const items = e.$wx.detail.value;
-        this.dizhi.items = items;
-        this.dizhi.value = items.join('、');
+        this.address.items = items;
+        this.address.value = items.join('、');
         this.onHandleCheckEmpty();
       },
-      onHandleShowChaoXiang() {
+      onHandleShowDirection() {
         wx.showActionSheet({
-          itemList: this.chaoxiang.items,
+          itemList: this.direction.items,
           success: (res) => {
-            const value = this.chaoxiang.items[res.tapIndex];
-            this.chaoxiang.value = value;
+            const value = this.direction.items[res.tapIndex];
+            this.direction.value = value;
             this.onHandleCheckEmpty();
           },
           fail: (err) => {
@@ -548,12 +556,12 @@
           }
         });
       },
-      onHandleShowLouCeng() {
+      onHandleShowFloors() {
         wx.showActionSheet({
-          itemList: this.louceng.items,
+          itemList: this.floors.items,
           success: (res) => {
-            const value = this.louceng.items[res.tapIndex];
-            this.louceng.value = value;
+            const value = this.floors.items[res.tapIndex];
+            this.floors.value = value;
             this.onHandleCheckEmpty();
           },
           fail: (err) => {
@@ -561,12 +569,12 @@
           }
         });
       },
-      onHandleShowZhuangXiu() {
+      onHandleShowRenovation() {
         wx.showActionSheet({
-          itemList: this.zhuangxiu.items,
+          itemList: this.renovation.items,
           success: (res) => {
-            const value = this.zhuangxiu.items[res.tapIndex];
-            this.zhuangxiu.value = value;
+            const value = this.renovation.items[res.tapIndex];
+            this.renovation.value = value;
             this.onHandleCheckEmpty();
           },
           fail: (err) => {
@@ -574,12 +582,12 @@
           }
         });
       },
-      onHandleShowLeiXing() {
+      onHandleShowQuality() {
         wx.showActionSheet({
-          itemList: this.leixing.items,
+          itemList: this.quality.items,
           success: (res) => {
-            const value = this.leixing.items[res.tapIndex];
-            this.leixing.value = value;
+            const value = this.quality.items[res.tapIndex];
+            this.quality.value = value;
             this.onHandleCheckEmpty();
           },
           fail: (err) => {
@@ -587,17 +595,17 @@
           }
         });
       },
-      onHandleNianFenChange(e) {
+      onHandleHouseYearChange(e) {
         const value = e.$wx.detail.value;
-        this.nianfen = value + '年';
+        this.houseYear = value + '年';
         this.onHandleCheckEmpty();
       },
-      onHandleShowKanFangShiJian() {
+      onHandleShowSeeHouse() {
         wx.showActionSheet({
-          itemList: this.kanfangshijian.items,
+          itemList: this.seeHouse.items,
           success: (res) => {
-            const value = this.kanfangshijian.items[res.tapIndex];
-            this.kanfangshijian.value = value;
+            const value = this.seeHouse.items[res.tapIndex];
+            this.seeHouse.value = value;
             this.onHandleCheckEmpty();
           },
           fail: (err) => {
@@ -644,19 +652,19 @@
       },
       onHandleConfigSelector(index) {
         let arr = [];
-        if (this.fagnwupeizhi.items[index].checked) {
-          this.fagnwupeizhi.items[index].checked = false;
+        if (this.config.items[index].checked) {
+          this.config.items[index].checked = false;
         } else {
-          this.fagnwupeizhi.items[index].checked = true;
+          this.config.items[index].checked = true;
         }
 
-        this.fagnwupeizhi.items.map((item) => {
+        this.config.items.map((item) => {
           if (item.checked) {
             arr.push(item.label);
           }
         });
 
-        this.fagnwupeizhi.value = arr.join(' ');
+        this.config.value = arr.join(' ');
         arr = null;
       },
       onHandleInsertHouse() {
@@ -725,34 +733,34 @@
           });
       },
       getParams() {
-        this.price = (this.total_price * 10000 / this.mianji).toFixed(1);
+        const {busId} = this.isLogin;
+        this.price = (this.totalPrice * 10000 / this.floorArea).toFixed(1);
         const params = {
+          busId,
           type: 2,
-          status: 1,
-          owner: this.owner,
-          phone: this.phone,
+          state: '未售',
           title: this.title,
           price: this.price,
-          mianji: this.mianji,
-          nianai: this.nianfen,
-          huxing: this.huxing.value,
-          total_price: this.total_price,
-          chaoxiang: this.chaoxiang.value,
-          leixing: this.leixing.value,
-          zhaungxiu: this.zhuangxiu.value,
-          louceng: this.louceng.value,
-          xiaoqu: this.xiaoqu,
-          addr: this.xiangxidizhi,
-          addr_sheng: this.dizhi.items[0],
-          addr_shi: this.dizhi.items[1],
-          addr_qu: this.dizhi.items[2],
-          agency_phone: '18130278679',
-          agency_com_name: '广进房产',
-          kanfangshijian: this.kanfangshijian.value,
+          contact: this.contact,
+          phone: this.phone,
+          apart: this.apart.value,
+          floorArea: this.floorArea,
+          houseYear: this.houseYear,
+          totalPrice: this.totalPrice,
+          quality: this.quality.value,
+          direction: this.direction.value,
+          renovation: this.renovation.value,
+          floors: this.floors.value,
+          houseName: this.houseName,
+          address: this.detailAddress,
+          province: this.address.items[0],
+          city: this.address.items[1],
+          area: this.address.items[2],
+          seeHouse: this.seeHouse.value,
           tags: this.tags.value,
-          agency: this.agents.value,
-          fagnwupeizhi: this.fagnwupeizhi.value,
-          pic_url: this.urls
+          agent: this.agents.value,
+          config: this.config.value,
+          picUrl: this.urls
         };
         return params;
       }
@@ -791,8 +799,13 @@
           z-index: 999;
           background-color: @white;
           box-shadow: 0 0 15px @boxShadow05;
+          .scroll-view {
+            white-space: nowrap;
+          }
           .tab-item {
+            width: 25%;
             position: relative;
+            display: inline-block;
             height: unit(80, rpx);
             line-height: unit(80, rpx);
             font-size: @fontSize28;
@@ -925,39 +938,19 @@
                             padding: unit(15, rpx);
                             .module-col {
                               padding: unit(15, rpx);
-                              .item-agent {
+                              .module-item {
+                                overflow: hidden;
                                 position: relative;
-                                .item-img {
-                                  overflow: hidden;
-                                  width: unit(80, rpx);
-                                  height: unit(80, rpx);
-                                  border-radius: @borderRadius100;
-                                  image {
-                                    border-radius: @borderRadius100;
-                                  }
-                                }
-                                .item-info {
-                                  padding: 0 unit(30, rpx);
-                                  font-size: @fontSize28;
-                                  color: @fontColor3;
-                                  .item-name {
-                                    height: unit(40, rpx);
-                                    line-height: unit(40, rpx);
-                                  }
-                                  .item-phone {
-                                    height: unit(40, rpx);
-                                    line-height: unit(40, rpx);
-                                  }
-                                }
+                                border-radius: @borderRadius20;
+                                box-shadow: 0 0 15px @boxShadow05;
                                 .item-check {
                                   position: absolute;
-                                  top: 50%;
+                                  top: unit(20, rpx);
+                                  left: unit(20, rpx);
                                   z-index: 1;
-                                  right: unit(10, rpx);
                                   width: unit(44, rpx);
                                   height: unit(44, rpx);
                                   line-height: unit(44, rpx);
-                                  margin-top: unit(-22, rpx);
                                   transition: all 150ms ease;
                                   border-radius: @borderRadius100;
                                   background-color: @unCheck;
@@ -1129,6 +1122,7 @@
   navigationStyle:'custom',
   usingComponents: {
   'top-bar': '../../../../components/top-bar/top-bar',
+  'agent-item': '../../../../components/agent-item/agent-item',
   'lazy-image': '../../../../components/lazy-image/lazy-image'
   }
   }

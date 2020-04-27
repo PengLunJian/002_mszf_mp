@@ -33,11 +33,11 @@
         <div class="item-title ellipsis">{{item.title||noData}}</div>
       </div>
       <div class="item-row row">
-        <div class="item-normal">{{item.huxing||noData}}</div>
-        <div class="item-normal">{{item.mianji||noData}}m²</div>
+        <div class="item-normal">{{item.apart||noData}}</div>
+        <div class="item-normal">{{item.floorArea||noData}}m²</div>
       </div>
       <div class="item-row row">
-        <div class="item-normal price">{{item.total_price||0}}万</div>
+        <div class="item-normal price">{{item.totalprice||0}}万</div>
         <div class="item-normal">{{item.price||0}}/m²</div>
       </div>
     </div>
@@ -55,8 +55,8 @@
         <div class="item-title ellipsis">{{item.title||noData}}</div>
       </div>
       <div class="item-row row">
-        <div class="item-normal">{{item.huxing||noData}}</div>
-        <div class="item-normal">{{item.mianji||noData}}m²</div>
+        <div class="item-normal">{{item.apart||noData}}</div>
+        <div class="item-normal">{{item.floorArea||noData}}m²</div>
       </div>
       <div class="item-row row">
         <div class="item-normal price">{{item.price||0}}元/月</div>
@@ -88,25 +88,19 @@
     computed: {},
     methods: {
       onHandleDeleteHouse() {
-        const params = {id: this.item.id};
+        const {id, type} = this.item;
+        const params = {id, type};
         this.$parent.onHandleDeleteHouse(params);
       },
       onHandleUpdateHouse() {
-        let url = '';
         const {type} = this.item;
+        const urls = [
+          $routes.HOUSE.UPDATE.NEW_HOUSE.path,
+          $routes.HOUSE.UPDATE.SECOND_HOUSE.path,
+          $routes.HOUSE.UPDATE.RENT_HOUSE.path
+        ];
         const query = '?item=' + JSON.stringify(this.item);
-        switch (type) {
-          case 1:
-            url = $routes.HOUSE.UPDATE.NEW_HOUSE.path;
-            break;
-          case 2:
-            url = $routes.HOUSE.UPDATE.SECOND_HOUSE.path;
-            break;
-          case 3:
-            url = $routes.HOUSE.UPDATE.RENT_HOUSE.path;
-            break;
-        }
-        url = url + query;
+        const url = urls[type - 1] + query;
         wx.navigateTo({
           url
         });

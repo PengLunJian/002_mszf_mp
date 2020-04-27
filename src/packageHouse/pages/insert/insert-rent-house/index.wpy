@@ -2,13 +2,15 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="基本信息"></top-bar>
-        <div class="tab-bar row">
-          <div class="tab-item col-4{{tab.activeIndex===index?' active':''}}"
-               v-for="(item,index) in tab.items" :key="index"
-               @tap="onHandleTabChange(index)">
-            <div class="tab-label">{{item}}</div>
-          </div>
+        <top-bar title="房源新增"></top-bar>
+        <div class="tab-bar">
+          <scroll-view class="scroll-view" scroll-x="{{true}}">
+            <div class="tab-item{{tab.activeIndex===index?' active':''}}"
+                 v-for="(item,index) in tab.items" :key="index"
+                 @tap="onHandleTabChange(index)">
+              <div class="tab-label">{{item}}</div>
+            </div>
+          </scroll-view>
         </div>
       </div>
       <div class="body">
@@ -76,7 +78,7 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">电话</label>
-                                <input class="form-input" v-model="phoneNo" type="number"
+                                <input class="form-input" v-model="phone" type="number"
                                        placeholder="房源联系人电话"
                                        @input="onHandleCheckEmpty"/>
                                 <span class="form-next iconfont icon-next"></span>
@@ -125,8 +127,8 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">朝向</label>
-                                <input class="form-input" v-model="orientation.value" disabled="{{true}}" type="text"
-                                       placeholder="朝南" @tap="onHandleShowOrientation"/>
+                                <input class="form-input" v-model="direction.value" disabled="{{true}}" type="text"
+                                       placeholder="朝南" @tap="onHandleShowDirection"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
@@ -164,9 +166,9 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">楼层</label>
-                                <input class="form-input" v-model="louceng.value" disabled="{{true}}" type="text"
+                                <input class="form-input" v-model="floors.value" disabled="{{true}}" type="text"
                                        placeholder="低楼层"
-                                       @tap="onHandleShowLouCeng"/>
+                                       @tap="onHandleShowFloors"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
@@ -191,9 +193,9 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">类型</label>
-                                <input class="form-input" v-model="leixing.value" disabled="{{true}}" type="text"
+                                <input class="form-input" v-model="quality.value" disabled="{{true}}" type="text"
                                        placeholder="小区"
-                                       @tap="onHandleShowLeiXing"/>
+                                       @tap="onHandleShowQuality"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
@@ -234,17 +236,11 @@
                       <div class="module-body">
                         <div class="module-agents">
                           <div class="module-row row">
-                            <div class="module-col col-12"
+                            <div class="module-col col-6"
                                  v-for="(item,index) in agents.items"
                                  :key="index" @tap="onHandleAgentSelector(index)">
-                              <div class="item-agent row" :class="{'checked':item.checked}">
-                                <div class="item-img">
-                                  <lazy-image :src="item.photo?fileUrl+item.photo:url"/>
-                                </div>
-                                <div class="item-info">
-                                  <div class="item-name">{{item.agentName||noData}}</div>
-                                  <div class="item-phone">{{item.telNo||noData}}</div>
-                                </div>
+                              <div class="module-item" :class="{'checked':item.checked}">
+                                <agent-item :item="item" :key="index" isBtns="{{false}}"/>
                                 <div class="item-check iconfont icon-right"></div>
                               </div>
                             </div>
@@ -254,6 +250,8 @@
                       <div class="module-footer"></div>
                     </div>
                   </div>
+                </div>
+                <div class="tab-content{{tab.activeIndex===2?' active':''}}">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
@@ -275,6 +273,8 @@
                       </div>
                     </div>
                   </div>
+                </div>
+                <div class="tab-content{{tab.activeIndex===3?' active':''}}">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
@@ -299,7 +299,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="tab-content{{tab.activeIndex===2?' active':''}}">
+                <div class="tab-content{{tab.activeIndex===4?' active':''}}">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
@@ -364,11 +364,17 @@
       url: $config.DEFAULT_AGENT,
       tab: {
         activeIndex: 0,
-        items: ['基本信息', '房源配置', '图片上传']
+        items: [
+          '基本信息',
+          '置业顾问',
+          '房源特色',
+          '房源配置',
+          '图片上传'
+        ]
       },
       isDisable: false,
       houseName: '',
-      phoneNo: '',
+      phone: '',
       price: '',
       title: '',
       contact: '',
@@ -401,7 +407,7 @@
         ],
         index: [0, 0]
       },
-      orientation: {
+      direction: {
         value: '',
         items: [
           '朝东',
@@ -410,7 +416,7 @@
           '朝北'
         ]
       },
-      louceng: {
+      floors: {
         value: '',
         items: [
           '低楼层',
@@ -435,7 +441,7 @@
           '转租'
         ]
       },
-      leixing: {
+      quality: {
         value: '',
         items: [
           '小区',
@@ -524,20 +530,20 @@
         let isBaseEmpty =
           (
             this.title &&
-            this.phoneNo &&
             this.price &&
-            this.houseName &&
             this.contact &&
-            this.apart.value &&
+            this.phone &&
+            this.houseName &&
             this.floorArea &&
+            this.apart.value &&
+            this.payWay.value &&
+            this.floors.value &&
             this.address.value &&
             this.detailAddress &&
-            this.payWay.value &&
-            this.orientation.value &&
-            this.louceng.value &&
-            this.renovation.value &&
+            this.quality.value &&
             this.leaseWay.value &&
-            this.leixing.value &&
+            this.direction.value &&
+            this.renovation.value &&
             this.seeHouse.value
           );
         let isTagsEmpty = this.tags.value;
@@ -567,12 +573,12 @@
         this.address.value = items.join('、');
         this.onHandleCheckEmpty();
       },
-      onHandleShowOrientation() {
+      onHandleShowDirection() {
         wx.showActionSheet({
-          itemList: this.orientation.items,
+          itemList: this.direction.items,
           success: (res) => {
-            const value = this.orientation.items[res.tapIndex];
-            this.orientation.value = value;
+            const value = this.direction.items[res.tapIndex];
+            this.direction.value = value;
             this.onHandleCheckEmpty();
           },
           fail: (err) => {
@@ -580,12 +586,12 @@
           }
         });
       },
-      onHandleShowLouCeng() {
+      onHandleShowFloors() {
         wx.showActionSheet({
-          itemList: this.louceng.items,
+          itemList: this.floors.items,
           success: (res) => {
-            const value = this.louceng.items[res.tapIndex];
-            this.louceng.value = value;
+            const value = this.floors.items[res.tapIndex];
+            this.floors.value = value;
             this.onHandleCheckEmpty();
           },
           fail: (err) => {
@@ -619,12 +625,12 @@
           }
         });
       },
-      onHandleShowLeiXing() {
+      onHandleShowQuality() {
         wx.showActionSheet({
-          itemList: this.leixing.items,
+          itemList: this.quality.items,
           success: (res) => {
-            const value = this.leixing.items[res.tapIndex];
-            this.leixing.value = value;
+            const value = this.quality.items[res.tapIndex];
+            this.quality.value = value;
             this.onHandleCheckEmpty();
           },
           fail: (err) => {
@@ -765,29 +771,32 @@
           });
       },
       getParams() {
+        const {busId} = this.isLogin;
         const params = {
+          busId,
           type: 3,
-          status: 1,
-          contact: this.contact,
-          phoneNo: this.phoneNo,
-          price: this.price,
-          apart: this.apart.value,
-          floorArea: this.floorArea,
-          orientation: this.orientation.value,
-          leixing: this.leixing.value,
-          renovation: this.renovation.value,
-          louceng: this.louceng.value,
+          state: '未租',
           title: this.title,
+          price: this.price,
+          contact: this.contact,
+          phone: this.phone,
+          apart: this.apart.value,
+          houseName: this.houseName,
+          floorArea: this.floorArea,
+          floors: this.floors.value,
+          quality: this.quality.value,
           address: this.detailAddress,
+          direction: this.direction.value,
+          renovation: this.renovation.value,
           province: this.address.items[0],
           city: this.address.items[1],
           area: this.address.items[2],
-          seeHouse: this.seeHouse.value,
           payWay: this.payWay.value,
+          seeHouse: this.seeHouse.value,
           leaseWay: this.leaseWay.value,
           tags: this.tags.value,
-          agency: this.agents.value,
-          config: this.config.value,
+          agent: this.agents.value,
+          deploy: this.config.value,
           picUrl: this.urls
         };
         return params;
@@ -827,8 +836,13 @@
           z-index: 999;
           background-color: @white;
           box-shadow: 0 0 15px @boxShadow05;
+          .scroll-view {
+            white-space: nowrap;
+          }
           .tab-item {
+            width: 25%;
             position: relative;
+            display: inline-block;
             height: unit(80, rpx);
             line-height: unit(80, rpx);
             font-size: @fontSize28;
@@ -961,39 +975,19 @@
                             padding: unit(15, rpx);
                             .module-col {
                               padding: unit(15, rpx);
-                              .item-agent {
+                              .module-item {
+                                overflow: hidden;
                                 position: relative;
-                                .item-img {
-                                  overflow: hidden;
-                                  width: unit(80, rpx);
-                                  height: unit(80, rpx);
-                                  border-radius: @borderRadius100;
-                                  image {
-                                    border-radius: @borderRadius100;
-                                  }
-                                }
-                                .item-info {
-                                  padding: 0 unit(30, rpx);
-                                  font-size: @fontSize28;
-                                  color: @fontColor3;
-                                  .item-name {
-                                    height: unit(40, rpx);
-                                    line-height: unit(40, rpx);
-                                  }
-                                  .item-phone {
-                                    height: unit(40, rpx);
-                                    line-height: unit(40, rpx);
-                                  }
-                                }
+                                border-radius: @borderRadius20;
+                                box-shadow: 0 0 15px @boxShadow05;
                                 .item-check {
                                   position: absolute;
-                                  top: 50%;
+                                  top: unit(20, rpx);
+                                  left: unit(20, rpx);
                                   z-index: 1;
-                                  right: unit(10, rpx);
                                   width: unit(44, rpx);
                                   height: unit(44, rpx);
                                   line-height: unit(44, rpx);
-                                  margin-top: unit(-22, rpx);
                                   transition: all 150ms ease;
                                   border-radius: @borderRadius100;
                                   background-color: @unCheck;
@@ -1165,6 +1159,7 @@
   navigationStyle:'custom',
   usingComponents: {
   'top-bar': '../../../../components/top-bar/top-bar',
+  'agent-item': '../../../../components/agent-item/agent-item',
   'lazy-image': '../../../../components/lazy-image/lazy-image'
   }
   }
