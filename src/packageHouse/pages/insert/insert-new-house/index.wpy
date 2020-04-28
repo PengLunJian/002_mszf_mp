@@ -124,8 +124,9 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">户型</label>
-                                <input class="form-input" v-model="apart" type="text"
-                                       placeholder="1/2/3室"/>
+                                <input class="form-input" v-model="aparts.value" disabled="{{true}}" type="text"
+                                       placeholder="1/2/3室"
+                                       @tap="onHandleShowAparts"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
@@ -252,8 +253,8 @@
                                 </div>
                                 <div class="item-info">
                                   <div class="item-row row">
-                                    <div class="item-title">{{item.apart}}</div>
-                                    <div class="item-size">{{item.foolerArea}}m²</div>
+                                    <div class="item-title">{{item.mainApart}}</div>
+                                    <div class="item-size">{{item.mainArea}}m²</div>
                                   </div>
                                   <div class="item-row row">
                                     <div class="item-state state1" v-if="item.state==='在售'">{{item.state}}</div>
@@ -316,6 +317,26 @@
              @tap="onHandleInsertHouse">保存
         </div>
       </div>
+      <div class="modal{{isShow?'':' hide'}}">
+        <div class="modal-mask" @tap="onHandleHideAparts"></div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="btn-close iconfont icon-close" @tap="onHandleHideAparts"></div>
+          </div>
+          <div class="modal-body">
+            <div class="modal-aparts">
+              <div class="modal-row row">
+                <div class="modal-col col-3" v-for="(item,index) in aparts.items"
+                     :key="index" @tap="onHandleSelectAparts(index)">
+                  <div class="modal-item" :class="{'checked':item.checked}">{{item.label}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -351,20 +372,64 @@
           '图片上传'
         ]
       },
+      isShow: false,
       isDisable: false,
       phone: '',
       price: '',
       title: '',
-      apart: '',
       contact: '',
       handTime: '',
       beginTime: '',
       houseName: '',
-      mianjifanwen: '',
       detailAddress: '',
       state: {
         value: '',
         items: ['在售', '待售']
+      },
+      aparts: {
+        value: '',
+        items: [
+          {
+            label: '一室',
+            checked: false
+          },
+          {
+            label: '二室',
+            checked: false
+          },
+          {
+            label: '三室',
+            checked: false
+          },
+          {
+            label: '四室',
+            checked: false
+          },
+          {
+            label: '五室',
+            checked: false
+          },
+          {
+            label: '六室',
+            checked: false
+          },
+          {
+            label: '七室',
+            checked: false
+          },
+          {
+            label: '八室',
+            checked: false
+          },
+          {
+            label: '九室',
+            checked: false
+          },
+          {
+            label: '十室',
+            checked: false
+          }
+        ]
       },
       address: {
         value: '',
@@ -377,6 +442,12 @@
           '别墅',
           '住宅',
           '商铺'
+        ]
+      },
+      buildArea: {
+        value: '',
+        items: [
+          ''
         ]
       },
       agents: {
@@ -558,6 +629,24 @@
         this.onHandleCheckEmpty();
         arr = null;
       },
+      onHandleSelectAparts(index) {
+        let arr = [];
+        if (this.aparts.items[index].checked) {
+          this.aparts.items[index].checked = false;
+        } else {
+          this.aparts.items[index].checked = true;
+        }
+
+        this.aparts.items.map((item, index) => {
+          if (item.checked) {
+            arr.push(index + 1);
+          }
+        });
+
+        this.aparts.value = arr.join('/');
+        this.onHandleCheckEmpty();
+        arr = null;
+      },
       onHandleInsertLayout() {
         wx.navigateTo({
           url: $routes.HOUSE.LAYOUT.path
@@ -589,6 +678,12 @@
         wx.navigateTo({
           url: $routes.HOUSE.UPLOAD.path
         });
+      },
+      onHandleShowAparts() {
+        this.isShow = true;
+      },
+      onHandleHideAparts() {
+        this.isShow = false;
       },
       onHandleShowImage(index) {
         const urls = this.urls.map((item) => {
@@ -653,7 +748,8 @@
           beginTime: this.beginTime,
           houseName: this.houseName,
           quality: this.quality.value,
-          mianjifanwen: this.mianjifanwen,
+          minfloorArea: this.minfloorArea,
+          maxfloorArea: this.maxfloorArea,
           province: this.address.items[0],
           city: this.address.items[1],
           area: this.address.items[2],
@@ -1039,6 +1135,75 @@
           &.disable {
             background: @disable;
             color: @fontColor3;
+          }
+        }
+      }
+      .modal {
+        .modal-mask {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 1099;
+          background-color: @mask;
+          transition: all 300ms ease-out;
+        }
+        .modal-content {
+          width: 100%;
+          height: unit(460, rpx);
+          position: fixed;
+          left: 0;
+          bottom: 0;
+          z-index: 1100;
+          background-color: @white;
+          transition: all 300ms ease-out;
+          box-shadow: 0 0 15px @boxShadow05;
+          .modal-header {
+            .btn-close {
+              width: unit(90, rpx);
+              height: unit(90, rpx);
+              line-height: unit(90, rpx);
+              font-size: @fontSize36;
+              text-align: center;
+              font-weight: bold;
+              color: @fontColor1;
+            }
+          }
+          .modal-body {
+            .modal-aparts {
+              .modal-row {
+                padding: unit(15, rpx);
+                .modal-col {
+                  padding: unit(15, rpx);
+                  text-align: center;
+                  .modal-item {
+                    height: unit(60, rpx);
+                    line-height: unit(60, rpx);
+                    border-radius: unit(60, rpx);
+                    background-color: @unCheck;
+                    font-size: @fontSize24;
+                    color: @fontColor3;
+                    &.checked {
+                      background: -webkit-linear-gradient(left, @theme1, @theme2);
+                      color: @white;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .modal-footer {
+          }
+        }
+        &.hide {
+          .modal-mask {
+            opacity: 0;
+            visibility: hidden;
+          }
+          .modal-content {
+            visibility: hidden;
+            transform: translateY(unit(460, rpx));
           }
         }
       }

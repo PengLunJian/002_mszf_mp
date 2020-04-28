@@ -263,7 +263,7 @@
                 }
               }
               .login-footer {
-                margin-bottom: unit(40, rpx);
+                margin-bottom: unit(20, rpx);
                 .btn-login {
                   height: unit(100, rpx);
                   overflow: hidden;

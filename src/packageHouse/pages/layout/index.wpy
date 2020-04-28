@@ -18,27 +18,27 @@
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">状态</label>
-                              <input class="form-input" v-model="status.value"
+                              <input class="form-input" v-model="state.value"
                                      disabled="{{true}}" type="text" placeholder="在售"
-                                     @tap="onHandleShowStatus"/>
+                                     @tap="onHandleSelectState"/>
                               <span class="form-next iconfont icon-next"></span>
                             </div>
                           </div>
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">面积</label>
-                              <input class="form-input" v-model="mianji" type="digit"
+                              <input class="form-input" v-model="mainArea" type="digit"
                                      placeholder="m²"
                                      @input="onHandleCheckEmpty"/>
                               <span class="form-next iconfont icon-next"></span>
                             </div>
                           </div>
                           <div class="form-col col-12">
-                            <picker mode="multiSelector" @change="onHandleShowHuXing"
-                                    value="{{huxing.index}}" range="{{huxing.items}}">
+                            <picker mode="multiSelector" @change="onHandleSelectMainApart"
+                                    value="{{mainApart.index}}" range="{{mainApart.items}}">
                               <div class="form-group">
                                 <label class="form-label">户型</label>
-                                <input class="form-input" v-model="huxing.value"
+                                <input class="form-input" v-model="mainApart.value"
                                        disabled="{{true}}" type="text"
                                        placeholder="2室1厅1卫"/>
                                 <span class="form-next iconfont icon-next"></span>
@@ -111,12 +111,12 @@
       noData: '暂无数据',
       fileUrl: apis.fileUrl,
       isDisable: false,
-      mianji: '',
-      status: {
+      mainArea: '',
+      state: {
         value: '',
         items: ['在售', '待售', '售罄']
       },
-      huxing: {
+      mainApart: {
         value: '',
         items: [
           ['1室', '2室', '3室', '4室', '5室', '6室', '7室', '8室', '9室', '10室', '11室', '12室'],
@@ -139,21 +139,21 @@
       onHandleCheckEmpty() {
         let isBaseEmpty =
           (
-            this.mianji &&
-            this.huxing.value &&
-            this.status.value
+            this.mainArea &&
+            this.mainApart.value &&
+            this.state.value
           );
         this.isDisable = isBaseEmpty;
         return {
           isBaseEmpty
         };
       },
-      onHandleShowStatus() {
+      onHandleSelectState() {
         wx.showActionSheet({
-          itemList: this.status.items,
+          itemList: this.state.items,
           success: (res) => {
             const index = res.tapIndex;
-            this.status.value = this.status.items[index];
+            this.state.value = this.state.items[index];
             this.onHandleCheckEmpty();
           },
           fail: (err) => {
@@ -161,10 +161,10 @@
           }
         });
       },
-      onHandleShowHuXing(e) {
+      onHandleSelectMainApart(e) {
         const index = e.$wx.detail.value;
-        const items = this.huxing.items;
-        this.huxing.value = items[0][index[0]] + items[1][index[1]] + items[2][index[2]];
+        const items = this.mainApart.items;
+        this.mainApart.value = items[0][index[0]] + items[1][index[1]] + items[2][index[2]];
         this.onHandleCheckEmpty();
       },
       onHandleShowUpload() {
@@ -207,21 +207,21 @@
         });
       },
       onHandleRenderLayout(data) {
-        const {mianji, pic, tags, title} = data;
-        this.urls = [pic];
-        this.mianji = mianji;
-        this.status.value = tags;
-        this.huxing.value = title;
+        const {mainArea, picUrl, state, mainApart} = data;
+        this.urls = [picUrl];
+        this.mainArea = mainArea;
+        this.state.value = state;
+        this.mainApart.value = mainApart;
         this.onHandleCheckEmpty();
       },
       getParams() {
-        const {mianji, status, huxing, urls} = this;
-        const pic = urls.length ? urls[0] : '';
+        const {mainArea, state, mainApart, urls} = this;
+        const picUrl = urls.length ? urls[0] : '';
         const params = {
-          pic,
-          mianji,
-          tags: status.value,
-          title: huxing.value
+          picUrl,
+          mainArea,
+          state: state.value,
+          mainApart: mainApart.value
         };
         return params;
       }
