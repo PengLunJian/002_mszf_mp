@@ -373,11 +373,11 @@
         ]
       },
       isDisable: false,
-      houseName: '',
       phone: '',
       price: '',
       title: '',
       contact: '',
+      houseName: '',
       floorArea: '',
       detailAddress: '',
       apart: {
@@ -388,10 +388,6 @@
           ['0卫', '1卫', '2卫', '3卫', '4卫', '5卫', '6卫', '7卫', '8卫', '9卫', '10卫', '11卫', '12卫']
         ],
         index: [1, 1, 1]
-      },
-      address: {
-        value: '',
-        items: ['安徽省', '宣城市', '广德县']
       },
       payWay: {
         value: '',
@@ -407,6 +403,26 @@
         ],
         index: [0, 0]
       },
+      floors: {
+        value: '',
+        items: [
+          '低楼层',
+          '中楼层',
+          '高楼层'
+        ]
+      },
+      address: {
+        value: '',
+        items: ['安徽省', '宣城市', '广德县']
+      },
+      leaseWay: {
+        value: '',
+        items: [
+          '整租',
+          '合租',
+          '转租'
+        ]
+      },
       direction: {
         value: '',
         items: [
@@ -414,14 +430,6 @@
           '朝西',
           '朝南',
           '朝北'
-        ]
-      },
-      floors: {
-        value: '',
-        items: [
-          '低楼层',
-          '中楼层',
-          '高楼层'
         ]
       },
       renovation: {
@@ -433,12 +441,11 @@
           '豪装'
         ]
       },
-      leaseWay: {
+      seeHouse: {
         value: '',
         items: [
-          '整租',
-          '合租',
-          '转租'
+          '随时看房',
+          '电话预约'
         ]
       },
       quality: {
@@ -448,13 +455,6 @@
           '别墅',
           '住宅',
           '商铺'
-        ]
-      },
-      seeHouse: {
-        value: '',
-        items: [
-          '随时看房',
-          '电话预约'
         ]
       },
       agents: {
@@ -531,8 +531,8 @@
           (
             this.title &&
             this.price &&
-            this.contact &&
             this.phone &&
+            this.contact &&
             this.houseName &&
             this.floorArea &&
             this.apart.value &&
@@ -778,25 +778,25 @@
           state: '未租',
           title: this.title,
           price: this.price,
-          contact: this.contact,
           phone: this.phone,
+          contact: this.contact,
           apart: this.apart.value,
           houseName: this.houseName,
           floorArea: this.floorArea,
           floors: this.floors.value,
+          payWay: this.payWay.value,
           quality: this.quality.value,
           address: this.detailAddress,
+          seeHouse: this.seeHouse.value,
+          leaseWay: this.leaseWay.value,
           direction: this.direction.value,
           renovation: this.renovation.value,
           province: this.address.items[0],
           city: this.address.items[1],
           area: this.address.items[2],
-          payWay: this.payWay.value,
-          seeHouse: this.seeHouse.value,
-          leaseWay: this.leaseWay.value,
-          tags: this.tags.value,
-          agent: this.agents.value,
           deploy: this.config.value,
+          agent: this.agents.value,
+          tags: this.tags.value,
           picUrl: this.urls
         };
         return params;

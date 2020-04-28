@@ -27,7 +27,7 @@
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">电话</label>
-                              <input class="form-input" v-model="telNo" type="number"
+                              <input class="form-input" v-model="phone" type="number"
                                      placeholder="18130278679"
                                      @input="onHandleCheckEmpty"/>
                               <span class="form-next iconfont icon-next"></span>
@@ -119,7 +119,7 @@
       isDisable: false,
       fileUrl: apis.fileUrl,
       agentName: '',
-      telNo: '',
+      phone: '',
       remark: '',
       urls: []
     },
@@ -131,11 +131,11 @@
     methods: {
       ...mapActions(controller.ACTIONS),
       onHandleCheckEmpty() {
-        const {agentName, telNo} = this;
+        const {agentName, phone} = this;
         let isBaseEmpty =
           (
             agentName &&
-            telNo
+            phone
           );
         this.isDisable = isBaseEmpty;
         return {
@@ -195,13 +195,13 @@
       },
       getParams() {
         const {busId} = this.isLogin;
-        const {agentName, telNo, remark, urls} = this;
+        const {agentName, phone, remark, urls} = this;
         const picUrl = urls.length ? urls[0] : '';
         return {
           busId,
           agentName,
           picUrl,
-          telNo,
+          phone,
           remark
         };
       }

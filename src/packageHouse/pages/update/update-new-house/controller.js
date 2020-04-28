@@ -7,6 +7,7 @@ export const STATES = {
   isData: state => state.UPDATE_HOUSE_REDUCER.data,
   isAgent: state => state.SELECT_AGENT_REDUCER.data,
   isImage: state => state.INSERT_IMAGE_REDUCER.data,
+  isLogin: state => state.SELECT_LOGIN_REDUCER.data,
   isLayout: state => state.SELECT_LAYOUT_REDUCER.data
 };
 

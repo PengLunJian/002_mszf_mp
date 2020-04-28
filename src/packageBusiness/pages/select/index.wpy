@@ -27,7 +27,7 @@
                           <div class="form-col col-12">
                             <div class="form-group">
                               <label class="form-label">电话</label>
-                              <input class="form-input" v-model="phoneNo" type="number"
+                              <input class="form-input" v-model="phone" type="number"
                                      placeholder="请输入手机号"
                                      @input="onHandleCheckEmpty"/>
                               <span class="form-next iconfont icon-next"></span>
@@ -141,7 +141,7 @@
       id: '',
       accountId: -1,
       busName: '',
-      phoneNo: '',
+      phone: '',
       province: '',
       city: '',
       area: '',
@@ -162,11 +162,11 @@
     methods: {
       ...mapActions(controller.ACTIONS),
       onHandleCheckEmpty() {
-        const {busName, phoneNo, province, city, area, address, picUrl} = this;
+        const {busName, phone, province, city, area, address, picUrl} = this;
         let isBaseEmpty =
           (
             busName &&
-            phoneNo &&
+            phone &&
             province &&
             city &&
             area &&
@@ -221,11 +221,11 @@
         this.accountId = id;
         if (this.isBusiness) {
           const {
-            busName, phoneNo, province, city,
+            busName, phone, province, city,
             area, address, picUrl, remark
           } = this.isBusiness;
           this.busName = busName;
-          this.phoneNo = phoneNo;
+          this.phone = phone;
           this.province = province;
           this.city = city;
           this.area = area;
@@ -266,14 +266,14 @@
       getParams() {
         const {busId} = this.isLogin;
         const {
-          accountId, busName, phoneNo, province,
+          accountId, busName, phone, province,
           city, area, address, remark, picUrl
         } = this;
         const params = {
           id: busId,
           accountId,
           busName,
-          phoneNo,
+          phone,
           province,
           city,
           area,

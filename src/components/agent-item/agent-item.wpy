@@ -14,7 +14,7 @@
       </div>
       <div class="item-row row">
         <div class="item-col label">电话：</div>
-        <div class="item-col value">{{item.telNo}}</div>
+        <div class="item-col value">{{item.phone}}</div>
       </div>
     </div>
   </div>

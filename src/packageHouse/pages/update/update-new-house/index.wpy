@@ -2,13 +2,15 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="基本信息"></top-bar>
-        <div class="tab-bar row">
-          <div class="tab-item col-4{{tab.activeIndex===index?' active':''}}"
-               v-for="(item,index) in tab.items" :key="index"
-               @tap="onHandleTabChange(index)">
-            <div class="tab-label">{{item}}</div>
-          </div>
+        <top-bar title="房源修改"></top-bar>
+        <div class="tab-bar">
+          <scroll-view class="scroll-view" scroll-x="{{true}}">
+            <div class="tab-item{{tab.activeIndex===index?' active':''}}"
+                 v-for="(item,index) in tab.items" :key="index"
+                 @tap="onHandleTabChange(index)">
+              <div class="tab-label">{{item}}</div>
+            </div>
+          </scroll-view>
         </div>
       </div>
       <div class="body">
@@ -26,16 +28,16 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">状态</label>
-                                <input class="form-input" v-model="status.value"
+                                <input class="form-input" v-model="state.value"
                                        disabled="{{true}}" type="text" placeholder="在售"
-                                       @tap="onHandleShowStatus"/>
+                                       @tap="onHandleShowstate"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">小区名</label>
-                                <input class="form-input" v-model="xiaoqu" type="text"
+                                <input class="form-input" v-model="houseName" type="text"
                                        placeholder="金峰万象"
                                        @input="onHandleCheckEmpty"/>
                                 <span class="form-next iconfont icon-next"></span>
@@ -43,10 +45,10 @@
                             </div>
                             <div class="form-col col-12">
                               <div class="form-picker">
-                                <picker mode="region" @change="onHandleDiZhiChange" value="{{dizhi.items}}">
+                                <picker mode="region" @change="onHandleSelectAddress" value="{{address.items}}">
                                   <div class="form-group">
                                     <label class="form-label">地址</label>
-                                    <input class="form-input" v-model="dizhi.value" disabled="{{true}}" type="text"
+                                    <input class="form-input" v-model="address.value" disabled="{{true}}" type="text"
                                            placeholder="安徽省、宣城市、广德县"/>
                                     <span class="form-next iconfont icon-next"></span>
                                   </div>
@@ -56,7 +58,7 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">详细地址</label>
-                                <input class="form-input" v-model="xiangxidizhi" type="text"
+                                <input class="form-input" v-model="detailAddress" type="text"
                                        placeholder="街道、小区、门牌号"
                                        @input="onHandleCheckEmpty"/>
                                 <span class="form-next iconfont icon-next"></span>
@@ -76,7 +78,7 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">联系人</label>
-                                <input class="form-input" v-model="owner" type="text" placeholder="房源联系人姓名"
+                                <input class="form-input" v-model="contact" type="text" placeholder="房源联系人姓名"
                                        @input="onHandleCheckEmpty"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
@@ -122,7 +124,7 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">户型</label>
-                                <input class="form-input" v-model="huxing" type="text"
+                                <input class="form-input" v-model="apart" type="text"
                                        placeholder="1/2/3室"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
@@ -130,29 +132,29 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">类型</label>
-                                <input class="form-input" v-model="leixing.value" disabled="{{true}}" type="text"
+                                <input class="form-input" v-model="quality.value" disabled="{{true}}" type="text"
                                        placeholder="小区"
-                                       @tap="onHandleShowLeiXing"/>
+                                       @tap="onHandleShowquality"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
                             <div class="form-col col-12">
-                              <picker mode="date" fields="day" value="{{kaipan}}"
-                                      @change="onHandleShowKaiPan">
+                              <picker mode="date" fields="day" value="{{beginTime}}"
+                                      @change="onHandleShowbeginTime">
                                 <div class="form-group">
                                   <label class="form-label">开盘</label>
-                                  <input class="form-input" v-model="kaipan" disabled="{{true}}" type="text"
+                                  <input class="form-input" v-model="beginTime" disabled="{{true}}" type="text"
                                          placeholder="2019年01月01日"/>
                                   <span class="form-next iconfont icon-next"></span>
                                 </div>
                               </picker>
                             </div>
                             <div class="form-col col-12">
-                              <picker mode="date" fields="day" value="{{jiaofang}}"
-                                      @change="onHandleShowJiaoFang">
+                              <picker mode="date" fields="day" value="{{handTime}}"
+                                      @change="onHandleShowhandTime">
                                 <div class="form-group">
                                   <label class="form-label">交房</label>
-                                  <input class="form-input" v-model="jiaofang" disabled="{{true}}" type="text"
+                                  <input class="form-input" v-model="handTime" disabled="{{true}}" type="text"
                                          placeholder="2019年01月01日"/>
                                   <span class="form-next iconfont icon-next"></span>
                                 </div>
@@ -195,17 +197,11 @@
                       <div class="module-body">
                         <div class="module-agents">
                           <div class="module-row row">
-                            <div class="module-col col-12"
+                            <div class="module-col col-6"
                                  v-for="(item,index) in agents.items"
-                                 :key="index" @tap="onHandleAgentSelector(index)">
-                              <div class="module-item row" :class="{'checked':item.checked}">
-                                <div class="item-img">
-                                  <lazy-image :src="item.photo?fileUrl+item.photo:url"/>
-                                </div>
-                                <div class="item-info">
-                                  <div class="item-name">{{item.name||noData}}</div>
-                                  <div class="item-phone">{{item.tel||noData}}</div>
-                                </div>
+                                 :key="index" @tap="onHandleSelectAgents(index)">
+                              <div class="module-item" :class="{'checked':item.checked}">
+                                <agent-item :item="item" :key="index" isBtns="{{false}}"/>
                                 <div class="item-check iconfont icon-right"></div>
                               </div>
                             </div>
@@ -215,6 +211,8 @@
                       <div class="module-footer"></div>
                     </div>
                   </div>
+                </div>
+                <div class="tab-content{{tab.activeIndex===2?' active':''}}">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
@@ -236,6 +234,8 @@
                       </div>
                     </div>
                   </div>
+                </div>
+                <div class="tab-content{{tab.activeIndex===3?' active':''}}">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
@@ -277,7 +277,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="tab-content{{tab.activeIndex===2?' active':''}}">
+                <div class="tab-content{{tab.activeIndex===4?' active':''}}">
                   <div class="module">
                     <div class="module-content">
                       <div class="module-header">
@@ -343,30 +343,35 @@
       url: $config.DEFAULT_AGENT,
       tab: {
         activeIndex: 0,
-        items: ['基本信息', '房源配置', '图片上传']
+        items: [
+          '基本信息',
+          '置业顾问',
+          '房源特色',
+          '主力户型',
+          '图片上传'
+        ]
       },
       isDisable: false,
       id: -1,
-      xiaoqu: '',
       phone: '',
       price: '',
       title: '',
-      owner: '',
-      kaipan: '',
-      huxing: '',
-      jiaofang: '',
+      apart: '',
+      contact: '',
+      handTime: '',
+      houseName: '',
+      beginTime: '',
       mianjifanwen: '',
-      xiangxidizhi: '',
-      status: {
+      detailAddress: '',
+      state: {
         value: '',
-        items: ['在售', '待售', '售罄'],
-        index: 0
+        items: ['在售', '待售', '售罄']
       },
-      dizhi: {
+      address: {
         value: '',
         items: ['安徽省', '宣城市', '广德县']
       },
-      leixing: {
+      quality: {
         value: '',
         items: [
           '小区',
@@ -451,19 +456,19 @@
       onHandleCheckEmpty() {
         let isBaseEmpty =
           (
-            this.xiaoqu &&
             this.phone &&
             this.price &&
             this.title &&
-            this.owner &&
-            this.kaipan &&
-            this.huxing &&
-            this.status &&
-            this.jiaofang &&
-            this.dizhi.value &&
+            this.apart &&
+            this.contact &&
+            this.handTime &&
+            this.houseName &&
+            this.beginTime &&
+            this.state.value &&
             this.mianjifanwen &&
-            this.xiangxidizhi &&
-            this.leixing.value
+            this.address.value &&
+            this.detailAddress &&
+            this.quality.value
           );
         let isTagsEmpty = this.tags.value;
         let isAgentEmpty = this.agents.value.length;
@@ -474,18 +479,18 @@
           isTagsEmpty
         };
       },
-      onHandleDiZhiChange(e) {
+      onHandleSelectAddress(e) {
         const items = e.$wx.detail.value;
-        this.dizhi.items = items;
-        this.dizhi.value = items.join('、');
+        this.address.items = items;
+        this.address.value = items.join('、');
         this.onHandleCheckEmpty();
       },
-      onHandleShowLeiXing() {
+      onHandleShowquality() {
         wx.showActionSheet({
-          itemList: this.leixing.items,
+          itemList: this.quality.items,
           success: (res) => {
-            const value = this.leixing.items[res.tapIndex];
-            this.leixing.value = value;
+            const value = this.quality.items[res.tapIndex];
+            this.quality.value = value;
             this.onHandleCheckEmpty();
           },
           fail: (err) => {
@@ -493,14 +498,14 @@
           }
         });
       },
-      onHandleShowStatus() {
-        const {items} = this.status;
+      onHandleShowstate() {
+        const {items} = this.state;
         wx.showActionSheet({
           itemList: items,
           success: (res) => {
             const index = res.tapIndex;
-            this.status.index = index;
-            this.status.value = items[index];
+            this.state.index = index;
+            this.state.value = items[index];
             this.onHandleCheckEmpty();
           },
           fail: (err) => {
@@ -508,14 +513,14 @@
           }
         });
       },
-      onHandleShowKaiPan(e) {
+      onHandleShowbeginTime(e) {
         const value = e.$wx.detail.value;
-        this.kaipan = utils.dateFormat(value, 'zh-cn');
+        this.beginTime = utils.dateFormat(value, 'zh-cn');
         this.onHandleCheckEmpty();
       },
-      onHandleShowJiaoFang(e) {
+      onHandleShowhandTime(e) {
         const value = e.$wx.detail.value;
-        this.jiaofang = utils.dateFormat(value, 'zh-cn');
+        this.handTime = utils.dateFormat(value, 'zh-cn');
         this.onHandleCheckEmpty();
       },
       onHandleAgentSelector(index) {
@@ -606,26 +611,26 @@
       },
       onHandleRenderHouse(data) {
         const {
-          id, owner, phone, title, price,
-          huxing, mianjifanwen, leixing, xiaoqu, status,
-          addr, addr_sheng, addr_shi, addr_qu, agency,
-          tags, pic_url, kaipan, jiaofang, zhulihuxing
+          id, contact, phone, title, price,
+          apart, mianjifanwen, quality, houseName, state,
+          address, province, city, area, agent,
+          tags, picUrl, beginTime, handTime, mainApart
         } = data;
         this.id = id;
-        this.xiaoqu = xiaoqu;
         this.phone = phone;
         this.price = price;
         this.title = title;
-        this.owner = owner;
-        this.huxing = huxing;
-        this.kaipan = kaipan;
-        this.jiaofang = jiaofang;
-        this.xiangxidizhi = addr;
+        this.apart = apart;
+        this.contact = contact;
+        this.handTime = handTime;
+        this.houseName = houseName;
+        this.beginTime = beginTime;
+        this.detailAddress = address;
         this.mianjifanwen = mianjifanwen;
-        this.status.value = this.status.items[status - 1];
-        this.dizhi.items = [addr_sheng, addr_shi, addr_qu];
-        this.dizhi.value = this.dizhi.items.join('、');
-        this.leixing.value = leixing;
+        this.state.value = this.state.items[state - 1];
+        this.address.items = [province, city, area];
+        this.address.value = this.address.items.join('、');
+        this.quality.value = quality;
         this.tags.value = tags.join(' ');
         this.tags.items.map((item) => {
           if (tags.indexOf(item.label) !== -1) {
@@ -634,8 +639,8 @@
         });
         this.agents.items = (this.isAgent || []).map((item) => {
           let checked = false;
-          for (let i in agency || []) {
-            if (agency[i].id === item.id) {
+          for (let i in agent || []) {
+            if (agent[i].id === item.id) {
               checked = true;
             }
           }
@@ -647,8 +652,8 @@
             checked
           };
         });
-        this.urls = pic_url;
-        this.selectLayoutReplace(zhulihuxing);
+        this.urls = picUrl;
+        this.selectLayoutReplace(mainApart);
         this.onHandleCheckEmpty();
       },
       onHandleRenderAgent() {
@@ -687,30 +692,30 @@
           });
       },
       getParams() {
+        const {busId} = this.isLogin;
         const params = {
+          busId,
           type: 1,
           id: this.id,
-          owner: this.owner,
           phone: this.phone,
           title: this.title,
           price: this.price,
-          xiaoqu: this.xiaoqu,
-          huxing: this.huxing,
-          kaipan: this.kaipan,
-          jiaofang: this.jiaofang,
-          zhulihuxing: this.isLayout,
-          leixing: this.leixing.value,
-          status: this.status.index + 1,
+          apart: this.apart,
+          contact: this.contact,
+          state: this.state.value,
+          handTime: this.handTime,
+          mainApart: this.isLayout,
+          beginTime: this.beginTime,
+          houseName: this.houseName,
+          quality: this.quality.value,
+          address: this.detailAddress,
           mianjifanwen: this.mianjifanwen,
-          addr_sheng: this.dizhi.items[0],
-          addr_shi: this.dizhi.items[1],
-          addr_qu: this.dizhi.items[2],
-          addr: this.xiangxidizhi,
-          agency_phone: '18130278679',
-          agency_com_name: '广进房产',
+          province: this.address.items[0],
+          city: this.address.items[1],
+          area: this.address.items[2],
+          agent: this.agents.value,
           tags: this.tags.value,
-          agency: this.agents.value,
-          pic_url: this.urls
+          picUrl: this.urls
         };
         return params;
       }
@@ -751,8 +756,13 @@
           z-index: 999;
           background-color: @white;
           box-shadow: 0 0 15px @boxShadow05;
+          .scroll-view {
+            white-space: nowrap;
+          }
           .tab-item {
+            width: 25%;
             position: relative;
+            display: inline-block;
             height: unit(80, rpx);
             line-height: unit(80, rpx);
             font-size: @fontSize28;
@@ -887,38 +897,18 @@
                             .module-col {
                               padding: unit(15, rpx);
                               .module-item {
+                                overflow: hidden;
                                 position: relative;
-                                .item-img {
-                                  overflow: hidden;
-                                  width: unit(80, rpx);
-                                  height: unit(80, rpx);
-                                  border-radius: @borderRadius100;
-                                  image {
-                                    border-radius: @borderRadius100;
-                                  }
-                                }
-                                .item-info {
-                                  padding: 0 unit(30, rpx);
-                                  font-size: @fontSize28;
-                                  color: @fontColor3;
-                                  .item-name {
-                                    height: unit(40, rpx);
-                                    line-height: unit(40, rpx);
-                                  }
-                                  .item-phone {
-                                    height: unit(40, rpx);
-                                    line-height: unit(40, rpx);
-                                  }
-                                }
+                                border-radius: @borderRadius20;
+                                box-shadow: 0 0 15px @boxShadow05;
                                 .item-check {
                                   position: absolute;
-                                  top: 50%;
+                                  top: unit(20, rpx);
+                                  left: unit(20, rpx);
                                   z-index: 1;
-                                  right: unit(10, rpx);
                                   width: unit(44, rpx);
                                   height: unit(44, rpx);
                                   line-height: unit(44, rpx);
-                                  margin-top: unit(-22, rpx);
                                   transition: all 150ms ease;
                                   border-radius: @borderRadius100;
                                   background-color: @unCheck;
@@ -932,16 +922,6 @@
                                     color: @white;
                                   }
                                 }
-                              }
-                            }
-                            .module-btn {
-                              height: unit(200, rpx);
-                              line-height: unit(200, rpx);
-                              background-color: #F0F0F0;
-                              text-align: center;
-                              .module-icon {
-                                font-size: @fontSize50;
-                                color: @fontColor5;
                               }
                             }
                           }
@@ -1127,6 +1107,7 @@
   navigationStyle:'custom',
   usingComponents: {
   'top-bar': '../../../../components/top-bar/top-bar',
+  'agent-item': '../../../../components/agent-item/agent-item',
   'lazy-image': '../../../../components/lazy-image/lazy-image'
   }
   }

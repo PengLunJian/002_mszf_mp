@@ -37,7 +37,7 @@
         <div class="item-normal">{{item.floorArea||noData}}m²</div>
       </div>
       <div class="item-row row">
-        <div class="item-normal price">{{item.totalprice||0}}万</div>
+        <div class="item-normal price">{{item.totalPrice||0}}万</div>
         <div class="item-normal">{{item.price||0}}/m²</div>
       </div>
     </div>
