@@ -1,7 +1,7 @@
 import apis from '../apis';
 
 export const DEFAULT_HOUSE = apis.fileUrl + '/image/6c5a3c3b-da2c-431e-9567-5554c5aa91fc.jpg';
-export const DEFAULT_AGENT = apis.fileUrl + '/house/v1/file/static/userfile/202003/16/1239418041721929728.png';
+export const DEFAULT_AGENT = apis.fileUrl + '/image/d7adf25d-8e9a-478a-af04-b1e25be2aae3.jpg';
 export const DEFAULT_WATER = apis.fileUrl + '/image/5c6faf0c-a5e9-4785-bac3-060b6e758ebc.png';
 export const DEFAULT_CONFIG = [
   {

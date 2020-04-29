@@ -102,13 +102,16 @@
                               </div>
                             </div>
                             <div class="form-col col-12">
-                              <div class="form-group">
-                                <label class="form-label">建面</label>
-                                <input class="form-input" v-model="mianjifanwen" type="text"
-                                       placeholder="90-150m²"
-                                       @input="onHandleCheckEmpty"/>
-                                <span class="form-next iconfont icon-next"></span>
-                              </div>
+                              <picker mode="multiSelector" @change="onHandleSelectBuildArea"
+                                      value="{{buildArea.index}}" range="{{buildArea.items}}">
+                                <div class="form-group">
+                                  <label class="form-label">建面</label>
+                                  <input class="form-input" v-model="buildArea.value" disabled="{{true}}" type="text"
+                                         placeholder="90-150m²"
+                                         @input="onHandleCheckEmpty"/>
+                                  <span class="form-next iconfont icon-next"></span>
+                                </div>
+                              </picker>
                             </div>
                           </div>
                         </div>
@@ -125,7 +128,7 @@
                               <div class="form-group">
                                 <label class="form-label">户型</label>
                                 <input class="form-input" v-model="aparts.value" disabled="{{true}}" type="text"
-                                       placeholder="1/2/3室"
+                                       placeholder="2/3/4室"
                                        @tap="onHandleShowAparts"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
@@ -140,11 +143,11 @@
                               </div>
                             </div>
                             <div class="form-col col-12">
-                              <picker mode="date" fields="day" value="{{beginTime}}"
-                                      @change="onHandleSelectBeginTime">
+                              <picker mode="date" fields="day" value="{{openTime}}"
+                                      @change="onHandleSelectOpenTime">
                                 <div class="form-group">
                                   <label class="form-label">开盘</label>
-                                  <input class="form-input" v-model="beginTime" disabled="{{true}}" type="text"
+                                  <input class="form-input" v-model="openTime" disabled="{{true}}" type="text"
                                          placeholder="2019年01月01日"/>
                                   <span class="form-next iconfont icon-next"></span>
                                 </div>
@@ -249,11 +252,11 @@
                                  v-for="(item,index) in isLayout" :key="index">
                               <div class="module-item" @tap="onHandleUpdateLayout(item,index)">
                                 <div class="item-img">
-                                  <lazy-image src="{{fileUrl+item.picUrl}}" mode="aspectFill"/>
+                                  <lazy-image src="{{item.picUrl?fileUrl+item.picUrl:''}}" mode="aspectFill"/>
                                 </div>
                                 <div class="item-info">
                                   <div class="item-row row">
-                                    <div class="item-title">{{item.mainApart}}</div>
+                                    <div class="item-title">{{item.apart}}</div>
                                     <div class="item-size">{{item.mainArea}}m²</div>
                                   </div>
                                   <div class="item-row row">
@@ -348,7 +351,6 @@
   import Toast from '../../../../mixins/toast';
   import Loading from '../../../../mixins/loading';
   import * as $routes from '../../../../router';
-  import * as $config from '../../../../config';
   import * as utils from '../../../../utils';
   import * as controller from './controller';
   import apis from '../../../../apis';
@@ -361,7 +363,6 @@
     data: {
       noData: '暂无数据',
       fileUrl: apis.fileUrl,
-      url: $config.DEFAULT_AGENT,
       tab: {
         activeIndex: 0,
         items: [
@@ -379,8 +380,10 @@
       title: '',
       contact: '',
       handTime: '',
-      beginTime: '',
       houseName: '',
+      openTime: '',
+      minfloorArea: 0,
+      maxfloorArea: 0,
       detailAddress: '',
       state: {
         value: '',
@@ -447,8 +450,10 @@
       buildArea: {
         value: '',
         items: [
-          ''
-        ]
+          utils.buildArea(),
+          utils.buildArea()
+        ],
+        index: [1, 1]
       },
       agents: {
         value: [],
@@ -529,13 +534,14 @@
             this.phone &&
             this.price &&
             this.title &&
-            this.apart &&
             this.contact &&
             this.handTime &&
-            this.beginTime &&
+            this.openTime &&
             this.houseName &&
             this.state.value &&
-            this.mianjifanwen &&
+            this.minfloorArea &&
+            this.maxfloorArea &&
+            this.aparts.value &&
             this.detailAddress &&
             this.address.value &&
             this.quality.value
@@ -582,9 +588,9 @@
           }
         });
       },
-      onHandleSelectBeginTime(e) {
+      onHandleSelectOpenTime(e) {
         const value = e.$wx.detail.value;
-        this.beginTime = utils.dateFormat(value, 'zh-cn');
+        this.openTime = utils.dateFormat(value, 'zh-cn');
         this.onHandleCheckEmpty();
       },
       onHandleSelectHandTime(e) {
@@ -651,6 +657,14 @@
         wx.navigateTo({
           url: $routes.HOUSE.LAYOUT.path
         });
+      },
+      onHandleSelectBuildArea(e) {
+        const index = e.$wx.detail.value;
+        const items = this.buildArea.items;
+        this.buildArea.value = items[0][index[0]] + '-' + items[1][index[1]];
+        this.minfloorArea = items[0][index[0]];
+        this.maxfloorArea = items[1][index[1]];
+        this.onHandleCheckEmpty();
       },
       onHandleDeleteLayout(index) {
         this.deleteLayoutReplace(index);
@@ -740,12 +754,12 @@
           phone: this.phone,
           title: this.title,
           price: this.price,
-          apart: this.apart,
           contact: this.contact,
           state: this.state.value,
           handTime: this.handTime,
           mainApart: this.isLayout,
-          beginTime: this.beginTime,
+          apart: this.aparts.value,
+          openTime: this.openTime,
           houseName: this.houseName,
           quality: this.quality.value,
           minfloorArea: this.minfloorArea,

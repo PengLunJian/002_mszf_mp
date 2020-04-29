@@ -12,8 +12,8 @@
         <div class="item-title ellipsis">{{item.title||noData}}</div>
       </div>
       <div class="item-row row">
-        <div class="item-normal">{{item.huxing||noData}}室</div>
-        <div class="item-normal">{{item.mianjifanwen||0}}m²</div>
+        <div class="item-normal">{{item.apart||noData}}室</div>
+        <div class="item-normal">{{item.minfloorArea||0}}-{{item.maxfloorArea||0}}m²</div>
       </div>
       <div class="item-row row">
         <div class="item-normal price">{{item.price||0}}/m²</div>

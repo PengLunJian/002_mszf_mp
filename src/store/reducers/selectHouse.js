@@ -36,7 +36,8 @@ const actions = {
   },
   [actionTypes.INSERT_HOUSE_REPLACE](state, params) {
     let {rows, totalCount} = state.data;
-    const newRow = utils.dataFilter([params.data]);
+    const newData = [params.data];
+    const newRow = utils.dataFilter(newData);
     rows.unshift(newRow[0]);
     totalCount++;
     const data = {rows, totalCount};
@@ -60,7 +61,8 @@ const actions = {
   },
   [actionTypes.UPDATE_HOUSE_REPLACE](state, params) {
     let {rows, totalCount} = state.data;
-    const newRow = utils.dataFilter([params.data]);
+    const newData = [params.data];
+    const newRow = utils.dataFilter(newData);
     const {id} = newRow[0];
     rows.map((item, index) => {
       if (item.id === id) {

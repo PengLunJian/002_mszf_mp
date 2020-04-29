@@ -60,17 +60,22 @@ export const stringify = (params) => {
  */
 export const dataFilter = (data) => {
   data.map((item) => {
-    let {browsing_time, tags, jiaofang, kaipan} = item;
-    browsing_time = dateFormat(browsing_time, 'yyyy/mm/dd');
-    jiaofang = jiaofang ? dateFormat(jiaofang, 'zh-cn') : '';
-    kaipan = kaipan ? dateFormat(kaipan, 'zh-cn') : '';
+    let {tags} = item;
     tags = (tags || '').split(' ');
-    item.browsing_time = browsing_time;
-    item.jiaofang = jiaofang;
-    item.kaipan = kaipan;
     item.tags = tags;
   });
   return data;
+};
+/**
+ *
+ * @returns {Array}
+ */
+export const buildArea = () => {
+  let result = [];
+  for (let i = 1; i <= 1000; i++) {
+    result.push(i);
+  }
+  return result;
 };
 /**
  *

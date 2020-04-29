@@ -30,7 +30,7 @@
                                 <label class="form-label">状态</label>
                                 <input class="form-input" v-model="state.value"
                                        disabled="{{true}}" type="text" placeholder="在售"
-                                       @tap="onHandleShowstate"/>
+                                       @tap="onHandleSelectState"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
@@ -102,13 +102,16 @@
                               </div>
                             </div>
                             <div class="form-col col-12">
-                              <div class="form-group">
-                                <label class="form-label">建面</label>
-                                <input class="form-input" v-model="mianjifanwen" type="text"
-                                       placeholder="90-150m²"
-                                       @input="onHandleCheckEmpty"/>
-                                <span class="form-next iconfont icon-next"></span>
-                              </div>
+                              <picker mode="multiSelector" @change="onHandleSelectBuildArea"
+                                      value="{{buildArea.index}}" range="{{buildArea.items}}">
+                                <div class="form-group">
+                                  <label class="form-label">建面</label>
+                                  <input class="form-input" v-model="buildArea.value" disabled="{{true}}" type="text"
+                                         placeholder="90-150m²"
+                                         @input="onHandleCheckEmpty"/>
+                                  <span class="form-next iconfont icon-next"></span>
+                                </div>
+                              </picker>
                             </div>
                           </div>
                         </div>
@@ -124,8 +127,9 @@
                             <div class="form-col col-12">
                               <div class="form-group">
                                 <label class="form-label">户型</label>
-                                <input class="form-input" v-model="apart" type="text"
-                                       placeholder="1/2/3室"/>
+                                <input class="form-input" v-model="aparts.value" disabled="{{true}}" type="text"
+                                       placeholder="2/3/4室"
+                                       @tap="onHandleShowAparts"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
@@ -134,16 +138,16 @@
                                 <label class="form-label">类型</label>
                                 <input class="form-input" v-model="quality.value" disabled="{{true}}" type="text"
                                        placeholder="小区"
-                                       @tap="onHandleShowquality"/>
+                                       @tap="onHandleSelectQuality"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
                             <div class="form-col col-12">
-                              <picker mode="date" fields="day" value="{{beginTime}}"
-                                      @change="onHandleShowbeginTime">
+                              <picker mode="date" fields="day" value="{{openTime}}"
+                                      @change="onHandleSelectOpenTime">
                                 <div class="form-group">
                                   <label class="form-label">开盘</label>
-                                  <input class="form-input" v-model="beginTime" disabled="{{true}}" type="text"
+                                  <input class="form-input" v-model="openTime" disabled="{{true}}" type="text"
                                          placeholder="2019年01月01日"/>
                                   <span class="form-next iconfont icon-next"></span>
                                 </div>
@@ -151,7 +155,7 @@
                             </div>
                             <div class="form-col col-12">
                               <picker mode="date" fields="day" value="{{handTime}}"
-                                      @change="onHandleShowhandTime">
+                                      @change="onHandleSelectHandTime">
                                 <div class="form-group">
                                   <label class="form-label">交房</label>
                                   <input class="form-input" v-model="handTime" disabled="{{true}}" type="text"
@@ -223,7 +227,7 @@
                           <div class="module-row row">
                             <div class="module-col col-3"
                                  v-for="(item,index) in tags.items"
-                                 :key="index" @tap="onHandleTagSelector(index)">
+                                 :key="index" @tap="onHandleSelectTags(index)">
                               <div class="item-tag" :class="{'checked':item.checked}">{{item.label}}</div>
                             </div>
                           </div>
@@ -248,17 +252,17 @@
                                  v-for="(item,index) in isLayout" :key="index">
                               <div class="module-item" @tap="onHandleUpdateLayout(item,index)">
                                 <div class="item-img">
-                                  <lazy-image :src="fileUrl+item.pic" mode="aspectFill"/>
+                                  <lazy-image src="{{item.picUrl?fileUrl+item.picUrl:''}}" mode="aspectFill"/>
                                 </div>
                                 <div class="item-info">
                                   <div class="item-row row">
-                                    <div class="item-title">{{item.title}}</div>
-                                    <div class="item-size">{{item.mianji}}m²</div>
+                                    <div class="item-title">{{item.apart}}</div>
+                                    <div class="item-size">{{item.mainArea}}m²</div>
                                   </div>
                                   <div class="item-row row">
-                                    <div class="item-state state1" v-if="item.tags==='在售'">{{item.tags}}</div>
-                                    <div class="item-state state2" v-if="item.tags==='待售'">{{item.tags}}</div>
-                                    <div class="item-state state3" v-if="item.tags==='售罄'">{{item.tags}}</div>
+                                    <div class="item-state state1" v-if="item.state==='在售'">{{item.state}}</div>
+                                    <div class="item-state state2" v-if="item.state==='待售'">{{item.state}}</div>
+                                    <div class="item-state state3" v-if="item.state==='售罄'">{{item.state}}</div>
                                   </div>
                                 </div>
                                 <div class="btn-delete iconfont icon-delete"
@@ -316,6 +320,26 @@
              @tap="onHandleUpdateHouse">保存
         </div>
       </div>
+      <div class="modal{{isShow?'':' hide'}}">
+        <div class="modal-mask" @tap="onHandleHideAparts"></div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="btn-close iconfont icon-close" @tap="onHandleHideAparts"></div>
+          </div>
+          <div class="modal-body">
+            <div class="modal-aparts">
+              <div class="modal-row row">
+                <div class="modal-col col-3" v-for="(item,index) in aparts.items"
+                     :key="index" @tap="onHandleSelectAparts(index)">
+                  <div class="modal-item" :class="{'checked':item.checked}">{{item.label}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -327,7 +351,6 @@
   import Toast from '../../../../mixins/toast';
   import Loading from '../../../../mixins/loading';
   import * as $routes from '../../../../router';
-  import * as $config from '../../../../config';
   import * as utils from '../../../../utils';
   import * as controller from './controller';
   import apis from '../../../../apis';
@@ -340,7 +363,6 @@
     data: {
       noData: '暂无数据',
       fileUrl: apis.fileUrl,
-      url: $config.DEFAULT_AGENT,
       tab: {
         activeIndex: 0,
         items: [
@@ -352,20 +374,66 @@
         ]
       },
       isDisable: false,
+      isShow: false,
       id: -1,
       phone: '',
       price: '',
       title: '',
-      apart: '',
       contact: '',
       handTime: '',
       houseName: '',
-      beginTime: '',
-      mianjifanwen: '',
+      openTime: '',
+      minfloorArea: 0,
+      maxfloorArea: 0,
       detailAddress: '',
       state: {
         value: '',
         items: ['在售', '待售', '售罄']
+      },
+      aparts: {
+        value: '',
+        items: [
+          {
+            label: '一室',
+            checked: false
+          },
+          {
+            label: '二室',
+            checked: false
+          },
+          {
+            label: '三室',
+            checked: false
+          },
+          {
+            label: '四室',
+            checked: false
+          },
+          {
+            label: '五室',
+            checked: false
+          },
+          {
+            label: '六室',
+            checked: false
+          },
+          {
+            label: '七室',
+            checked: false
+          },
+          {
+            label: '八室',
+            checked: false
+          },
+          {
+            label: '九室',
+            checked: false
+          },
+          {
+            label: '十室',
+            checked: false
+          }
+        ]
       },
       address: {
         value: '',
@@ -379,6 +447,14 @@
           '住宅',
           '商铺'
         ]
+      },
+      buildArea: {
+        value: '',
+        items: [
+          utils.buildArea(),
+          utils.buildArea()
+        ],
+        index: [1, 1]
       },
       agents: {
         value: [],
@@ -459,15 +535,16 @@
             this.phone &&
             this.price &&
             this.title &&
-            this.apart &&
             this.contact &&
             this.handTime &&
+            this.openTime &&
             this.houseName &&
-            this.beginTime &&
             this.state.value &&
-            this.mianjifanwen &&
-            this.address.value &&
+            this.minfloorArea &&
+            this.maxfloorArea &&
+            this.aparts.value &&
             this.detailAddress &&
+            this.address.value &&
             this.quality.value
           );
         let isTagsEmpty = this.tags.value;
@@ -485,7 +562,7 @@
         this.address.value = items.join('、');
         this.onHandleCheckEmpty();
       },
-      onHandleShowquality() {
+      onHandleSelectQuality() {
         wx.showActionSheet({
           itemList: this.quality.items,
           success: (res) => {
@@ -498,13 +575,12 @@
           }
         });
       },
-      onHandleShowstate() {
+      onHandleSelectState() {
         const {items} = this.state;
         wx.showActionSheet({
           itemList: items,
           success: (res) => {
             const index = res.tapIndex;
-            this.state.index = index;
             this.state.value = items[index];
             this.onHandleCheckEmpty();
           },
@@ -513,17 +589,17 @@
           }
         });
       },
-      onHandleShowbeginTime(e) {
+      onHandleSelectOpenTime(e) {
         const value = e.$wx.detail.value;
-        this.beginTime = utils.dateFormat(value, 'zh-cn');
+        this.openTime = utils.dateFormat(value, 'zh-cn');
         this.onHandleCheckEmpty();
       },
-      onHandleShowhandTime(e) {
+      onHandleSelectHandTime(e) {
         const value = e.$wx.detail.value;
         this.handTime = utils.dateFormat(value, 'zh-cn');
         this.onHandleCheckEmpty();
       },
-      onHandleAgentSelector(index) {
+      onHandleSelectAgents(index) {
         let arr = [];
         if (this.agents.items[index].checked) {
           this.agents.items[index].checked = false;
@@ -542,7 +618,7 @@
         this.onHandleCheckEmpty();
         arr = null;
       },
-      onHandleTagSelector(index) {
+      onHandleSelectTags(index) {
         let arr = [];
         if (this.tags.items[index].checked) {
           this.tags.items[index].checked = false;
@@ -573,6 +649,14 @@
         wx.navigateTo({
           url: $routes.HOUSE.LAYOUT.path + query
         });
+      },
+      onHandleSelectBuildArea(e) {
+        const index = e.$wx.detail.value;
+        const items = this.buildArea.items;
+        this.buildArea.value = items[0][index[0]] + '-' + items[1][index[1]];
+        this.minfloorArea = items[0][index[0]];
+        this.maxfloorArea = items[1][index[1]];
+        this.onHandleCheckEmpty();
       },
       onHandleUpdateHouse() {
         const isCheckEmpty = this.onHandleCheckEmpty();
@@ -612,24 +696,26 @@
       onHandleRenderHouse(data) {
         const {
           id, contact, phone, title, price,
-          apart, mianjifanwen, quality, houseName, state,
-          address, province, city, area, agent,
-          tags, picUrl, beginTime, handTime, mainApart
+          apart, minfloorArea, maxfloorArea, quality, houseName,
+          state, address, province, city, area, agent,
+          tags, picUrl, openTime, handTime, mainApart
         } = data;
         this.id = id;
         this.phone = phone;
         this.price = price;
         this.title = title;
-        this.apart = apart;
         this.contact = contact;
+        this.state.value = state;
         this.handTime = handTime;
+        this.aparts.value = apart;
         this.houseName = houseName;
-        this.beginTime = beginTime;
+        this.openTime = openTime;
         this.detailAddress = address;
-        this.mianjifanwen = mianjifanwen;
-        this.state.value = this.state.items[state - 1];
+        this.minfloorArea = minfloorArea;
+        this.maxfloorArea = maxfloorArea;
         this.address.items = [province, city, area];
         this.address.value = this.address.items.join('、');
+        this.buildArea.value = minfloorArea + '-' + maxfloorArea;
         this.quality.value = quality;
         this.tags.value = tags.join(' ');
         this.tags.items.map((item) => {
@@ -700,16 +786,17 @@
           phone: this.phone,
           title: this.title,
           price: this.price,
-          apart: this.apart,
           contact: this.contact,
           state: this.state.value,
           handTime: this.handTime,
+          apart: this.aparts.value,
           mainApart: this.isLayout,
-          beginTime: this.beginTime,
+          openTime: this.openTime,
           houseName: this.houseName,
           quality: this.quality.value,
           address: this.detailAddress,
-          mianjifanwen: this.mianjifanwen,
+          minfloorArea: this.minfloorArea,
+          maxfloorArea: this.maxfloorArea,
           province: this.address.items[0],
           city: this.address.items[1],
           area: this.address.items[2],

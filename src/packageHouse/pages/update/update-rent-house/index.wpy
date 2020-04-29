@@ -369,7 +369,6 @@
     data: {
       noData: '暂无数据',
       fileUrl: apis.fileUrl,
-      url: $config.DEFAULT_AGENT,
       tab: {
         activeIndex: 0,
         items: [

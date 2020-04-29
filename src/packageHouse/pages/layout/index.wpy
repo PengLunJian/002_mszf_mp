@@ -34,11 +34,11 @@
                             </div>
                           </div>
                           <div class="form-col col-12">
-                            <picker mode="multiSelector" @change="onHandleSelectMainApart"
-                                    value="{{mainApart.index}}" range="{{mainApart.items}}">
+                            <picker mode="multiSelector" @change="onHandleSelectApart"
+                                    value="{{apart.index}}" range="{{apart.items}}">
                               <div class="form-group">
                                 <label class="form-label">户型</label>
-                                <input class="form-input" v-model="mainApart.value"
+                                <input class="form-input" v-model="apart.value"
                                        disabled="{{true}}" type="text"
                                        placeholder="2室1厅1卫"/>
                                 <span class="form-next iconfont icon-next"></span>
@@ -116,7 +116,7 @@
         value: '',
         items: ['在售', '待售', '售罄']
       },
-      mainApart: {
+      apart: {
         value: '',
         items: [
           ['1室', '2室', '3室', '4室', '5室', '6室', '7室', '8室', '9室', '10室', '11室', '12室'],
@@ -140,7 +140,7 @@
         let isBaseEmpty =
           (
             this.mainArea &&
-            this.mainApart.value &&
+            this.apart.value &&
             this.state.value
           );
         this.isDisable = isBaseEmpty;
@@ -161,10 +161,10 @@
           }
         });
       },
-      onHandleSelectMainApart(e) {
+      onHandleSelectApart(e) {
         const index = e.$wx.detail.value;
-        const items = this.mainApart.items;
-        this.mainApart.value = items[0][index[0]] + items[1][index[1]] + items[2][index[2]];
+        const items = this.apart.items;
+        this.apart.value = items[0][index[0]] + items[1][index[1]] + items[2][index[2]];
         this.onHandleCheckEmpty();
       },
       onHandleShowUpload() {
@@ -207,21 +207,21 @@
         });
       },
       onHandleRenderLayout(data) {
-        const {mainArea, picUrl, state, mainApart} = data;
-        this.urls = [picUrl];
+        const {mainArea, picUrl, state, apart} = data;
+        this.urls = picUrl ? [picUrl] : [];
         this.mainArea = mainArea;
         this.state.value = state;
-        this.mainApart.value = mainApart;
+        this.apart.value = apart;
         this.onHandleCheckEmpty();
       },
       getParams() {
-        const {mainArea, state, mainApart, urls} = this;
+        const {mainArea, state, apart, urls} = this;
         const picUrl = urls.length ? urls[0] : '';
         const params = {
           picUrl,
           mainArea,
           state: state.value,
-          mainApart: mainApart.value
+          apart: apart.value
         };
         return params;
       }
