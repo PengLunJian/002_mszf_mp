@@ -17,8 +17,8 @@
             class="scroll-view"
             scroll-y="{{isScroll}}"
             @scrolltolower="onHandleScrollToLower">
-            <div class="scroll-row row">
-              <div class="scroll-col col-6" v-for="(item,index) in isHouse.rows">
+            <div class="item-row row">
+              <div class="item-col col-6" v-for="(item,index) in isHouse.rows">
                 <house-item :item="item" :key="index"/>
               </div>
             </div>
@@ -249,9 +249,9 @@
           padding-top: unit(210, rpx);
           .scroll-view {
             height: 100%;
-            .scroll-row {
+            .item-row {
               padding: unit(15, rpx);
-              .scroll-col {
+              .item-col {
                 padding: unit(15, rpx);
               }
             }

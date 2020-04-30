@@ -7,8 +7,8 @@
       <div class="body">
         <div class="context fade">
           <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
-            <div class="scroll-row row">
-              <div class="scroll-col col-6" v-for="(item,index) in isAgent">
+            <div class="item-row row">
+              <div class="item-col col-6" v-for="(item,index) in isAgent">
                 <agent-item :item="item" :key="index"/>
               </div>
             </div>
@@ -136,9 +136,9 @@
           padding-top: unit(130, rpx);
           .scroll-view {
             height: 100%;
-            .scroll-row {
+            .item-row {
               padding: unit(15, rpx);
-              .scroll-col {
+              .item-col {
                 padding: unit(15, rpx);
               }
             }

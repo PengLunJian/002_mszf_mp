@@ -6,6 +6,15 @@
         <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
         <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
       </div>
+      <div class="item-record">
+        <div class="item-icon iconfont icon-record"></div>
+        <div class="item-text">{{item.record||0}}</div>
+      </div>
+      <div class="item-state">
+        <div class="item-label state1" v-if="item.state==='在售'">{{item.state}}</div>
+        <div class="item-label state2" v-if="item.state==='待售'">{{item.state}}</div>
+        <div class="item-label state3" v-if="item.state==='售罄'">{{item.state}}</div>
+      </div>
     </div>
     <div class="item-info">
       <div class="item-row row">
@@ -26,6 +35,14 @@
       <div class="item-btns">
         <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
         <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
+      </div>
+      <div class="item-record">
+        <div class="item-icon iconfont icon-record"></div>
+        <div class="item-text">{{item.record||0}}</div>
+      </div>
+      <div class="item-state">
+        <div class="item-label state1" v-if="item.state==='未售'">{{item.state}}</div>
+        <div class="item-label state3" v-if="item.state==='已售'">{{item.state}}</div>
       </div>
     </div>
     <div class="item-info">
@@ -48,6 +65,14 @@
       <div class="item-btns">
         <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
         <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
+      </div>
+      <div class="item-record">
+        <div class="item-icon iconfont icon-record"></div>
+        <div class="item-text">{{item.record||0}}</div>
+      </div>
+      <div class="item-state">
+        <div class="item-label state1" v-if="item.state==='未租'">{{item.state}}</div>
+        <div class="item-label state3" v-if="item.state==='已租'">{{item.state}}</div>
       </div>
     </div>
     <div class="item-info">
@@ -77,7 +102,7 @@
     data: {
       noData: '暂无数据',
       fileUrl: apis.fileUrl,
-      url: $config.DEFAULT_HOUSE
+      url: $config.DEFAULT_IMAGE
     },
     props: {
       item: {
@@ -144,6 +169,42 @@
           }
           &.btn-delete {
             color: @btnDelete;
+          }
+        }
+      }
+      .item-record {
+        display: flex;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: unit(40, rpx);
+        line-height: unit(40, rpx);
+        padding: 0 unit(15, rpx);
+        background-color: rgba(0,0,0,.5);
+        color: @white;
+        .item-text {
+          margin-left: unit(8, rpx);
+          font-size: @fontSize24;
+        }
+      }
+      .item-state {
+        position: absolute;
+        top: unit(20, rpx);
+        right: unit(20, rpx);
+        .item-label {
+          height: unit(40, rpx);
+          line-height: unit(40, rpx);
+          padding: 0 unit(10, rpx);
+          font-size: @fontSize24;
+          color: @white;
+          &.state1 {
+            background-color: @stateColor1;
+          }
+          &.state2 {
+            background-color: @stateColor2;
+          }
+          &.state3 {
+            background-color: @stateColor3;
           }
         }
       }

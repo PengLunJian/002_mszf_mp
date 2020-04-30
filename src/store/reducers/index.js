@@ -13,6 +13,7 @@ import SELECT_COUNT_REDUCER from './selectCount';
 import SELECT_LAYOUT_REDUCER from './selectLayout';
 import UPDATE_BUSINESS_REDUCER from './updateBusiness';
 import SELECT_BUSINESS_REDUCER from './selectBusiness';
+import SELECT_CUSTOMER_REDUCER from './selectCustomer';
 import SELECT_HOUSE_DETAIL_REDUCER from './houseDetail';
 import SELECT_AGENT_DETAIL_REDUCER from './agentDetail';
 
@@ -31,6 +32,7 @@ export default combineReducers({
   SELECT_LAYOUT_REDUCER,
   UPDATE_BUSINESS_REDUCER,
   SELECT_BUSINESS_REDUCER,
+  SELECT_CUSTOMER_REDUCER,
   SELECT_HOUSE_DETAIL_REDUCER,
   SELECT_AGENT_DETAIL_REDUCER
 });

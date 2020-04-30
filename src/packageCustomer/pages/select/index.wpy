@@ -6,83 +6,13 @@
       </div>
       <div class="body">
         <div class="context fade">
-          <scroll-view class="scroll-view" scroll-y="{{true}}">
-            <div class="scroll-content">
-              <div class="scroll-header"></div>
-              <div class="scroll-body">
-                <div class="module">
-                  <div class="module-content">
-                    <div class="module-body">
-                      <div class="module-base">
-                        <div class="form-row row">
-                          <div class="form-col col-12">
-                            <div class="form-group">
-                              <label class="form-label">名称</label>
-                              <input class="form-input" v-model="isData.name" disabled="{{true}}" type="text"/>
-                              <span class="form-next iconfont icon-next"></span>
-                            </div>
-                          </div>
-                          <div class="form-col col-12">
-                            <div class="form-group">
-                              <label class="form-label">电话</label>
-                              <input class="form-input" v-model="isData.tel" disabled="{{true}}" type="text"/>
-                              <span class="form-next iconfont icon-next"></span>
-                            </div>
-                          </div>
-                          <div class="form-col col-12">
-                            <div class="form-group">
-                              <label class="form-label">地址</label>
-                              <input class="form-input" v-model="isData.addr" disabled="{{true}}" type="text"/>
-                              <span class="form-next iconfont icon-next"></span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="module-footer"></div>
-                  </div>
-                </div>
-                <div class="module">
-                  <div class="module-content">
-                    <div class="module-header">
-                      <div class="module-title">商家简介</div>
-                    </div>
-                    <div class="module-body">
-                      <div class="module-edit">
-                        <div class="form-row row">
-                          <div class="form-col col-12">
-                            <div class="form-group">
-                              <textarea class="textarea" v-model="isData.ext" disabled="{{true}}" type="text"/>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="module-footer"></div>
-                  </div>
-                </div>
-                <div class="module">
-                  <div class="module-content">
-                    <div class="module-header">
-                      <div class="module-title">营业执照</div>
-                    </div>
-                    <div class="module-body">
-                      <div class="module-images">
-                        <div class="module-row row">
-                          <div class="module-col col-4" :key="index">
-                            <div class="module-item" @tap="onHandleShowImage">
-                              <lazy-image src="{{baseUrl+isData.pic}}" mode="aspectFill"/>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="module-footer"></div>
-                  </div>
-                </div>
+          <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
+            <div class="item-row row">
+              <div class="item-col col-6" v-for="(item,index) in isCustomer.rows">
+                <customer-item :item="item" :key="index"/>
               </div>
-              <div class="scroll-footer"></div>
             </div>
+            <loading-more :length="isCustomer.rows.length" :totalCount="isCustomer.totalCount"/>
           </scroll-view>
         </div>
       </div>
@@ -93,13 +23,11 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import apis from '../../../apis';
   import store from '../../../store/index';
   import {mapState, mapActions} from '@wepy/redux';
   import Toast from '../../../mixins/toast';
   import Loading from '../../../mixins/loading';
   import * as controller from './controller';
-  import * as utils from '../../../utils';
 
   wepy.page({
     store,
@@ -107,7 +35,10 @@
     mixins: [Toast, Loading],
 
     data: {
-      baseUrl: apis.baseUrl
+      timer: null,
+      pageSize: 10,
+      pageIndex: 1,
+      isScroll: true
     },
 
     computed: {
@@ -116,46 +47,53 @@
 
     methods: {
       ...mapActions(controller.ACTIONS),
-      exeAjaxSelectBusiness() {
+      exeAjaxSelectCustomer() {
         this.showLoading();
         const params = this.getParams();
-        this.ajaxSelectBusiness(params)
+        this.ajaxSelectCustomer(params)
           .then((res) => {
+            this.hideLoading();
             res = res || {};
-            const {success, data} = res.payload;
+            const {success} = res.payload;
             if (success) {
-              console.log(data);
+              this.pageIndex++;
             } else {
               this.showToast('加载失败，请重试');
             }
-            this.hideLoading();
+            this.timer = null;
+            console.log(res);
           })
           .catch((err) => {
             this.hideLoading();
+            this.timer = null;
             this.showToast('加载失败，请重试');
             console.log(err);
           });
       },
-      onHandleShowImage() {
-        const {pic} = this.isData;
-        wx.previewImage({
-          current: [0],
-          urls: [pic]
-        });
+      onHandleScrollToLower() {
+        if (this.timer) return;
+        this.timer = setTimeout(() => {
+          const {rows, totalCount} = this.isHouse;
+          if (rows.length < totalCount) {
+            this.exeAjaxSelectHouse();
+          }
+        }, 0);
       },
       getParams() {
-        const {com_id} = utils.getUser();
+        const {isLogin, pageIndex, pageSize} = this;
+        const {busId} = isLogin;
         const params = {
-          com_id
+          busId,
+          pageIndex,
+          pageSize
         };
         return params;
       }
     },
 
-    onShow() {
-    },
-
-    onLoad() {}
+    onLoad() {
+      this.exeAjaxSelectCustomer();
+    }
   });
 </script>
 
@@ -179,135 +117,10 @@
           padding-top: 65px;
           .scroll-view {
             height: 100%;
-            .scroll-content {
-              padding: unit(20, rpx) 0;
-              .scroll-header {
-              }
-              .scroll-body {
-                .module {
-                  .module-content {
-                    .module-header {
-                      padding: unit(30, rpx) unit(30, rpx) 0;
-                      .module-title {
-                        height: unit(32, rpx);
-                        line-height: unit(32, rpx);
-                        padding-left: unit(20, rpx);
-                        border-left: 4px solid @theme2;
-                        font-size: @fontSize32;
-                        letter-spacing: 0.5px;
-                        font-weight: bold;
-                        color: @fontColor1;
-                      }
-                    }
-                    .module-body {
-                      .module-base {
-                        padding-left: unit(30, rpx);
-                        .form-row {
-                          .form-col {
-                            padding-right: unit(20, rpx);
-                            border-bottom: 0.5px solid @borderColor1;
-                            .form-group {
-                              display: flex;
-                              font-size: @fontSize32;
-                              color: @fontColor1;
-                              .form-label {
-                                width: 25%;
-                                height: @height;
-                                display: inline-block;
-                                vertical-align: middle;
-                                line-height: @height;
-                              }
-                              .form-input {
-                                width: 75%;
-                                height: @height;
-                                display: inline-block;
-                                vertical-align: middle;
-                                text-align: right;
-                              }
-                              .form-next {
-                                display: inline-block;
-                                vertical-align: middle;
-                                padding-left: unit(10, rpx);
-                                line-height: @height;
-                                color: @iconNext;
-                              }
-                            }
-                            &:last-child {
-                              border: none;
-                            }
-                          }
-                        }
-                      }
-                      .module-edit {
-                        .form-row {
-                          padding: unit(15, rpx);
-                          .form-col {
-                            padding: unit(15, rpx);
-                            .form-group {
-                              padding: unit(20, rpx);
-                              border: 0.5px solid @borderColor2;
-                              border-radius: @borderRadius10;
-                              background-color: @bgEdit;
-                              font-size: @fontSize32;
-                              color: @fontColor1;
-                              .textarea {
-                                width: 100%;
-                                height: unit(260, rpx);
-                                text-align: justify;
-                              }
-                            }
-                            &:last-child {
-                              border: none;
-                            }
-                          }
-                        }
-                      }
-                      .module-images {
-                        .module-row {
-                          padding: unit(15, rpx);
-                          .module-col {
-                            padding: unit(15, rpx);
-                            .module-item {
-                              width: 100%;
-                              position: relative;
-                              height: unit(200, rpx);
-                              .btn-delete {
-                                position: absolute;
-                                top: 0;
-                                right: 0;
-                                z-index: 10;
-                                width: unit(50, rpx);
-                                height: unit(50, rpx);
-                                line-height: unit(50, rpx);
-                                background-color: rgba(0, 0, 0, .6);
-                                font-size: @fontSize36;
-                                text-align: center;
-                                color: @btnDelete;
-                              }
-                            }
-                            .module-btn {
-                              height: unit(200, rpx);
-                              line-height: unit(200, rpx);
-                              background-color: #F0F0F0;
-                              text-align: center;
-                              .module-icon {
-                                font-size: @fontSize50;
-                                color: @fontColor5;
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                    .module-footer {
-                    }
-                  }
-                  &:first-child {
-                    margin: 0;
-                  }
-                }
-              }
-              .scroll-footer {
+            .item-row {
+              padding: unit(15, rpx);
+              .item-col {
+                padding: unit(15, rpx);
               }
             }
           }
@@ -325,6 +138,7 @@
   usingComponents: {
   'top-bar': '../../../components/top-bar/top-bar',
   'lazy-image': '../../../components/lazy-image/lazy-image',
+  'customer-item': '../../../components/customer-item/customer-item'
   }
   }
 </config>

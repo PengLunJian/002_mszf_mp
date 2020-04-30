@@ -34,7 +34,7 @@
         {
           name: '客户管理',
           icon: 'icon-user',
-          path: $routes.CUSTOMER.path
+          path: $routes.CUSTOMER.SELECT.path
         },
         {
           name: '置业顾问',

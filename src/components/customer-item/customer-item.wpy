@@ -2,14 +2,20 @@
   <div class="item">
     <div class="item-img">
       <lazy-image src="{{item.picUrl?fileUrl+item.picUrl:url}}" width="50%" mode="aspectFill"/>
+      <div class="item-btns" v-if="isBtns">
+        <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateAgent"></div>
+        <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteAgent"></div>
+      </div>
     </div>
     <div class="item-info">
-      <div class="item-name">{{item.agentName}}</div>
-      <div class="item-phone">{{item.phone}}</div>
-    </div>
-    <div class="item-btns" v-if="isBtns">
-      <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateAgent"></div>
-      <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteAgent"></div>
+      <div class="item-row row">
+        <div class="item-col label">姓名：</div>
+        <div class="item-col value name">{{item.agentName}}</div>
+      </div>
+      <div class="item-row row">
+        <div class="item-col label">电话：</div>
+        <div class="item-col value">{{item.phone}}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -62,52 +68,50 @@
 
   .item {
     overflow: hidden;
-    position: relative;
     background-color: @white;
     border-radius: @borderRadius20;
     .item-img {
+      position: relative;
       height: unit(300, rpx);
       image {
-        border-radius: @borderRadius20;
+        border-top-left-radius: @borderRadius20;
+        border-top-right-radius: @borderRadius20;
+      }
+      .item-btns {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        .item-btn {
+          width: unit(60, rpx);
+          height: unit(60, rpx);
+          line-height: unit(60, rpx);
+          font-size: @fontSize36;
+          text-align: center;
+          &.btn-update {
+            color: @btnUpdate;
+          }
+          &.btn-delete {
+            color: @btnDelete;
+          }
+        }
       }
     }
     .item-info {
-      position: absolute;
-      top: 0;
-      right: 0;
-      font-size: @fontSize24;
-      color: @white;
-      .item-name {
-        height: unit(50, rpx);
-        line-height: unit(50, rpx);
-        min-width: unit(100, rpx);
-        padding: 0 unit(15, rpx);
-        border-top-right-radius: @borderRadius20;
-        border-bottom-left-radius: @borderRadius20;
-        background-color: @stateColor1;
-        text-align: center;
-      }
-      .item-phone {
-        display: none;
-      }
-    }
-    .item-btns {
-      display: flex;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      z-index: 1;
-      .item-btn {
-        width: unit(60, rpx);
-        height: unit(60, rpx);
-        line-height: unit(60, rpx);
-        font-size: @fontSize36;
-        text-align: center;
-        &.btn-update {
-          color: @btnUpdate;
+      padding: unit(20, rpx);
+      line-height: unit(40, rpx);
+      font-size: @fontSize28;
+      .item-col {
+        &.label {
+          font-weight: bold;
+          color: @fontColor1;
         }
-        &.btn-delete {
-          color: @btnDelete;
+        &.value {
+          color: @fontColor3;
+          &.name {
+            font-weight: bold;
+            color: @fontColor1;
+          }
         }
       }
     }

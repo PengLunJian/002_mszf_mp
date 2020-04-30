@@ -397,3 +397,25 @@ export const removeImageReplace = createAction(
   'removeImageReplace', () => {
     commit(actionTypes.REMOVE_IMAGE_REPLACE);
   });
+
+export const ajaxRequestSelectCustomer = createAction(
+  'selectCustomer', (params) => {
+    commit(actionTypes.SELECT_CUSTOMER_REQUEST);
+    return new Promise((resolve, reject) => {
+      axios.post(apis.selectCustomer, params)
+        .then((res) => {
+          res = res || {};
+          const {data, success} = res;
+          if (success) {
+            commit(actionTypes.SELECT_CUSTOMER_SUCCESS, data);
+          } else {
+            commit(actionTypes.SELECT_CUSTOMER_FAILURE);
+          }
+          resolve(res);
+        })
+        .catch((err) => {
+          commit(actionTypes.SELECT_CUSTOMER_FAILURE);
+          reject(err);
+        });
+    });
+  });

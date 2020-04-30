@@ -164,6 +164,14 @@ const apis = {
       id: 1
     }
   },
+  selectCustomer: {
+    url: '/history/browse',
+    params: {
+      busId: 0,
+      pageIndex: 1,
+      pageSize: 10
+    }
+  },
   selectHouseDetail: {
     url: '/house/v1/houser/house/detail',
     params: {

@@ -79,13 +79,15 @@ export const AGENT = {
 };
 
 export const CUSTOMER = {
-  url: '客户管理',
-  path: ''
+  SELECT: {
+    name: '用户查询',
+    path: '/packageCustomer/pages/select/index'
+  }
 };
 
 export const BUSINESS = {
   SELECT: {
-    url: '商户管理',
+    name: '商户查询',
     path: '/packageBusiness/pages/select/index'
   },
   UPLOAD: {

@@ -106,3 +106,10 @@ export const UPDATE_BUSINESS_STATE = {
   isFailure: false,
   data: null
 };
+
+export const SELECT_CUSTOMER_STATE = {
+  isLoading: true,
+  isSuccess: false,
+  isFailure: false,
+  data: null
+};

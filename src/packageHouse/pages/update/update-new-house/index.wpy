@@ -250,24 +250,7 @@
                           <div class="module-row row">
                             <div class="module-col col-4"
                                  v-for="(item,index) in isLayout" :key="index">
-                              <div class="module-item" @tap="onHandleUpdateLayout(item,index)">
-                                <div class="item-img">
-                                  <lazy-image src="{{item.picUrl?fileUrl+item.picUrl:''}}" mode="aspectFill"/>
-                                </div>
-                                <div class="item-info">
-                                  <div class="item-row row">
-                                    <div class="item-title">{{item.apart}}</div>
-                                    <div class="item-size">{{item.mainArea}}m²</div>
-                                  </div>
-                                  <div class="item-row row">
-                                    <div class="item-state state1" v-if="item.state==='在售'">{{item.state}}</div>
-                                    <div class="item-state state2" v-if="item.state==='待售'">{{item.state}}</div>
-                                    <div class="item-state state3" v-if="item.state==='售罄'">{{item.state}}</div>
-                                  </div>
-                                </div>
-                                <div class="btn-delete iconfont icon-delete"
-                                     @tap.stop="onHandleDeleteLayout(index)"></div>
-                              </div>
+                              <layout-item :item="item" :index="index"/>
                             </div>
                             <div class="module-col col-4">
                               <div class="module-btn btn btn-layout" @tap="onHandleInsertLayout">
@@ -636,18 +619,33 @@
         this.onHandleCheckEmpty();
         arr = null;
       },
+      onHandleSelectAparts(index) {
+        let arr = [];
+        if (this.aparts.items[index].checked) {
+          this.aparts.items[index].checked = false;
+        } else {
+          this.aparts.items[index].checked = true;
+        }
+
+        this.aparts.items.map((item, index) => {
+          if (item.checked) {
+            arr.push(index + 1);
+          }
+        });
+
+        this.aparts.value = arr.join('/');
+        this.onHandleCheckEmpty();
+        arr = null;
+      },
+      onHandleShowAparts() {
+        this.isShow = true;
+      },
+      onHandleHideAparts() {
+        this.isShow = false;
+      },
       onHandleInsertLayout() {
         wx.navigateTo({
           url: $routes.HOUSE.LAYOUT.path
-        });
-      },
-      onHandleDeleteLayout(index) {
-        this.deleteLayoutReplace(index);
-      },
-      onHandleUpdateLayout(item, index) {
-        const query = '?&type=修改&index=' + index;
-        wx.navigateTo({
-          url: $routes.HOUSE.LAYOUT.path + query
         });
       },
       onHandleSelectBuildArea(e) {
@@ -737,6 +735,11 @@
             ...item,
             checked
           };
+        });
+        this.aparts.items.map((item, index) => {
+          if (apart.indexOf((index + 1) + '') !== -1) {
+            item.checked = true;
+          }
         });
         this.urls = picUrl;
         this.selectLayoutReplace(mainApart);
@@ -1039,56 +1042,6 @@
                             padding: unit(15, rpx);
                             .module-col {
                               padding: unit(15, rpx);
-                              .module-item {
-                                position: relative;
-                                .item-img {
-                                  width: 100%;
-                                  height: unit(200, rpx);
-                                }
-                                .item-info {
-                                  font-size: @fontSize26;
-                                  color: @fontColor1;
-                                  text-align: left;
-                                  .item-title {
-                                    height: unit(50, rpx);
-                                    line-height: unit(50, rpx);
-                                  }
-                                  .item-size {
-                                    height: unit(50, rpx);
-                                    line-height: unit(50, rpx);
-                                    margin-left: unit(10, rpx);
-                                  }
-                                  .item-state {
-                                    height: unit(40, rpx);
-                                    line-height: unit(40, rpx);
-                                    padding: 0 unit(10, rpx);
-                                    font-size: @fontSize24;
-                                    color: @white;
-                                    &.state1 {
-                                      background-color: @stateColor1;
-                                    }
-                                    &.state2 {
-                                      background-color: @stateColor2;
-                                    }
-                                    &.state3 {
-                                      background-color: @stateColor3;
-                                    }
-                                  }
-                                }
-                                .btn-delete {
-                                  position: absolute;
-                                  top: 0;
-                                  right: 0;
-                                  z-index: 10;
-                                  width: unit(50, rpx);
-                                  height: unit(50, rpx);
-                                  line-height: unit(50, rpx);
-                                  background-color: rgba(0, 0, 0, .6);
-                                  font-size: @fontSize36;
-                                  text-align: center;
-                                  color: @btnDelete;
-                                }
-                              }
                               .module-btn {
                                 height: unit(200, rpx);
                                 line-height: unit(200, rpx);
@@ -1185,6 +1138,75 @@
           }
         }
       }
+      .modal {
+        .modal-mask {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 1099;
+          background-color: @mask;
+          transition: all 300ms ease-out;
+        }
+        .modal-content {
+          width: 100%;
+          height: unit(460, rpx);
+          position: fixed;
+          left: 0;
+          bottom: 0;
+          z-index: 1100;
+          background-color: @white;
+          transition: all 300ms ease-out;
+          box-shadow: 0 0 15px @boxShadow05;
+          .modal-header {
+            .btn-close {
+              width: unit(90, rpx);
+              height: unit(90, rpx);
+              line-height: unit(90, rpx);
+              font-size: @fontSize36;
+              text-align: center;
+              font-weight: bold;
+              color: @fontColor1;
+            }
+          }
+          .modal-body {
+            .modal-aparts {
+              .modal-row {
+                padding: unit(15, rpx);
+                .modal-col {
+                  padding: unit(15, rpx);
+                  text-align: center;
+                  .modal-item {
+                    height: unit(60, rpx);
+                    line-height: unit(60, rpx);
+                    border-radius: unit(60, rpx);
+                    background-color: @unCheck;
+                    font-size: @fontSize24;
+                    color: @fontColor3;
+                    &.checked {
+                      background: -webkit-linear-gradient(left, @theme1, @theme2);
+                      color: @white;
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .modal-footer {
+          }
+        }
+        &.hide {
+          .modal-mask {
+            opacity: 0;
+            visibility: hidden;
+          }
+          .modal-content {
+            visibility: hidden;
+            transform: translateY(unit(460, rpx));
+          }
+        }
+      }
     }
   }
 </style>
@@ -1195,6 +1217,7 @@
   usingComponents: {
   'top-bar': '../../../../components/top-bar/top-bar',
   'agent-item': '../../../../components/agent-item/agent-item',
+  'layout-item': '../../../../components/layout-item/layout-item',
   'lazy-image': '../../../../components/lazy-image/lazy-image'
   }
   }

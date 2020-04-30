@@ -44,6 +44,12 @@
       ]
     },
     {
+      'root': 'packageCustomer',
+      'pages': [
+        'pages/select/index'
+      ]
+    },
+    {
       'root': 'packageAgent',
       'pages': [
         'pages/insert/index',
