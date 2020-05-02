@@ -2,7 +2,7 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="客户管理"></top-bar>
+        <top-bar title="用户管理"></top-bar>
       </div>
       <div class="body">
         <div class="context fade">
@@ -73,9 +73,9 @@
       onHandleScrollToLower() {
         if (this.timer) return;
         this.timer = setTimeout(() => {
-          const {rows, totalCount} = this.isHouse;
+          const {rows, totalCount} = this.isCustomer;
           if (rows.length < totalCount) {
-            this.exeAjaxSelectHouse();
+            this.exeAjaxSelectCustomer();
           }
         }, 0);
       },

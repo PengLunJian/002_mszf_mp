@@ -1,5 +1,5 @@
 <template>
-  <div class="item">
+  <div class="item" @tap="onHandleSelectRecord">
     <div class="item-img">
       <lazy-image src="{{item.picUrl?fileUrl+item.picUrl:url}}" width="50%" mode="aspectFill"/>
     </div>
@@ -40,6 +40,7 @@
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
   import * as $config from '../../config';
+  import * as $routes from '../../router';
   import apis from '../../apis';
 
   wepy.component({
@@ -66,6 +67,12 @@
           fail: (err) => {
             console.log(err);
           }
+        });
+      },
+      onHandleSelectRecord() {
+        const query = '?item=' + JSON.stringify(this.item);
+        wx.navigateTo({
+          url: $routes.CUSTOMER.RECORD.path + query
         });
       }
     },

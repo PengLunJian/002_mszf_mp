@@ -388,6 +388,11 @@ export const removeAgentReplace = createAction(
     commit(actionTypes.REMOVE_AGENT_REPLACE);
   });
 
+export const removeRecordReplace = createAction(
+  'removeRecordReplace', () => {
+    commit(actionTypes.REMOVE_RECORD_REPLACE);
+  });
+
 export const selectLayoutReplace = createAction(
   'selectLayoutReplace', (params) => {
     commit(actionTypes.SELECT_LAYOUT_REPLACE, params);
@@ -430,6 +435,50 @@ export const ajaxRequestSelectCustomer = createAction(
         })
         .catch((err) => {
           commit(actionTypes.SELECT_CUSTOMER_FAILURE);
+          reject(err);
+        });
+    });
+  });
+
+export const ajaxRequestSelectBrowse = createAction(
+  'selectBrowse', (params) => {
+    commit(actionTypes.SELECT_RECORD_REQUEST);
+    return new Promise((resolve, reject) => {
+      axios.post(apis.selectBrowse, params)
+        .then((res) => {
+          res = res || {};
+          const {data, success} = res;
+          if (success) {
+            commit(actionTypes.SELECT_RECORD_SUCCESS, data);
+          } else {
+            commit(actionTypes.SELECT_RECORD_FAILURE);
+          }
+          resolve(res);
+        })
+        .catch((err) => {
+          commit(actionTypes.SELECT_RECORD_FAILURE);
+          reject(err);
+        });
+    });
+  });
+
+export const ajaxRequestSelectFollow = createAction(
+  'selectFollow', (params) => {
+    commit(actionTypes.SELECT_RECORD_REQUEST);
+    return new Promise((resolve, reject) => {
+      axios.post(apis.selectFollow, params)
+        .then((res) => {
+          res = res || {};
+          const {data, success} = res;
+          if (success) {
+            commit(actionTypes.SELECT_RECORD_SUCCESS, data);
+          } else {
+            commit(actionTypes.SELECT_RECORD_FAILURE);
+          }
+          resolve(res);
+        })
+        .catch((err) => {
+          commit(actionTypes.SELECT_RECORD_FAILURE);
           reject(err);
         });
     });

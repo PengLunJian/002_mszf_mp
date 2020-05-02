@@ -32,7 +32,7 @@
           path: $routes.HOUSE.SELECT.path
         },
         {
-          name: '客户管理',
+          name: '用户管理',
           icon: 'icon-user',
           path: $routes.CUSTOMER.SELECT.path
         },

@@ -113,3 +113,10 @@ export const SELECT_CUSTOMER_STATE = {
   isFailure: false,
   data: null
 };
+
+export const SELECT_RECORD_STATE = {
+  isLoading: true,
+  isSuccess: false,
+  isFailure: false,
+  data: null
+};

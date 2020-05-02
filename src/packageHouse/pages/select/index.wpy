@@ -3,8 +3,8 @@
     <div class="content">
       <div class="header">
         <top-bar title="房源管理"></top-bar>
-        <div class="tab-bar">
-          <div class="tab-item" v-for="(item,index) in tab.items"
+        <div class="tab-bar row">
+          <div class="tab-item col-4" v-for="(item,index) in tab.items"
                :class="{'active':index===tab.initIndex}" :key="index"
                @tap="onHandleTabChange(index)">
             <div class="tab-text">{{item.name}}</div>
@@ -191,7 +191,6 @@
       .header {
         .tab-bar {
           width: 100%;
-          display: flex;
           flex-wrap: wrap;
           position: fixed;
           top: unit(130, rpx);
@@ -203,7 +202,6 @@
           text-align: center;
           color: @fontColor2;
           .tab-item {
-            width: 33.333%;
             position: relative;
             padding: unit(20, rpx) 0;
             .tab-text {

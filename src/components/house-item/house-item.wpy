@@ -3,6 +3,7 @@
     <div class="item-img">
       <lazy-image src="{{item.picUrl[0]?fileUrl+item.picUrl[0]:url}}" width="50%" mode="aspectFill"/>
       <div class="item-btns">
+        <div class="item-btn btn-phone iconfont icon-phone" @tap="onHandlePhoneCall"></div>
         <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
         <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
       </div>
@@ -25,7 +26,7 @@
         <div class="item-normal">{{item.minfloorArea||0}}-{{item.maxfloorArea||0}}m²</div>
       </div>
       <div class="item-row row">
-        <div class="item-normal price">{{item.price||0}}/m²</div>
+        <div class="item-normal price">{{item.price||0}}元/m²</div>
       </div>
     </div>
   </div>
@@ -33,6 +34,7 @@
     <div class="item-img">
       <lazy-image src="{{item.picUrl[0]?fileUrl+item.picUrl[0]:url}}" width="50%" mode="aspectFill"/>
       <div class="item-btns">
+        <div class="item-btn btn-phone iconfont icon-phone" @tap="onHandlePhoneCall"></div>
         <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
         <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
       </div>
@@ -55,7 +57,7 @@
       </div>
       <div class="item-row row">
         <div class="item-normal price">{{item.totalPrice||0}}万</div>
-        <div class="item-normal">{{item.price||0}}/m²</div>
+        <div class="item-normal">{{item.price||0}}元/m²</div>
       </div>
     </div>
   </div>
@@ -63,6 +65,7 @@
     <div class="item-img">
       <lazy-image src="{{item.picUrl[0]?fileUrl+item.picUrl[0]:url}}" width="50%" mode="aspectFill"/>
       <div class="item-btns">
+        <div class="item-btn btn-phone iconfont icon-phone" @tap="onHandlePhoneCall"></div>
         <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
         <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
       </div>
@@ -130,6 +133,18 @@
           url
         });
       },
+      onHandlePhoneCall() {
+        const {phone} = this.item;
+        wx.makePhoneCall({
+          phoneNumber: phone,
+          success: (res) => {
+            console.log(res);
+          },
+          fail: (err) => {
+            console.log(err);
+          }
+        });
+      },
       onHandleSelectDetail(id) {
       }
     },
@@ -164,6 +179,9 @@
           line-height: unit(60, rpx);
           font-size: @fontSize36;
           text-align: center;
+          &.icon-phone {
+            color: @btnPhone;
+          }
           &.btn-update {
             color: @btnUpdate;
           }

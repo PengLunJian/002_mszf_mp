@@ -152,6 +152,24 @@ const apis = {
       busCode: ''
     }
   },
+  selectBrowse: {
+    url: '/history/house',
+    params: {
+      busId: 0,
+      pageIndex: 1,
+      pageSize: 10,
+      phone: ''
+    }
+  },
+  selectFollow: {
+    url: '/collect/collectHouse',
+    params: {
+      busId: 0,
+      pageIndex: 1,
+      pageSize: 10,
+      phone: ''
+    }
+  },
   selectBusiness: {
     url: '/business/select',
     params: {

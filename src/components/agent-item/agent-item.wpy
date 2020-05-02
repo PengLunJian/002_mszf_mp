@@ -22,7 +22,7 @@
       </div>
       <div class="item-row row">
         <div class="item-col">
-          <div class="item-icon iconfont icon-phone" @tap.stop="onHandlePhoneAgent"></div>
+          <div class="item-icon iconfont icon-phone" @tap.stop="onHandlePhoneCall"></div>
         </div>
         <div class="item-col">
           <div class="item-icon iconfont icon-update" @tap.stop="onHandleUpdateAgent"></div>
@@ -55,7 +55,7 @@
     events: {},
     watch: {},
     methods: {
-      onHandlePhoneAgent() {
+      onHandlePhoneCall() {
         const {phone} = this.item;
         wx.makePhoneCall({
           phoneNumber: phone,
@@ -129,7 +129,7 @@
             font-size: @fontSize36;
             text-align: center;
             &.icon-phone {
-              color: @stateColor1;
+              color: @btnPhone;
             }
             &.icon-update {
               color: @btnUpdate;

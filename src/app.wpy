@@ -46,7 +46,8 @@
     {
       'root': 'packageCustomer',
       'pages': [
-        'pages/select/index'
+        'pages/select/index',
+        'pages/record/index'
       ]
     },
     {
