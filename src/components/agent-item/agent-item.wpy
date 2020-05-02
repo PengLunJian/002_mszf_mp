@@ -50,10 +50,6 @@
       item: {
         type: Object,
         default: {}
-      },
-      isBtns: {
-        type: Boolean,
-        default: true
       }
     },
     events: {},
@@ -148,29 +144,6 @@
           position: absolute;
           top: unit(-60, rpx);
           right: 0;
-        }
-      }
-      .item-btns {
-        display: flex;
-        position: absolute;
-        top: unit(-60, rpx);
-        right: 0;
-        z-index: 1;
-        .item-btn {
-          width: unit(60, rpx);
-          height: unit(60, rpx);
-          line-height: unit(60, rpx);
-          font-size: @fontSize36;
-          text-align: center;
-          &.btn-phone {
-            color: @stateColor1;
-          }
-          &.btn-update {
-            color: @btnUpdate;
-          }
-          &.btn-delete {
-            color: @btnDelete;
-          }
         }
       }
     }
