@@ -34,8 +34,8 @@
   import {mapState, mapActions} from '@wepy/redux';
   import * as controller from './controller';
   import * as $routes from '../../../router/index';
-  import Toast from '../../../mixins/toast';
   import Loading from '../../../mixins/loading';
+  import Toast from '../../../mixins/toast';
 
   wepy.page({
     store,

@@ -12,9 +12,11 @@ export const STATES = {
 };
 
 export const ACTIONS = {
+  ajaxDeleteAgent: params => actions.ajaxRequestDeleteAgent(params),
   ajaxUpdateHouse: params => actions.ajaxRequestUpdateHouse(params),
   ajaxInsertImage: params => actions.ajaxRequestInsertImage(params),
   deleteLayoutReplace: params => actions.deleteLayoutReplace(params),
   selectLayoutReplace: params => actions.selectLayoutReplace(params),
+  updateAgentReplace: params => actions.updateAgentReplace(params),
   removeImageReplace: actions.removeImageReplace
 };

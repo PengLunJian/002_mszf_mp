@@ -9,5 +9,6 @@ export const STATES = {
 };
 
 export const ACTIONS = {
+  removeCustomerReplace: actions.removeCustomerReplace,
   ajaxSelectCustomer: params => actions.ajaxRequestSelectCustomer(params)
 };

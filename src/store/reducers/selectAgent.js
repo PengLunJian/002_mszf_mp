@@ -13,12 +13,19 @@ const actions = {
     };
   },
   [actionTypes.SELECT_AGENT_SUCCESS](state, action) {
+    const items = action.data || [];
+    const data = items.map((item) => {
+      return {
+        ...item,
+        checked: false
+      };
+    });
     return {
       ...state,
       isLoading: false,
       isSuccess: true,
       isFailure: false,
-      data: action.data
+      data
     };
   },
   [actionTypes.SELECT_AGENT_FAILURE](state) {
@@ -31,7 +38,10 @@ const actions = {
   },
   [actionTypes.INSERT_AGENT_REPLACE](state, params) {
     const oldData = state.data || [];
-    const newData = params.data;
+    const newData = {
+      ...params.data,
+      checked: false
+    };
     const data = oldData.concat(newData);
     return {
       ...state,
@@ -53,7 +63,20 @@ const actions = {
     const oldData = state.data || [];
     const newData = params.data;
     const data = oldData.map((item) => {
-      return item.id === newData.id ? newData : item;
+      const {checked} = item;
+      const flag = newData.checked === undefined;
+      const result = flag ? {...newData, checked} : newData;
+      return item.id === newData.id ? result : item;
+    });
+    return {
+      ...state,
+      data
+    };
+  },
+  [actionTypes.REMOVE_AGENT_REPLACE](state) {
+    const oldData = state.data || [];
+    const data = oldData.map((item) => {
+      return {...item, checked: false};
     });
     return {
       ...state,

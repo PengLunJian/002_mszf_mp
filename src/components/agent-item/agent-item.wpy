@@ -4,12 +4,33 @@
       <lazy-image src="{{item.picUrl?fileUrl+item.picUrl:url}}" width="50%" mode="aspectFill"/>
     </div>
     <div class="item-info">
-      <div class="item-name">{{item.agentName}}</div>
-      <div class="item-phone">{{item.phone}}</div>
-    </div>
-    <div class="item-btns" v-if="isBtns">
-      <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateAgent"></div>
-      <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteAgent"></div>
+      <div class="item-row row">
+        <div class="item-col">
+          <div class="item-label">姓名/</div>
+        </div>
+        <div class="item-col">
+          <div class="item-value name">{{item.agentName}}</div>
+        </div>
+      </div>
+      <div class="item-row row">
+        <div class="item-col">
+          <div class="item-label">电话/</div>
+        </div>
+        <div class="item-col">
+          <div class="item-value phone">{{item.phone}}</div>
+        </div>
+      </div>
+      <div class="item-row row">
+        <div class="item-col">
+          <div class="item-icon iconfont icon-phone" @tap.stop="onHandlePhoneAgent"></div>
+        </div>
+        <div class="item-col">
+          <div class="item-icon iconfont icon-update" @tap.stop="onHandleUpdateAgent"></div>
+        </div>
+        <div class="item-col">
+          <div class="item-icon iconfont icon-delete" @tap.stop="onHandleDeleteAgent"></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -38,9 +59,21 @@
     events: {},
     watch: {},
     methods: {
+      onHandlePhoneAgent() {
+        const {phone} = this.item;
+        wx.makePhoneCall({
+          phoneNumber: phone,
+          success: (res) => {
+            console.log(res);
+          },
+          fail: (err) => {
+            console.log(err);
+          }
+        });
+      },
       onHandleDeleteAgent() {
-        const params = {id: this.item.id};
-        this.$parent.onHandleDeleteAgent(params);
+        const {id} = this.item;
+        this.$parent.onHandleDeleteAgent({id});
       },
       onHandleUpdateAgent() {
         const query = '?item=' + JSON.stringify(this.item);
@@ -62,52 +95,82 @@
 
   .item {
     overflow: hidden;
-    position: relative;
     background-color: @white;
     border-radius: @borderRadius20;
     .item-img {
-      height: unit(300, rpx);
+      height: unit(240, rpx);
       image {
-        border-radius: @borderRadius20;
+        border-top-left-radius: @borderRadius20;
+        border-top-right-radius: @borderRadius20;
       }
     }
     .item-info {
-      position: absolute;
-      top: 0;
-      right: 0;
-      font-size: @fontSize24;
-      color: @white;
-      .item-name {
-        height: unit(50, rpx);
-        line-height: unit(50, rpx);
-        min-width: unit(100, rpx);
-        padding: 0 unit(15, rpx);
-        border-top-right-radius: @borderRadius20;
-        border-bottom-left-radius: @borderRadius20;
-        background-color: @stateColor1;
-        text-align: center;
-      }
-      .item-phone {
-        display: none;
-      }
-    }
-    .item-btns {
-      display: flex;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      z-index: 1;
-      .item-btn {
-        width: unit(60, rpx);
-        height: unit(60, rpx);
-        line-height: unit(60, rpx);
-        font-size: @fontSize36;
-        text-align: center;
-        &.btn-update {
-          color: @btnUpdate;
+      position: relative;
+      padding: unit(20, rpx);
+      line-height: unit(40, rpx);
+      .item-row {
+        margin-bottom: unit(5, rpx);
+        .item-col {
+          .item-label {
+            font-size: @fontSize28;
+            font-weight: bold;
+          }
+          .item-value {
+            font-size: @fontSize28;
+            &.name {
+              font-weight: bold;
+              color: @fontColor1;
+            }
+            &.phone {
+              font-size: @fontSize28;
+              color: @fontColor3;
+            }
+          }
+          .item-icon {
+            width: unit(60, rpx);
+            height: unit(60, rpx);
+            line-height: unit(60, rpx);
+            font-size: @fontSize36;
+            text-align: center;
+            &.icon-phone {
+              color: @stateColor1;
+            }
+            &.icon-update {
+              color: @btnUpdate;
+            }
+            &.icon-delete {
+              color: @btnDelete;
+            }
+          }
         }
-        &.btn-delete {
-          color: @btnDelete;
+        &:last-child {
+          margin: 0;
+          position: absolute;
+          top: unit(-60, rpx);
+          right: 0;
+        }
+      }
+      .item-btns {
+        display: flex;
+        position: absolute;
+        top: unit(-60, rpx);
+        right: 0;
+        z-index: 1;
+        .item-btn {
+          width: unit(60, rpx);
+          height: unit(60, rpx);
+          line-height: unit(60, rpx);
+          font-size: @fontSize36;
+          text-align: center;
+          &.btn-phone {
+            color: @stateColor1;
+          }
+          &.btn-update {
+            color: @btnUpdate;
+          }
+          &.btn-delete {
+            color: @btnDelete;
+          }
         }
       }
     }

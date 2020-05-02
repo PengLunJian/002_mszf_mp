@@ -92,6 +92,7 @@
     },
 
     onLoad() {
+      this.removeCustomerReplace();
       this.exeAjaxSelectCustomer();
     }
   });

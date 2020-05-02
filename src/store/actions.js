@@ -378,6 +378,16 @@ export const updateLayoutReplace = createAction(
     commit(actionTypes.UPDATE_LAYOUT_REPLACE, params);
   });
 
+export const updateAgentReplace = createAction(
+  'updateAgentReplace', (params) => {
+    commit(actionTypes.UPDATE_AGENT_REPLACE, params);
+  });
+
+export const removeAgentReplace = createAction(
+  'removeAgentReplace', () => {
+    commit(actionTypes.REMOVE_AGENT_REPLACE);
+  });
+
 export const selectLayoutReplace = createAction(
   'selectLayoutReplace', (params) => {
     commit(actionTypes.SELECT_LAYOUT_REPLACE, params);
@@ -391,6 +401,11 @@ export const removeLayoutReplace = createAction(
 export const removeHouseReplace = createAction(
   'removeHouseReplace', () => {
     commit(actionTypes.REMOVE_HOUSE_REPLACE);
+  });
+
+export const removeCustomerReplace = createAction(
+  'removeCustomerReplace', () => {
+    commit(actionTypes.REMOVE_CUSTOMER_REPLACE);
   });
 
 export const removeImageReplace = createAction(

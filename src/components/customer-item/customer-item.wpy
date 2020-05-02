@@ -2,19 +2,14 @@
   <div class="item">
     <div class="item-img">
       <lazy-image src="{{item.picUrl?fileUrl+item.picUrl:url}}" width="50%" mode="aspectFill"/>
-      <div class="item-btns" v-if="isBtns">
-        <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateAgent"></div>
-        <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteAgent"></div>
-      </div>
     </div>
     <div class="item-info">
-      <div class="item-row row">
-        <div class="item-col label">姓名：</div>
-        <div class="item-col value name">{{item.agentName}}</div>
+      <div class="item-record">
+        <div class="item-icon iconfont icon-record"></div>
+        <div class="item-text">{{item.userRecord}}</div>
       </div>
-      <div class="item-row row">
-        <div class="item-col label">电话：</div>
-        <div class="item-col value">{{item.phone}}</div>
+      <div class="item-phone">
+        <div class="iconfont icon-phone" @tap="onHandleCustomerPhone"></div>
       </div>
     </div>
   </div>
@@ -22,7 +17,6 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import * as $routes from '../../router';
   import * as $config from '../../config';
   import apis from '../../apis';
 
@@ -35,26 +29,15 @@
       item: {
         type: Object,
         default: {}
-      },
-      isBtns: {
-        type: Boolean,
-        default: true
       }
     },
     events: {},
     watch: {},
     methods: {
-      onHandleDeleteAgent() {
-        const params = {id: this.item.id};
-        this.$parent.onHandleDeleteAgent(params);
-      },
-      onHandleUpdateAgent() {
-        const query = '?item=' + JSON.stringify(this.item);
-        wx.navigateTo({
-          url: $routes.AGENT.UPDATE.path + query
-        });
-      },
-      onHandleDetailAgent(id) {
+      onHandleCustomerPhone() {
+        const {phone} = this.item;
+        console.log(phone);
+        console.log(this.item);
       }
     },
     created() {
@@ -68,51 +51,34 @@
 
   .item {
     overflow: hidden;
+    position: relative;
     background-color: @white;
     border-radius: @borderRadius20;
     .item-img {
-      position: relative;
       height: unit(300, rpx);
       image {
-        border-top-left-radius: @borderRadius20;
-        border-top-right-radius: @borderRadius20;
-      }
-      .item-btns {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        display: flex;
-        .item-btn {
-          width: unit(60, rpx);
-          height: unit(60, rpx);
-          line-height: unit(60, rpx);
-          font-size: @fontSize36;
-          text-align: center;
-          &.btn-update {
-            color: @btnUpdate;
-          }
-          &.btn-delete {
-            color: @btnDelete;
-          }
-        }
+        border-radius: @borderRadius20;
       }
     }
     .item-info {
-      padding: unit(20, rpx);
-      line-height: unit(40, rpx);
       font-size: @fontSize28;
-      .item-col {
-        &.label {
-          font-weight: bold;
-          color: @fontColor1;
+      .item-record {
+        display: flex;
+        position: absolute;
+        left: unit(10, rpx);
+        bottom: unit(10, rpx);
+        height: unit(40, rpx);
+        line-height: unit(40, rpx);
+        padding: 0 unit(15, rpx);
+        background-color: rgba(0, 0, 0, .5);
+        border-radius: unit(40, rpx);
+        color: @white;
+        .item-text {
+          margin-left: unit(8, rpx);
+          font-size: @fontSize24;
         }
-        &.value {
-          color: @fontColor3;
-          &.name {
-            font-weight: bold;
-            color: @fontColor1;
-          }
-        }
+      }
+      .item-phone {
       }
     }
   }

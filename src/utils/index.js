@@ -60,9 +60,8 @@ export const stringify = (params) => {
  */
 export const dataFilter = (data) => {
   data.map((item) => {
-    let {tags} = item;
-    tags = (tags || '').split(' ');
-    item.tags = tags;
+    const {tags} = item;
+    item.tags = (tags || '').split(' ');
   });
   return data;
 };

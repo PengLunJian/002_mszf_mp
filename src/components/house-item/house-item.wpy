@@ -8,7 +8,7 @@
       </div>
       <div class="item-record">
         <div class="item-icon iconfont icon-record"></div>
-        <div class="item-text">{{item.record||0}}</div>
+        <div class="item-text">/{{item.record||0}}</div>
       </div>
       <div class="item-state">
         <div class="item-label state1" v-if="item.state==='在售'">{{item.state}}</div>
@@ -38,7 +38,7 @@
       </div>
       <div class="item-record">
         <div class="item-icon iconfont icon-record"></div>
-        <div class="item-text">{{item.record||0}}</div>
+        <div class="item-text">/{{item.record||0}}</div>
       </div>
       <div class="item-state">
         <div class="item-label state1" v-if="item.state==='未售'">{{item.state}}</div>
@@ -68,7 +68,7 @@
       </div>
       <div class="item-record">
         <div class="item-icon iconfont icon-record"></div>
-        <div class="item-text">{{item.record||0}}</div>
+        <div class="item-text">/{{item.record||0}}</div>
       </div>
       <div class="item-state">
         <div class="item-label state1" v-if="item.state==='未租'">{{item.state}}</div>
@@ -175,15 +175,15 @@
       .item-record {
         display: flex;
         position: absolute;
-        left: 0;
-        bottom: 0;
+        left: unit(10, rpx);
+        bottom: unit(10, rpx);
         height: unit(40, rpx);
         line-height: unit(40, rpx);
         padding: 0 unit(15, rpx);
-        background-color: rgba(0,0,0,.5);
+        background-color: rgba(0, 0, 0, .5);
+        border-radius: unit(40, rpx);
         color: @white;
         .item-text {
-          margin-left: unit(8, rpx);
           font-size: @fontSize24;
         }
       }

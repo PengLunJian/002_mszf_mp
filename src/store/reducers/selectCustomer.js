@@ -33,6 +33,15 @@ const actions = {
       isSuccess: false,
       isFailure: true
     };
+  },
+  [actionTypes.REMOVE_CUSTOMER_REPLACE](state) {
+    return {
+      ...state,
+      isLoading: false,
+      isSuccess: false,
+      isFailure: false,
+      data: null
+    };
   }
 };
 
