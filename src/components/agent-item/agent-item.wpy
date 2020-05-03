@@ -81,7 +81,7 @@
     will-change: transform;
     background-color: @white;
     .item-img {
-      height: unit(240, rpx);
+      height: unit(300, rpx);
     }
     .item-info {
       padding: unit(20, rpx);
@@ -100,7 +100,7 @@
         .item-btns {
           display: flex;
           position: absolute;
-          top: unit(180, rpx);
+          top: unit(240, rpx);
           right: 0;
           .item-btn {
             width: unit(60, rpx);

@@ -1,7 +1,7 @@
 <template>
   <div class="item" @tap="onHandleSelectRecord">
     <div class="item-img">
-      <lazy-image src="{{item.picUrl?fileUrl+item.picUrl:url}}" width="50%" mode="aspectFill"/>
+      <lazy-image src="{{url}}" width="50%" mode="aspectFill"/>
     </div>
     <div class="item-info">
       <div class="item-row row">
@@ -15,13 +15,9 @@
         <div class="item-label">次</div>
       </div>
       <div class="item-row row">
-        <div class="item-phone">{{item.phone}}</div>
+        <div class="item-phone">电话/{{item.phone}}</div>
       </div>
       <div class="item-row row">
-        <div class="item-record">
-          <div class="item-icon iconfont icon-record"></div>
-          <div class="item-text">/{{item.record}}</div>
-        </div>
         <div class="item-btns">
           <div class="item-btn btn-phone iconfont icon-phone" @tap.stop="onHandlePhoneCall"></div>
         </div>
@@ -38,8 +34,7 @@
 
   wepy.component({
     data: {
-      fileUrl: apis.fileUrl,
-      url: $config.DEFAULT_IMAGE
+      url: apis.fileUrl + '/image/bee5c1b5-6ffd-44f8-b3c9-a9709906e43b.jpg'
     },
     props: {
       item: {
@@ -84,7 +79,7 @@
     will-change: transform;
     background-color: @white;
     .item-img {
-      height: unit(240, rpx);
+      height: unit(300, rpx);
     }
     .item-info {
       padding: unit(20, rpx);
@@ -124,8 +119,8 @@
         .item-btns {
           display: flex;
           position: absolute;
-          top: unit(180, rpx);
-          right: unit(10, rpx);
+          top: unit(240, rpx);
+          right: 0;
           .item-btn {
             width: unit(60, rpx);
             height: unit(60, rpx);

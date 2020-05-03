@@ -1080,7 +1080,6 @@
                             .module-item {
                               overflow: hidden;
                               position: relative;
-                              border-radius: @borderRadius20;
                               box-shadow: 0 0 15px @boxShadow05;
                               .item-check {
                                 position: absolute;
