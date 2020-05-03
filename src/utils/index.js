@@ -60,8 +60,9 @@ export const stringify = (params) => {
  */
 export const dataFilter = (data) => {
   data.map((item) => {
-    const {tags} = item;
-    item.tags = (tags || '').split(' ');
+    const {tags, createTime} = item;
+    item.tags = tags ? (tags || '').split(' ') : '';
+    item.createTime = createTime ? dateFormat(createTime, 'yyyy/mm/dd') : '';
   });
   return data;
 };

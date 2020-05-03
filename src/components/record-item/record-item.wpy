@@ -15,20 +15,15 @@
         <div class="item-normal price">{{item.price||0}}元/m²</div>
       </div>
       <div class="item-row row">
-        <div class="item-btns">
-          <div class="item-btn btn-phone iconfont icon-phone" @tap="onHandlePhoneCall"></div>
-          <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
-          <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
-        </div>
         <div class="item-record">
           <div class="item-icon iconfont icon-record"></div>
           <div class="item-text">/{{item.record||0}}</div>
         </div>
-        <div class="item-state">
-          <div class="item-label state1" v-if="item.state==='在售'">{{item.state}}</div>
-          <div class="item-label state2" v-if="item.state==='待售'">{{item.state}}</div>
-          <div class="item-label state3" v-if="item.state==='售罄'">{{item.state}}</div>
-        </div>
+        <div class="item-state state1" v-if="item.state==='在售'">{{item.state}}</div>
+        <div class="item-state state2" v-if="item.state==='待售'">{{item.state}}</div>
+        <div class="item-state state3" v-if="item.state==='售罄'">{{item.state}}</div>
+        <div class="item-time">{{item.createTime}}</div>
+        <div class="item-type color1">新房</div>
       </div>
     </div>
   </div>
@@ -49,19 +44,14 @@
         <div class="item-normal">{{item.price||0}}元/m²</div>
       </div>
       <div class="item-row row">
-        <div class="item-btns">
-          <div class="item-btn btn-phone iconfont icon-phone" @tap="onHandlePhoneCall"></div>
-          <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
-          <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
-        </div>
         <div class="item-record">
           <div class="item-icon iconfont icon-record"></div>
           <div class="item-text">/{{item.record||0}}</div>
         </div>
-        <div class="item-state">
-          <div class="item-label state1" v-if="item.state==='未售'">{{item.state}}</div>
-          <div class="item-label state3" v-if="item.state==='已售'">{{item.state}}</div>
-        </div>
+        <div class="item-state state1" v-if="item.state==='未售'">{{item.state}}</div>
+        <div class="item-state state3" v-if="item.state==='已售'">{{item.state}}</div>
+        <div class="item-time">{{item.createTime}}</div>
+        <div class="item-type color2">二手房</div>
       </div>
     </div>
   </div>
@@ -81,19 +71,14 @@
         <div class="item-normal price">{{item.price||0}}元/月</div>
       </div>
       <div class="item-row row">
-        <div class="item-btns">
-          <div class="item-btn btn-phone iconfont icon-phone" @tap="onHandlePhoneCall"></div>
-          <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
-          <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
-        </div>
         <div class="item-record">
           <div class="item-icon iconfont icon-record"></div>
           <div class="item-text">/{{item.record||0}}</div>
         </div>
-        <div class="item-state">
-          <div class="item-label state1" v-if="item.state==='未租'">{{item.state}}</div>
-          <div class="item-label state3" v-if="item.state==='已租'">{{item.state}}</div>
-        </div>
+        <div class="item-state state1" v-if="item.state==='未租'">{{item.state}}</div>
+        <div class="item-state state3" v-if="item.state==='已租'">{{item.state}}</div>
+        <div class="item-time">{{item.createTime}}</div>
+        <div class="item-type color3">租房</div>
       </div>
     </div>
   </div>
@@ -121,36 +106,6 @@
     },
     computed: {},
     methods: {
-      onHandleDeleteHouse() {
-        const {id, type} = this.item;
-        const params = {id, type};
-        this.$parent.onHandleDeleteHouse(params);
-      },
-      onHandleUpdateHouse() {
-        const {type} = this.item;
-        const urls = [
-          $routes.HOUSE.UPDATE.NEW_HOUSE.path,
-          $routes.HOUSE.UPDATE.SECOND_HOUSE.path,
-          $routes.HOUSE.UPDATE.RENT_HOUSE.path
-        ];
-        const query = '?item=' + JSON.stringify(this.item);
-        const url = urls[type - 1] + query;
-        wx.navigateTo({
-          url
-        });
-      },
-      onHandlePhoneCall() {
-        const {phone} = this.item;
-        wx.makePhoneCall({
-          phoneNumber: phone,
-          success: (res) => {
-            console.log(res);
-          },
-          fail: (err) => {
-            console.log(err);
-          }
-        });
-      },
       onHandleSelectDetail() {
         const {id} = this.item;
         const url = $routes.HOUSE.DETAIL.path + '?id=' + id;
@@ -200,28 +155,6 @@
             margin: 0;
           }
         }
-        .item-btns {
-          display: flex;
-          position: absolute;
-          top: unit(240, rpx);
-          right: 0;
-          .item-btn {
-            width: unit(60, rpx);
-            height: unit(60, rpx);
-            line-height: unit(60, rpx);
-            font-size: @fontSize36;
-            text-align: center;
-            &.btn-phone {
-              color: @btnPhone;
-            }
-            &.btn-update {
-              color: @btnUpdate;
-            }
-            &.btn-delete {
-              color: @btnDelete;
-            }
-          }
-        }
         .item-record {
           display: flex;
           position: absolute;
@@ -241,21 +174,52 @@
           position: absolute;
           top: unit(20, rpx);
           right: unit(20, rpx);
-          .item-label {
-            height: unit(40, rpx);
-            line-height: unit(40, rpx);
-            padding: 0 unit(10, rpx);
-            font-size: @fontSize24;
-            color: @white;
-            &.state1 {
-              background-color: @stateColor1;
-            }
-            &.state2 {
-              background-color: @stateColor2;
-            }
-            &.state3 {
-              background-color: @stateColor3;
-            }
+          height: unit(40, rpx);
+          line-height: unit(40, rpx);
+          padding: 0 unit(10, rpx);
+          font-size: @fontSize24;
+          color: @white;
+          &.state1 {
+            background-color: @stateColor1;
+          }
+          &.state2 {
+            background-color: @stateColor2;
+          }
+          &.state3 {
+            background-color: @stateColor3;
+          }
+        }
+        .item-time {
+          position: absolute;
+          top: unit(240, rpx);
+          right: 0;
+          height: unit(60, rpx);
+          line-height: unit(60, rpx);
+          padding: 0 unit(15, rpx);
+          font-size: @fontSize28;
+          color: @white;
+        }
+        .item-type {
+          position: absolute;
+          top: unit(10, rpx);
+          left: unit(-70, rpx);
+          width: unit(200, rpx);
+          height: unit(40, rpx);
+          line-height: unit(40, rpx);
+          box-shadow: 0 0 15px @boxShadow05;
+          transform: rotate(-45deg);
+          font-size: @fontSize18;
+          text-align: center;
+          font-weight: bold;
+          color: @white;
+          &.color1 {
+            background-color: @typeColor1;
+          }
+          &.color2 {
+            background-color: @typeColor2;
+          }
+          &.color3 {
+            background-color: @typeColor3;
           }
         }
         &:nth-last-child(2),

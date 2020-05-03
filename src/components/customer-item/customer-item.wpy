@@ -5,32 +5,25 @@
     </div>
     <div class="item-info">
       <div class="item-row row">
-        <div class="item-col">
-          <div class="item-label">浏览/</div>
-        </div>
-        <div class="item-col">
-          <div class="item-value">{{item.record}}套</div>
-        </div>
+        <div class="item-label">用户浏览记录</div>
+        <div class="item-value">{{item.record}}</div>
+        <div class="item-label">次</div>
       </div>
       <div class="item-row row">
-        <div class="item-col">
-          <div class="item-label">收藏/</div>
-        </div>
-        <div class="item-col">
-          <div class="item-value">{{item.follow}}套</div>
-        </div>
+        <div class="item-label">用户收藏记录</div>
+        <div class="item-value">{{item.follow}}</div>
+        <div class="item-label">次</div>
       </div>
       <div class="item-row row">
-        <div class="item-col">
-          <div class="item-label">电话/</div>
-        </div>
-        <div class="item-col">
-          <div class="item-value">{{item.phone}}</div>
-        </div>
+        <div class="item-phone">{{item.phone}}</div>
       </div>
       <div class="item-row row">
-        <div class="item-col col-12">
-          <div class="item-phone iconfont icon-phone" @tap.stop="onHandlePhoneCall"></div>
+        <div class="item-record">
+          <div class="item-icon iconfont icon-record"></div>
+          <div class="item-text">/{{item.record}}</div>
+        </div>
+        <div class="item-btns">
+          <div class="item-btn btn-phone iconfont icon-phone" @tap.stop="onHandlePhoneCall"></div>
         </div>
       </div>
     </div>
@@ -88,45 +81,87 @@
   .item {
     overflow: hidden;
     position: relative;
+    will-change: transform;
     background-color: @white;
-    border-radius: @borderRadius20;
     .item-img {
       height: unit(240, rpx);
-      image {
-        border-radius: @borderRadius20;
-      }
     }
     .item-info {
-      position: relative;
       padding: unit(20, rpx);
       line-height: unit(40, rpx);
       .item-row {
-        .item-col {
-          .item-label {
-            font-size: @fontSize28;
-            font-weight: bold;
+        margin-bottom: unit(10, rpx);
+        .item-label {
+          display: inline-block;
+          vertical-align: middle;
+          font-size: @fontSize32;
+          font-weight: bold;
+          color: @fontColor1;
+        }
+        .item-value {
+          display: inline-block;
+          vertical-align: middle;
+          padding: 0 unit(4, rpx);
+          font-size: @fontSize40;
+          font-weight: bold;
+          color: @important;
+        }
+        .item-record {
+          display: flex;
+          position: absolute;
+          top: unit(190, rpx);
+          left: unit(10, rpx);
+          height: unit(40, rpx);
+          line-height: unit(40, rpx);
+          padding: 0 unit(15, rpx);
+          background-color: rgba(0, 0, 0, .5);
+          border-radius: unit(40, rpx);
+          color: @white;
+          .item-text {
+            font-size: @fontSize24;
           }
-          .item-value {
-            font-size: @fontSize28;
-            font-weight: bold;
-            .item-count {
-              padding: 0 unit(4, rpx);
-              font-size: @fontSize40;
-              color: @priceColor;
-            }
-          }
-          .item-phone {
-            position: absolute;
-            top: unit(-60, rpx);
-            right: 0;
+        }
+        .item-btns {
+          display: flex;
+          position: absolute;
+          top: unit(180, rpx);
+          right: unit(10, rpx);
+          .item-btn {
             width: unit(60, rpx);
             height: unit(60, rpx);
             line-height: unit(60, rpx);
             font-size: @fontSize36;
             text-align: center;
-            color: @stateColor1;
+            &.btn-phone {
+              color: @btnPhone;
+            }
           }
         }
+        .item-phone {
+          font-size: @fontSize28;
+          color: @fontColor3;
+        }
+        .item-follow {
+          position: absolute;
+          top: unit(20, rpx);
+          left: unit(20, rpx);
+          .item-icon {
+            font-size: @fontSize40;
+          }
+          .item-text {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: unit(40, rpx);
+            min-width: unit(40, rpx);
+            border-radius: @borderRadius100;
+            background-color: @important;
+            font-size: @fontSize24;
+            text-align: center;
+            color: @white;
+          }
+        }
+        &:nth-last-child(2),
         &:last-child {
           margin: 0;
         }

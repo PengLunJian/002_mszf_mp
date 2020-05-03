@@ -16,7 +16,7 @@
           <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
             <div class="item-row row">
               <div class="item-col col-6" v-for="(item,index) in isRecord.rows">
-                <house-item :item="item" :key="index"/>
+                <record-item :item="item" :key="index"/>
               </div>
             </div>
             <loading-more :length="isRecord.rows.length" :totalCount="isRecord.totalCount"/>
@@ -50,7 +50,7 @@
       tab: {
         activeIndex: 0,
         items: [
-          '浏览', '关注'
+          '浏览房源', '收藏房源'
         ]
       }
     },
@@ -244,7 +244,7 @@
   usingComponents: {
   'top-bar': '../../../components/top-bar/top-bar',
   'lazy-image': '../../../components/lazy-image/lazy-image',
-  'house-item': '../../../components/house-item/house-item',
+  'record-item': '../../../components/record-item/record-item',
   'customer-item': '../../../components/customer-item/customer-item'
   }
   }
