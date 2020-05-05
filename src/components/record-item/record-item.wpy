@@ -15,8 +15,8 @@
         <div class="item-normal price">{{item.price||0}}元/m²</div>
       </div>
       <div class="item-row row">
-        <div class="item-record">
-          <div class="item-icon iconfont icon-record"></div>
+        <div class="item-browse">
+          <div class="item-icon iconfont icon-browse"></div>
           <div class="item-text">/{{item.record||0}}</div>
         </div>
         <div class="item-state state1" v-if="item.state==='在售'">{{item.state}}</div>
@@ -44,8 +44,8 @@
         <div class="item-normal">{{item.price||0}}元/m²</div>
       </div>
       <div class="item-row row">
-        <div class="item-record">
-          <div class="item-icon iconfont icon-record"></div>
+        <div class="item-browse">
+          <div class="item-icon iconfont icon-browse"></div>
           <div class="item-text">/{{item.record||0}}</div>
         </div>
         <div class="item-state state1" v-if="item.state==='未售'">{{item.state}}</div>
@@ -71,8 +71,8 @@
         <div class="item-normal price">{{item.price||0}}元/月</div>
       </div>
       <div class="item-row row">
-        <div class="item-record">
-          <div class="item-icon iconfont icon-record"></div>
+        <div class="item-browse">
+          <div class="item-icon iconfont icon-browse"></div>
           <div class="item-text">/{{item.record||0}}</div>
         </div>
         <div class="item-state state1" v-if="item.state==='未租'">{{item.state}}</div>
@@ -155,7 +155,7 @@
             margin: 0;
           }
         }
-        .item-record {
+        .item-browse {
           display: flex;
           position: absolute;
           top: unit(250, rpx);
@@ -200,6 +200,7 @@
           color: @white;
         }
         .item-type {
+          display: none;
           position: absolute;
           top: unit(10, rpx);
           left: unit(-70, rpx);

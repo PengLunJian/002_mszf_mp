@@ -1,0 +1,234 @@
+<template>
+  <div class="container">
+    <div class="content">
+      <div class="header">
+        <top-bar title="浏览记录"></top-bar>
+        <div class="tab-bar row">
+          <div class="tab-item col-4" v-for="(item,index) in tab.items"
+               :class="{'active':index===tab.activeIndex}" :key="index"
+               @tap="onHandleTabChange(index)">
+            <div class="tab-text">
+              <span class="tab-label">{{item.label}}</span>
+              <span class="tab-triangle"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="body">
+        <div class="context fade">
+          <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
+            <div class="item-row row">
+              <div class="item-col col-6" v-for="(item,index) in isRecord.rows">
+                <record-item :item="item" :key="index"/>
+              </div>
+            </div>
+            <loading-more :length="isRecord.rows.length" :totalCount="isRecord.totalCount"/>
+          </scroll-view>
+        </div>
+      </div>
+      <div class="footer"></div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+  import store from '../../../store/index';
+  import {mapState, mapActions} from '@wepy/redux';
+  import Toast from '../../../mixins/toast';
+  import Loading from '../../../mixins/loading';
+  import * as controller from './controller';
+
+  wepy.page({
+    store,
+
+    mixins: [Toast, Loading],
+
+    data: {
+      phone: 0,
+      timer: null,
+      pageSize: 10,
+      pageIndex: 1,
+      isScroll: true,
+      tab: {
+        activeIndex: -1,
+        items: [
+          {
+            index: 0,
+            label: '类型',
+            isShow: false
+          },
+          {
+            index: 1,
+            label: '筛选',
+            isShow: false
+          },
+          {
+            index: 2,
+            label: '排序',
+            isShow: false
+          }
+        ]
+      }
+    },
+
+    computed: {
+      ...mapState(controller.STATES)
+    },
+
+    methods: {
+      ...mapActions(controller.ACTIONS),
+      onHandleTabChange(index) {
+        this.tab.activeIndex = index;
+      },
+      onHandleScrollToLower() {
+        if (this.timer) return;
+        this.timer = setTimeout(() => {
+          const {rows, totalCount} = this.isRecord;
+          if (rows.length < totalCount) {
+            this.exeAjaxSelectBrowse();
+          }
+        }, 0);
+      },
+      exeAjaxSelectBrowse() {
+        this.showLoading();
+        const params = this.getParams();
+        this.ajaxSelectBrowse(params)
+          .then((res) => {
+            this.hideLoading();
+            res = res || {};
+            const {success} = res.payload;
+            if (success) {
+              this.pageIndex++;
+            } else {
+              this.showToast('加载失败，请重试');
+            }
+            this.timer = null;
+            console.log(res);
+          })
+          .catch((err) => {
+            this.timer = null;
+            this.hideLoading();
+            this.showToast('加载失败，请重试');
+            console.log(err);
+          });
+      },
+      getParams() {
+        const {isLogin, pageIndex, pageSize, phone} = this;
+        const {busId} = isLogin;
+        const params = {
+          busId,
+          phone,
+          pageSize,
+          pageIndex
+        };
+        return params;
+      }
+    },
+
+    onLoad(option) {
+      const {item} = option;
+      const data = JSON.parse(item);
+      const {phone} = data;
+      this.phone = phone;
+      this.removeBrowseReplace();
+      this.exeAjaxSelectBrowse();
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../../assets/less/variable";
+  @import "../../../assets/less/iconfont";
+
+  @height: unit(120, rpx);
+
+  .container {
+    min-height: 100vh;
+    .content {
+      height: 100vh;
+      .header {
+        .tab-bar {
+          width: 100%;
+          position: fixed;
+          top: 65px;
+          left: 0;
+          z-index: 1000;
+          background-color: @white;
+          box-shadow: 0 0 15px @boxShadow05;
+          font-size: @fontSize28;
+          text-align: center;
+          color: @fontColor1;
+          .tab-item {
+            position: relative;
+            padding: 10px 0;
+            .tab-text {
+              height: 20px;
+              line-height: 20px;
+              border-right: 0.5px solid @borderColor1;
+              font-size: 0;
+              .tab-label,
+              .tab-triangle {
+                display: inline-block;
+                vertical-align: middle;
+                &.tab-label {
+                  font-size: @fontSize28;
+                }
+                &.tab-triangle {
+                  margin-left: unit(20, rpx);
+                  border-top: unit(12, rpx) solid @fontColor1;
+                  border-left: unit(8, rpx) solid transparent;
+                  border-right: unit(8, rpx) solid transparent;
+                  transition: all 300ms ease;
+                }
+              }
+            }
+            &.active {
+              color: @theme2;
+              .tab-triangle {
+                transform: rotate(180deg);
+                border-top-color: @theme2 !important;
+              }
+            }
+            &:last-child {
+              .tab-text {
+                border: none;
+              }
+            }
+          }
+        }
+      }
+      .body {
+        height: 100%;
+        position: relative;
+        .context {
+          height: 100%;
+          padding-top: unit(210, rpx);
+          .scroll-view {
+            height: 100%;
+            .item-row {
+              padding: unit(15, rpx);
+              .item-col {
+                padding: unit(15, rpx);
+              }
+            }
+          }
+        }
+      }
+      .footer {
+      }
+    }
+  }
+</style>
+
+<config>
+  {
+  navigationStyle:'custom',
+  usingComponents: {
+  'top-bar': '../../../components/top-bar/top-bar',
+  'lazy-image': '../../../components/lazy-image/lazy-image',
+  'record-item': '../../../components/record-item/record-item',
+  'customer-item': '../../../components/customer-item/customer-item'
+  }
+  }
+</config>

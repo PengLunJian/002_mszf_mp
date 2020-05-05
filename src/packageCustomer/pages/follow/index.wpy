@@ -2,12 +2,15 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="用户记录"></top-bar>
+        <top-bar title="收藏记录"></top-bar>
         <div class="tab-bar row">
-          <div class="tab-item col-6" v-for="(item,index) in tab.items"
+          <div class="tab-item col-4" v-for="(item,index) in tab.items"
                :class="{'active':index===tab.activeIndex}" :key="index"
                @tap="onHandleTabChange(index)">
-            <div class="tab-text">{{item}}</div>
+            <div class="tab-text">
+              <span class="tab-label">{{item.label}}</span>
+              <span class="tab-triangle"></span>
+            </div>
           </div>
         </div>
       </div>
@@ -48,9 +51,23 @@
       pageIndex: 1,
       isScroll: true,
       tab: {
-        activeIndex: 0,
+        activeIndex: -1,
         items: [
-          '浏览房源', '收藏房源'
+          {
+            index: 0,
+            label: '类型',
+            isShow: false
+          },
+          {
+            index: 1,
+            label: '筛选',
+            isShow: false
+          },
+          {
+            index: 2,
+            label: '排序',
+            isShow: false
+          }
         ]
       }
     },
@@ -61,51 +78,17 @@
 
     methods: {
       ...mapActions(controller.ACTIONS),
-      onHandleSelectRecord() {
-        const {activeIndex} = this.tab;
-        if (activeIndex) {
-          this.exeAjaxSelectFollow();
-        } else {
-          this.exeAjaxSelectBrowse();
-        }
-      },
       onHandleTabChange(index) {
-        this.pageIndex = 1;
         this.tab.activeIndex = index;
-        this.removeRecordReplace();
-        this.onHandleSelectRecord();
       },
       onHandleScrollToLower() {
         if (this.timer) return;
         this.timer = setTimeout(() => {
           const {rows, totalCount} = this.isRecord;
           if (rows.length < totalCount) {
-            this.onHandleSelectRecord();
+            this.exeAjaxSelectFollow();
           }
         }, 0);
-      },
-      exeAjaxSelectBrowse() {
-        this.showLoading();
-        const params = this.getParams();
-        this.ajaxSelectBrowse(params)
-          .then((res) => {
-            this.hideLoading();
-            res = res || {};
-            const {success} = res.payload;
-            if (success) {
-              this.pageIndex++;
-            } else {
-              this.showToast('加载失败，请重试');
-            }
-            this.timer = null;
-            console.log(res);
-          })
-          .catch((err) => {
-            this.timer = null;
-            this.hideLoading();
-            this.showToast('加载失败，请重试');
-            console.log(err);
-          });
       },
       exeAjaxSelectFollow() {
         this.showLoading();
@@ -148,8 +131,8 @@
       const data = JSON.parse(item);
       const {phone} = data;
       this.phone = phone;
-      this.removeRecordReplace();
-      this.onHandleSelectRecord();
+      this.removeFollowReplace();
+      this.exeAjaxSelectFollow();
     }
   });
 </script>
@@ -167,44 +150,44 @@
       .header {
         .tab-bar {
           width: 100%;
-          flex-wrap: wrap;
           position: fixed;
-          top: unit(130, rpx);
+          top: 65px;
           left: 0;
-          z-index: 999;
+          z-index: 1000;
           background-color: @white;
           box-shadow: 0 0 15px @boxShadow05;
           font-size: @fontSize28;
           text-align: center;
-          color: @fontColor2;
+          color: @fontColor1;
           .tab-item {
             position: relative;
-            padding: unit(20, rpx) 0;
+            padding: 10px 0;
             .tab-text {
-              height: unit(40, rpx);
-              line-height: unit(40, rpx);
-              transition: all 300ms ease;
+              height: 20px;
+              line-height: 20px;
               border-right: 0.5px solid @borderColor1;
-            }
-            &:after {
-              content: '';
-              width: 0px;
-              display: block;
-              position: absolute;
-              left: 50%;
-              bottom: 0;
-              opacity: 0;
-              visibility: hidden;
-              transform: translateX(-50%);
-              transition: all 300ms ease;
-              border-top: unit(6, rpx) solid @theme2;
+              font-size: 0;
+              .tab-label,
+              .tab-triangle {
+                display: inline-block;
+                vertical-align: middle;
+                &.tab-label {
+                  font-size: @fontSize28;
+                }
+                &.tab-triangle {
+                  margin-left: unit(20, rpx);
+                  border-top: unit(12, rpx) solid @fontColor1;
+                  border-left: unit(8, rpx) solid transparent;
+                  border-right: unit(8, rpx) solid transparent;
+                  transition: all 300ms ease;
+                }
+              }
             }
             &.active {
               color: @theme2;
-              &:after {
-                opacity: 1;
-                visibility: visible;
-                width: unit(120, rpx);
+              .tab-triangle {
+                transform: rotate(180deg);
+                border-top-color: @theme2 !important;
               }
             }
             &:last-child {

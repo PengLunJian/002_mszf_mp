@@ -1,25 +1,27 @@
 <template>
-  <div class="item" @tap="onHandleSelectRecord">
+  <div class="item">
     <div class="item-img">
       <lazy-image src="{{url}}" width="50%" mode="aspectFill"/>
     </div>
     <div class="item-info">
       <div class="item-row row">
-        <div class="item-label">用户浏览记录</div>
+        <div class="item-label">房源浏览记录（</div>
         <div class="item-value">{{item.record}}</div>
-        <div class="item-label">次</div>
+        <div class="item-label">）</div>
       </div>
       <div class="item-row row">
-        <div class="item-label">用户收藏记录</div>
+        <div class="item-label">房源收藏记录（</div>
         <div class="item-value">{{item.follow}}</div>
-        <div class="item-label">次</div>
+        <div class="item-label">）</div>
       </div>
       <div class="item-row row">
-        <div class="item-phone">电话/{{item.phone}}</div>
+        <div class="item-phone">{{item.phone}}</div>
       </div>
       <div class="item-row row">
         <div class="item-btns">
-          <div class="item-btn btn-phone iconfont icon-phone" @tap.stop="onHandlePhoneCall"></div>
+          <div class="item-btn btn-mobile iconfont icon-mobile" @tap.stop="onHandleMobile"></div>
+          <div class="item-btn btn-browse iconfont icon-browse" @tap.stop="onHandleBrowse"></div>
+          <div class="item-btn btn-follow iconfont icon-follow" @tap.stop="onHandleFollow"></div>
         </div>
       </div>
     </div>
@@ -28,7 +30,6 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import * as $config from '../../config';
   import * as $routes from '../../router';
   import apis from '../../apis';
 
@@ -45,7 +46,7 @@
     events: {},
     watch: {},
     methods: {
-      onHandlePhoneCall() {
+      onHandleMobile() {
         const {phone} = this.item;
         wx.makePhoneCall({
           phoneNumber: phone,
@@ -57,10 +58,16 @@
           }
         });
       },
-      onHandleSelectRecord() {
+      onHandleFollow() {
         const query = '?item=' + JSON.stringify(this.item);
         wx.navigateTo({
-          url: $routes.CUSTOMER.RECORD.path + query
+          url: $routes.CUSTOMER.FOLLOW.path + query
+        });
+      },
+      onHandleBrowse() {
+        const query = '?item=' + JSON.stringify(this.item);
+        wx.navigateTo({
+          url: $routes.CUSTOMER.BROWSE.path + query
         });
       }
     },
@@ -89,7 +96,7 @@
         .item-label {
           display: inline-block;
           vertical-align: middle;
-          font-size: @fontSize32;
+          font-size: @fontSize28;
           font-weight: bold;
           color: @fontColor1;
         }
@@ -100,21 +107,6 @@
           font-size: @fontSize40;
           font-weight: bold;
           color: @important;
-        }
-        .item-record {
-          display: flex;
-          position: absolute;
-          top: unit(190, rpx);
-          left: unit(10, rpx);
-          height: unit(40, rpx);
-          line-height: unit(40, rpx);
-          padding: 0 unit(15, rpx);
-          background-color: rgba(0, 0, 0, .5);
-          border-radius: unit(40, rpx);
-          color: @white;
-          .item-text {
-            font-size: @fontSize24;
-          }
         }
         .item-btns {
           display: flex;
@@ -127,34 +119,21 @@
             line-height: unit(60, rpx);
             font-size: @fontSize36;
             text-align: center;
-            &.btn-phone {
-              color: @btnPhone;
+            &.btn-mobile {
+              color: @btnMobile;
+            }
+            &.btn-follow {
+              color: @btnFollow;
+            }
+            &.btn-browse {
+              color: @btnBrowse;
             }
           }
         }
         .item-phone {
           font-size: @fontSize28;
-          color: @fontColor3;
-        }
-        .item-follow {
-          position: absolute;
-          top: unit(20, rpx);
-          left: unit(20, rpx);
-          .item-icon {
-            font-size: @fontSize40;
-          }
-          .item-text {
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: unit(40, rpx);
-            min-width: unit(40, rpx);
-            border-radius: @borderRadius100;
-            background-color: @important;
-            font-size: @fontSize24;
-            text-align: center;
-            color: @white;
-          }
+          font-weight: bold;
+          color: @fontColor1;
         }
         &:nth-last-child(2),
         &:last-child {

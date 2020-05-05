@@ -12,7 +12,7 @@
       </div>
       <div class="item-row row">
         <div class="item-btns">
-          <div class="item-btn btn-phone iconfont icon-phone" @tap.stop="onHandlePhoneCall"></div>
+          <div class="item-btn btn-mobile iconfont icon-mobile" @tap.stop="onHandlePhoneCall"></div>
           <div class="item-btn btn-update iconfont icon-update" @tap.stop="onHandleUpdateAgent"></div>
           <div class="item-btn btn-delete iconfont icon-delete" @tap.stop="onHandleDeleteAgent"></div>
         </div>
@@ -86,7 +86,7 @@
     .item-info {
       padding: unit(20, rpx);
       line-height: unit(40, rpx);
-      font-size: @fontSize28;
+      font-size: @fontSize32;
       .item-row {
         margin-bottom: unit(10, rpx);
         .item-name {
@@ -108,8 +108,8 @@
             line-height: unit(60, rpx);
             font-size: @fontSize36;
             text-align: center;
-            &.btn-phone {
-              color: @btnPhone;
+            &.btn-mobile {
+              color: @btnMobile;
             }
             &.btn-update {
               color: @btnUpdate;

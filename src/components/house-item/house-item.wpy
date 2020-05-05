@@ -16,12 +16,12 @@
       </div>
       <div class="item-row row">
         <div class="item-btns">
-          <div class="item-btn btn-phone iconfont icon-phone" @tap="onHandlePhoneCall"></div>
+          <div class="item-btn btn-mobile iconfont icon-mobile" @tap="onHandlePhoneCall"></div>
           <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
           <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
         </div>
-        <div class="item-record">
-          <div class="item-icon iconfont icon-record"></div>
+        <div class="item-browse">
+          <div class="item-icon iconfont icon-browse"></div>
           <div class="item-text">/{{item.record||0}}</div>
         </div>
         <div class="item-state">
@@ -50,12 +50,12 @@
       </div>
       <div class="item-row row">
         <div class="item-btns">
-          <div class="item-btn btn-phone iconfont icon-phone" @tap="onHandlePhoneCall"></div>
+          <div class="item-btn btn-mobile iconfont icon-mobile" @tap="onHandlePhoneCall"></div>
           <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
           <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
         </div>
-        <div class="item-record">
-          <div class="item-icon iconfont icon-record"></div>
+        <div class="item-browse">
+          <div class="item-icon iconfont icon-browse"></div>
           <div class="item-text">/{{item.record||0}}</div>
         </div>
         <div class="item-state">
@@ -82,12 +82,12 @@
       </div>
       <div class="item-row row">
         <div class="item-btns">
-          <div class="item-btn btn-phone iconfont icon-phone" @tap="onHandlePhoneCall"></div>
+          <div class="item-btn btn-mobile iconfont icon-mobile" @tap="onHandlePhoneCall"></div>
           <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
           <div class="item-btn btn-delete iconfont icon-delete" @tap="onHandleDeleteHouse"></div>
         </div>
-        <div class="item-record">
-          <div class="item-icon iconfont icon-record"></div>
+        <div class="item-browse">
+          <div class="item-icon iconfont icon-browse"></div>
           <div class="item-text">/{{item.record||0}}</div>
         </div>
         <div class="item-state">
@@ -211,8 +211,8 @@
             line-height: unit(60, rpx);
             font-size: @fontSize36;
             text-align: center;
-            &.btn-phone {
-              color: @btnPhone;
+            &.btn-mobile {
+              color: @btnMobile;
             }
             &.btn-update {
               color: @btnUpdate;
@@ -222,7 +222,7 @@
             }
           }
         }
-        .item-record {
+        .item-browse {
           display: flex;
           position: absolute;
           top: unit(250, rpx);

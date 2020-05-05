@@ -83,9 +83,13 @@ export const CUSTOMER = {
     name: '用户查询',
     path: '/packageCustomer/pages/select/index'
   },
-  RECORD: {
+  BROWSE: {
     name: '记录查询',
-    path: '/packageCustomer/pages/record/index'
+    path: '/packageCustomer/pages/browse/index'
+  },
+  FOLLOW: {
+    name: '记录查询',
+    path: '/packageCustomer/pages/follow/index'
   }
 };
 
