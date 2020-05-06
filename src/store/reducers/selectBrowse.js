@@ -4,7 +4,7 @@ import * as utils from '../../utils';
 import * as states from '../states';
 
 const actions = {
-  [actionTypes.SELECT_RECORD_REQUEST](state) {
+  [actionTypes.SELECT_BROWSE_REQUEST](state) {
     return {
       ...state,
       isLoading: true,
@@ -12,7 +12,7 @@ const actions = {
       isFailure: false
     };
   },
-  [actionTypes.SELECT_RECORD_SUCCESS](state, action) {
+  [actionTypes.SELECT_BROWSE_SUCCESS](state, action) {
     const oldData = state.data || {};
     const oldRows = oldData.rows || [];
     const newData = action.data || {};
@@ -26,7 +26,7 @@ const actions = {
       data: action.data
     };
   },
-  [actionTypes.SELECT_RECORD_FAILURE](state) {
+  [actionTypes.SELECT_BROWSE_FAILURE](state) {
     return {
       ...state,
       isLoading: false,
@@ -34,7 +34,7 @@ const actions = {
       isFailure: true
     };
   },
-  [actionTypes.REMOVE_RECORD_REPLACE](state) {
+  [actionTypes.REMOVE_BROWSE_REPLACE](state) {
     return {
       ...state,
       isLoading: false,
@@ -45,6 +45,6 @@ const actions = {
   }
 };
 
-const SELECT_RECORD_REDUCER = handleActions(actions, states.SELECT_RECORD_STATE);
+const SELECT_BROWSE_REDUCER = handleActions(actions, states.SELECT_BROWSE_STATE);
 
-export default SELECT_RECORD_REDUCER;
+export default SELECT_BROWSE_REDUCER;

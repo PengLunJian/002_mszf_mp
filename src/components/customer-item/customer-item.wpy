@@ -1,27 +1,29 @@
 <template>
   <div class="item">
-    <div class="item-img">
-      <lazy-image src="{{url}}" width="50%" mode="aspectFill"/>
-    </div>
-    <div class="item-info">
-      <div class="item-row row">
-        <div class="item-label">房源浏览记录（</div>
-        <div class="item-value">{{item.record}}</div>
-        <div class="item-label">）</div>
+    <div class="item-row row">
+      <div class="item-col col-3">
+        <div class="item-img">
+          <lazy-image src="{{url}}" width="50%" mode="aspectFill"/>
+        </div>
       </div>
-      <div class="item-row row">
-        <div class="item-label">房源收藏记录（</div>
-        <div class="item-value">{{item.follow}}</div>
-        <div class="item-label">）</div>
+      <div class="item-col col-3">
+        <div class="item-btn item-mobile">
+          <div class="item-icon iconfont icon-mobile" @tap.stop="onHandleMobile"></div>
+          <div class="item-label">电话</div>
+        </div>
       </div>
-      <div class="item-row row">
-        <div class="item-phone">{{item.phone}}</div>
+      <div class="item-col col-3">
+        <div class="item-btn item-browse">
+          <div class="item-icon iconfont icon-browse" @tap.stop="onHandleBrowse"></div>
+          <div class="item-label">浏览</div>
+          <div class="item-value">{{item.record}}</div>
+        </div>
       </div>
-      <div class="item-row row">
-        <div class="item-btns">
-          <div class="item-btn btn-mobile iconfont icon-mobile" @tap.stop="onHandleMobile"></div>
-          <div class="item-btn btn-browse iconfont icon-browse" @tap.stop="onHandleBrowse"></div>
-          <div class="item-btn btn-follow iconfont icon-follow" @tap.stop="onHandleFollow"></div>
+      <div class="item-col col-3">
+        <div class="item-btn item-follow">
+          <div class="item-icon iconfont icon-follow" @tap.stop="onHandleFollow"></div>
+          <div class="item-label">收藏</div>
+          <div class="item-value">{{item.record}}</div>
         </div>
       </div>
     </div>
@@ -35,7 +37,7 @@
 
   wepy.component({
     data: {
-      url: apis.fileUrl + '/image/bee5c1b5-6ffd-44f8-b3c9-a9709906e43b.jpg'
+      url: apis.fileUrl + '/image/5127f429-2015-48ef-9041-18b1b6e203d5.png'
     },
     props: {
       item: {
@@ -85,59 +87,62 @@
     position: relative;
     will-change: transform;
     background-color: @white;
-    .item-img {
-      height: unit(300, rpx);
-    }
-    .item-info {
-      padding: unit(20, rpx);
-      line-height: unit(40, rpx);
-      .item-row {
-        margin-bottom: unit(10, rpx);
-        .item-label {
+    .item-row {
+      padding: unit(30, rpx);
+      text-align: center;
+      color: @fontColor1;
+      .item-col {
+        .item-img {
+          overflow: hidden;
           display: inline-block;
-          vertical-align: middle;
-          font-size: @fontSize28;
-          font-weight: bold;
-          color: @fontColor1;
+          width: unit(120, rpx);
+          height: unit(120, rpx);
+          margin-top: unit(20, rpx);
+          border-radius: @borderRadius100;
         }
-        .item-value {
-          display: inline-block;
-          vertical-align: middle;
-          padding: 0 unit(4, rpx);
-          font-size: @fontSize40;
-          font-weight: bold;
-          color: @important;
-        }
-        .item-btns {
-          display: flex;
-          position: absolute;
-          top: unit(240, rpx);
-          right: 0;
-          .item-btn {
-            width: unit(60, rpx);
-            height: unit(60, rpx);
-            line-height: unit(60, rpx);
-            font-size: @fontSize36;
+        .item-btn {
+          position: relative;
+          padding: unit(30, rpx) 0;
+          .item-icon {
+            height: unit(50, rpx);
+            line-height: unit(50, rpx);
+            font-size: @fontSize46;
+          }
+          .item-value {
+            position: absolute;
+            top: unit(15, rpx);
+            right: unit(30, rpx);
+            height: unit(40, rpx);
+            line-height: unit(40, rpx);
+            min-width: unit(40, rpx);
+            padding: 0 unit(10, rpx);
+            background-color: @btnDelete;
+            border-radius: @borderRadius100;
+            font-size: @fontSize24;
             text-align: center;
-            &.btn-mobile {
+            color: @white;
+          }
+          .item-label {
+            height: unit(50, rpx);
+            line-height: unit(50, rpx);
+            font-size: @fontSize26;
+          }
+          &.item-mobile {
+            .item-icon {
               color: @btnMobile;
             }
-            &.btn-follow {
-              color: @btnFollow;
-            }
-            &.btn-browse {
+          }
+          &.item-browse {
+            .item-icon {
               color: @btnBrowse;
             }
           }
-        }
-        .item-phone {
-          font-size: @fontSize28;
-          font-weight: bold;
-          color: @fontColor1;
-        }
-        &:nth-last-child(2),
-        &:last-child {
-          margin: 0;
+          &.item-follow {
+            .item-icon {
+              font-size: @fontSize42;
+              color: @btnFollow;
+            }
+          }
         }
       }
     }

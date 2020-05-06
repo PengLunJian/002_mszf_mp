@@ -114,7 +114,14 @@ export const SELECT_CUSTOMER_STATE = {
   data: null
 };
 
-export const SELECT_RECORD_STATE = {
+export const SELECT_BROWSE_STATE = {
+  isLoading: true,
+  isSuccess: false,
+  isFailure: false,
+  data: null
+};
+
+export const SELECT_FOLLOW_STATE = {
   isLoading: true,
   isSuccess: false,
   isFailure: false,

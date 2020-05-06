@@ -101,6 +101,12 @@
 					"pathName": "pages/index/index",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "packageCustomer/pages/select/index",
+					"pathName": "packageCustomer/pages/select/index",
+					"scene": null
 				}
 			]
 		}

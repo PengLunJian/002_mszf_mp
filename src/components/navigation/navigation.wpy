@@ -28,7 +28,7 @@
       items: [
         {
           name: '房源管理',
-          icon: 'icon-house',
+          icon: 'icon-second',
           path: $routes.HOUSE.SELECT.path
         },
         {

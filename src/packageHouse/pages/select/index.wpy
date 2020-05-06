@@ -3,13 +3,6 @@
     <div class="content">
       <div class="header">
         <top-bar title="房源管理"></top-bar>
-        <div class="tab-bar row">
-          <div class="tab-item col-4" v-for="(item,index) in tab.items"
-               :class="{'active':index===tab.initIndex}" :key="index"
-               @tap="onHandleTabChange(index)">
-            <div class="tab-text">{{item.name}}</div>
-          </div>
-        </div>
       </div>
       <div class="body">
         <div class="context fade">
@@ -43,10 +36,10 @@
   import wepy from '@wepy/core';
   import store from '../../../store/index';
   import {mapState, mapActions} from '@wepy/redux';
-  import * as controller from './controller';
-  import * as $routes from '../../../router/index';
   import Toast from '../../../mixins/toast';
   import Loading from '../../../mixins/loading';
+  import * as $routes from '../../../router/index';
+  import * as controller from './controller';
 
   wepy.page({
     store,
@@ -54,6 +47,7 @@
     mixins: [Toast, Loading],
 
     data: {
+      type: 1,
       timer: null,
       pageSize: 10,
       pageIndex: 1,
@@ -61,19 +55,17 @@
       isLeave: false,
       isScroll: true,
       tab: {
-        initIndex: 0,
+        activeIndex: -1,
         items: [
           {
-            name: '新房',
-            path: $routes.HOUSE.INSERT.NEW_HOUSE.path
+            index: 0,
+            label: '筛选',
+            isShow: false
           },
           {
-            name: '二手房',
-            path: $routes.HOUSE.INSERT.SECOND_HOUSE.path
-          },
-          {
-            name: '租房',
-            path: $routes.HOUSE.INSERT.RENT_HOUSE.path
+            index: 1,
+            label: '排序',
+            isShow: false
           }
         ]
       }
@@ -128,12 +120,6 @@
             console.log(err);
           });
       },
-      onHandleTabChange(index) {
-        this.tab.initIndex = index;
-        this.removeHouseReplace();
-        this.pageIndex = 1;
-        this.exeAjaxSelectHouse();
-      },
       onHandleScrollToLower() {
         if (this.timer) return;
         this.timer = setTimeout(() => {
@@ -144,8 +130,14 @@
         }, 0);
       },
       onHandleInsertHouse() {
-        const {items, initIndex} = this.tab;
-        const url = items[initIndex].path;
+        const {type} = this;
+        const urls = [
+          $routes.HOUSE.INSERT.NEW_HOUSE.path,
+          $routes.HOUSE.INSERT.SECOND_HOUSE.path,
+          $routes.HOUSE.INSERT.RENT_HOUSE.path
+        ];
+        const index = parseInt(type) - 1;
+        const url = urls[index];
         wx.navigateTo({
           url
         });
@@ -161,8 +153,7 @@
       },
       getParams() {
         const {busId} = this.isLogin;
-        const {pageSize, pageIndex, tab} = this;
-        const type = tab.initIndex + 1;
+        const {pageSize, pageIndex, type} = this;
         const params = {
           busId,
           pageSize,
@@ -173,7 +164,9 @@
       }
     },
 
-    onLoad() {
+    onLoad(option) {
+      const {type} = option;
+      this.type = type;
       this.removeHouseReplace();
       this.exeAjaxSelectHouse();
     }
@@ -191,44 +184,44 @@
       .header {
         .tab-bar {
           width: 100%;
-          flex-wrap: wrap;
           position: fixed;
-          top: unit(130, rpx);
+          top: 65px;
           left: 0;
-          z-index: 999;
+          z-index: 1000;
           background-color: @white;
           box-shadow: 0 0 15px @boxShadow05;
           font-size: @fontSize28;
           text-align: center;
-          color: @fontColor2;
+          color: @fontColor1;
           .tab-item {
             position: relative;
-            padding: unit(20, rpx) 0;
+            padding: 10px 0;
             .tab-text {
-              height: unit(40, rpx);
-              line-height: unit(40, rpx);
-              transition: all 300ms ease;
+              height: 20px;
+              line-height: 20px;
               border-right: 0.5px solid @borderColor1;
-            }
-            &:after {
-              content: '';
-              width: 0px;
-              display: block;
-              position: absolute;
-              left: 50%;
-              bottom: 0;
-              opacity: 0;
-              visibility: hidden;
-              transform: translateX(-50%);
-              transition: all 300ms ease;
-              border-top: unit(6, rpx) solid @theme2;
+              font-size: 0;
+              .tab-label,
+              .tab-triangle {
+                display: inline-block;
+                vertical-align: middle;
+                &.tab-label {
+                  font-size: @fontSize28;
+                }
+                &.tab-triangle {
+                  margin-left: unit(20, rpx);
+                  border-top: unit(12, rpx) solid @fontColor1;
+                  border-left: unit(8, rpx) solid transparent;
+                  border-right: unit(8, rpx) solid transparent;
+                  transition: all 300ms ease;
+                }
+              }
             }
             &.active {
               color: @theme2;
-              &:after {
-                opacity: 1;
-                visibility: visible;
-                width: unit(120, rpx);
+              .tab-triangle {
+                transform: rotate(180deg);
+                border-top-color: @theme2 !important;
               }
             }
             &:last-child {
@@ -244,7 +237,7 @@
         position: relative;
         .context {
           height: 100%;
-          padding-top: unit(210, rpx);
+          padding-top: unit(130, rpx);
           .scroll-view {
             height: 100%;
             .item-row {

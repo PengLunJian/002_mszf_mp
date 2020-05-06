@@ -388,9 +388,14 @@ export const removeAgentReplace = createAction(
     commit(actionTypes.REMOVE_AGENT_REPLACE);
   });
 
-export const removeRecordReplace = createAction(
-  'removeRecordReplace', () => {
-    commit(actionTypes.REMOVE_RECORD_REPLACE);
+export const removeBrowseReplace = createAction(
+  'removeBrowseReplace', () => {
+    commit(actionTypes.REMOVE_BROWSE_REPLACE);
+  });
+
+export const removeFollowReplace = createAction(
+  'removeFollowReplace', () => {
+    commit(actionTypes.REMOVE_FOLLOW_REPLACE);
   });
 
 export const selectLayoutReplace = createAction(
@@ -442,21 +447,21 @@ export const ajaxRequestSelectCustomer = createAction(
 
 export const ajaxRequestSelectBrowse = createAction(
   'selectBrowse', (params) => {
-    commit(actionTypes.SELECT_RECORD_REQUEST);
+    commit(actionTypes.SELECT_BROWSE_REQUEST);
     return new Promise((resolve, reject) => {
       axios.post(apis.selectBrowse, params)
         .then((res) => {
           res = res || {};
           const {data, success} = res;
           if (success) {
-            commit(actionTypes.SELECT_RECORD_SUCCESS, data);
+            commit(actionTypes.SELECT_BROWSE_SUCCESS, data);
           } else {
-            commit(actionTypes.SELECT_RECORD_FAILURE);
+            commit(actionTypes.SELECT_BROWSE_FAILURE);
           }
           resolve(res);
         })
         .catch((err) => {
-          commit(actionTypes.SELECT_RECORD_FAILURE);
+          commit(actionTypes.SELECT_BROWSE_FAILURE);
           reject(err);
         });
     });
@@ -464,21 +469,21 @@ export const ajaxRequestSelectBrowse = createAction(
 
 export const ajaxRequestSelectFollow = createAction(
   'selectFollow', (params) => {
-    commit(actionTypes.SELECT_RECORD_REQUEST);
+    commit(actionTypes.SELECT_FOLLOW_REQUEST);
     return new Promise((resolve, reject) => {
       axios.post(apis.selectFollow, params)
         .then((res) => {
           res = res || {};
           const {data, success} = res;
           if (success) {
-            commit(actionTypes.SELECT_RECORD_SUCCESS, data);
+            commit(actionTypes.SELECT_FOLLOW_SUCCESS, data);
           } else {
-            commit(actionTypes.SELECT_RECORD_FAILURE);
+            commit(actionTypes.SELECT_FOLLOW_FAILURE);
           }
           resolve(res);
         })
         .catch((err) => {
-          commit(actionTypes.SELECT_RECORD_FAILURE);
+          commit(actionTypes.SELECT_FOLLOW_FAILURE);
           reject(err);
         });
     });

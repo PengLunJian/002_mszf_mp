@@ -15,6 +15,11 @@
         <div class="item-normal price">{{item.price||0}}元/m²</div>
       </div>
       <div class="item-row row">
+      </div>
+      <div class="item-row row">
+        <div class="item-favorite">
+          <div class="btn-favorite iconfont icon-favorite" @tap="onHandleFavorite"></div>
+        </div>
         <div class="item-btns">
           <div class="item-btn btn-mobile iconfont icon-mobile" @tap="onHandlePhoneCall"></div>
           <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
@@ -49,6 +54,9 @@
         <div class="item-normal">{{item.price||0}}元/m²</div>
       </div>
       <div class="item-row row">
+        <div class="item-favorite">
+          <div class="btn-favorite iconfont icon-favorite" @tap="onHandleFavorite"></div>
+        </div>
         <div class="item-btns">
           <div class="item-btn btn-mobile iconfont icon-mobile" @tap="onHandlePhoneCall"></div>
           <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
@@ -81,6 +89,9 @@
         <div class="item-normal price">{{item.price||0}}元/月</div>
       </div>
       <div class="item-row row">
+        <div class="item-favorite">
+          <div class="btn-favorite iconfont icon-favorite" @tap="onHandleFavorite"></div>
+        </div>
         <div class="item-btns">
           <div class="item-btn btn-mobile iconfont icon-mobile" @tap="onHandlePhoneCall"></div>
           <div class="item-btn btn-update iconfont icon-update" @tap="onHandleUpdateHouse"></div>
@@ -184,8 +195,8 @@
         margin-bottom: unit(10, rpx);
         .item-title {
           font-size: @fontSize32;
-          color: @fontColor1;
           font-weight: bold;
+          color: @fontColor1;
         }
         .item-normal {
           margin-right: unit(10, rpx);
@@ -200,6 +211,19 @@
             margin: 0;
           }
         }
+        .item-favorite {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: unit(80, rpx);
+          height: unit(80, rpx);
+          line-height: unit(80, rpx);
+          text-align: center;
+          color: @white;
+          .btn-favorite {
+            font-size: @fontSize36;
+          }
+        }
         .item-btns {
           display: flex;
           position: absolute;
@@ -211,6 +235,9 @@
             line-height: unit(60, rpx);
             font-size: @fontSize36;
             text-align: center;
+            &.btn-favorite {
+
+            }
             &.btn-mobile {
               color: @btnMobile;
             }

@@ -1,20 +1,27 @@
 <template>
   <div class="item">
-    <div class="item-img">
-      <lazy-image src="{{item.picUrl?fileUrl+item.picUrl:url}}" width="50%" mode="aspectFill"/>
-    </div>
-    <div class="item-info">
-      <div class="item-row row">
-        <div class="item-name">姓名/{{item.agentName}}</div>
+    <div class="item-row row">
+      <div class="item-col col-3">
+        <div class="item-img">
+          <lazy-image src="{{item.picUrl?fileUrl+item.picUrl:url}}" width="50%" mode="aspectFill"/>
+        </div>
       </div>
-      <div class="item-row row">
-        <div class="item-phone">电话/{{item.phone}}</div>
+      <div class="item-col col-3">
+        <div class="item-btn item-mobile">
+          <div class="item-icon iconfont icon-mobile" @tap.stop="onHandleMobile"></div>
+          <div class="item-label">电话</div>
+        </div>
       </div>
-      <div class="item-row row">
-        <div class="item-btns">
-          <div class="item-btn btn-mobile iconfont icon-mobile" @tap.stop="onHandlePhoneCall"></div>
-          <div class="item-btn btn-update iconfont icon-update" @tap.stop="onHandleUpdateAgent"></div>
-          <div class="item-btn btn-delete iconfont icon-delete" @tap.stop="onHandleDeleteAgent"></div>
+      <div class="item-col col-3">
+        <div class="item-btn item-update">
+          <div class="item-icon iconfont icon-update" @tap.stop="onHandleUpdate"></div>
+          <div class="item-label">修改</div>
+        </div>
+      </div>
+      <div class="item-col col-3">
+        <div class="item-btn item-delete">
+          <div class="item-icon iconfont icon-delete" @tap.stop="onHandleDelete"></div>
+          <div class="item-label">删除</div>
         </div>
       </div>
     </div>
@@ -41,7 +48,7 @@
     events: {},
     watch: {},
     methods: {
-      onHandlePhoneCall() {
+      onHandleMobile() {
         const {phone} = this.item;
         wx.makePhoneCall({
           phoneNumber: phone,
@@ -53,11 +60,11 @@
           }
         });
       },
-      onHandleDeleteAgent() {
+      onHandleDelete() {
         const {id} = this.item;
         this.$parent.onHandleDeleteAgent({id});
       },
-      onHandleUpdateAgent() {
+      onHandleUpdate() {
         const query = '?item=' + JSON.stringify(this.item);
         wx.navigateTo({
           url: $routes.AGENT.UPDATE.path + query
@@ -78,50 +85,49 @@
   .item {
     overflow: hidden;
     position: relative;
-    will-change: transform;
     background-color: @white;
-    .item-img {
-      height: unit(300, rpx);
-    }
-    .item-info {
-      padding: unit(20, rpx);
-      line-height: unit(40, rpx);
-      font-size: @fontSize32;
-      .item-row {
-        margin-bottom: unit(10, rpx);
-        .item-name {
-          font-weight: bold;
-          color: @fontColor1;
+    .item-row {
+      padding: unit(30, rpx);
+      text-align: center;
+      color: @fontColor1;
+      .item-col {
+        .item-img {
+          overflow: hidden;
+          display: inline-block;
+          width: unit(120, rpx);
+          height: unit(120, rpx);
+          will-change: transform;
+          margin-top: unit(20, rpx);
+          border-radius: @borderRadius100;
         }
-        .item-phone {
-          font-weight: bold;
-          color: @fontColor1;
-        }
-        .item-btns {
-          display: flex;
-          position: absolute;
-          top: unit(240, rpx);
-          right: 0;
-          .item-btn {
-            width: unit(60, rpx);
-            height: unit(60, rpx);
-            line-height: unit(60, rpx);
-            font-size: @fontSize36;
-            text-align: center;
-            &.btn-mobile {
+        .item-btn {
+          position: relative;
+          padding: unit(30, rpx) 0;
+          .item-icon {
+            height: unit(50, rpx);
+            line-height: unit(50, rpx);
+            font-size: @fontSize46;
+          }
+          .item-label {
+            height: unit(50, rpx);
+            line-height: unit(50, rpx);
+            font-size: @fontSize26;
+          }
+          &.item-mobile {
+            .item-icon {
               color: @btnMobile;
             }
-            &.btn-update {
+          }
+          &.item-update {
+            .item-icon {
               color: @btnUpdate;
             }
-            &.btn-delete {
+          }
+          &.item-delete {
+            .item-icon {
               color: @btnDelete;
             }
           }
-        }
-        &:nth-last-child(2),
-        &:last-child {
-          margin: 0;
         }
       }
     }

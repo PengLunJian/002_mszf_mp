@@ -8,7 +8,7 @@
         <div class="context fade">
           <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
             <div class="item-row row">
-              <div class="item-col col-6" v-for="(item,index) in isAgent">
+              <div class="item-col col-12" v-for="(item,index) in isAgent">
                 <agent-item :item="item" :key="index"/>
               </div>
             </div>
