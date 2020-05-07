@@ -3,16 +3,6 @@
     <div class="content">
       <div class="header">
         <top-bar title="收藏记录"></top-bar>
-        <div class="tab-bar row">
-          <div class="tab-item col-4" v-for="(item,index) in tab.items"
-               :class="{'active':index===tab.activeIndex}" :key="index"
-               @tap="onHandleTabChange(index)">
-            <div class="tab-text">
-              <span class="tab-label">{{item.label}}</span>
-              <span class="tab-triangle"></span>
-            </div>
-          </div>
-        </div>
       </div>
       <div class="body">
         <div class="context fade">
@@ -203,7 +193,7 @@
         position: relative;
         .context {
           height: 100%;
-          padding-top: unit(210, rpx);
+          padding-top: unit(130, rpx);
           .scroll-view {
             height: 100%;
             .item-row {

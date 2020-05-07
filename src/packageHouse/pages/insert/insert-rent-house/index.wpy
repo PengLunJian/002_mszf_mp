@@ -236,7 +236,7 @@
                       <div class="module-body">
                         <div class="module-agents">
                           <div class="module-row row">
-                            <div class="module-col col-6"
+                            <div class="module-col col-12"
                                  v-for="(item,index) in agents.items"
                                  :key="index" @tap="onHandleAgentSelector(index)">
                               <div class="module-item" :class="{'checked':item.checked}">

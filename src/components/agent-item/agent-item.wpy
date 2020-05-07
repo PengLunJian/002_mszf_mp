@@ -3,24 +3,25 @@
     <div class="item-row row">
       <div class="item-col col-3">
         <div class="item-img">
+          <div class="item-name">{{item.agentName}}</div>
           <lazy-image src="{{item.picUrl?fileUrl+item.picUrl:url}}" width="50%" mode="aspectFill"/>
         </div>
       </div>
       <div class="item-col col-3">
-        <div class="item-btn item-mobile">
-          <div class="item-icon iconfont icon-mobile" @tap.stop="onHandleMobile"></div>
+        <div class="item-btn item-mobile" @tap.stop="onHandleMobile">
+          <div class="item-icon iconfont icon-mobile"></div>
           <div class="item-label">电话</div>
         </div>
       </div>
       <div class="item-col col-3">
-        <div class="item-btn item-update">
-          <div class="item-icon iconfont icon-update" @tap.stop="onHandleUpdate"></div>
+        <div class="item-btn item-update" @tap.stop="onHandleUpdate">
+          <div class="item-icon iconfont icon-update"></div>
           <div class="item-label">修改</div>
         </div>
       </div>
       <div class="item-col col-3">
-        <div class="item-btn item-delete">
-          <div class="item-icon iconfont icon-delete" @tap.stop="onHandleDelete"></div>
+        <div class="item-btn item-delete" @tap.stop="onHandleDelete">
+          <div class="item-icon iconfont icon-delete"></div>
           <div class="item-label">删除</div>
         </div>
       </div>
@@ -93,12 +94,25 @@
       .item-col {
         .item-img {
           overflow: hidden;
+          position: relative;
           display: inline-block;
           width: unit(120, rpx);
           height: unit(120, rpx);
           will-change: transform;
           margin-top: unit(20, rpx);
           border-radius: @borderRadius100;
+          .item-name {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            line-height: unit(120, rpx);
+            background-color: rgba(0, 0, 0, .15);
+            font-size: @fontSize24;
+            color: @white;
+          }
         }
         .item-btn {
           position: relative;

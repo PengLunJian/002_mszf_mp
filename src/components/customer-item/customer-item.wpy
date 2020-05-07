@@ -7,21 +7,21 @@
         </div>
       </div>
       <div class="item-col col-3">
-        <div class="item-btn item-mobile">
-          <div class="item-icon iconfont icon-mobile" @tap.stop="onHandleMobile"></div>
+        <div class="item-btn item-mobile" @tap.stop="onHandleMobile">
+          <div class="item-icon iconfont icon-mobile"></div>
           <div class="item-label">电话</div>
         </div>
       </div>
       <div class="item-col col-3">
-        <div class="item-btn item-browse">
-          <div class="item-icon iconfont icon-browse" @tap.stop="onHandleBrowse"></div>
+        <div class="item-btn item-browse" @tap.stop="onHandleBrowse">
+          <div class="item-icon iconfont icon-browse"></div>
           <div class="item-label">浏览</div>
           <div class="item-value">{{item.record}}</div>
         </div>
       </div>
       <div class="item-col col-3">
-        <div class="item-btn item-follow">
-          <div class="item-icon iconfont icon-follow" @tap.stop="onHandleFollow"></div>
+        <div class="item-btn item-follow" @tap.stop="onHandleFollow">
+          <div class="item-icon iconfont icon-follow"></div>
           <div class="item-label">收藏</div>
           <div class="item-value">{{item.record}}</div>
         </div>
