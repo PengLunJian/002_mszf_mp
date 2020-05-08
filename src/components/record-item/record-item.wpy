@@ -15,8 +15,8 @@
         <div class="item-normal price">{{item.price||0}}元/m²</div>
       </div>
       <div class="item-row row">
-        <div class="item-recommend{{item.isRecommend?' active':''}}">
-          <div class="btn-recommend iconfont icon-recommend" @tap="onHandleRecommend"></div>
+        <div class="item-mobile">
+          <div class="btn-mobile iconfont icon-mobile" @tap="onHandleMobile"></div>
         </div>
         <div class="item-browse">
           <div class="item-icon iconfont icon-browse"></div>
@@ -46,8 +46,8 @@
         <div class="item-normal">{{item.price||0}}元/m²</div>
       </div>
       <div class="item-row row">
-        <div class="item-recommend{{item.isRecommend?' active':''}}">
-          <div class="btn-recommend iconfont icon-recommend" @tap="onHandleRecommend"></div>
+        <div class="item-mobile">
+          <div class="btn-mobile iconfont icon-mobile" @tap="onHandleMobile"></div>
         </div>
         <div class="item-browse">
           <div class="item-icon iconfont icon-browse"></div>
@@ -75,8 +75,8 @@
         <div class="item-normal price">{{item.price||0}}元/月</div>
       </div>
       <div class="item-row row">
-        <div class="item-recommend{{item.isRecommend?' active':''}}">
-          <div class="btn-recommend iconfont icon-recommend" @tap="onHandleRecommend"></div>
+        <div class="item-mobile">
+          <div class="btn-mobile iconfont icon-mobile" @tap="onHandleMobile"></div>
         </div>
         <div class="item-browse">
           <div class="item-icon iconfont icon-browse"></div>
@@ -93,18 +93,12 @@
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
   import store from '../../store';
-  import {mapState, mapActions} from '@wepy/redux';
-  import Loading from '../../mixins/loading';
-  import Toast from '../../mixins/toast';
-  import * as controller from './controller';
-  import * as $routes from '../../router';
   import * as $config from '../../config';
   import * as utils from '../../utils';
   import apis from '../../apis';
 
   wepy.component({
     store,
-    mixins: [Toast, Loading],
     data: {
       noData: '暂无数据',
       fileUrl: apis.fileUrl,
@@ -118,57 +112,23 @@
       }
     },
     computed: {
-      ...mapState(controller.STATES),
       getCreateTime() {
         const {createTime} = this.item;
         return utils.dateFormat(createTime, 'yyyy/mm/dd');
       }
     },
     methods: {
-      ...mapActions(controller.ACTIONS),
-      onHandleRecommend() {
-        const {isRecommend} = this.item;
-        this.isRecommend = isRecommend ? 0 : 1;
-        this.exeAjaxUpdateHouse();
-      },
-      onHandleSelectDetail() {
-        const {id} = this.item;
-        const url = $routes.HOUSE.DETAIL.path + '?id=' + id;
-        wx.navigateTo({
-          url
-        });
-      },
-      exeAjaxUpdateHouse() {
-        this.showLoading();
-        const {isRecommend} = this;
-        const msg = isRecommend ? '推荐' : '取消推荐';
-        const params = this.getParams();
-        this.ajaxUpdateHouse(params)
-          .then((res) => {
-            this.hideLoading();
-            res = res || {};
-            const {success} = res.payload;
-            if (success) {
-              this.showToast(msg + '成功');
-            } else {
-              this.showToast(msg + '失败');
-            }
+      onHandleMobile() {
+        const {phone} = this.item;
+        wx.makePhoneCall({
+          phoneNumber: phone,
+          success: (res) => {
             console.log(res);
-          })
-          .catch((err) => {
-            this.hideLoading();
-            this.showToast(msg + '失败');
+          },
+          fail: (err) => {
             console.log(err);
-          });
-      },
-      getParams() {
-        const {busId} = this.isLogin;
-        const {item, isRecommend} = this;
-        return {
-          ...item,
-          busId,
-          isRecommend
-        };
+          }
+        });
       }
     },
     created() {
@@ -194,22 +154,17 @@
       font-size: @fontSize28;
       .item-row {
         margin-bottom: unit(10, rpx);
-        .item-recommend {
+        .item-mobile {
           position: absolute;
-          top: 0;
-          left: 0;
-          width: unit(80, rpx);
-          height: unit(80, rpx);
-          line-height: unit(80, rpx);
+          top: unit(240,rpx);
+          right: 0;
+          width: unit(60, rpx);
+          height: unit(60, rpx);
+          line-height: unit(60, rpx);
           text-align: center;
-          color: @white;
-          .btn-recommend {
+          .btn-mobile {
             font-size: @fontSize36;
-          }
-          &.active {
-            .btn-recommend {
-              color: @important;
-            }
+            color: @btnMobile;
           }
         }
         .item-title {
@@ -266,10 +221,10 @@
         }
         .item-time {
           position: absolute;
-          top: unit(240, rpx);
-          right: 0;
-          height: unit(60, rpx);
-          line-height: unit(60, rpx);
+          top: 0;
+          left: 0;
+          height: unit(80, rpx);
+          line-height: unit(80, rpx);
           padding: 0 unit(15, rpx);
           font-size: @fontSize28;
           color: @white;

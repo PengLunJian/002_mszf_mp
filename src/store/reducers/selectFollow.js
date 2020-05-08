@@ -33,22 +33,6 @@ const actions = {
       isFailure: true
     };
   },
-  [actionTypes.UPDATE_FOLLOW_REPLACE](state, params) {
-    if (!state.data) return {state, data: null};
-    let {rows, totalCount} = state.data;
-    const newData = params.data;
-    const {id} = newData;
-    rows.map((item, index) => {
-      if (item.id === id) {
-        rows[index] = newData;
-      }
-    });
-    const data = {rows, totalCount};
-    return {
-      ...state,
-      data
-    };
-  },
   [actionTypes.REMOVE_FOLLOW_REPLACE](state) {
     return {
       ...state,

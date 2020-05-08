@@ -58,7 +58,6 @@ const actions = {
     };
   },
   [actionTypes.UPDATE_HOUSE_REPLACE](state, params) {
-    if (!state.data) return {state, data: null};
     let {rows, totalCount} = state.data;
     const newData = params.data;
     const {id} = newData;

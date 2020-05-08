@@ -145,12 +145,10 @@ export const ajaxRequestUpdateHouse = createAction(
       axios.post(apis.updateHouse, params)
         .then((res) => {
           res = res || {};
-          const {data, success} = res;
+          const {success} = res;
           if (success) {
-            commit(actionTypes.UPDATE_HOUSE_SUCCESS, data);
-            commit(actionTypes.UPDATE_HOUSE_REPLACE, data);
-            commit(actionTypes.UPDATE_BROWSE_REPLACE, data);
-            commit(actionTypes.UPDATE_FOLLOW_REPLACE, data);
+            commit(actionTypes.UPDATE_HOUSE_SUCCESS, params);
+            commit(actionTypes.UPDATE_HOUSE_REPLACE, params);
           } else {
             commit(actionTypes.UPDATE_HOUSE_FAILURE);
           }
