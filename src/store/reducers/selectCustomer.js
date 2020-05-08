@@ -17,7 +17,7 @@ const actions = {
     const oldRows = oldData.rows || [];
     const newData = action.data || {};
     const newRows = newData.rows || [];
-    action.data.rows = oldRows.concat(utils.dataFilter(newRows));
+    action.data.rows = oldRows.concat(newRows);
     return {
       ...state,
       isLoading: false,

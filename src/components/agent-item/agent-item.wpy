@@ -103,14 +103,14 @@
           border-radius: @borderRadius100;
           .item-name {
             position: absolute;
-            top: 0;
             left: 0;
+            bottom: 0;
             z-index: 1;
             width: 100%;
-            height: 100%;
-            line-height: unit(120, rpx);
-            background-color: rgba(0, 0, 0, .15);
-            font-size: @fontSize24;
+            height: unit(40, rpx);
+            line-height: unit(40, rpx);
+            background-color: rgba(0, 0, 0, .5);
+            font-size: @fontSize20;
             color: @white;
           }
         }

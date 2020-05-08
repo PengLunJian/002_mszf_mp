@@ -745,9 +745,9 @@
         this.renovation.value = renovation;
         this.direction.value = direction;
         this.seeHouse.value = seeHouse;
-        this.tags.value = tags.join(' ');
+        this.tags.value = tags;
         this.tags.items.map((item) => {
-          if (tags.indexOf(item.label) !== -1) {
+          if ((tags || '').indexOf(item.label) !== -1) {
             item.checked = true;
           }
         });
@@ -1038,7 +1038,6 @@
                             .module-item {
                               overflow: hidden;
                               position: relative;
-                              box-shadow: 0 0 15px @boxShadow05;
                               .item-check {
                                 position: absolute;
                                 top: unit(20, rpx);

@@ -15,7 +15,7 @@
       </div>
       <div class="body">
         <div class="context fade">
-          <scroll-view class="scroll-view" scroll-y="{{true}}">
+          <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
             <div class="scroll-content">
               <div class="scroll-header"></div>
               <div class="scroll-body">
@@ -36,7 +36,7 @@
                             </div>
                             <div class="form-col col-12">
                               <div class="form-picker">
-                                <picker mode="region" @change="onHandleAddressChange" value="{{address.items}}">
+                                <picker mode="region" @change="onHandleSelectAddress" value="{{address.items}}">
                                   <div class="form-group">
                                     <label class="form-label">地址</label>
                                     <input class="form-input" v-model="address.value" disabled="{{true}}" type="text"
@@ -114,7 +114,7 @@
                         <div class="module-base">
                           <div class="form-row row">
                             <div class="form-col col-12">
-                              <picker mode="multiSelector" @change="onHandleApartChange"
+                              <picker mode="multiSelector" @change="onHandleSelectApart"
                                       value="{{apart.index}}" range="{{apart.items}}">
                                 <div class="form-group">
                                   <label class="form-label">户型</label>
@@ -128,7 +128,7 @@
                               <div class="form-group">
                                 <label class="form-label">朝向</label>
                                 <input class="form-input" v-model="direction.value" disabled="{{true}}" type="text"
-                                       placeholder="朝南" @tap="onHandleShowDirection"/>
+                                       placeholder="朝南" @tap="onHandleSelectDirection"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
@@ -137,12 +137,12 @@
                                 <label class="form-label">看房</label>
                                 <input class="form-input" v-model="seeHouse.value" disabled="{{true}}" type="text"
                                        placeholder="随时看房"
-                                       @tap="onHandleShowSeeHouse"/>
+                                       @tap="onHandleSelectSeeHouse"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
                             <div class="form-col col-12">
-                              <picker mode="multiSelector" @change="onHandlePayWayChange"
+                              <picker mode="multiSelector" @change="onHandleSelectPayWay"
                                       value="{{payWay.index}}" range="{{payWay.items}}">
                                 <div class="form-group">
                                   <label class="form-label">支付</label>
@@ -168,7 +168,7 @@
                                 <label class="form-label">楼层</label>
                                 <input class="form-input" v-model="floors.value" disabled="{{true}}" type="text"
                                        placeholder="低楼层"
-                                       @tap="onHandleShowFloors"/>
+                                       @tap="onHandleSelectFloors"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
@@ -177,7 +177,7 @@
                                 <label class="form-label">装修</label>
                                 <input class="form-input" v-model="renovation.value" disabled="{{true}}" type="text"
                                        placeholder="精装"
-                                       @tap="onHandleShowRenovation"/>
+                                       @tap="onHandleSelectRenovation"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
@@ -186,7 +186,7 @@
                                 <label class="form-label">方式</label>
                                 <input class="form-input" v-model="leaseWay.value" disabled="{{true}}" type="text"
                                        placeholder="整租"
-                                       @tap="onHandleShowLeaseWay"/>
+                                       @tap="onHandleSelectLeaseWay"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
@@ -195,7 +195,7 @@
                                 <label class="form-label">类型</label>
                                 <input class="form-input" v-model="quality.value" disabled="{{true}}" type="text"
                                        placeholder="小区"
-                                       @tap="onHandleShowQuality"/>
+                                       @tap="onHandleSelectQuality"/>
                                 <span class="form-next iconfont icon-next"></span>
                               </div>
                             </div>
@@ -237,10 +237,10 @@
                         <div class="module-agents">
                           <div class="module-row row">
                             <div class="module-col col-12"
-                                 v-for="(item,index) in agents.items"
-                                 :key="index" @tap="onHandleAgentSelector(index)">
+                                 v-for="(item,index) in isAgent"
+                                 :key="index" @tap="onHandleSelectAgents(item)">
                               <div class="module-item" :class="{'checked':item.checked}">
-                                <agent-item :item="item" :key="index" isBtns="{{false}}"/>
+                                <agent-item :item="item" :key="index"/>
                                 <div class="item-check iconfont icon-right"></div>
                               </div>
                             </div>
@@ -262,7 +262,7 @@
                           <div class="module-row row">
                             <div class="module-col col-3"
                                  v-for="(item,index) in tags.items"
-                                 :key="index" @tap="onHandleTagSelector(index)">
+                                 :key="index" @tap="onHandleSelectTags(index)">
                               <div class="item-tag" :class="{'checked':item.checked}">{{item.label}}</div>
                             </div>
                           </div>
@@ -285,7 +285,7 @@
                           <div class="module-row row">
                             <div class="module-col col-3"
                                  v-for="(item,index) in config.items"
-                                 :key="index" @tap="onHandleConfigSelector(index)">
+                                 :key="index" @tap="onHandleSelectConfigs(index)">
                               <div class="item-config" :class="{'checked':item.checked}">
                                 <div class="item-check iconfont icon-right"></div>
                                 <div class="item-icon iconfont {{item.icon}}"></div>
@@ -338,6 +338,11 @@
              @tap="onHandleInsertHouse">保存
         </div>
       </div>
+      <modal :isEnter="isEnter"
+             :isLeave="isLeave"
+             title="确认删除该经纪人吗?"
+             context="删除此经纪人同时删除所有信息"
+             @onConfirm="onHandleConfirm"/>
     </div>
   </div>
 </template>
@@ -359,6 +364,9 @@
     mixins: [Toast, Loading],
 
     data: {
+      isEnter: false,
+      isLeave: false,
+      isScroll: true,
       noData: '暂无数据',
       fileUrl: apis.fileUrl,
       tab: {
@@ -456,10 +464,7 @@
           '商铺'
         ]
       },
-      agents: {
-        value: [],
-        items: []
-      },
+      agents: [],
       tags: {
         value: '',
         items: [
@@ -546,7 +551,7 @@
             this.seeHouse.value
           );
         let isTagsEmpty = this.tags.value;
-        let isAgentEmpty = this.agents.value.length;
+        let isAgentEmpty = this.agents.length;
         this.isDisable = isBaseEmpty && isAgentEmpty && isTagsEmpty;
         return {
           isBaseEmpty,
@@ -554,25 +559,25 @@
           isTagsEmpty
         };
       },
-      onHandleApartChange(e) {
+      onHandleSelectApart(e) {
         const index = e.$wx.detail.value;
         const items = this.apart.items;
         this.apart.value = items[0][index[0]] + items[1][index[1]] + items[2][index[2]];
         this.onHandleCheckEmpty();
       },
-      onHandlePayWayChange(e) {
+      onHandleSelectPayWay(e) {
         const index = e.$wx.detail.value;
         const items = this.payWay.items;
         this.payWay.value = items[0][index[0]] + items[1][index[1]];
         this.onHandleCheckEmpty();
       },
-      onHandleAddressChange(e) {
+      onHandleSelectAddress(e) {
         const items = e.$wx.detail.value;
         this.address.items = items;
         this.address.value = items.join('、');
         this.onHandleCheckEmpty();
       },
-      onHandleShowDirection() {
+      onHandleSelectDirection() {
         wx.showActionSheet({
           itemList: this.direction.items,
           success: (res) => {
@@ -585,7 +590,7 @@
           }
         });
       },
-      onHandleShowFloors() {
+      onHandleSelectFloors() {
         wx.showActionSheet({
           itemList: this.floors.items,
           success: (res) => {
@@ -598,7 +603,7 @@
           }
         });
       },
-      onHandleShowRenovation() {
+      onHandleSelectRenovation() {
         wx.showActionSheet({
           itemList: this.renovation.items,
           success: (res) => {
@@ -611,7 +616,7 @@
           }
         });
       },
-      onHandleShowLeaseWay() {
+      onHandleSelectLeaseWay() {
         wx.showActionSheet({
           itemList: this.leaseWay.items,
           success: (res) => {
@@ -624,7 +629,7 @@
           }
         });
       },
-      onHandleShowQuality() {
+      onHandleSelectQuality() {
         wx.showActionSheet({
           itemList: this.quality.items,
           success: (res) => {
@@ -637,7 +642,7 @@
           }
         });
       },
-      onHandleShowSeeHouse() {
+      onHandleSelectSeeHouse() {
         wx.showActionSheet({
           itemList: this.seeHouse.items,
           success: (res) => {
@@ -650,26 +655,25 @@
           }
         });
       },
-      onHandleAgentSelector(index) {
-        let arr = [];
-        if (this.agents.items[index].checked) {
-          this.agents.items[index].checked = false;
-        } else {
-          this.agents.items[index].checked = true;
-        }
-
-        this.agents.items.map((item) => {
+      onHandleSelectAgents(item) {
+        const checked = !item.checked;
+        const data = {...item, checked};
+        this.updateAgentReplace(data);
+        this.onHandleGetAgents();
+        this.onHandleCheckEmpty();
+      },
+      onHandleGetAgents() {
+        const arr = [];
+        (this.isAgent || []).map((item) => {
           if (item.checked) {
-            const temp = Object.assign({}, item);
-            delete temp.checked;
-            arr.push(temp);
+            const obj = Object.assign({}, item);
+            delete obj.checked;
+            arr.push(obj);
           }
         });
-        this.agents.value = arr;
-        this.onHandleCheckEmpty();
-        arr = null;
+        this.agents = arr;
       },
-      onHandleTagSelector(index) {
+      onHandleSelectTags(index) {
         let arr = [];
         if (this.tags.items[index].checked) {
           this.tags.items[index].checked = false;
@@ -687,7 +691,7 @@
         this.onHandleCheckEmpty();
         arr = null;
       },
-      onHandleConfigSelector(index) {
+      onHandleSelectConfigs(index) {
         let arr = [];
         if (this.config.items[index].checked) {
           this.config.items[index].checked = false;
@@ -734,14 +738,36 @@
       onHandleDeleteImage(index) {
         this.urls.splice(index, 1);
       },
-      onHandleRenderAgent() {
-        const items = (this.isAgent || []).map((item) => {
-          return {
-            ...item,
-            checked: false
-          };
-        });
-        this.agents.items = items;
+      onHandleDeleteAgent(params) {
+        this.params = params;
+        this.isEnter = true;
+        this.isLeave = false;
+        this.isScroll = false;
+      },
+      onHandleConfirm() {
+        this.exeAjaxDeleteAgent();
+      },
+      exeAjaxDeleteAgent() {
+        this.showLoading();
+        this.ajaxDeleteAgent(this.params)
+          .then((res) => {
+            this.hideLoading();
+            res = res || {};
+            const {success, error} = res.payload;
+            if (success) {
+              this.showToast('经纪人删除成功');
+            } else {
+              let {errorMessage} = error;
+              errorMessage = errorMessage || '删除失败，请重试';
+              this.showToast(errorMessage);
+            }
+            console.log(res);
+          })
+          .catch((err) => {
+            this.hideLoading();
+            this.showToast('删除失败，请重试');
+            console.log(err);
+          });
       },
       exeAjaxInsertHouse() {
         this.showLoading();
@@ -794,8 +820,8 @@
           city: this.address.items[1],
           area: this.address.items[2],
           deploy: this.config.value,
-          agent: this.agents.value,
           tags: this.tags.value,
+          agent: this.agents,
           picUrl: this.urls
         };
         return params;
@@ -811,7 +837,7 @@
     },
 
     onLoad() {
-      this.onHandleRenderAgent();
+      this.removeAgentReplace();
     }
   });
 </script>
@@ -977,7 +1003,6 @@
                               .module-item {
                                 overflow: hidden;
                                 position: relative;
-                                box-shadow: 0 0 15px @boxShadow05;
                                 .item-check {
                                   position: absolute;
                                   top: unit(20, rpx);
@@ -1154,8 +1179,10 @@
 
 <config>
   {
+  disableScroll:true,
   navigationStyle:'custom',
   usingComponents: {
+  'modal':'../../../../components/modal/modal',
   'top-bar': '../../../../components/top-bar/top-bar',
   'agent-item': '../../../../components/agent-item/agent-item',
   'lazy-image': '../../../../components/lazy-image/lazy-image'

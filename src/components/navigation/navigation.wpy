@@ -8,9 +8,10 @@
         <div class="module-body">
           <div class="module-row row">
             <div class="module-col col-4" v-for="(item,index) in house" :key="index">
-              <div class="btn btn-item" @tap="onHandleRouter(item)">
+              <div class="btn-item" @tap="onHandleRouter(item)">
                 <div class="item-icon iconfont {{item.icon}}"></div>
                 <div class="item-text">{{item.name}}</div>
+                <div class="item-count">10</div>
               </div>
             </div>
           </div>
@@ -26,9 +27,10 @@
         <div class="module-body">
           <div class="module-row row">
             <div class="module-col col-4" v-for="(item,index) in customer" :key="index">
-              <div class="btn btn-item" @tap="onHandleRouter(item)">
+              <div class="btn-item" @tap="onHandleRouter(item)">
                 <div class="item-icon iconfont {{item.icon}}"></div>
                 <div class="item-text">{{item.name}}</div>
+                <div class="item-count">10</div>
               </div>
             </div>
           </div>
@@ -44,7 +46,7 @@
         <div class="module-body">
           <div class="module-row row">
             <div class="module-col col-4" v-for="(item,index) in business" :key="index">
-              <div class="btn btn-item" @tap="onHandleRouter(item)">
+              <div class="btn-item" @tap="onHandleRouter(item)">
                 <div class="item-icon iconfont {{item.icon}}"></div>
                 <div class="item-text">{{item.name}}</div>
               </div>
@@ -93,7 +95,7 @@
         },
         {
           name: '发布',
-          icon: 'icon-agent',
+          icon: 'icon-release',
           path: $routes.CUSTOMER.SELECT.path
         }
       ],
@@ -151,24 +153,66 @@
           .module-row {
             padding: unit(15, rpx);
             text-align: center;
-            color: @white;
             .module-col {
               padding: unit(15, rpx);
               .btn-item {
                 overflow: hidden;
+                position: relative;
                 padding: unit(30, rpx) 0;
-                border-radius: @borderRadius15;
-                background: -webkit-linear-gradient(-45deg, @theme1, @theme2);
-              }
-              .item-icon {
-                height: unit(60, rpx);
-                line-height: unit(60, rpx);
-                font-size: @fontSize60;
-              }
-              .item-text {
-                height: unit(60, rpx);
-                line-height: unit(60, rpx);
-                font-size: @fontSize28;
+                .item-icon {
+                  margin: 0 auto;
+                  width: unit(90, rpx);
+                  height: unit(90, rpx);
+                  line-height: unit(90, rpx);
+                  border-radius: @borderRadius100;
+                  font-size: @fontSize46;
+                  color: @white;
+                  &.icon-new {
+                    background: -webkit-linear-gradient(-45deg, #00ffae, #00ca80);
+                  }
+                  &.icon-second {
+                    background: -webkit-linear-gradient(-45deg, #66b5ff, #0084ff);
+                  }
+                  &.icon-rent {
+                    background: -webkit-linear-gradient(-45deg, #ffd200, #ff9900);
+                  }
+                  &.icon-eye {
+                    background: -webkit-linear-gradient(-45deg, #ffadd2, #ff12a9);
+                  }
+                  &.icon-love {
+                    background: -webkit-linear-gradient(-45deg, #ffa800, #ff2a00);
+                  }
+                  &.icon-release {
+                    background: -webkit-linear-gradient(-45deg, #1eadff, #0024ff);
+                  }
+                  &.icon-business {
+                    background: -webkit-linear-gradient(-45deg, #ffa963, #ff5043);
+                  }
+                  &.icon-agent {
+                    background: -webkit-linear-gradient(-45deg, #ffcc00, #ff9900);
+                  }
+                }
+                .item-text {
+                  height: unit(40, rpx);
+                  line-height: unit(40, rpx);
+                  margin-top: unit(20, rpx);
+                  font-size: @fontSize28;
+                  color: @fontColor1;
+                }
+                .item-count {
+                  position: absolute;
+                  top: unit(15, rpx);
+                  right: unit(50, rpx);
+                  height: unit(40, rpx);
+                  min-width: unit(40, rpx);
+                  line-height: unit(40, rpx);
+                  padding: 0 unit(10, rpx);
+                  background-color: @important;
+                  border-radius: @borderRadius40;
+                  box-shadow: 0 0 15 rpx @boxShadow05;
+                  font-size: @fontSize24;
+                  color: @white;
+                }
               }
             }
           }

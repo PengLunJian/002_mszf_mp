@@ -1,6 +1,5 @@
 import {handleActions} from 'redux-actions';
 import * as actionTypes from '../actionTypes';
-import * as utils from '../../utils';
 import * as states from '../states';
 
 const actions = {
@@ -17,7 +16,7 @@ const actions = {
     const oldRows = oldData.rows || [];
     const newData = action.data || {};
     const newRows = newData.rows || [];
-    action.data.rows = oldRows.concat(utils.dataFilter(newRows));
+    action.data.rows = oldRows.concat(newRows);
     return {
       ...state,
       isLoading: false,
@@ -32,6 +31,22 @@ const actions = {
       isLoading: false,
       isSuccess: false,
       isFailure: true
+    };
+  },
+  [actionTypes.UPDATE_FOLLOW_REPLACE](state, params) {
+    if (!state.data) return {state, data: null};
+    let {rows, totalCount} = state.data;
+    const newData = params.data;
+    const {id} = newData;
+    rows.map((item, index) => {
+      if (item.id === id) {
+        rows[index] = newData;
+      }
+    });
+    const data = {rows, totalCount};
+    return {
+      ...state,
+      data
     };
   },
   [actionTypes.REMOVE_FOLLOW_REPLACE](state) {

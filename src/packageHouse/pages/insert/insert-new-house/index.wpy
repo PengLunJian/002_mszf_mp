@@ -15,7 +15,7 @@
       </div>
       <div class="body">
         <div class="context fade">
-          <scroll-view class="scroll-view" scroll-y="{{true}}">
+          <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
             <div class="scroll-content">
               <div class="scroll-header"></div>
               <div class="scroll-body">
@@ -202,10 +202,10 @@
                         <div class="module-agents">
                           <div class="module-row row">
                             <div class="module-col col-12"
-                                 v-for="(item,index) in agents.items"
-                                 :key="index" @tap="onHandleSelectAgents(index)">
+                                 v-for="(item,index) in isAgent"
+                                 :key="index" @tap="onHandleSelectAgents(item)">
                               <div class="module-item" :class="{'checked':item.checked}">
-                                <agent-item :item="item" :key="index" isBtns="{{false}}"/>
+                                <agent-item :item="item" :key="index"/>
                                 <div class="item-check iconfont icon-right"></div>
                               </div>
                             </div>
@@ -303,6 +303,11 @@
              @tap="onHandleInsertHouse">保存
         </div>
       </div>
+      <modal :isEnter="isEnter"
+             :isLeave="isLeave"
+             title="确认删除该经纪人吗?"
+             context="删除此经纪人同时删除所有信息"
+             @onConfirm="onHandleConfirm"/>
       <div class="modal{{isShow?'':' hide'}}">
         <div class="modal-mask" @tap="onHandleHideAparts"></div>
         <div class="modal-content">
@@ -344,6 +349,9 @@
     mixins: [Toast, Loading],
 
     data: {
+      isEnter: false,
+      isLeave: false,
+      isScroll: true,
       noData: '暂无数据',
       fileUrl: apis.fileUrl,
       tab: {
@@ -438,10 +446,7 @@
         ],
         index: [1, 1]
       },
-      agents: {
-        value: [],
-        items: []
-      },
+      agents: [],
       tags: {
         value: '',
         items: [
@@ -530,7 +535,7 @@
             this.quality.value
           );
         let isTagsEmpty = this.tags.value;
-        let isAgentEmpty = this.agents.value.length;
+        let isAgentEmpty = this.agents.length;
         this.isDisable = isBaseEmpty && isAgentEmpty && isTagsEmpty;
         return {
           isBaseEmpty,
@@ -581,24 +586,23 @@
         this.handTime = utils.dateFormat(value, 'zh-cn');
         this.onHandleCheckEmpty();
       },
-      onHandleSelectAgents(index) {
-        let arr = [];
-        if (this.agents.items[index].checked) {
-          this.agents.items[index].checked = false;
-        } else {
-          this.agents.items[index].checked = true;
-        }
-
-        this.agents.items.map((item) => {
+      onHandleSelectAgents(item) {
+        const checked = !item.checked;
+        const data = {...item, checked};
+        this.updateAgentReplace(data);
+        this.onHandleGetAgents();
+        this.onHandleCheckEmpty();
+      },
+      onHandleGetAgents() {
+        const arr = [];
+        (this.isAgent || []).map((item) => {
           if (item.checked) {
-            const temp = Object.assign({}, item);
-            delete temp.checked;
-            arr.push(temp);
+            const obj = Object.assign({}, item);
+            delete obj.checked;
+            arr.push(obj);
           }
         });
-        this.agents.value = arr;
-        this.onHandleCheckEmpty();
-        arr = null;
+        this.agents = arr;
       },
       onHandleSelectTags(index) {
         let arr = [];
@@ -685,14 +689,36 @@
       onHandleDeleteImage(index) {
         this.urls.splice(index, 1);
       },
-      onHandleRenderAgent() {
-        const items = (this.isAgent || []).map((item) => {
-          return {
-            ...item,
-            checked: false
-          };
-        });
-        this.agents.items = items || [];
+      onHandleDeleteAgent(params) {
+        this.params = params;
+        this.isEnter = true;
+        this.isLeave = false;
+        this.isScroll = false;
+      },
+      onHandleConfirm() {
+        this.exeAjaxDeleteAgent();
+      },
+      exeAjaxDeleteAgent() {
+        this.showLoading();
+        this.ajaxDeleteAgent(this.params)
+          .then((res) => {
+            this.hideLoading();
+            res = res || {};
+            const {success, error} = res.payload;
+            if (success) {
+              this.showToast('经纪人删除成功');
+            } else {
+              let {errorMessage} = error;
+              errorMessage = errorMessage || '删除失败，请重试';
+              this.showToast(errorMessage);
+            }
+            console.log(res);
+          })
+          .catch((err) => {
+            this.hideLoading();
+            this.showToast('删除失败，请重试');
+            console.log(err);
+          });
       },
       exeAjaxInsertHouse() {
         this.showLoading();
@@ -742,8 +768,8 @@
           city: this.address.items[1],
           area: this.address.items[2],
           address: this.detailAddress,
-          agent: this.agents.value,
           tags: this.tags.value,
+          agent: this.agents,
           picUrl: this.urls
         };
         return params;
@@ -759,7 +785,7 @@
     },
 
     onLoad() {
-      this.onHandleRenderAgent();
+      this.removeAgentReplace();
       this.removeLayoutReplace();
     }
   });
@@ -927,7 +953,11 @@
                               .module-item {
                                 overflow: hidden;
                                 position: relative;
-                                box-shadow: 0 0 15px @boxShadow05;
+                                agent-item {
+                                  .item {
+                                    background-color: @bgColor;
+                                  }
+                                }
                                 .item-check {
                                   position: absolute;
                                   top: unit(20, rpx);
@@ -1150,8 +1180,10 @@
 
 <config>
   {
+  disableScroll:true,
   navigationStyle:'custom',
   usingComponents: {
+  'modal':'../../../../components/modal/modal',
   'top-bar': '../../../../components/top-bar/top-bar',
   'agent-item': '../../../../components/agent-item/agent-item',
   'layout-item': '../../../../components/layout-item/layout-item',

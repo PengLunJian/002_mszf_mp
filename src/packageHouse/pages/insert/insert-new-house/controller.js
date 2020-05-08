@@ -17,5 +17,6 @@ export const ACTIONS = {
   deleteLayoutReplace: params => actions.deleteLayoutReplace(params),
   updateAgentReplace: params => actions.updateAgentReplace(params),
   removeLayoutReplace: actions.removeLayoutReplace,
+  removeAgentReplace: actions.removeAgentReplace,
   removeImageReplace: actions.removeImageReplace
 };

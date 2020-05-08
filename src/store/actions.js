@@ -149,6 +149,8 @@ export const ajaxRequestUpdateHouse = createAction(
           if (success) {
             commit(actionTypes.UPDATE_HOUSE_SUCCESS, data);
             commit(actionTypes.UPDATE_HOUSE_REPLACE, data);
+            commit(actionTypes.UPDATE_BROWSE_REPLACE, data);
+            commit(actionTypes.UPDATE_FOLLOW_REPLACE, data);
           } else {
             commit(actionTypes.UPDATE_HOUSE_FAILURE);
           }

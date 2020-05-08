@@ -17,8 +17,8 @@
       <div class="item-row row">
       </div>
       <div class="item-row row">
-        <div class="item-favorite">
-          <div class="btn-favorite iconfont icon-favorite" @tap="onHandleFavorite"></div>
+        <div class="item-recommend{{item.isRecommend?' active':''}}">
+          <div class="btn-recommend iconfont icon-recommend" @tap="onHandleRecommend"></div>
         </div>
         <div class="item-btns">
           <div class="item-btn btn-mobile iconfont icon-mobile" @tap="onHandlePhoneCall"></div>
@@ -54,8 +54,8 @@
         <div class="item-normal">{{item.price||0}}元/m²</div>
       </div>
       <div class="item-row row">
-        <div class="item-favorite">
-          <div class="btn-favorite iconfont icon-favorite" @tap="onHandleFavorite"></div>
+        <div class="item-recommend{{item.isRecommend?' active':''}}">
+          <div class="btn-recommend iconfont icon-recommend" @tap="onHandleRecommend"></div>
         </div>
         <div class="item-btns">
           <div class="item-btn btn-mobile iconfont icon-mobile" @tap="onHandlePhoneCall"></div>
@@ -89,8 +89,8 @@
         <div class="item-normal price">{{item.price||0}}元/月</div>
       </div>
       <div class="item-row row">
-        <div class="item-favorite">
-          <div class="btn-favorite iconfont icon-favorite" @tap="onHandleFavorite"></div>
+        <div class="item-recommend{{item.isRecommend?' active':''}}">
+          <div class="btn-recommend iconfont icon-recommend" @tap="onHandleRecommend"></div>
         </div>
         <div class="item-btns">
           <div class="item-btn btn-mobile iconfont icon-mobile" @tap="onHandlePhoneCall"></div>
@@ -113,16 +113,22 @@
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
   import store from '../../store';
+  import {mapState, mapActions} from '@wepy/redux';
+  import Loading from '../../mixins/loading';
+  import Toast from '../../mixins/toast';
+  import * as controller from './controller';
   import * as $routes from '../../router';
   import * as $config from '../../config';
   import apis from '../../apis';
 
   wepy.component({
     store,
+    mixins: [Toast, Loading],
     data: {
       noData: '暂无数据',
       fileUrl: apis.fileUrl,
-      url: $config.DEFAULT_IMAGE
+      url: $config.DEFAULT_IMAGE,
+      isRecommend: 0
     },
     props: {
       item: {
@@ -130,8 +136,17 @@
         default: {}
       }
     },
-    computed: {},
+    computed: {
+      ...mapState(controller.STATES)
+    },
+
     methods: {
+      ...mapActions(controller.ACTIONS),
+      onHandleRecommend() {
+        const {isRecommend} = this.item;
+        this.isRecommend = isRecommend ? 0 : 1;
+        this.exeAjaxUpdateHouse();
+      },
       onHandleDeleteHouse() {
         const {id, type} = this.item;
         const params = {id, type};
@@ -168,6 +183,38 @@
         wx.navigateTo({
           url
         });
+      },
+      exeAjaxUpdateHouse() {
+        this.showLoading();
+        const {isRecommend} = this;
+        const msg = isRecommend ? '推荐' : '取消推荐';
+        const params = this.getParams();
+        this.ajaxUpdateHouse(params)
+          .then((res) => {
+            this.hideLoading();
+            res = res || {};
+            const {success} = res.payload;
+            if (success) {
+              this.showToast(msg + '成功');
+            } else {
+              this.showToast(msg + '失败');
+            }
+            console.log(res);
+          })
+          .catch((err) => {
+            this.hideLoading();
+            this.showToast(msg + '失败');
+            console.log(err);
+          });
+      },
+      getParams() {
+        const {busId} = this.isLogin;
+        const {item, isRecommend} = this;
+        return {
+          ...item,
+          busId,
+          isRecommend
+        };
       }
     },
     created() {
@@ -211,7 +258,7 @@
             margin: 0;
           }
         }
-        .item-favorite {
+        .item-recommend {
           position: absolute;
           top: 0;
           left: 0;
@@ -220,8 +267,13 @@
           line-height: unit(80, rpx);
           text-align: center;
           color: @white;
-          .btn-favorite {
+          .btn-recommend {
             font-size: @fontSize36;
+          }
+          &.active {
+            .btn-recommend {
+              color: @important;
+            }
           }
         }
         .item-btns {
@@ -235,9 +287,6 @@
             line-height: unit(60, rpx);
             font-size: @fontSize36;
             text-align: center;
-            &.btn-favorite {
-
-            }
             &.btn-mobile {
               color: @btnMobile;
             }

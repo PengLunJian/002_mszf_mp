@@ -55,19 +55,6 @@ export const stringify = (params) => {
 };
 /**
  *
- * @param data
- * @returns {*}
- */
-export const dataFilter = (data) => {
-  data.map((item) => {
-    const {tags, createTime} = item;
-    item.tags = tags ? (tags || '').split(' ') : '';
-    item.createTime = createTime ? dateFormat(createTime, 'yyyy/mm/dd') : '';
-  });
-  return data;
-};
-/**
- *
  * @returns {Array}
  */
 export const buildArea = () => {

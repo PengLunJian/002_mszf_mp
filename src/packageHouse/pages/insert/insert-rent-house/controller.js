@@ -11,6 +11,9 @@ export const STATES = {
 };
 
 export const ACTIONS = {
+  ajaxDeleteAgent: params => actions.ajaxRequestDeleteAgent(params),
   ajaxInsertHouse: params => actions.ajaxRequestInsertHouse(params),
-  removeImageReplace: actions.removeImageReplace
+  updateAgentReplace: params => actions.updateAgentReplace(params),
+  removeImageReplace: actions.removeImageReplace,
+  removeAgentReplace: actions.removeAgentReplace
 };
