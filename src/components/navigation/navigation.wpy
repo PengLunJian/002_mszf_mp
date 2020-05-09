@@ -11,7 +11,7 @@
               <div class="btn-item" @tap="onHandleRouter(item)">
                 <div class="item-icon iconfont {{item.icon}}"></div>
                 <div class="item-text">{{item.name}}</div>
-                <div class="item-count">10</div>
+                <div class="item-count">{{item.count}}</div>
               </div>
             </div>
           </div>
@@ -30,7 +30,7 @@
               <div class="btn-item" @tap="onHandleRouter(item)">
                 <div class="item-icon iconfont {{item.icon}}"></div>
                 <div class="item-text">{{item.name}}</div>
-                <div class="item-count">10</div>
+                <div class="item-count">{{item.count}}</div>
               </div>
             </div>
           </div>
@@ -49,6 +49,7 @@
               <div class="btn-item" @tap="onHandleRouter(item)">
                 <div class="item-icon iconfont {{item.icon}}"></div>
                 <div class="item-text">{{item.name}}</div>
+                <div class="item-count" v-if="item.count!==undefined">{{item.count}}</div>
               </div>
             </div>
           </div>
@@ -69,34 +70,40 @@
         {
           name: '新房',
           icon: 'icon-new',
-          path: $routes.HOUSE.SELECT.path + '?type=1'
+          path: $routes.HOUSE.SELECT.path + '?type=1',
+          count: 0
         },
         {
           name: '二手房',
           icon: 'icon-second',
-          path: $routes.HOUSE.SELECT.path + '?type=2'
+          path: $routes.HOUSE.SELECT.path + '?type=2',
+          count: 0
         },
         {
           name: '租房',
           icon: 'icon-rent',
-          path: $routes.HOUSE.SELECT.path + '?type=3'
+          path: $routes.HOUSE.SELECT.path + '?type=3',
+          count: 0
         }
       ],
       customer: [
         {
           name: '浏览',
           icon: 'icon-eye',
-          path: $routes.CUSTOMER.SELECT.path
+          path: $routes.CUSTOMER.SELECT.path,
+          count: 0
         },
         {
           name: '收藏',
           icon: 'icon-love',
-          path: $routes.CUSTOMER.SELECT.path
+          path: $routes.CUSTOMER.SELECT.path,
+          count: 0
         },
         {
           name: '发布',
           icon: 'icon-release',
-          path: $routes.CUSTOMER.SELECT.path
+          path: $routes.CUSTOMER.SELECT.path,
+          count: 0
         }
       ],
       business: [
@@ -108,13 +115,40 @@
         {
           name: '置业顾问',
           icon: 'icon-agent',
-          path: $routes.AGENT.SELECT.path
+          path: $routes.AGENT.SELECT.path,
+          count: 0
         }
       ]
     },
-    props: {},
+    props: {
+      isCount: {
+        type: Object,
+        default: {}
+      },
+      isAgent: {
+        type: Object,
+        default: {}
+      }
+    },
     events: {},
-    watch: {},
+    watch: {
+      isCount() {
+        const {isCount} = this;
+        if (isCount) {
+          this.house[0].count = isCount[0].totalCount;
+          this.house[1].count = isCount[1].totalCount;
+          this.house[2].count = isCount[2].totalCount;
+          this.customer[0].count = isCount[3].totalCount;
+          this.customer[1].count = isCount[4].totalCount;
+        }
+      },
+      isAgent() {
+        const {isAgent} = this;
+        if (isAgent) {
+          this.business[1].count = isAgent.length;
+        }
+      }
+    },
     methods: {
       onHandleRouter(item) {
         wx.navigateTo({
@@ -168,10 +202,10 @@
                   font-size: @fontSize46;
                   color: @white;
                   &.icon-new {
-                    background: -webkit-linear-gradient(-45deg, #00ffae, #00ca80);
+                    background: -webkit-linear-gradient(-45deg, #36FF97, #2FC16C);
                   }
                   &.icon-second {
-                    background: -webkit-linear-gradient(-45deg, #66b5ff, #0084ff);
+                    background: -webkit-linear-gradient(-45deg, #00CDFF, #0063FF);
                   }
                   &.icon-rent {
                     background: -webkit-linear-gradient(-45deg, #ffd200, #ff9900);

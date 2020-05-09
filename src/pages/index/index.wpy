@@ -9,7 +9,7 @@
           <scroll-view
             class="scroll-view"
             scroll-y="{{true}}">
-            <navigation></navigation>
+            <navigation :isCount="isCount" :isAgent="isAgent"></navigation>
           </scroll-view>
         </div>
       </div>
@@ -22,9 +22,9 @@
   import wepy from '@wepy/core';
   import store from '../../store';
   import {mapState, mapActions} from '@wepy/redux';
-  import * as controller from './controller';
-  import Toast from '../../mixins/toast';
   import Loading from '../../mixins/loading';
+  import Toast from '../../mixins/toast';
+  import * as controller from './controller';
 
   wepy.page({
     store,
@@ -161,7 +161,6 @@
       }
     }
   }
-
 </style>
 
 <config>
@@ -169,7 +168,6 @@
   navigationStyle:'custom',
   usingComponents: {
   'top-bar': '../../components/top-bar/top-bar',
-  'information': '../../components/information/information',
   'navigation': '../../components/navigation/navigation'
   }
   }

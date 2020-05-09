@@ -119,9 +119,9 @@
     },
     methods: {
       onHandleMobile() {
-        const {phone} = this.item;
+        const {userPhone} = this.item;
         wx.makePhoneCall({
-          phoneNumber: phone,
+          phoneNumber: userPhone,
           success: (res) => {
             console.log(res);
           },
