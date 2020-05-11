@@ -202,25 +202,25 @@
                   font-size: @fontSize46;
                   color: @white;
                   &.icon-new {
-                    background: -webkit-linear-gradient(-45deg, #36FF97, #2FC16C);
+                    background: -webkit-linear-gradient(-45deg, #00ccff, #0078ff);
                   }
                   &.icon-second {
-                    background: -webkit-linear-gradient(-45deg, #00CDFF, #0063FF);
+                    background: -webkit-linear-gradient(-45deg, #8bffdd, #00c289);
                   }
                   &.icon-rent {
-                    background: -webkit-linear-gradient(-45deg, #ffd200, #ff9900);
+                    background: -webkit-linear-gradient(-45deg, #ffd800, #ffa200);
                   }
                   &.icon-eye {
-                    background: -webkit-linear-gradient(-45deg, #ffadd2, #ff12a9);
+                    background: -webkit-linear-gradient(-45deg, #fff9b3, #ffcb3e);
                   }
                   &.icon-love {
                     background: -webkit-linear-gradient(-45deg, #ffa800, #ff2a00);
                   }
                   &.icon-release {
-                    background: -webkit-linear-gradient(-45deg, #1eadff, #0024ff);
+                    background: -webkit-linear-gradient(-45deg, #00ccff, #0078ff);
                   }
                   &.icon-business {
-                    background: -webkit-linear-gradient(-45deg, #ffa963, #ff5043);
+                    background: -webkit-linear-gradient(-45deg, #ffb49a, #ff4800);
                   }
                   &.icon-agent {
                     background: -webkit-linear-gradient(-45deg, #ffcc00, #ff9900);
