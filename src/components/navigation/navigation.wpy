@@ -62,9 +62,11 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
+  import Route from '../../mixins/route';
   import * as $routes from '../../router';
 
   wepy.component({
+    mixins: [Route],
     data: {
       house: [
         {
@@ -151,9 +153,7 @@
     },
     methods: {
       onHandleRouter(item) {
-        wx.navigateTo({
-          url: item.path
-        });
+        this.navigateTo(item.path);
       }
     },
     created() {

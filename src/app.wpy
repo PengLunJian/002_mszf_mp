@@ -24,8 +24,8 @@
 <config>
   {
   pages: [
-  'pages/login/index',
-  'pages/index/index'
+    'pages/login/index',
+    'pages/index/index'
   ],
   'subpackages': [
     {

@@ -60,6 +60,53 @@ export const ajaxRequestSelectLogin = createAction(
     });
   });
 
+const ajaxRequestCount = (params) => {
+  return axios.post(apis.selectCount, params)
+    .then((res) => {
+      res = res || {};
+      return res;
+    });
+};
+const ajaxRequestAgent = (params) => {
+  return axios.post(apis.selectAgent, params)
+    .then((res) => {
+      res = res || {};
+      return res;
+    });
+};
+
+export const ajaxRequestSelectIndex = createAction(
+  'selectIndex', (params) => {
+    commit(actionTypes.SELECT_COUNT_REQUEST);
+    commit(actionTypes.SELECT_AGENT_REQUEST);
+    return new Promise((resolve, reject) => {
+      axios.all([
+        ajaxRequestCount(params),
+        ajaxRequestAgent(params)
+      ])
+        .then(axios.spread((res1, res2) => {
+          res1 = res1 || {};
+          res2 = res2 || {};
+          const data1 = res1.data;
+          const data2 = res2.data;
+          const success = res1.success && res2.success;
+          if (success) {
+            commit(actionTypes.SELECT_COUNT_SUCCESS, data1);
+            commit(actionTypes.SELECT_AGENT_SUCCESS, data2);
+          } else {
+            commit(actionTypes.SELECT_COUNT_FAILURE);
+            commit(actionTypes.SELECT_AGENT_FAILURE);
+          }
+          resolve({res1, res2});
+        }))
+        .catch((err) => {
+          commit(actionTypes.SELECT_COUNT_FAILURE);
+          commit(actionTypes.SELECT_AGENT_FAILURE);
+          reject(err);
+        });
+    });
+  });
+
 export const ajaxRequestInsertHouse = createAction(
   'insertHouse', (params) => {
     commit(actionTypes.INSERT_HOUSE_REQUEST);

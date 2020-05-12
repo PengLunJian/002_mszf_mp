@@ -5,108 +5,104 @@
         <top-bar title="商户管理"></top-bar>
       </div>
       <div class="body">
-        <div class="context fade">
+        <div class="context fade" v-if="isSuccess">
           <scroll-view class="scroll-view" scroll-y="{{true}}">
             <div class="scroll-content">
-              <div class="scroll-header"></div>
-              <div class="scroll-body">
-                <div class="module">
-                  <div class="module-content">
-                    <div class="module-body">
-                      <div class="module-base">
-                        <div class="form-row row">
-                          <div class="form-col col-12">
-                            <div class="form-group">
-                              <label class="form-label">名称</label>
-                              <input class="form-input" v-model="busName" type="text"
-                                     placeholder="请输入中介名称"
-                                     @input="onHandleCheckEmpty"/>
-                              <span class="form-next iconfont icon-next"></span>
-                            </div>
+              <div class="module">
+                <div class="module-content">
+                  <div class="module-body">
+                    <div class="module-base">
+                      <div class="form-row row">
+                        <div class="form-col col-12">
+                          <div class="form-group">
+                            <label class="form-label">名称</label>
+                            <input class="form-input" v-model="busName" type="text"
+                                   placeholder="请输入中介名称"
+                                   @input="onHandleCheckEmpty"/>
+                            <span class="form-next iconfont icon-next"></span>
                           </div>
-                          <div class="form-col col-12">
-                            <div class="form-group">
-                              <label class="form-label">电话</label>
-                              <input class="form-input" v-model="phone" type="number"
-                                     placeholder="请输入手机号"
-                                     @input="onHandleCheckEmpty"/>
-                              <span class="form-next iconfont icon-next"></span>
-                            </div>
+                        </div>
+                        <div class="form-col col-12">
+                          <div class="form-group">
+                            <label class="form-label">电话</label>
+                            <input class="form-input" v-model="phone" type="number"
+                                   placeholder="请输入手机号"
+                                   @input="onHandleCheckEmpty"/>
+                            <span class="form-next iconfont icon-next"></span>
                           </div>
-                          <div class="form-col col-12">
-                            <div class="form-picker">
-                              <picker mode="region" @change="onHandleDiZhiChange" value="{{dizhi.items}}">
-                                <div class="form-group">
-                                  <label class="form-label">地址</label>
-                                  <input class="form-input" v-model="dizhi.value" disabled="{{true}}" type="text"
-                                         placeholder="安徽省、宣城市、广德县"/>
-                                  <span class="form-next iconfont icon-next"></span>
-                                </div>
-                              </picker>
-                            </div>
+                        </div>
+                        <div class="form-col col-12">
+                          <div class="form-picker">
+                            <picker mode="region" @change="onHandleSelectAddress" value="{{dizhi.items}}">
+                              <div class="form-group">
+                                <label class="form-label">地址</label>
+                                <input class="form-input" v-model="dizhi.value" disabled="{{true}}" type="text"
+                                       placeholder="安徽省、宣城市、广德县"/>
+                                <span class="form-next iconfont icon-next"></span>
+                              </div>
+                            </picker>
                           </div>
-                          <div class="form-col col-12">
-                            <div class="form-group">
-                              <label class="form-label">详细地址</label>
-                              <input class="form-input" v-model="address" type="text"
-                                     placeholder="街道、小区、门牌号"
-                                     @input="onHandleCheckEmpty"/>
-                              <span class="form-next iconfont icon-next"></span>
-                            </div>
+                        </div>
+                        <div class="form-col col-12">
+                          <div class="form-group">
+                            <label class="form-label">详细地址</label>
+                            <input class="form-input" v-model="address" type="text"
+                                   placeholder="街道、小区、门牌号"
+                                   @input="onHandleCheckEmpty"/>
+                            <span class="form-next iconfont icon-next"></span>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="module-footer"></div>
                   </div>
-                </div>
-                <div class="module">
-                  <div class="module-content">
-                    <div class="module-header">
-                      <div class="module-title">商户简介</div>
-                    </div>
-                    <div class="module-body">
-                      <div class="module-edit">
-                        <div class="form-row row">
-                          <div class="form-col col-12">
-                            <div class="form-group">
-                              <textarea class="textarea" v-model="remark" type="text"/>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="module-footer"></div>
-                  </div>
-                </div>
-                <div class="module">
-                  <div class="module-content">
-                    <div class="module-header">
-                      <div class="module-title">营业执照</div>
-                    </div>
-                    <div class="module-body">
-                      <div class="module-images">
-                        <div class="module-row row">
-                          <div class="module-col col-4" v-for="(item,index) in urls" :key="index">
-                            <div class="module-item" @tap="onHandleShowImage(index)">
-                              <div class="btn-delete iconfont icon-delete"
-                                   @tap.stop="onHandleDeleteImage(index)"></div>
-                              <lazy-image src="{{fileUrl+item}}" mode="aspectFill"/>
-                            </div>
-                          </div>
-                          <div class="module-col col-4">
-                            <div class="module-btn btn btn-image" @tap="onHandleUploadImage">
-                              <div class="module-icon iconfont icon-insert"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="module-footer"></div>
-                  </div>
+                  <div class="module-footer"></div>
                 </div>
               </div>
-              <div class="scroll-footer"></div>
+              <div class="module">
+                <div class="module-content">
+                  <div class="module-header">
+                    <div class="module-title">商户简介</div>
+                  </div>
+                  <div class="module-body">
+                    <div class="module-edit">
+                      <div class="form-row row">
+                        <div class="form-col col-12">
+                          <div class="form-group">
+                            <textarea class="textarea" v-model="remark" type="text"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="module-footer"></div>
+                </div>
+              </div>
+              <div class="module">
+                <div class="module-content">
+                  <div class="module-header">
+                    <div class="module-title">营业执照</div>
+                  </div>
+                  <div class="module-body">
+                    <div class="module-images">
+                      <div class="module-row row">
+                        <div class="module-col col-4" v-for="(item,index) in urls" :key="index">
+                          <div class="module-item" @tap="onHandleShowImage(index)">
+                            <div class="btn-delete iconfont icon-delete"
+                                 @tap.stop="onHandleDeleteImage(index)"></div>
+                            <lazy-image src="{{fileUrl+item}}" mode="aspectFill"/>
+                          </div>
+                        </div>
+                        <div class="module-col col-4">
+                          <div class="module-btn btn btn-image" @tap="onHandleUploadImage">
+                            <div class="module-icon iconfont icon-insert"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="module-footer"></div>
+                </div>
+              </div>
             </div>
           </scroll-view>
         </div>
@@ -124,9 +120,9 @@
   import wepy from '@wepy/core';
   import apis from '../../../apis';
   import store from '../../../store/index';
-  import {mapState, mapActions} from '@wepy/redux';
   import Toast from '../../../mixins/toast';
   import Loading from '../../../mixins/loading';
+  import {mapState, mapActions} from '@wepy/redux';
   import * as controller from './controller';
   import * as $routes from '../../../router';
 
@@ -178,7 +174,7 @@
           isBaseEmpty
         };
       },
-      onHandleDiZhiChange(e) {
+      onHandleSelectAddress(e) {
         const items = e.$wx.detail.value;
         this.dizhi.items = items;
         this.dizhi.value = items.join('、');
@@ -238,6 +234,27 @@
         }
         this.onHandleCheckEmpty();
       },
+      exeAjaxSelectBusiness() {
+        this.showLoading();
+        const {busId} = this.isLogin;
+        const params = {id: busId};
+        this.ajaxSelectBusiness(params)
+          .then((res) => {
+            res = res || {};
+            const {success} = res.payload;
+            if (success) {
+              this.onHandleRenderBusiness();
+            } else {
+              this.showToast('加载失败，请重试');
+            }
+            this.hideLoading();
+          })
+          .catch((err) => {
+            this.hideLoading();
+            this.showToast('加载失败，请重试');
+            console.log(err);
+          });
+      },
       exeAjaxUpdateBusiness() {
         this.showLoading();
         const params = this.getParams();
@@ -296,7 +313,7 @@
     },
 
     onLoad() {
-      this.onHandleRenderBusiness();
+      this.exeAjaxSelectBusiness();
     }
   });
 </script>
@@ -324,133 +341,127 @@
             height: 100%;
             .scroll-content {
               padding: unit(20, rpx) 0;
-              .scroll-header {
-              }
-              .scroll-body {
-                .module {
-                  .module-content {
-                    .module-header {
-                      padding: unit(30, rpx) unit(30, rpx) 0;
-                      .module-title {
-                        height: unit(32, rpx);
-                        line-height: unit(32, rpx);
-                        padding-left: unit(20, rpx);
-                        border-left: 4px solid @theme2;
-                        font-size: @fontSize32;
-                        letter-spacing: 0.5px;
-                        font-weight: bold;
-                        color: @fontColor1;
-                      }
-                    }
-                    .module-body {
-                      .module-base {
-                        padding-left: unit(30, rpx);
-                        .form-row {
-                          .form-col {
-                            padding-right: unit(20, rpx);
-                            border-bottom: 0.5px solid @borderColor1;
-                            .form-group {
-                              display: flex;
-                              font-size: @fontSize32;
-                              color: @fontColor1;
-                              .form-label {
-                                width: 25%;
-                                height: @height;
-                                display: inline-block;
-                                vertical-align: middle;
-                                line-height: @height;
-                              }
-                              .form-input {
-                                width: 75%;
-                                height: @height;
-                                display: inline-block;
-                                vertical-align: middle;
-                                text-align: right;
-                              }
-                              .form-next {
-                                display: inline-block;
-                                vertical-align: middle;
-                                padding-left: unit(10, rpx);
-                                line-height: @height;
-                                color: @iconNext;
-                              }
-                            }
-                            &:last-child {
-                              border: none;
-                            }
-                          }
-                        }
-                      }
-                      .module-edit {
-                        .form-row {
-                          padding: unit(15, rpx);
-                          .form-col {
-                            padding: unit(15, rpx);
-                            .form-group {
-                              padding: unit(20, rpx);
-                              border: 0.5px solid @borderColor2;
-                              border-radius: @borderRadius10;
-                              background-color: @bgEdit;
-                              font-size: @fontSize32;
-                              color: @fontColor1;
-                              .textarea {
-                                width: 100%;
-                                height: unit(260, rpx);
-                                text-align: justify;
-                              }
-                            }
-                            &:last-child {
-                              border: none;
-                            }
-                          }
-                        }
-                      }
-                      .module-images {
-                        .module-row {
-                          padding: unit(15, rpx);
-                          .module-col {
-                            padding: unit(15, rpx);
-                            .module-item {
-                              width: 100%;
-                              position: relative;
-                              height: unit(200, rpx);
-                              .btn-delete {
-                                position: absolute;
-                                top: 0;
-                                right: 0;
-                                z-index: 10;
-                                width: unit(50, rpx);
-                                height: unit(50, rpx);
-                                line-height: unit(50, rpx);
-                                background-color: rgba(0, 0, 0, .6);
-                                font-size: @fontSize36;
-                                text-align: center;
-                                color: @btnDelete;
-                              }
-                            }
-                            .module-btn {
-                              height: unit(200, rpx);
-                              line-height: unit(200, rpx);
-                              background-color: #F0F0F0;
-                              text-align: center;
-                              .module-icon {
-                                font-size: @fontSize50;
-                                color: @fontColor5;
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                    .module-footer {
+              .module {
+                .module-content {
+                  .module-header {
+                    padding: unit(30, rpx) unit(30, rpx) 0;
+                    .module-title {
+                      height: unit(32, rpx);
+                      line-height: unit(32, rpx);
+                      padding-left: unit(20, rpx);
+                      border-left: 4px solid @theme2;
+                      font-size: @fontSize32;
+                      letter-spacing: 0.5px;
+                      font-weight: bold;
+                      color: @fontColor1;
                     }
                   }
-                  &:first-child {
-                    margin: 0;
+                  .module-body {
+                    .module-base {
+                      padding-left: unit(30, rpx);
+                      .form-row {
+                        .form-col {
+                          padding-right: unit(20, rpx);
+                          border-bottom: 0.5px solid @borderColor1;
+                          .form-group {
+                            display: flex;
+                            font-size: @fontSize32;
+                            color: @fontColor1;
+                            .form-label {
+                              width: 25%;
+                              height: @height;
+                              display: inline-block;
+                              vertical-align: middle;
+                              line-height: @height;
+                            }
+                            .form-input {
+                              width: 75%;
+                              height: @height;
+                              display: inline-block;
+                              vertical-align: middle;
+                              text-align: right;
+                            }
+                            .form-next {
+                              display: inline-block;
+                              vertical-align: middle;
+                              padding-left: unit(10, rpx);
+                              line-height: @height;
+                              color: @iconNext;
+                            }
+                          }
+                          &:last-child {
+                            border: none;
+                          }
+                        }
+                      }
+                    }
+                    .module-edit {
+                      .form-row {
+                        padding: unit(15, rpx);
+                        .form-col {
+                          padding: unit(15, rpx);
+                          .form-group {
+                            padding: unit(20, rpx);
+                            border: 0.5px solid @borderColor2;
+                            border-radius: @borderRadius10;
+                            background-color: @bgEdit;
+                            font-size: @fontSize32;
+                            color: @fontColor1;
+                            .textarea {
+                              width: 100%;
+                              height: unit(260, rpx);
+                              text-align: justify;
+                            }
+                          }
+                          &:last-child {
+                            border: none;
+                          }
+                        }
+                      }
+                    }
+                    .module-images {
+                      .module-row {
+                        padding: unit(15, rpx);
+                        .module-col {
+                          padding: unit(15, rpx);
+                          .module-item {
+                            width: 100%;
+                            position: relative;
+                            height: unit(200, rpx);
+                            .btn-delete {
+                              position: absolute;
+                              top: 0;
+                              right: 0;
+                              z-index: 10;
+                              width: unit(50, rpx);
+                              height: unit(50, rpx);
+                              line-height: unit(50, rpx);
+                              background-color: rgba(0, 0, 0, .6);
+                              font-size: @fontSize36;
+                              text-align: center;
+                              color: @btnDelete;
+                            }
+                          }
+                          .module-btn {
+                            height: unit(200, rpx);
+                            line-height: unit(200, rpx);
+                            background-color: #F0F0F0;
+                            text-align: center;
+                            .module-icon {
+                              font-size: @fontSize50;
+                              color: @fontColor5;
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                  .module-footer {
                   }
                 }
-              }
-              .scroll-footer {
+                &:first-child {
+                  margin: 0;
+                }
               }
             }
           }

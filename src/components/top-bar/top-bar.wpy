@@ -10,9 +10,11 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
+  import Route from '../../mixins/route';
   import * as $routes from '../../router';
 
   wepy.component({
+    mixins: [Route],
     data: {},
     props: {
       title: {
@@ -31,14 +33,10 @@
     events: {},
     methods: {
       onHandleBack() {
-        wx.navigateBack({
-          delta: 1
-        });
+        this.navigateBack(1);
       },
       onHandleHome() {
-        wx.reLaunch({
-          url: $routes.INDEX.path
-        });
+        this.reLaunch($routes.INDEX.path);
       }
     },
     created() {

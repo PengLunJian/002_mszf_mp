@@ -22,7 +22,7 @@
           <div class="form-group">
             <div class="form-row row">
               <div class="form-col col-6">
-                <div class="form-check" @tap="onHandleCheck">
+                <div class="form-check" @tap="onHandleSelectCheck">
                   <div class="form-check-icon iconfont icon-right"
                        :class="{'checked':checked}"></div>
                   <label class="form-check-text">记住密码</label>
@@ -34,20 +34,11 @@
             </div>
           </div>
           <div class="form-group">
-            <div class="btn btn-login" @tap="onHandleLogin">登录</div>
+            <div class="btn btn-login" @tap="onHandleSelectLogin">登录</div>
           </div>
         </div>
       </div>
-      <div class="footer">
-        <div class="footer-row row">
-          <div class="footer-col col-6">
-            <div class="footer-text">技术支持</div>
-          </div>
-          <div class="footer-col col-6">
-            <img class="footer-logo" src="../../assets/images/company@2x.png" mode="aspectFit"/>
-          </div>
-        </div>
-      </div>
+      <div class="footer"></div>
     </div>
   </div>
 </template>
@@ -55,17 +46,18 @@
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
   import store from '../../store';
+  import Toast from '../../mixins/toast';
+  import Route from '../../mixins/route';
+  import Loading from '../../mixins/loading';
   import {mapState, mapActions} from '@wepy/redux';
-  import * as storage from '../../utils/storage';
+  import * as $storage from '../../utils/storage';
   import * as controller from './controller';
   import * as $routes from '../../router';
-  import Toast from '../../mixins/toast';
-  import Loading from '../../mixins/loading';
 
   wepy.page({
     store,
 
-    mixins: [Toast, Loading],
+    mixins: [Route, Toast, Loading],
 
     data: {
       userName: '',
@@ -79,7 +71,7 @@
 
     methods: {
       ...mapActions(controller.ACTIONS),
-      checkNotEmpty() {
+      onHandleCheckEmpty() {
         let result = false;
         const {userName, passWord} = this;
         if (!userName) {
@@ -91,20 +83,26 @@
         }
         return result;
       },
-      checkAccount() {
-        if (this.checkNotEmpty()) {
-          this.exeAjaxSelectLogin();
+      onHandleRenderUser() {
+        const user = $storage.getItem('user');
+        const {userName, passWord} = user || {};
+        if (userName && passWord) {
+          this.userName = userName;
+          this.passWord = passWord;
+          this.checked = true;
         }
       },
-      onHandleCheck() {
+      onHandleSelectCheck() {
         if (this.checked) {
           this.checked = false;
         } else {
           this.checked = true;
         }
       },
-      onHandleLogin() {
-        this.checkAccount();
+      onHandleSelectLogin() {
+        if (this.onHandleCheckEmpty()) {
+          this.exeAjaxSelectLogin();
+        }
       },
       exeAjaxSelectLogin() {
         this.showLoading();
@@ -115,19 +113,17 @@
         };
         this.ajaxSelectLogin(params)
           .then((res) => {
-            this.hideLoading();
             res = res || {};
             const {success, data} = res.payload;
             if (success) {
               if (checked) {
-                storage.setItem('user', data);
+                $storage.setItem('user', data);
               } else {
-                storage.removeItem('user', data);
+                $storage.removeItem('user', data);
               }
-              wx.redirectTo({
-                url: $routes.INDEX.path
-              });
+              this.exeAjaxSelectIndex();
             } else {
+              this.hideLoading();
               this.showToast('登录失败，请重试');
             }
             console.log(res);
@@ -137,17 +133,32 @@
             this.showToast('服务器连接失败');
             console.log(err);
           });
+      },
+      exeAjaxSelectIndex() {
+        const {busId} = this.isLogin;
+        const params = {busId};
+        this.ajaxSelectIndex(params)
+          .then((res) => {
+            this.hideLoading();
+            res = res || {};
+            const {res1, res2} = res.payload;
+            const success = res1.success && res2.success;
+            if (success) {
+              this.redirectTo($routes.INDEX.path);
+            } else {
+              this.showToast('加载失败，请重试');
+            }
+          })
+          .catch((err) => {
+            this.hideLoading();
+            this.showToast('加载失败，请重试');
+            console.log(err);
+          });
       }
     },
 
     onLoad() {
-      const user = storage.getItem('user');
-      const {userName, passWord} = user || {};
-      if (userName && passWord) {
-        this.userName = userName;
-        this.passWord = passWord;
-        this.checked = true;
-      }
+      this.onHandleRenderUser();
     }
   });
 </script>
@@ -268,35 +279,6 @@
         }
       }
       .footer {
-        .footer-row {
-          display: none;
-          position: fixed;
-          left: 0;
-          bottom: unit(40, rpx);
-          z-index: 1000;
-          width: 100%;
-          .footer-col {
-            padding: 0 unit(20, rpx);
-            &:first-child {
-              border-right: 0.5px solid @borderColor1;
-            }
-            .footer-text {
-              height: unit(30, rpx);
-              line-height: unit(30, rpx);
-              font-size: @fontSize26;
-              color: @fontColor4;
-              text-align: right;
-            }
-            .footer-logo {
-              width: unit(115, rpx);
-              height: unit(30, rpx);
-              image {
-                width: 100%;
-                height: 100%;
-              }
-            }
-          }
-        }
       }
     }
   }

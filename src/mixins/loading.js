@@ -1,6 +1,6 @@
 export default {
   data: {
-    mixin: 'MixinText'
+    mixin: 'Loading'
   },
   methods: {
     showLoading(title) {
