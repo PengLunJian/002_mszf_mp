@@ -703,6 +703,8 @@
         this.price = price;
         this.title = title;
         this.contact = contact;
+        this.handTime = handTime;
+        this.openTime = openTime;
         this.state.value = state;
         this.aparts.value = apart;
         this.houseName = houseName;
@@ -711,8 +713,6 @@
         this.maxfloorArea = maxfloorArea;
         this.address.items = [province, city, area];
         this.address.value = this.address.items.join('、');
-        this.handTime = utils.dateFormat(handTime, 'zh-cn');
-        this.openTime = utils.dateFormat(openTime, 'zh-cn');
         this.buildArea.value = minfloorArea + '-' + maxfloorArea;
         this.quality.value = quality;
         this.tags.value = tags;

@@ -22,7 +22,9 @@
           <div class="item-icon iconfont icon-browse"></div>
           <div class="item-text">/{{item.record||0}}</div>
         </div>
-        <div class="item-state{{getState}}">{{item.state}}</div>
+        <div class="item-state state1" v-if="item.state==='在售'">{{item.state}}</div>
+        <div class="item-state state2" v-if="item.state==='待售'">{{item.state}}</div>
+        <div class="item-state state3" v-if="item.state==='售罄'">{{item.state}}</div>
         <div class="item-time">{{getCreateTime}}</div>
       </div>
     </div>
@@ -51,7 +53,8 @@
           <div class="item-icon iconfont icon-browse"></div>
           <div class="item-text">/{{item.record||0}}</div>
         </div>
-        <div class="item-state{{getState}}">{{item.state}}</div>
+        <div class="item-state state1" v-if="item.state==='未售'">{{item.state}}</div>
+        <div class="item-state state3" v-if="item.state==='已售'">{{item.state}}</div>
         <div class="item-time">{{getCreateTime}}</div>
       </div>
     </div>
@@ -79,7 +82,8 @@
           <div class="item-icon iconfont icon-browse"></div>
           <div class="item-text">/{{item.record||0}}</div>
         </div>
-        <div class="item-state{{getState}}">{{item.state}}</div>
+        <div class="item-state state1" v-if="item.state==='未租'">{{item.state}}</div>
+        <div class="item-state state3" v-if="item.state==='已租'">{{item.state}}</div>
         <div class="item-time">{{getCreateTime}}</div>
       </div>
     </div>
@@ -108,23 +112,6 @@
       }
     },
     computed: {
-      getState() {
-        let clazz = '';
-        const {type, state} = this.item;
-        if (type) {
-          const states = [
-            ['在售', '待售', '售罄'],
-            ['未售', '', '已售'],
-            ['未租', '', '已租']
-          ];
-          states[type - 1].map((item, index) => {
-            if (item === state) {
-              clazz = ' state' + (index + 1);
-            }
-          });
-        }
-        return clazz;
-      },
       getCreateTime() {
         const {createTime} = this.item;
         return utils.dateFormat(createTime, 'yyyy/mm/dd');

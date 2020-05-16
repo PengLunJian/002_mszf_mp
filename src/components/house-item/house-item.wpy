@@ -29,9 +29,9 @@
           <div class="item-icon iconfont icon-browse"></div>
           <div class="item-text">/{{item.record||0}}</div>
         </div>
-        <div class="item-state">
-          <div class="item-label{{getState}}">{{item.state}}</div>
-        </div>
+        <div class="item-state state1" v-if="item.state==='在售'">{{item.state}}</div>
+        <div class="item-state state2" v-if="item.state==='待售'">{{item.state}}</div>
+        <div class="item-state state3" v-if="item.state==='售罄'">{{item.state}}</div>
       </div>
     </div>
   </div>
@@ -64,9 +64,8 @@
           <div class="item-icon iconfont icon-browse"></div>
           <div class="item-text">/{{item.record||0}}</div>
         </div>
-        <div class="item-state">
-          <div class="item-label{{getState}}">{{item.state}}</div>
-        </div>
+        <div class="item-state state1" v-if="item.state==='未售'">{{item.state}}</div>
+        <div class="item-state state3" v-if="item.state==='已售'">{{item.state}}</div>
       </div>
     </div>
   </div>
@@ -98,9 +97,8 @@
           <div class="item-icon iconfont icon-browse"></div>
           <div class="item-text">/{{item.record||0}}</div>
         </div>
-        <div class="item-state">
-          <div class="item-label{{getState}}">{{item.state}}</div>
-        </div>
+        <div class="item-state state1" v-if="item.state==='未租'">{{item.state}}</div>
+        <div class="item-state state3" v-if="item.state==='已租'">{{item.state}}</div>
       </div>
     </div>
   </div>
@@ -133,24 +131,7 @@
       }
     },
     computed: {
-      ...mapState(controller.STATES),
-      getState() {
-        let clazz = '';
-        const {type, state} = this.item;
-        if (type) {
-          const states = [
-            ['在售', '待售', '售罄'],
-            ['未售', '', '已售'],
-            ['未租', '', '已租']
-          ];
-          states[type - 1].map((item, index) => {
-            if (item === state) {
-              clazz = ' state' + (index + 1);
-            }
-          });
-        }
-        return clazz;
-      }
+      ...mapState(controller.STATES)
     },
 
     methods: {
@@ -330,21 +311,19 @@
           position: absolute;
           top: unit(20, rpx);
           right: unit(20, rpx);
-          .item-label {
-            height: unit(40, rpx);
-            line-height: unit(40, rpx);
-            padding: 0 unit(10, rpx);
-            font-size: @fontSize24;
-            color: @white;
-            &.state1 {
-              background-color: @stateColor1;
-            }
-            &.state2 {
-              background-color: @stateColor2;
-            }
-            &.state3 {
-              background-color: @stateColor3;
-            }
+          height: unit(40, rpx);
+          line-height: unit(40, rpx);
+          padding: 0 unit(10, rpx);
+          font-size: @fontSize24;
+          color: @white;
+          &.state1 {
+            background-color: @stateColor1;
+          }
+          &.state2 {
+            background-color: @stateColor2;
+          }
+          &.state3 {
+            background-color: @stateColor3;
           }
         }
         &:nth-last-child(2),

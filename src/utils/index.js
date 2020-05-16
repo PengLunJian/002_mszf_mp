@@ -66,6 +66,19 @@ export const buildArea = () => {
 };
 /**
  *
+ * @param data
+ * @returns {*}
+ */
+export const dataFormat = (data) => {
+  const {
+    openTime, handTime
+  } = data;
+  data.openTime = dateFormat(openTime, 'zh-cn');
+  data.handTime = dateFormat(handTime, 'zh-cn');
+  return data;
+};
+/**
+ *
  * @param date
  * @param format
  * @returns {string}
