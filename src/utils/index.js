@@ -72,40 +72,39 @@ export const buildArea = () => {
  */
 export const dateFormat = (date, format) => {
   let dateStr = '';
-  if (date) {
-    let newDate = new Date(date.replace(/-/g, '/'));
-    let year = newDate.getFullYear();
-    let month = newDate.getMonth() + 1;
-    let day = newDate.getDate();
-    let hour = newDate.getHours();
-    let minute = newDate.getMinutes();
-    let second = newDate.getSeconds();
-    const monthStr = month > 9 ? '' + month : '0' + month;
-    const dayStr = day > 9 ? '' + day : '0' + day;
-    const hourStr = hour > 9 ? '' + hour : '0' + hour;
-    const minuteStr = minute > 9 ? '' + minute : '0' + minute;
-    const secondStr = second > 9 ? '' + second : '0' + second;
-    switch (format) {
-      case 'yyyy/mm/dd':
-        dateStr = year + '/' + monthStr + '/' + dayStr;
-        break;
-      case 'yyyy/mm/dd hh':
-        dateStr = year + '/' + monthStr + '/' + dayStr + ' ' + hourStr;
-        break;
-      case 'yyyy/mm/dd hh:mm':
-        dateStr = year + '/' + monthStr + '/' + dayStr + ' ' + hourStr + ':' + minuteStr;
-        break;
-      case 'yyyy/mm/dd hh:mm:ss':
-        dateStr = year + '/' + monthStr + '/' + dayStr + ' ' + hourStr + ':' + minuteStr + ':' + secondStr;
-        break;
-      case 'yyyy-mm-dd':
-        dateStr = year + '-' + monthStr + '-' + dayStr;
-        break;
-      case 'zh-cn':
-        dateStr = year + '年' + monthStr + '月' + dayStr + '日';
-        break;
-    }
-    newDate = null;
+  if (!date) return dateStr;
+  let newDate = new Date(date.replace(/-/g, '/'));
+  let year = newDate.getFullYear();
+  let month = newDate.getMonth() + 1;
+  let day = newDate.getDate();
+  let hour = newDate.getHours();
+  let minute = newDate.getMinutes();
+  let second = newDate.getSeconds();
+  const monthStr = month > 9 ? '' + month : '0' + month;
+  const dayStr = day > 9 ? '' + day : '0' + day;
+  const hourStr = hour > 9 ? '' + hour : '0' + hour;
+  const minuteStr = minute > 9 ? '' + minute : '0' + minute;
+  const secondStr = second > 9 ? '' + second : '0' + second;
+  switch (format) {
+    case 'yyyy/mm/dd':
+      dateStr = year + '/' + monthStr + '/' + dayStr;
+      break;
+    case 'yyyy/mm/dd hh':
+      dateStr = year + '/' + monthStr + '/' + dayStr + ' ' + hourStr;
+      break;
+    case 'yyyy/mm/dd hh:mm':
+      dateStr = year + '/' + monthStr + '/' + dayStr + ' ' + hourStr + ':' + minuteStr;
+      break;
+    case 'yyyy/mm/dd hh:mm:ss':
+      dateStr = year + '/' + monthStr + '/' + dayStr + ' ' + hourStr + ':' + minuteStr + ':' + secondStr;
+      break;
+    case 'yyyy-mm-dd':
+      dateStr = year + '-' + monthStr + '-' + dayStr;
+      break;
+    case 'zh-cn':
+      dateStr = year + '年' + monthStr + '月' + dayStr + '日';
+      break;
   }
+  newDate = null;
   return dateStr;
 };

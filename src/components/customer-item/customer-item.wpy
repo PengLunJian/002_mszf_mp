@@ -108,7 +108,7 @@
             min-width: unit(40, rpx);
             padding: 0 unit(10, rpx);
             background-color: @btnDelete;
-            border-radius: @borderRadius100;
+            border-radius: @borderRadius40;
             font-size: @fontSize24;
             text-align: center;
             color: @white;
