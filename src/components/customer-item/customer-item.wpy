@@ -7,6 +7,12 @@
         </div>
       </div>
       <div class="item-col col-3">
+        <div class="item-btn item-mobile" @tap.stop="onHandleMobile">
+          <div class="item-icon iconfont icon-mobile"></div>
+          <div class="item-label">电话</div>
+        </div>
+      </div>
+      <div class="item-col col-3">
         <div class="item-btn item-browse" @tap.stop="onHandleBrowse">
           <div class="item-icon iconfont icon-browse"></div>
           <div class="item-label">浏览</div>
@@ -17,14 +23,7 @@
         <div class="item-btn item-follow" @tap.stop="onHandleFollow">
           <div class="item-icon iconfont icon-follow"></div>
           <div class="item-label">收藏</div>
-          <div class="item-value">{{item.record}}</div>
-        </div>
-      </div>
-      <div class="item-col col-3">
-        <div class="item-btn item-release" @tap.stop="onHandleRelease">
-          <div class="item-icon iconfont icon-issue"></div>
-          <div class="item-label">发布</div>
-          <div class="item-value">0</div>
+          <div class="item-value">{{item.follow}}</div>
         </div>
       </div>
     </div>
@@ -49,7 +48,17 @@
     events: {},
     watch: {},
     methods: {
-      onHandleRelease() {
+      onHandleMobile() {
+        const {phone} = this.item;
+        wx.makePhoneCall({
+          phoneNumber: phone,
+          success: (res) => {
+            console.log(res);
+          },
+          fail: (err) => {
+            console.log(err);
+          }
+        });
       },
       onHandleFollow() {
         const query = '?item=' + JSON.stringify(this.item);
@@ -128,9 +137,9 @@
               color: @btnFollow;
             }
           }
-          &.item-release {
+          &.item-mobile {
             .item-icon {
-              color: @btnRelease;
+              color: @btnMobile;
             }
           }
         }

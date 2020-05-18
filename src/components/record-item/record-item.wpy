@@ -15,9 +15,6 @@
         <div class="item-normal price">{{item.price||0}}元/m²</div>
       </div>
       <div class="item-row row">
-        <div class="item-mobile">
-          <div class="btn-mobile iconfont icon-mobile" @tap="onHandleMobile"></div>
-        </div>
         <div class="item-browse">
           <div class="item-icon iconfont icon-browse"></div>
           <div class="item-text">/{{item.record||0}}</div>
@@ -46,9 +43,6 @@
         <div class="item-normal">{{item.price||0}}元/m²</div>
       </div>
       <div class="item-row row">
-        <div class="item-mobile">
-          <div class="btn-mobile iconfont icon-mobile" @tap="onHandleMobile"></div>
-        </div>
         <div class="item-browse">
           <div class="item-icon iconfont icon-browse"></div>
           <div class="item-text">/{{item.record||0}}</div>
@@ -75,9 +69,6 @@
         <div class="item-normal price">{{item.price||0}}元/月</div>
       </div>
       <div class="item-row row">
-        <div class="item-mobile">
-          <div class="btn-mobile iconfont icon-mobile" @tap="onHandleMobile"></div>
-        </div>
         <div class="item-browse">
           <div class="item-icon iconfont icon-browse"></div>
           <div class="item-text">/{{item.record||0}}</div>
@@ -117,20 +108,7 @@
         return utils.dateFormat(createTime, 'yyyy/mm/dd');
       }
     },
-    methods: {
-      onHandleMobile() {
-        const {userPhone} = this.item;
-        wx.makePhoneCall({
-          phoneNumber: userPhone,
-          success: (res) => {
-            console.log(res);
-          },
-          fail: (err) => {
-            console.log(err);
-          }
-        });
-      }
-    },
+    methods: {},
     created() {
     }
   });
@@ -156,7 +134,7 @@
         margin-bottom: unit(10, rpx);
         .item-mobile {
           position: absolute;
-          top: unit(240,rpx);
+          top: unit(240, rpx);
           right: 0;
           width: unit(60, rpx);
           height: unit(60, rpx);
@@ -221,10 +199,10 @@
         }
         .item-time {
           position: absolute;
-          top: 0;
-          left: 0;
-          height: unit(80, rpx);
-          line-height: unit(80, rpx);
+          top: unit(240, rpx);
+          right: 0;
+          height: unit(60, rpx);
+          line-height: unit(60, rpx);
           padding: 0 unit(15, rpx);
           font-size: @fontSize28;
           color: @white;
