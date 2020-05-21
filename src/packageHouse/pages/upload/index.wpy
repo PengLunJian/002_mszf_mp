@@ -2,7 +2,7 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="图片上传" styl="{{topBar.style}}"></top-bar>
+        <top-bar title="图片上传" styl="{{topBar.style}}"/>
       </div>
       <div class="body">
         <div class="context">
@@ -56,9 +56,9 @@
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
   import store from '../../../store';
-  import {mapState, mapActions} from '@wepy/redux';
   import Toast from '../../../mixins/toast';
   import Loading from '../../../mixins/loading';
+  import {mapState, mapActions} from '@wepy/redux';
   import * as controller from './controller';
   import * as $config from '../../../config';
 

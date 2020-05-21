@@ -2,7 +2,7 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="商户管理"></top-bar>
+        <top-bar title="商户管理"/>
       </div>
       <div class="body">
         <div class="context fade" v-if="isSuccess">
@@ -119,8 +119,9 @@
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
   import apis from '../../../apis';
-  import store from '../../../store/index';
+  import store from '../../../store';
   import Toast from '../../../mixins/toast';
+  import Route from '../../../mixins/route';
   import Loading from '../../../mixins/loading';
   import {mapState, mapActions} from '@wepy/redux';
   import * as controller from './controller';
@@ -129,7 +130,7 @@
   wepy.page({
     store,
 
-    mixins: [Toast, Loading],
+    mixins: [Toast, Route, Loading],
 
     data: {
       isDisable: false,
@@ -198,9 +199,7 @@
         this.onHandleCheckEmpty();
       },
       onHandleUploadImage() {
-        wx.navigateTo({
-          url: $routes.BUSINESS.UPLOAD.path
-        });
+        this.navigateTo($routes.BUSINESS.UPLOAD.path);
       },
       onHandleUpdateBusiness() {
         const isCheckEmpty = this.onHandleCheckEmpty();
@@ -265,9 +264,7 @@
             if (success) {
               this.showToast('商户信息保存成功');
               setTimeout(() => {
-                wx.navigateBack({
-                  delta: 1
-                });
+                this.navigateBack(1);
               }, 1000);
             } else {
               this.showToast('保存失败，请重试');

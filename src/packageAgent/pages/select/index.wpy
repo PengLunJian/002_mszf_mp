@@ -30,17 +30,18 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import store from '../../../store/index';
+  import store from '../../../store';
+  import Toast from '../../../mixins/toast';
+  import Route from '../../../mixins/route';
+  import Loading from '../../../mixins/loading';
   import {mapState, mapActions} from '@wepy/redux';
   import * as controller from './controller';
-  import * as $routes from '../../../router/index';
-  import Loading from '../../../mixins/loading';
-  import Toast from '../../../mixins/toast';
+  import * as $routes from '../../../router';
 
   wepy.page({
     store,
 
-    mixins: [Toast, Loading],
+    mixins: [Toast, Route, Loading],
 
     data: {
       isEnter: false,
@@ -97,9 +98,7 @@
           });
       },
       onHandleInsertAgent() {
-        wx.navigateTo({
-          url: $routes.AGENT.INSERT.path
-        });
+        this.navigateTo($routes.AGENT.INSERT.path);
       },
       onHandleDeleteAgent(params) {
         this.params = params;

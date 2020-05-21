@@ -2,7 +2,7 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="主力户型"></top-bar>
+        <top-bar title="主力户型"/>
       </div>
       <div class="body">
         <div class="context fade">
@@ -94,18 +94,19 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
+  import apis from '../../../apis';
   import store from '../../../store';
-  import {mapState, mapActions} from '@wepy/redux';
   import Toast from '../../../mixins/toast';
+  import Route from '../../../mixins/route';
   import Loading from '../../../mixins/loading';
+  import {mapState, mapActions} from '@wepy/redux';
   import * as controller from './controller';
   import * as $routes from '../../../router';
-  import apis from '../../../apis';
 
   wepy.page({
     store,
 
-    mixins: [Toast, Loading],
+    mixins: [Toast, Route, Loading],
 
     data: {
       noData: '暂无数据',
@@ -168,9 +169,7 @@
         this.onHandleCheckEmpty();
       },
       onHandleShowUpload() {
-        wx.navigateTo({
-          url: $routes.HOUSE.UPLOAD.path
-        });
+        this.navigateTo($routes.HOUSE.UPLOAD.path);
       },
       onHandleShowImage(index) {
         const urls = this.urls.map((item) => {
@@ -202,9 +201,7 @@
         } else {
           this.insertLayoutReplace(data);
         }
-        wx.navigateBack({
-          delta: 1
-        });
+        this.navigateBack(1);
       },
       onHandleRenderLayout(data) {
         const {mainArea, picUrl, state, apart} = data;

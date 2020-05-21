@@ -2,14 +2,14 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="码上找房" :isIcon="false"></top-bar>
+        <top-bar title="码上找房" :isIcon="false"/>
       </div>
       <div class="body">
         <div class="context fade">
           <scroll-view
             class="scroll-view"
             scroll-y="{{true}}">
-            <navigation :isCount="isCount" :isAgent="isAgent"></navigation>
+            <navigation :isCount="isCount" :isAgent="isAgent"/>
           </scroll-view>
         </div>
       </div>

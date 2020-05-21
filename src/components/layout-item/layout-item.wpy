@@ -21,11 +21,13 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
+  import apis from '../../apis';
+  import Route from '../../mixins/route';
   import * as $routes from '../../router';
   import * as $config from '../../config';
-  import apis from '../../apis';
 
   wepy.component({
+    mixins: [Route],
     data: {
       fileUrl: apis.fileUrl,
       url: $config.DEFAULT_IMAGE
@@ -48,9 +50,7 @@
       },
       onHandleUpdateLayout(item, index) {
         const query = '?&type=修改&index=' + index;
-        wx.navigateTo({
-          url: $routes.HOUSE.LAYOUT.path + query
-        });
+        this.navigateTo($routes.HOUSE.LAYOUT.path + query);
       }
     },
     created() {

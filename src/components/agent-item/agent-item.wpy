@@ -31,11 +31,13 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
+  import apis from '../../apis';
+  import Route from '../../mixins/route';
   import * as $routes from '../../router';
   import * as $config from '../../config';
-  import apis from '../../apis';
 
   wepy.component({
+    mixins: [Route],
     data: {
       fileUrl: apis.fileUrl,
       url: $config.DEFAULT_IMAGE
@@ -46,7 +48,6 @@
         default: {}
       }
     },
-    events: {},
     watch: {},
     methods: {
       onHandleMobile() {
@@ -67,11 +68,9 @@
       },
       onHandleUpdate() {
         const query = '?item=' + JSON.stringify(this.item);
-        wx.navigateTo({
-          url: $routes.AGENT.UPDATE.path + query
-        });
+        this.navigateTo($routes.AGENT.UPDATE.path + query);
       },
-      onHandleDetailAgent(id) {
+      onHandleDetailAgent() {
       }
     },
     created() {

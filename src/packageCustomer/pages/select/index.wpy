@@ -2,7 +2,7 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="用户管理"></top-bar>
+        <top-bar title="用户管理"/>
       </div>
       <div class="body">
         <div class="context fade">
@@ -23,10 +23,10 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import store from '../../../store/index';
-  import {mapState, mapActions} from '@wepy/redux';
+  import store from '../../../store';
   import Toast from '../../../mixins/toast';
   import Loading from '../../../mixins/loading';
+  import {mapState, mapActions} from '@wepy/redux';
   import * as controller from './controller';
 
   wepy.page({
@@ -65,8 +65,8 @@
           })
           .catch((err) => {
             this.hideLoading();
-            this.timer = null;
             this.showToast('加载失败，请重试');
+            this.timer = null;
             console.log(err);
           });
       },

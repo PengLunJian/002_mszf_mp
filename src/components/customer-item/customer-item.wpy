@@ -33,9 +33,11 @@
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
   import apis from '../../apis';
+  import Route from '../../mixins/route';
   import * as $routes from '../../router';
 
   wepy.component({
+    mixins: [Route],
     data: {
       url: apis.fileUrl + '/image/5127f429-2015-48ef-9041-18b1b6e203d5.png'
     },
@@ -45,7 +47,6 @@
         default: {}
       }
     },
-    events: {},
     watch: {},
     methods: {
       onHandleMobile() {
@@ -62,15 +63,11 @@
       },
       onHandleFollow() {
         const query = '?item=' + JSON.stringify(this.item);
-        wx.navigateTo({
-          url: $routes.CUSTOMER.FOLLOW.path + query
-        });
+        this.navigateTo($routes.CUSTOMER.FOLLOW.path + query);
       },
       onHandleBrowse() {
         const query = '?item=' + JSON.stringify(this.item);
-        wx.navigateTo({
-          url: $routes.CUSTOMER.BROWSE.path + query
-        });
+        this.navigateTo($routes.CUSTOMER.BROWSE.path + query);
       }
     },
     created() {
