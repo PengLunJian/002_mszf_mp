@@ -178,7 +178,7 @@
       exeAjaxUpdateHouse() {
         this.showLoading();
         const {isRecommend} = this;
-        const msg = isRecommend ? '推荐' : '取消推荐';
+        const msg = isRecommend ? '添加推荐' : '取消推荐';
         const params = this.getParams();
         this.ajaxUpdateHouse(params)
           .then((res) => {
@@ -186,7 +186,7 @@
             res = res || {};
             const {success} = res.payload;
             if (success) {
-              this.showToast(msg + '成功');
+              this.showToast(msg);
             } else {
               this.showToast(msg + '失败');
             }

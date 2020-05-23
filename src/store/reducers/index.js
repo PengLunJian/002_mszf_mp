@@ -16,8 +16,8 @@ import SELECT_FOLLOW_REDUCER from './selectFollow';
 import UPDATE_BUSINESS_REDUCER from './updateBusiness';
 import SELECT_BUSINESS_REDUCER from './selectBusiness';
 import SELECT_CUSTOMER_REDUCER from './selectCustomer';
-import SELECT_HOUSE_DETAIL_REDUCER from './houseDetail';
-import SELECT_AGENT_DETAIL_REDUCER from './agentDetail';
+import SELECT_HOUSE_DETAIL_REDUCER from './selectHouseDetail';
+import SELECT_AGENT_DETAIL_REDUCER from './selectAgentDetail';
 
 export default combineReducers({
   SELECT_LOGIN_REDUCER,

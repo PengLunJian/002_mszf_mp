@@ -62,15 +62,16 @@ const actions = {
     };
   },
   [actionTypes.UPDATE_HOUSE_REPLACE](state, params) {
-    let {rows, totalCount} = state.data;
+    const oldData = state.data;
+    const oldRows = oldData.rows || [];
     const newData = params.data;
-    const {id} = newData;
-    rows.map((item, index) => {
-      if (item.id === id) {
-        rows[index] = newData;
+    const rows = oldRows.map((item) => {
+      if (item.id === newData.id) {
+        return {...item, ...newData};
       }
+      return item;
     });
-    const data = {rows, totalCount};
+    const data = {...oldData, rows};
     return {
       ...state,
       data
