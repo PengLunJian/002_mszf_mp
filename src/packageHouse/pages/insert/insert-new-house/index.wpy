@@ -206,7 +206,7 @@
                                  :key="index" @tap="onHandleSelectAgents(item)">
                               <div class="module-item" :class="{'checked':item.checked}">
                                 <agent-item :item="item" :key="index"/>
-                                <div class="item-check iconfont icon-right"></div>
+                                <com-checkbox :checked="item.checked"/>
                               </div>
                             </div>
                           </div>
@@ -228,7 +228,7 @@
                             <div class="module-col col-3"
                                  v-for="(item,index) in tags.items"
                                  :key="index" @tap="onHandleSelectTags(index)">
-                              <div class="item-tag" :class="{'checked':item.checked}">{{item.label}}</div>
+                              <com-tag :text="item.label" :checked="item.checked"/>
                             </div>
                           </div>
                         </div>
@@ -953,26 +953,11 @@
                                     background-color: @bgColor;
                                   }
                                 }
-                                .item-check {
+                                com-checkbox {
                                   position: absolute;
                                   top: unit(20, rpx);
                                   left: unit(20, rpx);
                                   z-index: 1;
-                                  width: unit(44, rpx);
-                                  height: unit(44, rpx);
-                                  line-height: unit(44, rpx);
-                                  transition: all 150ms ease;
-                                  border-radius: @borderRadius100;
-                                  background-color: @unCheck;
-                                  font-size: @fontSize20;
-                                  color: @borderColor1;
-                                  text-align: center;
-                                }
-                                &.checked {
-                                  .item-check {
-                                    background: -webkit-linear-gradient(left, @theme1, @theme2);
-                                    color: @white;
-                                  }
                                 }
                               }
                             }
@@ -983,19 +968,6 @@
                             padding: unit(15, rpx);
                             .module-col {
                               padding: unit(15, rpx);
-                              text-align: center;
-                              .item-tag {
-                                height: unit(60, rpx);
-                                line-height: unit(60, rpx);
-                                border-radius: unit(60, rpx);
-                                background: @unCheck;
-                                font-size: @fontSize24;
-                                color: @fontColor3;
-                                &.checked {
-                                  background: -webkit-linear-gradient(left, @theme1, @theme2);
-                                  color: @white;
-                                }
-                              }
                             }
                           }
                         }
@@ -1180,9 +1152,11 @@
   usingComponents: {
   'modal':'../../../../components/modal/modal',
   'top-bar': '../../../../components/top-bar/top-bar',
+  'com-tag': '../../../../components/com-tag/com-tag',
   'agent-item': '../../../../components/agent-item/agent-item',
+  'lazy-image': '../../../../components/lazy-image/lazy-image',
   'layout-item': '../../../../components/layout-item/layout-item',
-  'lazy-image': '../../../../components/lazy-image/lazy-image'
+  'com-checkbox': '../../../../components/com-checkbox/com-checkbox'
   }
   }
 </config>

@@ -1,9 +1,7 @@
 <template>
   <div class="container">
     <div class="content">
-      <div class="header">
-        <top-bar title="商家登录" :isIcon="false"/>
-      </div>
+      <div class="header"></div>
       <div class="body">
         <div class="context fade">
           <div class="login-container">
@@ -25,10 +23,9 @@
                 <div class="form-group">
                   <div class="form-row row">
                     <div class="form-col col-6">
-                      <div class="form-check" @tap="onHandleSelectCheck">
-                        <div class="form-check-icon iconfont icon-right"
-                             :class="{'checked':checked}"></div>
-                        <label class="form-check-text">记住密码</label>
+                      <div class="form-checkbox" @tap="onHandleSelectCheck">
+                        <com-checkbox :checked="checked"/>
+                        <label class="form-checkbox-text">记住密码</label>
                       </div>
                     </div>
                     <div class="form-col col-6">
@@ -40,7 +37,9 @@
                   <div class="btn btn-login" @tap="onHandleSelectLogin">登录</div>
                 </div>
               </div>
-              <div class="login-footer"></div>
+              <div class="login-footer">
+                <div class="description">温馨提示：码上找房商户端是服务于商户的管理平台，商户需使用平台内部分配账号登录后方可实现房源管理、店铺管理、员工管理等业务。</div>
+              </div>
             </div>
           </div>
         </div>
@@ -188,23 +187,22 @@
         position: relative;
         .context {
           height: 100%;
-          padding-top: 65px;
           .login-container {
+            height: 100%;
+            font-size: 0;
             .login-content {
+              width: 100%;
+              display: inline-block;
+              vertical-align: middle;
               font-size: @fontSize32;
               color: @fontColor1;
               .login-header {
-                height: unit(200, rpx);
-                line-height: unit(200, rpx);
-                margin-bottom: unit(200, rpx);
-                background-color: @theme2;
-                text-align: center;
-                font-size: 0;
+                padding: unit(60, rpx) 0;
+                margin-bottom: unit(100, rpx);
                 image {
+                  margin: 0 auto;
                   width: unit(250, rpx);
                   height: unit(80, rpx);
-                  display: inline-block;
-                  vertical-align: middle;
                 }
               }
               .login-body {
@@ -234,24 +232,9 @@
                     line-height: unit(44, rpx);
                     text-decoration: underline;
                   }
-                  .form-check {
+                  .form-checkbox {
                     display: flex;
-                    .form-check-icon {
-                      width: unit(44, rpx);
-                      height: unit(44, rpx);
-                      line-height: unit(44, rpx);
-                      background-color: @unCheck;
-                      border-radius: @borderRadius100;
-                      transition: all 150ms ease;
-                      font-size: @fontSize20;
-                      color: @borderColor1;
-                      text-align: center;
-                      &.checked {
-                        background: -webkit-linear-gradient(left, @theme1, @theme2);
-                        color: @white;
-                      }
-                    }
-                    .form-check-text {
+                    .form-checkbox-text {
                       height: unit(44, rpx);
                       line-height: unit(44, rpx);
                       padding-left: unit(10, rpx);
@@ -274,7 +257,20 @@
                 }
               }
               .login-footer {
+                .description {
+                  padding: unit(60, rpx);
+                  line-height: unit(36, rpx);
+                  font-size: @fontSize24;
+                  text-align: justify;
+                  color: @fontColor3;
+                }
               }
+            }
+            &:before {
+              content: '';
+              height: 100%;
+              display: inline-block;
+              vertical-align: middle;
             }
           }
         }
@@ -290,7 +286,7 @@
   disableScroll:true,
   navigationStyle:'custom',
   usingComponents: {
-  'top-bar': '../../components/top-bar/top-bar'
+  'com-checkbox': '../../components/com-checkbox/com-checkbox'
   }
   }
 </config>

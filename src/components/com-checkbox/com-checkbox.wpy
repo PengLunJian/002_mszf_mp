@@ -1,0 +1,44 @@
+<template>
+  <div class="com-checkbox">
+    <div class="checkbox-icon iconfont icon-right" :class="{'checked':checked}"></div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+
+  wepy.component({
+    data: {},
+    props: {
+      checked: {
+        type: Boolean,
+        default: false
+      }
+    },
+    methods: {},
+    created() {
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../assets/less/common";
+  @import "../../assets/less/variable";
+
+  .com-checkbox {
+    .checkbox-icon {
+      width: unit(44, rpx);
+      height: unit(44, rpx);
+      line-height: unit(44, rpx);
+      background-color: @unCheck;
+      border-radius: @borderRadius100;
+      font-size: @fontSize20;
+      color: @fontColor5;
+      text-align: center;
+      &.checked {
+        background: -webkit-linear-gradient(left, @theme1, @theme2);
+        color: @white;
+      }
+    }
+  }
+</style>

@@ -1,0 +1,43 @@
+<template>
+  <div class="com-tag" :class="{'checked':checked}">{{text}}</div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+
+  wepy.component({
+    data: {},
+    props: {
+      checked: {
+        type: Boolean,
+        default: false
+      },
+      text: {
+        type: String,
+        default: 'Text'
+      }
+    },
+    methods: {},
+    created() {
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../assets/less/common";
+  @import "../../assets/less/variable";
+
+  .com-tag {
+    height: unit(60, rpx);
+    line-height: unit(60, rpx);
+    border-radius: unit(60, rpx);
+    background-color: @unCheck;
+    font-size: @fontSize24;
+    text-align: center;
+    color: @fontColor3;
+    &.checked {
+      background: -webkit-linear-gradient(left, @theme1, @theme2);
+      color: @white;
+    }
+  }
+</style>
