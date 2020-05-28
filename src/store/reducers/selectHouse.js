@@ -38,24 +38,26 @@ const actions = {
     };
   },
   [actionTypes.INSERT_HOUSE_REPLACE](state, params) {
-    let {rows, totalCount} = state.data;
-    const newData = params.data;
+    let oldData = state.data;
+    let {rows, totalCount} = oldData;
+    let newData = params.data;
     rows.unshift(newData);
     totalCount++;
-    const data = {rows, totalCount};
+    let data = {...oldData, rows, totalCount};
     return {
       ...state,
       data
     };
   },
   [actionTypes.DELETE_HOUSE_REPLACE](state, params) {
-    let {rows, totalCount} = state.data;
-    const {id} = params.data;
+    let oldData = state.data;
+    let {rows, totalCount} = oldData;
+    let newData = params.data;
     rows = rows.filter((item) => {
-      return item.id !== id;
+      return item.id !== newData.id;
     });
     totalCount--;
-    const data = {rows, totalCount};
+    let data = {...oldData, rows, totalCount};
     return {
       ...state,
       data

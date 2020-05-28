@@ -6,9 +6,7 @@
       </div>
       <div class="body">
         <div class="context fade">
-          <scroll-view
-            class="scroll-view"
-            scroll-y="{{true}}">
+          <scroll-view class="scroll-view" scroll-y="{{true}}">
             <navigation :isCount="isCount" :isAgent="isAgent"/>
           </scroll-view>
         </div>
