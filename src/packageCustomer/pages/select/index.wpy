@@ -6,7 +6,10 @@
       </div>
       <div class="body">
         <div class="context fade">
-          <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
+          <scroll-view
+            class="scroll-view"
+            scroll-y="{{isScroll}}"
+            @scrolltolower="onHandleScrollToLower">
             <div class="item-row row">
               <div class="item-col col-12" v-for="(item,index) in isCustomer.rows">
                 <customer-item :item="item" :key="index"/>
@@ -139,6 +142,7 @@
   usingComponents: {
   'top-bar': '../../../components/top-bar/top-bar',
   'lazy-image': '../../../components/lazy-image/lazy-image',
+  'loading-more': '../../../components/loading-more/loading-more',
   'customer-item': '../../../components/customer-item/customer-item'
   }
   }

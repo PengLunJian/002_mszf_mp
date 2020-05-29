@@ -179,8 +179,8 @@
             this.canvas.mark = {path, width, height};
           },
           fail: (err) => {
-            const errorMessage = err || '图片加载失败';
-            this.showToast(errorMessage);
+            this.showToast('图片加载失败');
+            console.log(err);
           }
         });
       },
