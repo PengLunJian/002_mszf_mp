@@ -8,6 +8,11 @@ export const INDEX = {
   path: '/pages/index/index'
 };
 
+export const WAITTING = {
+  name: '敬请期待',
+  path: '/pages/waitting/index'
+};
+
 export const HOUSE = {
   INSERT: {
     NEW_HOUSE: {

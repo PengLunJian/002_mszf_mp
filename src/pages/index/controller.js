@@ -7,6 +7,5 @@ export const STATES = {
 };
 
 export const ACTIONS = {
-  ajaxSelectCount: params => actions.ajaxRequestSelectCount(params),
-  ajaxSelectAgent: params => actions.ajaxRequestSelectAgent(params)
+  ajaxSelectIndex: params => actions.ajaxRequestSelectIndex(params)
 };

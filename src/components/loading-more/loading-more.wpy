@@ -38,7 +38,6 @@
 <style scoped lang="less">
   @import "../../assets/less/common";
   @import "../../assets/less/variable";
-  @import "../../assets/less/iconfont";
 
   .loading-more {
     padding: unit(15, rpx) 0;

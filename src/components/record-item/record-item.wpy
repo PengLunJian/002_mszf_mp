@@ -40,7 +40,6 @@
       </div>
       <div class="item-row row">
         <div class="item-normal price">{{item.totalPrice||0}}万</div>
-        <div class="item-normal">{{item.price||0}}元/m²</div>
       </div>
       <div class="item-row row">
         <div class="item-browse">
@@ -115,8 +114,8 @@
 </script>
 
 <style scoped lang="less">
-  @import "../../assets/less/variable";
   @import "../../assets/less/common";
+  @import "../../assets/less/variable";
 
   .item {
     overflow: hidden;

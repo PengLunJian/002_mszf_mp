@@ -118,8 +118,8 @@
 </script>
 
 <style scoped lang="less">
+  @import "../../../assets/less/@media";
   @import "../../../assets/less/variable";
-  @import "../../../assets/less/iconfont";
 
   .container {
     min-height: 100vh;
@@ -132,7 +132,7 @@
         position: relative;
         .context {
           height: 100%;
-          padding-top: unit(130, rpx);
+          padding-top: 65px;
           .scroll-view {
             height: 100%;
             .item-row {

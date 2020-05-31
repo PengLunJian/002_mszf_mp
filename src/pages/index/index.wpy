@@ -7,7 +7,10 @@
       <div class="body">
         <div class="context fade">
           <scroll-view class="scroll-view" scroll-y="{{true}}">
-            <navigation :isCount="isCount" :isAgent="isAgent"/>
+            <div class="scroll-content">
+              <count :isCount="isCount"/>
+              <navigation/>
+            </div>
           </scroll-view>
         </div>
       </div>
@@ -36,17 +39,35 @@
     },
 
     methods: {
-      ...mapActions(controller.ACTIONS)
+      ...mapActions(controller.ACTIONS),
+      exeAjaxSelectIndex() {
+        const {busId} = this.isLogin;
+        const params = {busId};
+        this.ajaxSelectIndex(params)
+          .then((res) => {
+            res = res || {};
+            const {res1, res2} = res.payload;
+            const success = res1.success && res2.success;
+            if (!success) {
+              this.showToast('加载失败，请重试');
+            }
+          })
+          .catch((err) => {
+            this.showToast('加载失败，请重试');
+            console.log(err);
+          });
+      }
     },
 
     onLoad() {
+      this.exeAjaxSelectIndex();
     }
   });
 </script>
 
 <style scoped lang="less">
-  @import "../../assets/less/variable";
   @import "../../assets/less/@media";
+  @import "../../assets/less/variable";
 
   @height: unit(64, rpx);
 
@@ -64,38 +85,8 @@
           padding-top: 65px;
           .scroll-view {
             height: 100%;
-            .scroll-inner {
+            .scroll-content {
               padding-top: unit(20, rpx);
-              .module {
-                margin: 0;
-                .module-content {
-                  .module-header {
-                    padding: unit(30, rpx) unit(30, rpx) 0;
-                    .module-title {
-                      height: unit(32, rpx);
-                      line-height: unit(32, rpx);
-                      padding-left: unit(20, rpx);
-                      border-left: 4px solid @theme2;
-                      font-size: @fontSize32;
-                      letter-spacing: 0.5px;
-                      font-weight: bold;
-                      color: @fontColor1;
-                    }
-                  }
-                  .module-body {
-                    .module-echarts {
-                      padding: unit(30, rpx);
-                      .ec-canvas {
-                        width: 100%;
-                        height: unit(400, rpx);
-                      }
-                    }
-                  }
-                  .module-footer {
-
-                  }
-                }
-              }
             }
           }
         }
@@ -110,6 +101,7 @@
   {
   navigationStyle:'custom',
   usingComponents: {
+  'count': '../../components/count/count',
   'top-bar': '../../components/top-bar/top-bar',
   'navigation': '../../components/navigation/navigation'
   }

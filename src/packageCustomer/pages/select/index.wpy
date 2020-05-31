@@ -102,8 +102,8 @@
 </script>
 
 <style scoped lang="less">
+  @import "../../../assets/less/@media";
   @import "../../../assets/less/variable";
-  @import "../../../assets/less/iconfont";
 
   @height: unit(120, rpx);
 

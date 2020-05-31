@@ -24,50 +24,51 @@
 <config>
   {
   pages: [
-    'pages/login/index',
-    'pages/index/index'
+  'pages/login/index',
+  'pages/index/index',
+  'pages/waitting/index'
   ],
   'subpackages': [
-    {
-      'root': 'packageHouse',
-      'pages': [
-        'pages/select/index',
-        'pages/detail/index',
-        'pages/layout/index',
-        'pages/upload/index',
-        'pages/insert/insert-new-house/index',
-        'pages/update/update-new-house/index',
-        'pages/insert/insert-second-house/index',
-        'pages/update/update-second-house/index',
-        'pages/insert/insert-rent-house/index',
-        'pages/update/update-rent-house/index'
-      ]
-    },
-    {
-      'root': 'packageCustomer',
-      'pages': [
-        'pages/select/index',
-        'pages/browse/index',
-        'pages/follow/index'
-      ]
-    },
-    {
-      'root': 'packageAgent',
-      'pages': [
-        'pages/insert/index',
-        'pages/update/index',
-        'pages/select/index',
-        'pages/detail/index',
-        'pages/upload/index'
-      ]
-    },
-    {
-      'root': 'packageBusiness',
-      'pages': [
-        'pages/select/index',
-        'pages/upload/index'
-      ]
-    }
+  {
+  'root': 'packageHouse',
+  'pages': [
+  'pages/select/index',
+  'pages/detail/index',
+  'pages/layout/index',
+  'pages/upload/index',
+  'pages/insert/insert-new-house/index',
+  'pages/update/update-new-house/index',
+  'pages/insert/insert-second-house/index',
+  'pages/update/update-second-house/index',
+  'pages/insert/insert-rent-house/index',
+  'pages/update/update-rent-house/index'
+  ]
+  },
+  {
+  'root': 'packageCustomer',
+  'pages': [
+  'pages/select/index',
+  'pages/browse/index',
+  'pages/follow/index'
+  ]
+  },
+  {
+  'root': 'packageAgent',
+  'pages': [
+  'pages/insert/index',
+  'pages/update/index',
+  'pages/select/index',
+  'pages/detail/index',
+  'pages/upload/index'
+  ]
+  },
+  {
+  'root': 'packageBusiness',
+  'pages': [
+  'pages/select/index',
+  'pages/upload/index'
+  ]
+  }
   ],
   window: {
   backgroundColor: '#fafafa',

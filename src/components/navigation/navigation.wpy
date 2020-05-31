@@ -1,60 +1,15 @@
 <template>
-  <div class="navigation">
-    <div class="module">
-      <div class="module-content">
-        <div class="module-header">
-          <div class="module-title">房源管理</div>
-        </div>
-        <div class="module-body">
-          <div class="module-row row">
-            <div class="module-col col-4" v-for="(item,index) in house" :key="index">
-              <div class="btn-item" @tap="onHandleRouter(item)">
-                <div class="item-icon iconfont {{item.icon}}"></div>
-                <div class="item-text">{{item.name}}</div>
-                <div class="item-count">{{item.count}}</div>
-              </div>
+  <div class="module">
+    <div class="module-content">
+      <div class="module-body">
+        <div class="module-row row">
+          <div class="module-col col-4" v-for="(item,index) in items" :key="index">
+            <div class="module-item" @tap="onHandleRouter(item)">
+              <div class="item-icon iconfont {{item.icon}}"></div>
+              <div class="item-text">{{item.name}}</div>
             </div>
           </div>
         </div>
-        <div class="module-footer"></div>
-      </div>
-    </div>
-    <div class="module">
-      <div class="module-content">
-        <div class="module-header">
-          <div class="module-title">用户管理</div>
-        </div>
-        <div class="module-body">
-          <div class="module-row row">
-            <div class="module-col col-4" v-for="(item,index) in customer" :key="index">
-              <div class="btn-item" @tap="onHandleRouter(item)">
-                <div class="item-icon iconfont {{item.icon}}"></div>
-                <div class="item-text">{{item.name}}</div>
-                <div class="item-count">{{item.count}}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="module-footer"></div>
-      </div>
-    </div>
-    <div class="module">
-      <div class="module-content">
-        <div class="module-header">
-          <div class="module-title">店铺管理</div>
-        </div>
-        <div class="module-body">
-          <div class="module-row row">
-            <div class="module-col col-4" v-for="(item,index) in business" :key="index">
-              <div class="btn-item" @tap="onHandleRouter(item)">
-                <div class="item-icon iconfont {{item.icon}}"></div>
-                <div class="item-text">{{item.name}}</div>
-                <div class="item-count" v-if="item.count!==undefined">{{item.count}}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="module-footer"></div>
       </div>
     </div>
   </div>
@@ -68,89 +23,50 @@
   wepy.component({
     mixins: [Route],
     data: {
-      house: [
+      items: [
         {
           name: '新房',
           icon: 'icon-new',
-          path: $routes.HOUSE.SELECT.path + '?type=1',
-          count: 0
+          path: $routes.HOUSE.SELECT.path + '?type=1'
         },
         {
           name: '二手房',
           icon: 'icon-second',
-          path: $routes.HOUSE.SELECT.path + '?type=2',
-          count: 0
+          path: $routes.HOUSE.SELECT.path + '?type=2'
         },
         {
           name: '租房',
           icon: 'icon-rent',
-          path: $routes.HOUSE.SELECT.path + '?type=3',
-          count: 0
-        }
-      ],
-      customer: [
-        {
-          name: '浏览',
-          icon: 'icon-eye',
-          path: $routes.CUSTOMER.SELECT.path,
-          count: 0
+          path: $routes.HOUSE.SELECT.path + '?type=3'
         },
         {
-          name: '收藏',
-          icon: 'icon-love',
-          path: $routes.CUSTOMER.SELECT.path,
-          count: 0
+          name: '用户管理',
+          icon: 'icon-user',
+          path: $routes.CUSTOMER.SELECT.path
         },
         {
-          name: '发布',
-          icon: 'icon-release',
-          path: $routes.CUSTOMER.SELECT.path,
-          count: 0
-        }
-      ],
-      business: [
-        {
-          name: '基本信息',
+          name: '店铺管理',
           icon: 'icon-business',
           path: $routes.BUSINESS.SELECT.path
         },
         {
           name: '置业顾问',
           icon: 'icon-agent',
-          path: $routes.AGENT.SELECT.path,
-          count: 0
+          path: $routes.AGENT.SELECT.path
+        },
+        {
+          name: '系统设置',
+          icon: 'icon-system',
+          path: $routes.WAITTING.path
+        },
+        {
+          name: '版本更新',
+          icon: 'icon-version',
+          path: $routes.WAITTING.path
         }
       ]
     },
-    props: {
-      isCount: {
-        type: Object,
-        default: {}
-      },
-      isAgent: {
-        type: Object,
-        default: {}
-      }
-    },
-    events: {},
-    watch: {
-      isCount() {
-        const {isCount} = this;
-        if (isCount) {
-          this.house[0].count = isCount[0].totalCount;
-          this.house[1].count = isCount[1].totalCount;
-          this.house[2].count = isCount[2].totalCount;
-          this.customer[0].count = isCount[3].totalCount;
-          this.customer[1].count = isCount[4].totalCount;
-        }
-      },
-      isAgent() {
-        const {isAgent} = this;
-        if (isAgent) {
-          this.business[1].count = isAgent.length;
-        }
-      }
-    },
+    props: {},
     methods: {
       onHandleRouter(item) {
         this.navigateTo(item.path);
@@ -164,99 +80,78 @@
 <style scoped lang="less">
   @import "../../assets/less/common";
   @import "../../assets/less/variable";
-  @import "../../assets/less/iconfont";
 
-  .navigation {
-    padding-top: unit(20, rpx);
-    .module {
-      .module-content {
-        .module-header {
-          padding: unit(30, rpx) unit(30, rpx) 0;
-          .module-title {
-            height: unit(32, rpx);
-            line-height: unit(32, rpx);
-            padding-left: unit(20, rpx);
-            border-left: 4px solid @theme2;
-            font-size: @fontSize32;
-            letter-spacing: 0.5px;
-            font-weight: bold;
-            color: @fontColor1;
-          }
+  .module {
+    .module-content {
+      .module-header {
+        padding: unit(30, rpx) unit(30, rpx) 0;
+        .module-title {
+          height: unit(32, rpx);
+          line-height: unit(32, rpx);
+          padding-left: unit(20, rpx);
+          border-left: 4px solid @theme2;
+          font-size: @fontSize32;
+          letter-spacing: 0.5px;
+          font-weight: bold;
+          color: @fontColor1;
         }
-        .module-body {
-          .module-row {
+      }
+      .module-body {
+        .module-row {
+          padding: unit(15, rpx);
+          text-align: center;
+          .module-col {
             padding: unit(15, rpx);
-            text-align: center;
-            .module-col {
-              padding: unit(15, rpx);
-              .btn-item {
-                overflow: hidden;
-                position: relative;
-                padding: unit(30, rpx) 0;
-                .item-icon {
-                  margin: 0 auto;
-                  width: unit(90, rpx);
-                  height: unit(90, rpx);
-                  line-height: unit(90, rpx);
-                  border-radius: @borderRadius100;
-                  font-size: @fontSize46;
-                  color: @white;
-                  &.icon-new {
-                    background: -webkit-linear-gradient(-45deg, #00ccff, #0078ff);
-                  }
-                  &.icon-second {
-                    background: -webkit-linear-gradient(-45deg, #8bffdd, #00c289);
-                  }
-                  &.icon-rent {
-                    background: -webkit-linear-gradient(-45deg, #ffd800, #ffa200);
-                  }
-                  &.icon-eye {
-                    background: -webkit-linear-gradient(-45deg, #fff9b3, #ffcb3e);
-                  }
-                  &.icon-love {
-                    background: -webkit-linear-gradient(-45deg, #ffa800, #ff2a00);
-                  }
-                  &.icon-release {
-                    background: -webkit-linear-gradient(-45deg, #00ccff, #0078ff);
-                  }
-                  &.icon-business {
-                    background: -webkit-linear-gradient(-45deg, #ffb49a, #ff4800);
-                  }
-                  &.icon-agent {
-                    background: -webkit-linear-gradient(-45deg, #ffcc00, #ff9900);
-                  }
+            .module-item {
+              overflow: hidden;
+              position: relative;
+              padding: unit(15, rpx) 0;
+              .item-icon {
+                margin: 0 auto;
+                width: unit(90, rpx);
+                height: unit(90, rpx);
+                line-height: unit(90, rpx);
+                border-radius: @borderRadius100;
+                font-size: @fontSize46;
+                color: @white;
+                &.icon-new {
+                  background: -webkit-linear-gradient(-45deg, #00ccff, #0078ff);
                 }
-                .item-text {
-                  height: unit(40, rpx);
-                  line-height: unit(40, rpx);
-                  margin-top: unit(20, rpx);
-                  font-size: @fontSize28;
-                  color: @fontColor1;
+                &.icon-second {
+                  background: -webkit-linear-gradient(-45deg, #8bffdd, #00c289);
                 }
-                .item-count {
-                  position: absolute;
-                  top: unit(15, rpx);
-                  right: unit(50, rpx);
-                  height: unit(40, rpx);
-                  min-width: unit(40, rpx);
-                  line-height: unit(40, rpx);
-                  padding: 0 unit(10, rpx);
-                  background-color: @important;
-                  border-radius: @borderRadius40;
-                  box-shadow: 0 0 15 rpx @boxShadow05;
-                  font-size: @fontSize24;
-                  color: @white;
+                &.icon-rent {
+                  background: -webkit-linear-gradient(-45deg, #ffd800, #ffa200);
                 }
+                &.icon-user {
+                  background: -webkit-linear-gradient(-45deg, #fffca8, #ffcb1d);
+                }
+                &.icon-business {
+                  background: -webkit-linear-gradient(-45deg, #ffb49a, #ff4800);
+                }
+                &.icon-agent {
+                  background: -webkit-linear-gradient(-45deg, #aaaaff, #4f51d5);
+                }
+                &.icon-system {
+                  background: -webkit-linear-gradient(-45deg, #00ccff, #0078ff);
+                }
+                &.icon-version {
+                  background: -webkit-linear-gradient(-45deg, #8bffdd, #00c289);
+                }
+              }
+              .item-text {
+                height: unit(40, rpx);
+                line-height: unit(40, rpx);
+                margin-top: unit(20, rpx);
+                font-size: @fontSize28;
+                color: @fontColor1;
               }
             }
           }
         }
-        .module-footer {
-
-        }
       }
-      &:first-child {
-        margin-top: 0;
+      .module-footer {
+
       }
     }
   }

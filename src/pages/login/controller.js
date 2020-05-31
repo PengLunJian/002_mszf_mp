@@ -8,6 +8,5 @@ export const STATES = {
 };
 
 export const ACTIONS = {
-  ajaxSelectLogin: params => actions.ajaxRequestSelectLogin(params),
-  ajaxSelectIndex: params => actions.ajaxRequestSelectIndex(params)
+  ajaxSelectLogin: params => actions.ajaxRequestSelectLogin(params)
 };

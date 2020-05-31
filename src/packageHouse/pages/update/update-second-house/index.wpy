@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="body">
-        <div class="context fade">
+        <div class="context tab fade">
           <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
             <div class="tab-contents">
               <div class="tab-content{{tab.activeIndex===0?' active':''}}">
@@ -213,8 +213,8 @@
                         <div class="form-row row">
                           <div class="form-col col-12">
                             <div class="form-group">
-                                <textarea class="textarea" v-model="title" type="text"
-                                          placeholder="万象小区 南向两居室 精装修 拎包入住"
+                                <textarea class="textarea" v-model="title" type="text" maxlength="50"
+                                          placeholder="最多输入50个字"
                                           @input="onHandleCheckEmpty"/>
                             </div>
                           </div>
@@ -901,10 +901,10 @@
           }
           .tab-item {
             width: 25%;
+            height: 40px;
+            line-height: 40px;
             position: relative;
             display: inline-block;
-            height: unit(80, rpx);
-            line-height: unit(80, rpx);
             font-size: @fontSize28;
             letter-spacing: 0.5px;
             text-align: center;

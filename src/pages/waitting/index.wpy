@@ -2,9 +2,13 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="房源详情"></top-bar>
+        <top-bar title="敬请期待"/>
       </div>
-      <div class="body"></div>
+      <div class="body">
+        <div class="context fade">
+          <waitting/>
+        </div>
+      </div>
       <div class="footer"></div>
     </div>
   </div>
@@ -12,9 +16,7 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import store from '../../../store/index';
-  import {mapState, mapActions} from '@wepy/redux';
-  import * as controller from './controller';
+  import store from '../../store';
 
   wepy.page({
     store,
@@ -32,8 +34,8 @@
 </script>
 
 <style scoped lang="less">
-  @import "../../../assets/less/@media";
-  @import "../../../assets/less/variable";
+  @import "../../assets/less/@media";
+  @import "../../assets/less/variable";
 
   @height: unit(64, rpx);
 
@@ -41,30 +43,28 @@
     min-height: 100vh;
     .content {
       height: 100vh;
-      .header {}
+      .header {
+      }
       .body {
         height: 100%;
         position: relative;
         .context {
           height: 100%;
           padding-top: 65px;
-          .scroll-view {
-            height: 100%;
-          }
         }
       }
       .footer {
       }
     }
   }
-
 </style>
 
 <config>
   {
   navigationStyle:'custom',
   usingComponents: {
-  'top-bar': '../../../components/top-bar/top-bar'
+  'top-bar': '../../components/top-bar/top-bar',
+  'waitting': '../../components/waitting/waitting'
   }
   }
 </config>
