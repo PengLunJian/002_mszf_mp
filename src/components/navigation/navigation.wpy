@@ -1,12 +1,16 @@
 <template>
   <div class="module">
     <div class="module-content">
+      <div class="module-header">
+        <div class="module-title">{{title}}</div>
+      </div>
       <div class="module-body">
         <div class="module-row row">
           <div class="module-col col-4" v-for="(item,index) in items" :key="index">
             <div class="module-item" @tap="onHandleRouter(item)">
-              <div class="item-icon iconfont {{item.icon}}"></div>
+              <div class="item-icon iconfont {{item.icon}}" :style="{'color':item.color}"></div>
               <div class="item-text">{{item.name}}</div>
+              <div class="item-stage" v-if="item.stage"></div>
             </div>
           </div>
         </div>
@@ -18,55 +22,20 @@
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
   import Route from '../../mixins/route';
-  import * as $routes from '../../router';
 
   wepy.component({
     mixins: [Route],
-    data: {
-      items: [
-        {
-          name: '新房',
-          icon: 'icon-new',
-          path: $routes.HOUSE.SELECT.path + '?type=1'
-        },
-        {
-          name: '二手房',
-          icon: 'icon-second',
-          path: $routes.HOUSE.SELECT.path + '?type=2'
-        },
-        {
-          name: '租房',
-          icon: 'icon-rent',
-          path: $routes.HOUSE.SELECT.path + '?type=3'
-        },
-        {
-          name: '用户管理',
-          icon: 'icon-user',
-          path: $routes.CUSTOMER.SELECT.path
-        },
-        {
-          name: '店铺管理',
-          icon: 'icon-business',
-          path: $routes.BUSINESS.SELECT.path
-        },
-        {
-          name: '置业顾问',
-          icon: 'icon-agent',
-          path: $routes.AGENT.SELECT.path
-        },
-        {
-          name: '系统设置',
-          icon: 'icon-system',
-          path: $routes.WAITTING.path
-        },
-        {
-          name: '版本更新',
-          icon: 'icon-version',
-          path: $routes.WAITTING.path
-        }
-      ]
+    data: {},
+    props: {
+      title: {
+        type: 'String',
+        default: ''
+      },
+      items: {
+        type: 'Object',
+        default: []
+      }
     },
-    props: {},
     methods: {
       onHandleRouter(item) {
         this.navigateTo(item.path);
@@ -82,62 +51,34 @@
   @import "../../assets/less/variable";
 
   .module {
+    margin: 0;
+    border-radius: @borderRadius20;
     .module-content {
       .module-header {
-        padding: unit(30, rpx) unit(30, rpx) 0;
+        border-bottom: 0.5px solid @borderColor1;
         .module-title {
-          height: unit(32, rpx);
-          line-height: unit(32, rpx);
-          padding-left: unit(20, rpx);
-          border-left: 4px solid @theme2;
-          font-size: @fontSize32;
+          height: unit(90, rpx);
+          line-height: unit(90, rpx);
+          padding: 0 unit(30, rpx);
+          font-size: @fontSize28;
           letter-spacing: 0.5px;
-          font-weight: bold;
-          color: @fontColor1;
+          color: @fontColor2;
         }
       }
       .module-body {
         .module-row {
-          padding: unit(15, rpx);
-          text-align: center;
           .module-col {
-            padding: unit(15, rpx);
+            border-right: 0.5px solid @borderColor1;
+            border-bottom: 0.5px solid @borderColor1;
             .module-item {
-              overflow: hidden;
               position: relative;
-              padding: unit(15, rpx) 0;
+              padding: unit(40, rpx) 0;
+              text-align: center;
               .item-icon {
-                margin: 0 auto;
-                width: unit(90, rpx);
-                height: unit(90, rpx);
-                line-height: unit(90, rpx);
+                height: unit(50, rpx);
+                line-height: unit(50, rpx);
                 border-radius: @borderRadius100;
-                font-size: @fontSize46;
-                color: @white;
-                &.icon-new {
-                  background: -webkit-linear-gradient(-45deg, #00ccff, #0078ff);
-                }
-                &.icon-second {
-                  background: -webkit-linear-gradient(-45deg, #8bffdd, #00c289);
-                }
-                &.icon-rent {
-                  background: -webkit-linear-gradient(-45deg, #ffd800, #ffa200);
-                }
-                &.icon-user {
-                  background: -webkit-linear-gradient(-45deg, #fffca8, #ffcb1d);
-                }
-                &.icon-business {
-                  background: -webkit-linear-gradient(-45deg, #ffb49a, #ff4800);
-                }
-                &.icon-agent {
-                  background: -webkit-linear-gradient(-45deg, #aaaaff, #4f51d5);
-                }
-                &.icon-system {
-                  background: -webkit-linear-gradient(-45deg, #00ccff, #0078ff);
-                }
-                &.icon-version {
-                  background: -webkit-linear-gradient(-45deg, #8bffdd, #00c289);
-                }
+                font-size: @fontSize50;
               }
               .item-text {
                 height: unit(40, rpx);
@@ -146,6 +87,23 @@
                 font-size: @fontSize28;
                 color: @fontColor1;
               }
+              .item-stage {
+                position: absolute;
+                top: unit(40, rpx);
+                left: 55%;
+                width: unit(16, rpx);
+                height: unit(16, rpx);
+                border-radius: @borderRadius100;
+                background-color: #ff3000;
+              }
+            }
+            &:nth-child(3n) {
+              border-right: 0;
+            }
+            &:nth-last-child(1),
+            &:nth-last-child(2),
+            &:nth-last-child(3) {
+              border-bottom: none;
             }
           }
         }

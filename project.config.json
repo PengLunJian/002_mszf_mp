@@ -106,6 +106,14 @@
 					"id": -1,
 					"name": "packageCustomer/pages/select/index",
 					"pathName": "packageCustomer/pages/select/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 8,
+					"name": "pages/login/index",
+					"pathName": "pages/login/index",
+					"query": "",
 					"scene": null
 				}
 			]

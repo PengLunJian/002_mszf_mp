@@ -7,9 +7,19 @@
       <div class="body">
         <div class="context fade">
           <scroll-view class="scroll-view" scroll-y="{{true}}">
-            <div class="scroll-content">
-              <count :isCount="isCount"/>
-              <navigation/>
+            <div class="module-row row">
+              <div class="module-col col-12">
+                <count :isCount="isCount"/>
+              </div>
+              <div class="module-col col-12">
+                <navigation :items="house" title="房源管理"/>
+              </div>
+              <div class="module-col col-12">
+                <navigation :items="business" title="店铺管理"/>
+              </div>
+              <div class="module-col col-12">
+                <navigation :items="system" title="系统管理"/>
+              </div>
             </div>
           </scroll-view>
         </div>
@@ -26,13 +36,70 @@
   import Loading from '../../mixins/loading';
   import {mapState, mapActions} from '@wepy/redux';
   import * as controller from './controller';
+  import * as $routes from '../../router';
 
   wepy.page({
     store,
 
     mixins: [Toast, Loading],
 
-    data: {},
+    data: {
+      house: [
+        {
+          name: '新房',
+          icon: 'icon-new',
+          color: '#00bbff',
+          path: $routes.HOUSE.SELECT.path + '?type=1'
+        },
+        {
+          name: '二手房',
+          color: '#00dc96',
+          icon: 'icon-second',
+          path: $routes.HOUSE.SELECT.path + '?type=2'
+        },
+        {
+          name: '租房',
+          color: '#ffb600',
+          icon: 'icon-rent',
+          path: $routes.HOUSE.SELECT.path + '?type=3'
+        }
+      ],
+      business: [
+        {
+          name: '用户',
+          color: '#ffd417',
+          icon: 'icon-user',
+          path: $routes.CUSTOMER.SELECT.path
+        },
+        {
+          name: '店铺',
+          color: '#ff9888',
+          icon: 'icon-business',
+          path: $routes.BUSINESS.SELECT.path
+        },
+        {
+          name: '经纪人',
+          color: '#aaaaff',
+          icon: 'icon-agent',
+          path: $routes.AGENT.SELECT.path
+        }
+      ],
+      system: [
+        {
+          name: '系统设置',
+          color: '#00ccff',
+          icon: 'icon-system',
+          path: $routes.WAITTING.path
+        },
+        {
+          name: '版本检查',
+          color: '#00d96c',
+          icon: 'icon-version',
+          stage: false,
+          path: $routes.WAITTING.path
+        }
+      ]
+    },
 
     computed: {
       ...mapState(controller.STATES)
@@ -40,6 +107,14 @@
 
     methods: {
       ...mapActions(controller.ACTIONS),
+      onHandleCheckVersion() {
+        const updateManager = wx.getUpdateManager();
+        updateManager.onCheckForUpdate((res) => {
+          res = res || {};
+          const {hasUpdate} = res;
+          this.system[1].stage = hasUpdate;
+        });
+      },
       exeAjaxSelectIndex() {
         const {busId} = this.isLogin;
         const params = {busId};
@@ -60,6 +135,7 @@
     },
 
     onLoad() {
+      this.onHandleCheckVersion();
       this.exeAjaxSelectIndex();
     }
   });
@@ -85,8 +161,11 @@
           padding-top: 65px;
           .scroll-view {
             height: 100%;
-            .scroll-content {
-              padding-top: unit(20, rpx);
+            .module-row {
+              padding: unit(15, rpx);
+              .module-col {
+                padding: unit(15, rpx);
+              }
             }
           }
         }
