@@ -115,6 +115,34 @@
 					"pathName": "pages/login/index",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/index/index",
+					"pathName": "pages/index/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/login/index",
+					"pathName": "pages/login/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 11,
+					"name": "模拟更新",
+					"pathName": "pages/login/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/version/index",
+					"pathName": "pages/version/index",
+					"query": "",
+					"scene": null
 				}
 			]
 		}

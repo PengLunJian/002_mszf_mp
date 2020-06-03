@@ -10,7 +10,7 @@
             <div class="module-item" @tap="onHandleRouter(item)">
               <div class="item-icon iconfont {{item.icon}}" :style="{'color':item.color}"></div>
               <div class="item-text">{{item.name}}</div>
-              <div class="item-stage" v-if="item.stage"></div>
+              <div class="item-flag" v-if="item.hasUpdate"></div>
             </div>
           </div>
         </div>
@@ -87,7 +87,7 @@
                 font-size: @fontSize28;
                 color: @fontColor1;
               }
-              .item-stage {
+              .item-flag {
                 position: absolute;
                 top: unit(40, rpx);
                 left: 55%;

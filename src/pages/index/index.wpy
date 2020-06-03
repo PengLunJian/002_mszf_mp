@@ -44,6 +44,7 @@
     mixins: [Toast, Loading],
 
     data: {
+      hasUpdate: false,
       house: [
         {
           name: '新房',
@@ -92,11 +93,11 @@
           path: $routes.WAITTING.path
         },
         {
-          name: '版本检查',
+          name: '系统更新',
           color: '#00d96c',
           icon: 'icon-version',
-          stage: false,
-          path: $routes.WAITTING.path
+          hasUpdate: false,
+          path: $routes.VERSION.path
         }
       ]
     },
@@ -107,12 +108,14 @@
 
     methods: {
       ...mapActions(controller.ACTIONS),
-      onHandleCheckVersion() {
+      onHandleVersion() {
         const updateManager = wx.getUpdateManager();
         updateManager.onCheckForUpdate((res) => {
           res = res || {};
           const {hasUpdate} = res;
-          this.system[1].stage = hasUpdate;
+          this.hasUpdate = hasUpdate;
+          this.system[1].hasUpdate = hasUpdate;
+          this.context = hasUpdate ? '系统发现新版本，是否更新?' : '当前已是最新版本，无需更新。';
         });
       },
       exeAjaxSelectIndex() {
@@ -135,7 +138,7 @@
     },
 
     onLoad() {
-      this.onHandleCheckVersion();
+      this.onHandleVersion();
       this.exeAjaxSelectIndex();
     }
   });
@@ -180,9 +183,9 @@
   {
   navigationStyle:'custom',
   usingComponents: {
-  'count': '../../components/count/count',
-  'top-bar': '../../components/top-bar/top-bar',
-  'navigation': '../../components/navigation/navigation'
+  'count':'../../components/count/count',
+  'top-bar':'../../components/top-bar/top-bar',
+  'navigation':'../../components/navigation/navigation'
   }
   }
 </config>
