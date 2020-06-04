@@ -13,11 +13,6 @@ export const WAITTING = {
   path: '/pages/waitting/index'
 };
 
-export const VERSION = {
-  name: '系统更新',
-  path: '/pages/version/index'
-};
-
 export const HOUSE = {
   INSERT: {
     NEW_HOUSE: {

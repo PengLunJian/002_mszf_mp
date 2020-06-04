@@ -6,7 +6,7 @@
       </div>
       <div class="body">
         <div class="context fade">
-          <scroll-view class="scroll-view" scroll-y="{{true}}">
+          <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
             <div class="module-row row">
               <div class="module-col col-12">
                 <count :isCount="isCount"/>
@@ -25,6 +25,13 @@
         </div>
       </div>
       <div class="footer"></div>
+      <modal :isEnter="isEnter"
+             :isLeave="isLeave"
+             :title="title"
+             confirmText="立即更新"
+             cancelText="下次再说"
+             context="系统更新可体验更多功能"
+             @onConfirm="onHandleConfirm"/>
     </div>
   </div>
 </template>
@@ -44,7 +51,12 @@
     mixins: [Toast, Loading],
 
     data: {
+      isEnter: false,
+      isLeave: false,
+      isScroll: true,
+      title: '',
       hasUpdate: false,
+      updateManager: null,
       house: [
         {
           name: '新房',
@@ -87,17 +99,16 @@
       ],
       system: [
         {
-          name: '系统设置',
+          name: '修改密码',
           color: '#00ccff',
           icon: 'icon-system',
           path: $routes.WAITTING.path
         },
         {
-          name: '系统更新',
+          name: '版本更新',
           color: '#00d96c',
           icon: 'icon-version',
-          hasUpdate: false,
-          path: $routes.VERSION.path
+          hasUpdate: false
         }
       ]
     },
@@ -110,13 +121,32 @@
       ...mapActions(controller.ACTIONS),
       onHandleVersion() {
         const updateManager = wx.getUpdateManager();
+        this.updateManager = updateManager;
         updateManager.onCheckForUpdate((res) => {
           res = res || {};
           const {hasUpdate} = res;
           this.hasUpdate = hasUpdate;
           this.system[1].hasUpdate = hasUpdate;
-          this.context = hasUpdate ? '系统发现新版本，是否更新?' : '当前已是最新版本，无需更新。';
+          this.title = hasUpdate ? '系统发现新版本' : '暂无更新版本';
         });
+      },
+      onHandleConfirm() {
+        const {hasUpdate, updateManager} = this;
+        if (hasUpdate) {
+          updateManager.onUpdateReady(() => {
+            updateManager.applyUpdate();
+          });
+          updateManager.onUpdateFailed(() => {
+            this.showToast('请您删除小程序，重新搜索打开');
+          });
+        } else {
+          this.showToast('系统已是最新版本，无需更新。');
+        }
+      },
+      onHandleShowModal() {
+        this.isEnter = true;
+        this.isLeave = false;
+        this.isScroll = false;
       },
       exeAjaxSelectIndex() {
         const {busId} = this.isLogin;
@@ -181,8 +211,10 @@
 
 <config>
   {
+  disableScroll:true,
   navigationStyle:'custom',
   usingComponents: {
+  'modal':'../../components/modal/modal',
   'count':'../../components/count/count',
   'top-bar':'../../components/top-bar/top-bar',
   'navigation':'../../components/navigation/navigation'

@@ -38,7 +38,12 @@
     },
     methods: {
       onHandleRouter(item) {
-        this.navigateTo(item.path);
+        const {name} = item;
+        if (name === '版本更新') {
+          this.$parent.onHandleShowModal();
+        } else {
+          this.navigateTo(item.path);
+        }
       }
     },
     created() {

@@ -10,8 +10,8 @@
       </div>
       <div class="modal-footer">
         <div class="modal-btns row">
-          <div class="btn btn-cancel col-6" @tap="onHandleCancel">取消</div>
-          <div class="btn btn-confirm col-6" @tap="onHandleConfirm">确认</div>
+          <div class="btn btn-cancel col-6" @tap="onHandleCancel">{{cancelText}}</div>
+          <div class="btn btn-confirm col-6" @tap="onHandleConfirm">{{confirmText}}</div>
         </div>
       </div>
     </div>
@@ -39,6 +39,14 @@
       context: {
         type: String,
         default: ''
+      },
+      confirmText: {
+        type: 'String',
+        default: '确认'
+      },
+      cancelText: {
+        type: 'String',
+        default: '取消'
       }
     },
     methods: {
