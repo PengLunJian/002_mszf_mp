@@ -25,7 +25,13 @@ export default {
     },
     navigateBack(delta) {
       wx.navigateBack({
-        delta
+        delta,
+        fail: () => {
+          wx.showToast({
+            icon: 'none',
+            title: '完了，我找不到回去的路了。'
+          });
+        }
       });
     }
   },

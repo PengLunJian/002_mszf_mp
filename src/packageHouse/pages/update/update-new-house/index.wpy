@@ -59,6 +59,7 @@
                               <input class="form-input" v-model="detailAddress" type="text"
                                      placeholder="街道、小区、门牌号"
                                      @input="onHandleCheckEmpty"/>
+                              <span class="form-location iconfont icon-location" @tap="onHandleSelectLocation"></span>
                               <span class="form-next iconfont icon-next"></span>
                             </div>
                           </div>
@@ -179,7 +180,7 @@
                           <div class="form-col col-12">
                             <div class="form-group">
                                 <textarea class="textarea" v-model="title" type="text" maxlength="50"
-                                          placeholder="最多输入50个字"
+                                          placeholder="请简单概述房源特点，最多输入50个字。"
                                           @input="onHandleCheckEmpty"/>
                             </div>
                           </div>
@@ -336,6 +337,7 @@
   import Loading from '../../../../mixins/loading';
   import {mapState, mapActions} from '@wepy/redux';
   import * as $routes from '../../../../router';
+  import * as $config from '../../../../config';
   import * as utils from '../../../../utils';
   import * as controller from './controller';
 
@@ -362,6 +364,7 @@
       isEnter: false,
       isLeave: false,
       isScroll: true,
+      isSwitch: false,
       id: -1,
       phone: '',
       price: '',
@@ -545,6 +548,63 @@
         this.address.items = items;
         this.address.value = items.join('、');
         this.onHandleCheckEmpty();
+      },
+      onHandleSelectLocation() {
+        this.isSwitch = false;
+        wx.getSetting({
+          success: (res) => {
+            res = res || {};
+            const {authSetting} = res;
+            const scope = authSetting['scope.userLocation'];
+            if (scope === undefined) {
+              wx.authorize({
+                scope: 'scope.userLocation',
+                success: (res) => {
+                  res = res || {};
+                  this.onHandleGetLocation();
+                  console.log(res);
+                }
+              });
+            } else if (scope === false) {
+              wx.openSetting({
+                success: (res) => {
+                  res = res || {};
+                  console.log(res);
+                }
+              });
+            } else if (scope) {
+              this.onHandleGetLocation();
+            }
+          }
+        });
+      },
+      onHandleRenderLocation() {
+        if (!this.isSwitch) {
+          /* eslint no-undef: 0 */
+          const chooseLocation = requirePlugin('chooseLocation');
+          const location = chooseLocation.getLocation();
+          if (!location) return;
+          const {address} = location;
+          this.detailAddress = address;
+        }
+      },
+      onHandleGetLocation() {
+        const key = $config.DEFAULT_MAPKEY;
+        const referer = '码上找房管理系统';
+        wx.getLocation({
+          type: 'wgs84',
+          success: (res) => {
+            res = res || {};
+            const {latitude, longitude} = res;
+            const location = JSON.stringify({latitude, longitude});
+            const category = this.houseName;
+            const url = 'plugin://chooseLocation/index?key=' + key +
+              '&referer=' + referer +
+              '&location=' + location +
+              '&category=' + category;
+            this.navigateTo(url);
+          }
+        });
       },
       onHandleSelectQuality() {
         wx.showActionSheet({
@@ -828,9 +888,11 @@
         this.urls.push(isImage);
         this.removeImageReplace();
       }
+      this.onHandleRenderLocation();
     },
 
     onLoad(option) {
+      this.isSwitch = true;
       const {item} = option;
       const data = JSON.parse(item);
       this.onHandleRenderHouse(data);
@@ -950,6 +1012,13 @@
                                 display: inline-block;
                                 vertical-align: middle;
                                 text-align: right;
+                              }
+                              .form-location {
+                                width: unit(80, rpx);
+                                line-height: unit(120, rpx);
+                                font-size: @fontSize46;
+                                text-align: center;
+                                color: @fontColor1;
                               }
                               .form-next {
                                 display: inline-block;

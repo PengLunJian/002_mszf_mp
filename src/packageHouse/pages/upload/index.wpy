@@ -2,7 +2,7 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="图片上传" styl="{{topBar.style}}"/>
+        <top-bar title="图片上传" backgroundColor="transparent" color="#FFFFFF"/>
       </div>
       <div class="body">
         <div class="context">
@@ -68,9 +68,6 @@
     mixins: [Toast, Loading],
 
     data: {
-      topBar: {
-        style: 'background-color:transparent;color:#FFFFFF;'
-      },
       touchImage: {
         src: '',
         style: '',

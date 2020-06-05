@@ -4,14 +4,12 @@
 		"urlCheck": true,
 		"es6": true,
 		"enhance": false,
-		"postcss": true,
+		"postcss": false,
 		"minified": true,
 		"newFeature": true,
 		"coverView": true,
 		"nodeModules": true,
 		"autoAudits": false,
-		"showShadowRootInWxmlPanel": false,
-		"scopeDataCheck": false,
 		"uglifyFileName": true,
 		"checkInvalidKey": true,
 		"checkSiteMap": true,
@@ -21,7 +19,9 @@
 			"disablePlugins": [],
 			"outputPath": ""
 		},
-		"bundle": false
+		"bundle": false,
+		"showShadowRootInWxmlPanel": false,
+		"scopeDataCheck": false
 	},
 	"compileType": "miniprogram",
 	"appid": "wx32e0f8f512eb5db6",

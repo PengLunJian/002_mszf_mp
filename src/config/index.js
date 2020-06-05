@@ -2,6 +2,7 @@ import apis from '../apis';
 
 export const DEFAULT_IMAGE = apis.fileUrl + '/image/d7adf25d-8e9a-478a-af04-b1e25be2aae3.jpg';
 export const DEFAULT_WATER = apis.fileUrl + '/image/5c6faf0c-a5e9-4785-bac3-060b6e758ebc.png';
+export const DEFAULT_MAPKEY = 'L4GBZ-5NFCU-CXHV4-BDAWH-LHIS6-CBFLR';
 export const DEFAULT_CONFIG = [
   {
     icon: 'icon-item01',

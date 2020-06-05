@@ -1,5 +1,5 @@
 <template>
-  <div class="top-bar" style="{{styl}}">
+  <div class="top-bar" :style="{'color':color,'backgroundColor':backgroundColor}">
     <div class="top-row row">
       <div class="top-icon iconfont icon-back" v-if="isIcon" @tap="onHandleBack"></div>
       <div class="top-icon iconfont icon-home" v-if="isIcon" @tap="onHandleHome"></div>
@@ -25,9 +25,13 @@
         type: Boolean,
         default: true
       },
-      styl: {
+      color: {
         type: String,
-        default: ''
+        default: '#000000'
+      },
+      backgroundColor: {
+        type: String,
+        default: '#FFFFFF'
       }
     },
     methods: {
