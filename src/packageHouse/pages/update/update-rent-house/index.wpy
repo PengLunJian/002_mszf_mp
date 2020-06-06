@@ -1048,9 +1048,13 @@
             .tab-contents {
               padding: unit(20, rpx) 0;
               .tab-content {
-                display: none !important;
+                height: 0;
+                overflow: hidden;
+                visibility: hidden !important;
                 &.active {
-                  display: block !important;
+                  height: auto;
+                  overflow: visible;
+                  visibility: visible !important;
                 }
                 .module {
                   .module-content {
