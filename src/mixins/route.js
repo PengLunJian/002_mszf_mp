@@ -20,7 +20,13 @@ export default {
     },
     navigateTo(url) {
       wx.navigateTo({
-        url
+        url,
+        fail: () => {
+          wx.showToast({
+            icon: 'none',
+            title: '完了，我找不到路了。'
+          });
+        }
       });
     },
     navigateBack(delta) {

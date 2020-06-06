@@ -28,21 +28,21 @@
     data: {},
     props: {
       title: {
-        type: 'String',
+        type: String,
         default: ''
       },
       items: {
-        type: 'Object',
+        type: Object,
         default: []
       }
     },
     methods: {
       onHandleRouter(item) {
-        const {name} = item;
+        const {name, path} = item;
         if (name === '版本更新') {
           this.$parent.onHandleShowModal();
         } else {
-          this.navigateTo(item.path);
+          this.navigateTo(path);
         }
       }
     },

@@ -10,6 +10,8 @@
 		"coverView": true,
 		"nodeModules": true,
 		"autoAudits": false,
+		"showShadowRootInWxmlPanel": false,
+		"scopeDataCheck": false,
 		"uglifyFileName": true,
 		"checkInvalidKey": true,
 		"checkSiteMap": true,
@@ -19,9 +21,7 @@
 			"disablePlugins": [],
 			"outputPath": ""
 		},
-		"bundle": false,
-		"showShadowRootInWxmlPanel": false,
-		"scopeDataCheck": false
+		"bundle": false
 	},
 	"compileType": "miniprogram",
 	"appid": "wx32e0f8f512eb5db6",
@@ -29,7 +29,7 @@
 	"miniprogramRoot": "weapp/",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
-	"libVersion": "2.10.4",
+	"libVersion": "2.11.1",
 	"condition": {
 		"search": {
 			"current": -1,

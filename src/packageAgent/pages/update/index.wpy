@@ -19,7 +19,7 @@
                             <div class="form-group">
                               <label class="form-label">姓名</label>
                               <input class="form-input" v-model="agentName" type="text"
-                                     placeholder="彭伦健"
+                                     placeholder="请输入姓名"
                                      @input="onHandleCheckEmpty"/>
                               <span class="form-next iconfont icon-next"></span>
                             </div>
@@ -28,7 +28,7 @@
                             <div class="form-group">
                               <label class="form-label">电话</label>
                               <input class="form-input" v-model="phone" type="number"
-                                     placeholder="18130278679"
+                                     placeholder="请输入手机号"
                                      @input="onHandleCheckEmpty"/>
                               <span class="form-next iconfont icon-next"></span>
                             </div>

@@ -41,11 +41,11 @@
         default: ''
       },
       confirmText: {
-        type: 'String',
+        type: String,
         default: '确认'
       },
       cancelText: {
-        type: 'String',
+        type: String,
         default: '取消'
       }
     },

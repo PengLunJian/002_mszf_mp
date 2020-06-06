@@ -32,11 +32,13 @@
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
   import apis from '../../apis';
+  import store from '../../store';
   import Route from '../../mixins/route';
   import * as $routes from '../../router';
   import * as $config from '../../config';
 
   wepy.component({
+    store,
     mixins: [Route],
     data: {
       fileUrl: apis.fileUrl,
@@ -48,7 +50,6 @@
         default: {}
       }
     },
-    watch: {},
     methods: {
       onHandleMobile() {
         const {phone} = this.item;
@@ -68,7 +69,8 @@
       },
       onHandleUpdate() {
         const query = '?item=' + JSON.stringify(this.item);
-        this.navigateTo($routes.AGENT.UPDATE.path + query);
+        const url = $routes.AGENT.UPDATE.path + query;
+        this.navigateTo(url);
       },
       onHandleDetailAgent() {
       }
