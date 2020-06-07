@@ -17,7 +17,7 @@
         <div class="context tab fade">
           <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
             <div class="tab-contents">
-              <div class="tab-content{{tab.activeIndex===0?' active':''}}">
+              <div class="tab-content" v-if="tab.activeIndex===0">
                 <div class="module">
                   <div class="module-content">
                     <div class="module-body">
@@ -226,7 +226,7 @@
                   </div>
                 </div>
               </div>
-              <div class="tab-content{{tab.activeIndex===1?' active':''}}">
+              <div class="tab-content" v-if="tab.activeIndex===1">
                 <div class="module">
                   <div class="module-content">
                     <div class="module-header">
@@ -250,7 +250,7 @@
                   </div>
                 </div>
               </div>
-              <div class="tab-content{{tab.activeIndex===2?' active':''}}">
+              <div class="tab-content" v-if="tab.activeIndex===2">
                 <div class="module">
                   <div class="module-content">
                     <div class="module-header">
@@ -273,7 +273,7 @@
                   </div>
                 </div>
               </div>
-              <div class="tab-content{{tab.activeIndex===3?' active':''}}">
+              <div class="tab-content" v-if="tab.activeIndex===3">
                 <div class="module">
                   <div class="module-content">
                     <div class="module-header">
@@ -298,7 +298,7 @@
                   </div>
                 </div>
               </div>
-              <div class="tab-content{{tab.activeIndex===4?' active':''}}">
+              <div class="tab-content" v-if="tab.activeIndex===4">
                 <div class="module">
                   <div class="module-content">
                     <div class="module-header">
@@ -1006,14 +1006,6 @@
             .tab-contents {
               padding: unit(20, rpx) 0;
               .tab-content {
-                height: 0;
-                overflow: hidden;
-                visibility: hidden !important;
-                &.active {
-                  height: auto;
-                  overflow: visible;
-                  visibility: visible !important;
-                }
                 .module {
                   .module-content {
                     .module-header {
