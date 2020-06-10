@@ -609,24 +609,25 @@
           success: (res) => {
             res = res || {};
             const {authSetting} = res;
-            const scope = authSetting['scope.userLocation'];
-            if (scope === undefined) {
+            const scope = 'scope.userLocation';
+            const value = authSetting[scope];
+            if (value === undefined) {
               wx.authorize({
-                scope: 'scope.userLocation',
+                scope,
                 success: (res) => {
                   res = res || {};
                   this.onHandleGetLocation();
                   console.log(res);
                 }
               });
-            } else if (scope === false) {
+            } else if (value === false) {
               wx.openSetting({
                 success: (res) => {
                   res = res || {};
                   console.log(res);
                 }
               });
-            } else if (scope) {
+            } else {
               this.onHandleGetLocation();
             }
           }
