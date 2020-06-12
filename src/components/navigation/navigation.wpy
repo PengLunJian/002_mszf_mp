@@ -99,7 +99,7 @@
                 width: unit(16, rpx);
                 height: unit(16, rpx);
                 border-radius: @borderRadius100;
-                background-color: #ff3000;
+                background-color: #fa5151;
               }
             }
             &:nth-child(3n) {
