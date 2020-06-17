@@ -381,10 +381,6 @@
       houseYear: '',
       totalPrice: '',
       detailAddress: '',
-      address: {
-        value: '',
-        items: ['安徽省', '宣城市', '广德县']
-      },
       apart: {
         value: '',
         items: [
@@ -394,31 +390,19 @@
         ],
         index: [1, 1, 1]
       },
-      direction: {
-        value: '',
-        items: [
-          '朝东',
-          '朝西',
-          '朝南',
-          '朝北'
-        ]
-      },
       floors: {
         value: '',
         items: [
+          '底层',
           '低楼层',
           '中楼层',
-          '高楼层'
+          '高楼层',
+          '顶层'
         ]
       },
-      renovation: {
+      address: {
         value: '',
-        items: [
-          '毛坯',
-          '简装',
-          '精装',
-          '豪装'
-        ]
+        items: ['安徽省', '宣城市', '广德县']
       },
       quality: {
         value: '',
@@ -434,6 +418,26 @@
         items: [
           '随时看房',
           '电话预约'
+        ]
+      },
+      direction: {
+        value: '',
+        items: [
+          '朝东',
+          '朝西',
+          '朝南',
+          '朝北',
+          '南北'
+        ]
+      },
+      renovation: {
+        value: '',
+        items: [
+          '毛坯',
+          '简装',
+          '精装',
+          '豪装',
+          '其他'
         ]
       },
       agents: [],
