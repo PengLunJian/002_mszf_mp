@@ -1,6 +1,6 @@
 import apis from '../apis';
 
-export const DEFAULT_HOUSE = apis.fileUrl + '/image/1bb6983e-0d36-4f0e-96c6-02d2f32bba5f.jpg';
+export const DEFAULT_HOUSE = apis.fileUrl + '/image/2c03e5ca-f837-4a9d-b99c-a9df02717706.jpg';
 export const DEFAULT_WATER = apis.fileUrl + '/image/5c6faf0c-a5e9-4785-bac3-060b6e758ebc.png';
 export const DEFAULT_PHOTO = apis.fileUrl + '/image/5127f429-2015-48ef-9041-18b1b6e203d5.png';
 export const DEFAULT_MAPKEY = 'L4GBZ-5NFCU-CXHV4-BDAWH-LHIS6-CBFLR';
