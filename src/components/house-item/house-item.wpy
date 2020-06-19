@@ -121,7 +121,7 @@
     data: {
       noData: '暂无数据',
       fileUrl: apis.fileUrl,
-      url: $config.DEFAULT_IMAGE,
+      url: $config.DEFAULT_HOUSE,
       isRecommend: 0
     },
     props: {

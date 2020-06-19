@@ -251,7 +251,7 @@
         .btn-insert {
           position: fixed;
           right: unit(40, rpx);
-          bottom: unit(120, rpx);
+          bottom: unit(80, rpx);
           z-index: 1000;
           width: unit(120, rpx);
           height: unit(120, rpx);

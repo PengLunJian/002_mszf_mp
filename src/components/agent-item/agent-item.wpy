@@ -42,7 +42,7 @@
     mixins: [Route],
     data: {
       fileUrl: apis.fileUrl,
-      url: $config.DEFAULT_IMAGE
+      url: $config.DEFAULT_PHOTO
     },
     props: {
       item: {

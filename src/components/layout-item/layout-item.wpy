@@ -1,7 +1,7 @@
 <template>
   <div class="item" @tap="onHandleUpdateLayout(item,index)">
     <div class="item-img">
-      <lazy-image src="{{item.picUrl?fileUrl+item.picUrl:url}}" mode="aspectFill"/>
+      <lazy-image src="{{fileUrl+item.picUrl}}" mode="aspectFill"/>
     </div>
     <div class="item-info">
       <div class="item-row row">
@@ -24,13 +24,11 @@
   import apis from '../../apis';
   import Route from '../../mixins/route';
   import * as $routes from '../../router';
-  import * as $config from '../../config';
 
   wepy.component({
     mixins: [Route],
     data: {
-      fileUrl: apis.fileUrl,
-      url: $config.DEFAULT_IMAGE
+      fileUrl: apis.fileUrl
     },
     props: {
       item: {

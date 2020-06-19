@@ -144,9 +144,11 @@
             this.apart.value &&
             this.state.value
           );
-        this.isDisable = isBaseEmpty;
+        let isUrlsEmpty = this.urls.length;
+        this.isDisable = isBaseEmpty && isUrlsEmpty;
         return {
-          isBaseEmpty
+          isBaseEmpty,
+          isUrlsEmpty
         };
       },
       onHandleSelectState() {
@@ -182,12 +184,15 @@
       },
       onHandleDeleteImage(index) {
         this.urls.splice(index, 1);
+        this.onHandleCheckEmpty();
       },
       onHandleSaveLayout() {
         const isCheckEmpty = this.onHandleCheckEmpty();
-        const {isBaseEmpty} = isCheckEmpty;
+        const {isBaseEmpty, isUrlsEmpty} = isCheckEmpty;
         if (!isBaseEmpty) {
           this.showToast('基本信息填写不完整');
+        } else if (!isUrlsEmpty) {
+          this.showToast('请上传该房源户型图');
         } else {
           this.onHandleUpdateLayout();
         }
@@ -230,6 +235,7 @@
         this.urls = [isImage];
         this.removeImageReplace();
       }
+      this.onHandleCheckEmpty();
     },
 
     onLoad(option) {

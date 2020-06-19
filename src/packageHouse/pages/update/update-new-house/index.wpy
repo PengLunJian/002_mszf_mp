@@ -4,6 +4,7 @@
       <div class="header">
         <top-bar title="房源修改"/>
         <div class="tab-bar">
+          <div class="tab-more iconfont icon-more"></div>
           <scroll-view class="scroll-view" scroll-x="{{true}}">
             <div class="tab-item{{tab.activeIndex===index?' active':''}}"
                  v-for="(item,index) in tab.items" :key="index"
@@ -180,7 +181,7 @@
                           <div class="form-col col-12">
                             <div class="form-group">
                                 <textarea class="textarea" v-model="title" type="text" maxlength="50"
-                                          placeholder="请简单概述房源特点，最多输入50个字。"
+                                          placeholder="请简单介绍房源信息，最多输入50个字。"
                                           @input="onHandleCheckEmpty"/>
                             </div>
                           </div>
@@ -917,40 +918,55 @@
           left: 0;
           width: 100%;
           z-index: 999;
+          padding-right: 40px;
           background-color: @white;
           box-shadow: 0 0 15px @boxShadow05;
-          .scroll-view {
-            white-space: nowrap;
-          }
-          .tab-item {
-            width: 25%;
-            height: 40px;
+          .tab-more {
+            width: 40px;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 1;
             line-height: 40px;
-            position: relative;
-            display: inline-block;
-            font-size: @fontSize28;
-            letter-spacing: 0.5px;
+            box-shadow: 0 0 15px @boxShadow05;
+            background-color: @white;
+            font-size: @fontSize40;
             text-align: center;
             color: @fontColor1;
-            &:after {
-              content: '';
-              width: 0;
-              display: block;
-              position: absolute;
-              left: 50%;
-              bottom: 0;
-              opacity: 0;
-              visibility: hidden;
-              transition: all 300ms ease;
-              transform: translateX(-50%);
-              border-top: unit(6, rpx) solid @theme2;
-            }
-            &.active {
-              color: @theme2;
+          }
+          .scroll-view {
+            white-space: nowrap;
+            .tab-item {
+              width: 28%;
+              height: 40px;
+              line-height: 40px;
+              position: relative;
+              display: inline-block;
+              font-size: @fontSize28;
+              letter-spacing: 0.5px;
+              text-align: center;
+              color: @fontColor1;
               &:after {
-                opacity: 1;
-                visibility: visible;
-                width: unit(120, rpx);
+                content: '';
+                width: 0;
+                display: block;
+                position: absolute;
+                left: 50%;
+                bottom: 0;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 300ms ease;
+                transform: translateX(-50%);
+                border-top: unit(6, rpx) solid @theme2;
+              }
+              &.active {
+                color: @theme2;
+                &:after {
+                  opacity: 1;
+                  visibility: visible;
+                  width: unit(120, rpx);
+                }
               }
             }
           }

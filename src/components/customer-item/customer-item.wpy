@@ -32,14 +32,14 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import apis from '../../apis';
   import Route from '../../mixins/route';
   import * as $routes from '../../router';
+  import * as $config from '../../config';
 
   wepy.component({
     mixins: [Route],
     data: {
-      url: apis.fileUrl + '/image/5127f429-2015-48ef-9041-18b1b6e203d5.png'
+      url: $config.DEFAULT_PHOTO
     },
     props: {
       item: {
