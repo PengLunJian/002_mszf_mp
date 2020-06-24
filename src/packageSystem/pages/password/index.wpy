@@ -1,0 +1,218 @@
+<template>
+  <div class="container">
+    <div class="content">
+      <div class="header">
+        <top-bar title="修改密码"/>
+      </div>
+      <div class="body">
+        <div class="context fade">
+          <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
+            <div class="scroll-content">
+              <div class="form-group">
+                <label class="form-label">原密码</label>
+                <input class="form-input" v-model="oldPassword" type="password"
+                       placeholder="请输入原密码"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">新密码</label>
+                <input class="form-input" v-model="newPassword" type="password"
+                       placeholder="请输入新密码"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">确认新密码</label>
+                <input class="form-input" v-model="againPassword" type="password"
+                       placeholder="请再次输入新密码"/>
+              </div>
+              <div class="form-group">
+                <div class="btn btn-update" @tap="onHandleUpdatePassword">确认</div>
+              </div>
+            </div>
+          </scroll-view>
+        </div>
+      </div>
+      <div class="footer"></div>
+      <modal :isEnter="isEnter"
+             :isLeave="isLeave"
+             title="确认修改密码吗?"
+             context="密码修改后将返回重新登录"
+             cancelText="取消"
+             confirmText="确认"
+             @onConfirm="onHandleConfirm"/>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+  import store from '../../../store';
+  import Toast from '../../../mixins/toast';
+  import Route from '../../../mixins/route';
+  import Storage from '../../../mixins/storage';
+  import {mapState, mapActions} from '@wepy/redux';
+  import * as controller from './controller';
+  import * as $routes from '../../../router';
+
+  wepy.page({
+    store,
+
+    mixins: [Toast, Route, Storage],
+
+    data: {
+      isEnter: false,
+      isLeave: false,
+      isScroll: true,
+      oldPassword: '',
+      newPassword: '',
+      againPassword: ''
+    },
+
+    computed: {
+      ...mapState(controller.STATES)
+    },
+
+    methods: {
+      ...mapActions(controller.ACTIONS),
+      onHandleConfirm() {
+        this.exeAjaxUpdatePassword();
+      },
+      onHandleShowModal() {
+        this.isEnter = true;
+        this.isLeave = false;
+        this.isScroll = false;
+      },
+      onHandleCheckEmpty() {
+        let result = false;
+        const {oldPassword, newPassword, againPassword, isLogin} = this;
+        const {passWord} = isLogin;
+        if (!oldPassword) {
+          this.showToast('请输入原密码');
+        } else if (!newPassword) {
+          this.showToast('请输入新密码');
+        } else if (!againPassword) {
+          this.showToast('请再次输入新密码');
+        } else if (oldPassword !== passWord) {
+          this.showToast('原密码输入错误');
+        } else if (newPassword !== againPassword) {
+          this.showToast('新密码两次输入不一致');
+        } else {
+          result = true;
+        }
+        return result;
+      },
+      onHandleUpdatePassword() {
+        if (this.onHandleCheckEmpty()) {
+          this.onHandleShowModal();
+        }
+      },
+      exeAjaxUpdatePassword() {
+        const params = this.getParams();
+        this.ajaxUpdatePassword(params)
+          .then((res) => {
+            res = res || {};
+            const {success} = res.payload;
+            if (success) {
+              this.showToast('修改成功，请重新登录。');
+              setTimeout(() => {
+                this.removeItem('user');
+                this.reLaunch($routes.LOGIN.path);
+              }, 1000);
+            } else {
+              this.showToast('修改失败，请重试。');
+            }
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+            this.showToast('修改失败，请重试。');
+          });
+      },
+      getParams() {
+        const {isLogin, newPassword} = this;
+        const {busId, agentId} = isLogin;
+        return {
+          busId,
+          agentId,
+          passWord: newPassword
+        };
+      }
+    },
+
+    onLoad() {
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../../assets/less/@media";
+  @import "../../../assets/less/variable";
+
+  @height: unit(100, rpx);
+
+  .container {
+    min-height: 100vh;
+    .content {
+      height: 100vh;
+      background-color: @white;
+      .header {
+      }
+      .body {
+        height: 100%;
+        position: relative;
+        .context {
+          height: 100%;
+          padding-top: 65px;
+          .scroll-view {
+            height: 100%;
+            .scroll-content {
+              padding: unit(60, rpx);
+              .form-group {
+                position: relative;
+                margin-bottom: unit(50, rpx);
+                font-size: @fontSize32;
+                .form-label {
+                  display: block;
+                  line-height: unit(40, rpx);
+                  margin-bottom: unit(15, rpx);
+                }
+                .form-input {
+                  height: @height;
+                  padding: 0 unit(30, rpx);
+                  background-color: @bgColor;
+                }
+                .btn-update {
+                  height: @height;
+                  overflow: hidden;
+                  line-height: @height;
+                  background: -webkit-linear-gradient(left, @theme1, @theme2);
+                  font-size: @fontSize40;
+                  letter-spacing: 2px;
+                  text-align: center;
+                  color: @white;
+                }
+                &:nth-child(3) {
+                  margin-bottom: unit(70, rpx);
+                }
+                &:last-child {
+                  margin: 0;
+                }
+              }
+            }
+          }
+        }
+      }
+      .footer {
+      }
+    }
+  }
+</style>
+
+<config>
+  {
+  disableScroll:true,
+  navigationStyle:'custom',
+  usingComponents: {
+  'modal': '../../../components/modal/modal',
+  'top-bar': '../../../components/top-bar/top-bar',
+  }
+  }
+</config>

@@ -5,11 +5,11 @@
         <top-bar title="房源管理"/>
       </div>
       <div class="body">
-        <div class="context fade">
-          <scroll-view
-            class="scroll-view"
-            scroll-y="{{isScroll}}"
-            @scrolltolower="onHandleScrollToLower">
+        <error :isFailure="isFailure&&!isHouse.rows.length" @refresh="onRefresh"/>
+        <empty :isSuccess="isSuccess&&!isHouse.rows.length"/>
+        <div class="context fade" v-if="isHouse.rows.length">
+          <scroll-view class="scroll-view" scroll-y="{{isScroll}}"
+                       @scrolltolower="onHandleScrollToLower">
             <div class="item-row row">
               <div class="item-col col-6" v-for="(item,index) in isHouse.rows">
                 <house-item :item="item" :key="index"/>
@@ -80,6 +80,8 @@
       ...mapActions(controller.ACTIONS),
       exeAjaxSelectHouse() {
         this.showLoading();
+        const {isHouse} = this;
+        const {rows} = isHouse || {};
         const params = this.getParams();
         this.ajaxSelectHouse(params)
           .then((res) => {
@@ -89,14 +91,18 @@
             if (success) {
               this.pageIndex++;
             } else {
-              this.showToast('加载失败，请重试');
+              if ((rows || []).length) {
+                this.showToast('加载失败，请重试');
+              }
             }
             this.timer = null;
             console.log(res);
           })
           .catch((err) => {
             this.hideLoading();
-            this.showToast('加载失败，请重试');
+            if ((rows || []).length) {
+              this.showToast('加载失败，请重试');
+            }
             this.timer = null;
             console.log(err);
           });
@@ -148,6 +154,9 @@
       },
       onHandleConfirm() {
         this.exeAjaxDeleteHouse();
+      },
+      onRefresh() {
+        this.exeAjaxSelectHouse();
       },
       getParams() {
         const {busId} = this.isLogin;
@@ -273,6 +282,8 @@
   disableScroll:true,
   navigationStyle:'custom',
   usingComponents: {
+  'error':'../../../components/error/error',
+  'empty':'../../../components/empty/empty',
   'modal':'../../../components/modal/modal',
   'top-bar': '../../../components/top-bar/top-bar',
   'house-item': '../../../components/house-item/house-item',

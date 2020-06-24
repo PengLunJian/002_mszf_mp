@@ -148,6 +148,14 @@
 					"id": -1,
 					"name": "pages/index/index",
 					"pathName": "pages/index/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "packageSystem/pages/password/index",
+					"pathName": "packageSystem/pages/password/index",
+					"query": "",
 					"scene": null
 				}
 			]

@@ -184,7 +184,6 @@
               overflow: hidden;
               display: inline-block;
               vertical-align: middle;
-              border-radius: @borderRadius40;
               background-color: @white;
               font-size: @fontSize32;
               color: @fontColor1;

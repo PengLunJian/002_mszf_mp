@@ -15,6 +15,17 @@ const apis = {
       passWord: ''
     }
   },
+  updatePassword: {
+    url: '/account/update',
+    params: {
+      agentId: 0,
+      busId: 0,
+      id: 0,
+      type: 0,
+      passWord: '',
+      userName: ''
+    }
+  },
   selectCount: {
     url: '/house/total',
     params: {
@@ -98,26 +109,10 @@ const apis = {
     }
   },
   selectHouse: {
-    url: '/house/select',
+    url: '/business/house/select',
     params: {
-      page: {
-        pageSize: 10,
-        pageIndex: 1
-      },
-      filter: [
-        {
-          field: 'type',
-          opt: '=',
-          value: 3
-        }
-      ],
-      sort: [
-        {
-          field: 'id',
-          asc: false
-        }
-      ],
-      only_my: true
+      pageSize: 10,
+      pageIndex: 1
     }
   },
   insertImage: {

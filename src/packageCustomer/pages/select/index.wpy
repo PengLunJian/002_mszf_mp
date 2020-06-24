@@ -5,11 +5,11 @@
         <top-bar title="用户管理"/>
       </div>
       <div class="body">
-        <div class="context fade">
-          <scroll-view
-            class="scroll-view"
-            scroll-y="{{isScroll}}"
-            @scrolltolower="onHandleScrollToLower">
+        <error :isFailure="isFailure&&!isCustomer.rows.length" @refresh="onRefresh"/>
+        <empty :isSuccess="isSuccess&&!isCustomer.rows.length"/>
+        <div class="context fade" v-if="isCustomer.rows.length">
+          <scroll-view class="scroll-view" scroll-y="{{isScroll}}"
+                       @scrolltolower="onHandleScrollToLower">
             <div class="item-row row">
               <div class="item-col col-12" v-for="(item,index) in isCustomer.rows">
                 <customer-item :item="item" :key="index"/>
@@ -50,8 +50,19 @@
 
     methods: {
       ...mapActions(controller.ACTIONS),
+      onHandleScrollToLower() {
+        if (this.timer) return;
+        this.timer = setTimeout(() => {
+          const {rows, totalCount} = this.isCustomer;
+          if (rows.length < totalCount) {
+            this.exeAjaxSelectCustomer();
+          }
+        }, 0);
+      },
       exeAjaxSelectCustomer() {
         this.showLoading();
+        const {isCustomer} = this;
+        const {rows} = isCustomer || {};
         const params = this.getParams();
         this.ajaxSelectCustomer(params)
           .then((res) => {
@@ -61,26 +72,24 @@
             if (success) {
               this.pageIndex++;
             } else {
-              this.showToast('加载失败，请重试');
+              if ((rows || []).length) {
+                this.showToast('加载失败，请重试');
+              }
             }
             this.timer = null;
             console.log(res);
           })
           .catch((err) => {
             this.hideLoading();
-            this.showToast('加载失败，请重试');
+            if ((rows || []).length) {
+              this.showToast('加载失败，请重试');
+            }
             this.timer = null;
             console.log(err);
           });
       },
-      onHandleScrollToLower() {
-        if (this.timer) return;
-        this.timer = setTimeout(() => {
-          const {rows, totalCount} = this.isCustomer;
-          if (rows.length < totalCount) {
-            this.exeAjaxSelectCustomer();
-          }
-        }, 0);
+      onRefresh() {
+        this.exeAjaxSelectCustomer();
       },
       getParams() {
         const {isLogin, pageIndex, pageSize} = this;
@@ -140,6 +149,8 @@
   {
   navigationStyle:'custom',
   usingComponents: {
+  'error':'../../../components/error/error',
+  'empty':'../../../components/empty/empty',
   'top-bar': '../../../components/top-bar/top-bar',
   'lazy-image': '../../../components/lazy-image/lazy-image',
   'loading-more': '../../../components/loading-more/loading-more',

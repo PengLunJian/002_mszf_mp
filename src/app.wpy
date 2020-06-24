@@ -68,6 +68,14 @@
   'pages/select/index',
   'pages/upload/index'
   ]
+  },
+  {
+  'root': 'packageSystem',
+  'pages': [
+  'pages/setting/index',
+  'pages/password/index',
+  'pages/help/index'
+  ]
   }
   ],
   window: {

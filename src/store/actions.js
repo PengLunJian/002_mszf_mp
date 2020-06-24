@@ -535,3 +535,25 @@ export const ajaxRequestSelectFollow = createAction(
         });
     });
   });
+
+export const ajaxRequestUpdatePassword = createAction(
+  'updatePassword', (params) => {
+    commit(actionTypes.UPDATE_PASSWORD_REQUEST);
+    return new Promise((resolve, reject) => {
+      axios.post(apis.updatePassword, params)
+        .then((res) => {
+          res = res || {};
+          const {data, success} = res;
+          if (success) {
+            commit(actionTypes.UPDATE_PASSWORD_SUCCESS, data);
+          } else {
+            commit(actionTypes.UPDATE_PASSWORD_FAILURE);
+          }
+          resolve(res);
+        })
+        .catch((err) => {
+          commit(actionTypes.UPDATE_PASSWORD_FAILURE);
+          reject(err);
+        });
+    });
+  });

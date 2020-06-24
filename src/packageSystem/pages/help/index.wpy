@@ -1,0 +1,75 @@
+<template>
+  <div class="container">
+    <div class="content">
+      <div class="header">
+        <top-bar title="使用说明"/>
+      </div>
+      <div class="body">
+        <div class="context fade">
+          <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
+          </scroll-view>
+        </div>
+      </div>
+      <div class="footer"></div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+  import store from '../../../store';
+  import Route from '../../../mixins/route';
+  import * as $routes from '../../../router';
+
+  wepy.page({
+    store,
+
+    mixins: [Route],
+
+    data: {},
+
+    computed: {},
+
+    methods: {},
+
+    onLoad() {
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../../assets/less/@media";
+  @import "../../../assets/less/variable";
+
+  .container {
+    min-height: 100vh;
+    .content {
+      height: 100vh;
+      .header {
+      }
+      .body {
+        height: 100%;
+        position: relative;
+        .context {
+          height: 100%;
+          padding-top: 65px;
+          .scroll-view {
+            height: 100%;
+          }
+        }
+      }
+      .footer {
+      }
+    }
+  }
+</style>
+
+<config>
+  {
+  disableScroll:true,
+  navigationStyle:'custom',
+  usingComponents: {
+  'top-bar': '../../../components/top-bar/top-bar'
+  }
+  }
+</config>

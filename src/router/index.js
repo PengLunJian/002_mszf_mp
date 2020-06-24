@@ -108,3 +108,18 @@ export const BUSINESS = {
     path: '/packageBusiness/pages/upload/index'
   }
 };
+
+export const SYSTEM = {
+  name: '系统管理',
+  path: '/packageSystem/pages/setting/index'
+};
+
+export const PASSWORD = {
+  name: '系统管理',
+  path: '/packageSystem/pages/password/index'
+};
+
+export const HELP = {
+  name: '系统管理',
+  path: '/packageSystem/pages/help/index'
+};
