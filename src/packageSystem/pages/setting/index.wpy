@@ -138,7 +138,7 @@
         }
       },
       onHandleSystemHelp() {
-        this.navigateTo($routes.WAITTING.path);
+        this.navigateTo($routes.HELP.path);
       },
       onHandlePhoneNumber() {
         const {phoneNumber} = this;

@@ -60,10 +60,10 @@
           desc: '基本信息/房源特色/房源配置/图片上传'
         },
         {
-          name: '店铺管理',
+          name: '商户管理',
           icon: 'icon-business',
-          path: $routes.BUSINESS.SELECT.path,
-          desc: '基本信息/房源简介/营业执照/置业顾问'
+          path: $routes.BUSINESS.INDEX.path,
+          desc: '基本信息/商户简介/营业执照/置业顾问'
         },
         {
           name: '用户管理',

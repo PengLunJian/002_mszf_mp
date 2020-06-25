@@ -99,6 +99,10 @@ export const CUSTOMER = {
 };
 
 export const BUSINESS = {
+  INDEX: {
+    name: '商户管理',
+    path: '/packageBusiness/pages/index/index'
+  },
   SELECT: {
     name: '商户查询',
     path: '/packageBusiness/pages/select/index'

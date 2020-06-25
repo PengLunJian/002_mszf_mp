@@ -10,8 +10,6 @@
 		"coverView": true,
 		"nodeModules": true,
 		"autoAudits": false,
-		"showShadowRootInWxmlPanel": false,
-		"scopeDataCheck": false,
 		"uglifyFileName": true,
 		"checkInvalidKey": true,
 		"checkSiteMap": true,
@@ -21,7 +19,9 @@
 			"disablePlugins": [],
 			"outputPath": ""
 		},
-		"bundle": false
+		"bundle": false,
+		"showShadowRootInWxmlPanel": false,
+		"scopeDataCheck": false
 	},
 	"compileType": "miniprogram",
 	"appid": "wx32e0f8f512eb5db6",
@@ -155,6 +155,13 @@
 					"id": -1,
 					"name": "packageSystem/pages/password/index",
 					"pathName": "packageSystem/pages/password/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "packageSystem/pages/help/index",
+					"pathName": "packageSystem/pages/help/index",
 					"query": "",
 					"scene": null
 				}

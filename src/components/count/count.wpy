@@ -63,7 +63,7 @@
   @import "../../assets/less/variable";
 
   .count {
-    padding: unit(15, rpx) unit(15, rpx) 0;
+    padding: unit(15, rpx);
     .count-row {
       padding: unit(15, rpx);
       text-align: center;

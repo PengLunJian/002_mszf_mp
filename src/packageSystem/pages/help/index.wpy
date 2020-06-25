@@ -7,6 +7,19 @@
       <div class="body">
         <div class="context fade">
           <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
+            <div class="scroll-content">
+              <div class="module">
+                <div class="module-content">
+                  <div class="module-body">
+                    <div class="module-desc" v-for="(item,index) in items" :key="index">{{item.desc}}</div>
+                  </div>
+                  <div class="module-footer">
+                    <div class="module-desc">广德无穷大网络科技有限公司</div>
+                    <div class="module-desc">2020年06月25日</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </scroll-view>
         </div>
       </div>
@@ -19,14 +32,31 @@
   import wepy from '@wepy/core';
   import store from '../../../store';
   import Route from '../../../mixins/route';
-  import * as $routes from '../../../router';
 
   wepy.page({
     store,
 
     mixins: [Route],
 
-    data: {},
+    data: {
+      items: [
+        {
+          desc: '商户使用平台内部分配账号登录后，为保证数据安全首先修改默认登录密码。因未修改默认登录密码而导致的数据安全问题平台不负责。'
+        },
+        {
+          desc: '商户在录入房源数据前应先完善店铺信息，添加店铺经纪人方便用户联系。为保证数据在前台页面展示的美观度最好添加三位店铺经纪人。'
+        },
+        {
+          desc: '商户在完善店铺信息后可开始录入房源信息。新房是商户直接跟房地产/售楼部合作录入准确数据，二手房及租房是业主直接委托商户的房源数据。'
+        },
+        {
+          desc: '说明：为保证用户的友好访问及平台的正常使用，请各商户在录入数据时做到数据的完整性，准确性、不重复性。如发现脏数据平台有权删除，望各商户遵守平台使用规则。'
+        },
+        {
+          desc: '特此通告，顺祝商祺！'
+        }
+      ]
+    },
 
     computed: {},
 
@@ -55,6 +85,32 @@
           padding-top: 65px;
           .scroll-view {
             height: 100%;
+            .scroll-content {
+              .module {
+                padding: unit(60, rpx);
+                font-size: @fontSize28;
+                .module-body {
+                  .module-desc {
+                    margin-bottom: unit(30, rpx);
+                    line-height: unit(40, rpx);
+                    text-align: justify;
+                    color: @fontColor1;
+                  }
+                }
+                .module-footer {
+                  margin-top: unit(150, rpx);
+                  .module-desc {
+                    margin-bottom: unit(10, rpx);
+                    text-align: right;
+                  }
+                }
+                .module-desc {
+                  &:last-child {
+                    margin: 0;
+                  }
+                }
+              }
+            }
           }
         }
       }

@@ -2,7 +2,7 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="商户管理"/>
+        <top-bar title="店铺信息"/>
       </div>
       <div class="body">
         <div class="context fade" v-if="isSuccess">

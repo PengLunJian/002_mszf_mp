@@ -1,0 +1,193 @@
+<template>
+  <div class="container">
+    <div class="content">
+      <div class="header">
+        <top-bar title="商户管理"/>
+      </div>
+      <div class="body">
+        <div class="context fade">
+          <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
+            <div class="scroll-content">
+              <div class="module">
+                <div class="module-content">
+                  <div class="module-body">
+                    <div class="module-context">
+                      <div class="module-items">
+                        <div class="module-item btn" v-for="(item,index) in items" @tap="onHandleRoute(item)"
+                             :key="index">
+                          <div class="module-row row">
+                            <div class="module-col col-5">
+                              <span class="item-name">{{item.name}}</span>
+                            </div>
+                            <div class="module-col col-7">
+                              <span class="item-next iconfont icon-next"></span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="module-footer"></div>
+                </div>
+              </div>
+            </div>
+          </scroll-view>
+        </div>
+      </div>
+      <div class="footer"></div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+  import store from '../../../store';
+  import Toast from '../../../mixins/toast';
+  import Route from '../../../mixins/route';
+  import Storage from '../../../mixins/storage';
+  import * as $routes from '../../../router';
+
+  wepy.page({
+    store,
+
+    mixins: [Toast, Route, Storage],
+
+    data: {
+      items: [
+        {
+          name: '店铺信息',
+          path: $routes.BUSINESS.SELECT.path
+        },
+        {
+          name: '置业顾问',
+          path: $routes.AGENT.SELECT.path
+        }
+      ]
+    },
+
+    computed: {},
+
+    methods: {
+      onHandleRoute(item) {
+        const {path} = item;
+        this.navigateTo(path);
+      }
+    },
+
+    onLoad() {
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../../assets/less/@media";
+  @import "../../../assets/less/variable";
+
+  @height: unit(100, rpx);
+
+  .container {
+    min-height: 100vh;
+    .content {
+      height: 100vh;
+      .header {
+      }
+      .body {
+        height: 100%;
+        position: relative;
+        .context {
+          height: 100%;
+          padding-top: 65px;
+          .scroll-view {
+            height: 100%;
+            .scroll-content {
+              .module {
+                .module-content {
+                  .module-header {
+                    padding: unit(30, rpx) unit(30, rpx) 0;
+                    .module-title {
+                      height: unit(32, rpx);
+                      line-height: unit(32, rpx);
+                      padding-left: unit(20, rpx);
+                      border-left: 4px solid @theme2;
+                      font-size: @fontSize32;
+                      letter-spacing: 0.5px;
+                      font-weight: bold;
+                      color: @fontColor1;
+                    }
+                  }
+                  .module-body {
+                    .module-context {
+                      .module-items {
+                        .module-item {
+                          line-height: unit(110, rpx);
+                          padding-left: unit(30, rpx);
+                          .module-row {
+                            padding-right: unit(30, rpx);
+                            border-bottom: 0.5px solid @borderColor1;
+                            .module-col {
+                              .item-name {
+                                width: 100%;
+                                font-size: @fontSize32;
+                                &.stage {
+                                  &:after {
+                                    content: '';
+                                    display: inline-block;
+                                    width: unit(16, rpx);
+                                    height: unit(16, rpx);
+                                    margin-left: unit(30, rpx);
+                                    background-color: @btnStage;
+                                    border-radius: @borderRadius100;
+                                  }
+                                }
+                              }
+                              .item-text {
+                                padding-right: unit(30, rpx);
+                                font-size: @fontSize32;
+                                color: @fontColor3;
+                              }
+                              .item-next {
+                                color: @iconNext;
+                              }
+                              &.col-7 {
+                                text-align: right;
+                              }
+                            }
+                          }
+                          &.exit {
+                            padding: 0;
+                            font-size: @fontSize32;
+                            text-align: center;
+                          }
+                          &:last-child {
+                            .module-row {
+                              border: none;
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                  .module-footer {
+
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .footer {
+      }
+    }
+  }
+</style>
+
+<config>
+  {
+  disableScroll:true,
+  navigationStyle:'custom',
+  usingComponents: {
+  'top-bar': '../../../components/top-bar/top-bar',
+  }
+  }
+</config>
