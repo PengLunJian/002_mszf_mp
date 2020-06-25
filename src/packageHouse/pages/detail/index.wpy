@@ -2,7 +2,7 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="房源详情"></top-bar>
+        <top-bar title="房源详情"/>
       </div>
       <div class="body"></div>
       <div class="footer"></div>

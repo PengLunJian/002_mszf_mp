@@ -2,10 +2,12 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="置业顾问"></top-bar>
+        <top-bar title="置业顾问"/>
       </div>
       <div class="body">
-        <div class="context fade">
+        <error :isFailure="isFailure&&!isAgent.length" @refresh="onRefresh"/>
+        <empty :isSuccess="isSuccess&&!isAgent.length"/>
+        <div class="context fade" v-if="isAgent.length">
           <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
             <div class="item-row row">
               <div class="item-col col-12" v-for="(item,index) in isAgent">
@@ -108,6 +110,9 @@
       },
       onHandleConfirm() {
         this.exeAjaxDeleteAgent();
+      },
+      onRefresh() {
+        this.exeAjaxSelectAgent();
       }
     },
 
@@ -170,6 +175,8 @@
   disableScroll:true,
   navigationStyle:'custom',
   usingComponents: {
+  'error':'../../../components/error/error',
+  'empty':'../../../components/empty/empty',
   'modal':'../../../components/modal/modal',
   'top-bar': '../../../components/top-bar/top-bar',
   'agent-item': '../../../components/agent-item/agent-item'

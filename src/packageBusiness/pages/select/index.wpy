@@ -220,16 +220,18 @@
             area, address, picUrl, remark
           } = this.isBusiness;
           this.busName = busName;
-          this.phone = phone;
-          this.province = province;
-          this.city = city;
-          this.area = area;
-          this.address = address;
-          this.picUrl = picUrl;
-          this.remark = remark;
-          this.urls = [picUrl];
-          this.dizhi.items = [province, city, area];
-          this.dizhi.value = province + '、' + city + '、' + area;
+          this.phone = phone || '';
+          this.province = province || '';
+          this.city = city || '';
+          this.area = area || '';
+          this.address = address || '';
+          this.picUrl = picUrl || '';
+          this.remark = remark || '';
+          this.urls = picUrl ? [picUrl] : [];
+          if (province && city && area) {
+            this.dizhi.items = [province, city, area];
+            this.dizhi.value = province + '、' + city + '、' + area;
+          }
         }
         this.onHandleCheckEmpty();
       },
