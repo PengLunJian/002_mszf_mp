@@ -7,77 +7,79 @@
       <div class="body">
         <div class="context fade">
           <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
-            <div class="module">
-              <div class="module-content">
-                <div class="module-body">
-                  <div class="module-context">
-                    <div class="module-items">
-                      <div class="module-item btn" @tap="onHandleUpdatePassword">
-                        <div class="module-row row">
-                          <div class="module-col col-5">
-                            <span class="item-name">修改密码</span>
-                          </div>
-                          <div class="module-col col-7">
-                            <span class="item-next iconfont icon-next"></span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="module-item btn" @tap="onHandleSystemHelp">
-                        <div class="module-row row">
-                          <div class="module-col col-5">
-                            <span class="item-name">使用说明</span>
-                          </div>
-                          <div class="module-col col-7">
-                            <span class="item-next iconfont icon-next"></span>
+            <div class="scroll-content">
+              <div class="module">
+                <div class="module-content">
+                  <div class="module-body">
+                    <div class="module-context">
+                      <div class="module-items">
+                        <div class="module-item btn" @tap="onHandleUpdatePassword">
+                          <div class="module-row row">
+                            <div class="module-col col-5">
+                              <span class="item-name">修改密码</span>
+                            </div>
+                            <div class="module-col col-7">
+                              <span class="item-next iconfont icon-next"></span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="module-item btn" @tap="onHandlePhoneNumber">
-                        <div class="module-row row">
-                          <div class="module-col col-5">
-                            <span class="item-name">联系我们</span>
+                        <div class="module-item btn" @tap="onHandleSystemHelp">
+                          <div class="module-row row">
+                            <div class="module-col col-5">
+                              <span class="item-name">使用说明</span>
+                            </div>
+                            <div class="module-col col-7">
+                              <span class="item-next iconfont icon-next"></span>
+                            </div>
                           </div>
-                          <div class="module-col col-7">
-                            <span class="item-next iconfont icon-next"></span>
+                        </div>
+                        <div class="module-item btn" @tap="onHandlePhoneNumber">
+                          <div class="module-row row">
+                            <div class="module-col col-5">
+                              <span class="item-name">联系我们</span>
+                            </div>
+                            <div class="module-col col-7">
+                              <span class="item-next iconfont icon-next"></span>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <div class="module-footer"></div>
                 </div>
-                <div class="module-footer"></div>
               </div>
-            </div>
-            <div class="module">
-              <div class="module-content">
-                <div class="module-body">
-                  <div class="module-context">
-                    <div class="module-items">
-                      <div class="module-item btn" @tap="onHandleUpdateVersion">
-                        <div class="module-row row">
-                          <div class="module-col col-5">
-                            <span class="item-name {{hasUpdate?' stage':''}}">系统更新</span>
-                          </div>
-                          <div class="module-col col-7">
-                            <span class="item-text">版本{{getVersion}}</span>
-                            <span class="item-next iconfont icon-next"></span>
+              <div class="module">
+                <div class="module-content">
+                  <div class="module-body">
+                    <div class="module-context">
+                      <div class="module-items">
+                        <div class="module-item btn" @tap="onHandleUpdateVersion">
+                          <div class="module-row row">
+                            <div class="module-col col-5">
+                              <span class="item-name {{hasUpdate?' stage':''}}">系统更新</span>
+                            </div>
+                            <div class="module-col col-7">
+                              <span class="item-text">版本{{getVersion}}</span>
+                              <span class="item-next iconfont icon-next"></span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="module-item btn" @tap="onHandleSystemExit">
-                        <div class="module-row row">
-                          <div class="module-col col-5">
-                            <span class="item-name">退出登录</span>
-                          </div>
-                          <div class="module-col col-7">
-                            <span class="item-next iconfont icon-next"></span>
+                        <div class="module-item btn" @tap="onHandleSystemExit">
+                          <div class="module-row row">
+                            <div class="module-col col-5">
+                              <span class="item-name">退出登录</span>
+                            </div>
+                            <div class="module-col col-7">
+                              <span class="item-next iconfont icon-next"></span>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <div class="module-footer"></div>
                 </div>
-                <div class="module-footer"></div>
               </div>
             </div>
           </scroll-view>
@@ -210,75 +212,78 @@
           padding-top: 65px;
           .scroll-view {
             height: 100%;
-            .module {
-              .module-content {
-                .module-header {
-                  padding: unit(30, rpx) unit(30, rpx) 0;
-                  .module-title {
-                    height: unit(32, rpx);
-                    line-height: unit(32, rpx);
-                    padding-left: unit(20, rpx);
-                    border-left: 4px solid @theme2;
-                    font-size: @fontSize32;
-                    letter-spacing: 0.5px;
-                    font-weight: bold;
-                    color: @fontColor1;
+            .scroll-content {
+              padding-top: unit(20, rpx);
+              .module {
+                .module-content {
+                  .module-header {
+                    padding: unit(30, rpx) unit(30, rpx) 0;
+                    .module-title {
+                      height: unit(32, rpx);
+                      line-height: unit(32, rpx);
+                      padding-left: unit(20, rpx);
+                      border-left: 4px solid @theme2;
+                      font-size: @fontSize32;
+                      letter-spacing: 0.5px;
+                      font-weight: bold;
+                      color: @fontColor1;
+                    }
                   }
-                }
-                .module-body {
-                  .module-context {
-                    .module-items {
-                      .module-item {
-                        line-height: unit(110, rpx);
-                        padding-left: unit(30, rpx);
-                        .module-row {
-                          padding-right: unit(30, rpx);
-                          border-bottom: 0.5px solid @borderColor1;
-                          .module-col {
-                            .item-name {
-                              width: 100%;
-                              font-size: @fontSize32;
-                              &.stage {
-                                &:after {
-                                  content: '';
-                                  display: inline-block;
-                                  width: unit(16, rpx);
-                                  height: unit(16, rpx);
-                                  margin-left: unit(30, rpx);
-                                  background-color: @btnStage;
-                                  border-radius: @borderRadius100;
+                  .module-body {
+                    .module-context {
+                      .module-items {
+                        .module-item {
+                          line-height: unit(110, rpx);
+                          padding-left: unit(30, rpx);
+                          .module-row {
+                            padding-right: unit(30, rpx);
+                            border-bottom: 0.5px solid @borderColor1;
+                            .module-col {
+                              .item-name {
+                                width: 100%;
+                                font-size: @fontSize32;
+                                &.stage {
+                                  &:after {
+                                    content: '';
+                                    display: inline-block;
+                                    width: unit(16, rpx);
+                                    height: unit(16, rpx);
+                                    margin-left: unit(30, rpx);
+                                    background-color: @btnStage;
+                                    border-radius: @borderRadius100;
+                                  }
                                 }
                               }
-                            }
-                            .item-text {
-                              padding-right: unit(30, rpx);
-                              font-size: @fontSize32;
-                              color: @fontColor3;
-                            }
-                            .item-next {
-                              color: @iconNext;
-                            }
-                            &.col-7 {
-                              text-align: right;
+                              .item-text {
+                                padding-right: unit(30, rpx);
+                                font-size: @fontSize32;
+                                color: @fontColor3;
+                              }
+                              .item-next {
+                                color: @iconNext;
+                              }
+                              &.col-7 {
+                                text-align: right;
+                              }
                             }
                           }
-                        }
-                        &.exit {
-                          padding: 0;
-                          font-size: @fontSize32;
-                          text-align: center;
-                        }
-                        &:last-child {
-                          .module-row {
-                            border: none;
+                          &.exit {
+                            padding: 0;
+                            font-size: @fontSize32;
+                            text-align: center;
+                          }
+                          &:last-child {
+                            .module-row {
+                              border: none;
+                            }
                           }
                         }
                       }
                     }
                   }
-                }
-                .module-footer {
+                  .module-footer {
 
+                  }
                 }
               }
             }
