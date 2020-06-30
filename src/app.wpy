@@ -75,7 +75,7 @@
   'pages': [
   'pages/setting/index',
   'pages/password/index',
-  'pages/help/index'
+  'pages/about/index'
   ]
   }
   ],

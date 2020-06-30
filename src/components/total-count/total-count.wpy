@@ -1,0 +1,175 @@
+<template>
+  <div class="module">
+    <div class="module-content">
+      <div class="module-body">
+        <div class="module-items">
+          <div class="module-group">
+            <div class="module-row row">
+              <div class="module-img">
+                <lazy-image src="{{url}}"/>
+              </div>
+              <div class="module-com">
+                <span>广进房产</span>
+              </div>
+              <div class="module-btn">
+                <div class="btn btn-update">
+                  <span class="btn-icon iconfont icon-update"></span>
+                  <span class="btn-text">编辑</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="module-group">
+            <div class="module-row row">
+              <div class="module-col col-3" v-for="(item,index) in items" :key="index">
+                <div class="module-item">
+                  <div class="module-value">{{item.totalCount}}</div>
+                  <div class="module-label">{{item.label}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+  import * as $config from '../../config';
+
+  wepy.component({
+    mixins: [],
+    data: {
+      url: $config.DEFAULT_PHOTO,
+      items: [
+        {
+          totalCount: 0,
+          label: '新房'
+        },
+        {
+          totalCount: 0,
+          label: '售房'
+        },
+        {
+          totalCount: 0,
+          label: '租房'
+        },
+        {
+          totalCount: 0,
+          label: '浏览'
+        }
+      ]
+    },
+    props: {
+      isCount: {
+        type: Object,
+        default: {}
+      }
+    },
+    watch: {
+      isCount() {
+        const {isCount} = this;
+        if (isCount) {
+          this.items = [
+            {
+              totalCount: isCount[0].totalCount,
+              label: '新房'
+            },
+            {
+              totalCount: isCount[1].totalCount,
+              label: '售房'
+            },
+            {
+              totalCount: isCount[2].totalCount,
+              label: '租房'
+            },
+            {
+              totalCount: isCount[3].totalCount,
+              label: '浏览'
+            }
+          ];
+        }
+      }
+    },
+    methods: {},
+    created() {
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../assets/less/common";
+  @import "../../assets/less/variable";
+
+  .module {
+    margin: 0;
+    background-color: @theme2;
+    .module-group {
+      padding: unit(40, rpx) 0;
+      .module-row {
+        text-align: center;
+        .module-img {
+          width: unit(90, rpx);
+          height: unit(90, rpx);
+          overflow: hidden;
+          margin-left: unit(50, rpx);
+          border-radius: @borderRadius100;
+          border: 2px solid @white;
+        }
+        .module-com {
+          width: unit(400, rpx);
+          height: unit(90, rpx);
+          line-height: unit(90, rpx);
+          margin-left: unit(30, rpx);
+          font-size: @fontSize40;
+          font-weight: bold;
+          text-align: left;
+          color: @white;
+        }
+        .module-btn {
+          line-height: unit(90, rpx);
+          font-size: 0;
+          .btn-update {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: middle;
+            padding: 0 unit(25, rpx);
+            line-height: unit(52, rpx);
+            border-radius: unit(52, rpx);
+            background-color: rgba(0, 0, 0, .5);
+            font-size: @fontSize24;
+            color: @white;
+            .btn-icon {
+              font-size: @fontSize24;
+            }
+          }
+        }
+        .module-item {
+          color: @white;
+          .module-value {
+            height: unit(50, rpx);
+            line-height: unit(50, rpx);
+            margin-bottom: unit(20, rpx);
+            font-size: @fontSize50;
+            font-weight: bold;
+          }
+          .module-label {
+            height: unit(40, rpx);
+            line-height: unit(40, rpx);
+            font-size: @fontSize26;
+          }
+        }
+      }
+    }
+  }
+</style>
+
+<config>
+  {
+  usingComponents: {
+  'lazy-image': '../lazy-image/lazy-image'
+  }
+  }
+</config>

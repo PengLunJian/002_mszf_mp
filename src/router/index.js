@@ -119,11 +119,11 @@ export const SYSTEM = {
 };
 
 export const PASSWORD = {
-  name: '系统管理',
+  name: '密码重置',
   path: '/packageSystem/pages/password/index'
 };
 
-export const HELP = {
-  name: '系统管理',
-  path: '/packageSystem/pages/help/index'
+export const ABOUT = {
+  name: '关于我们',
+  path: '/packageSystem/pages/about/index'
 };

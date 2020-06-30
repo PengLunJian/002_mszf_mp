@@ -13,32 +13,23 @@
                   <div class="module-body">
                     <div class="module-context">
                       <div class="module-items">
-                        <div class="module-item btn" @tap="onHandleUpdatePassword">
-                          <div class="module-row row">
-                            <div class="module-col col-5">
-                              <span class="item-name">修改密码</span>
-                            </div>
-                            <div class="module-col col-7">
-                              <span class="item-next iconfont icon-next"></span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="module-item btn" @tap="onHandleSystemHelp">
-                          <div class="module-row row">
-                            <div class="module-col col-5">
-                              <span class="item-name">使用说明</span>
-                            </div>
-                            <div class="module-col col-7">
-                              <span class="item-next iconfont icon-next"></span>
-                            </div>
-                          </div>
-                        </div>
                         <div class="module-item btn" @tap="onHandlePhoneNumber">
                           <div class="module-row row">
                             <div class="module-col col-5">
                               <span class="item-name">联系我们</span>
                             </div>
                             <div class="module-col col-7">
+                              <span class="item-next iconfont icon-next"></span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="module-item btn" @tap="onHandleUpdateVersion">
+                          <div class="module-row row">
+                            <div class="module-col col-5">
+                              <span class="item-name {{hasUpdate?' stage':''}}">系统更新</span>
+                            </div>
+                            <div class="module-col col-7">
+                              <span class="item-text">版本{{getVersion}}</span>
                               <span class="item-next iconfont icon-next"></span>
                             </div>
                           </div>
@@ -54,24 +45,10 @@
                   <div class="module-body">
                     <div class="module-context">
                       <div class="module-items">
-                        <div class="module-item btn" @tap="onHandleUpdateVersion">
+                        <div class="module-item btn exit" @tap="onHandleSystemExit">
                           <div class="module-row row">
-                            <div class="module-col col-5">
-                              <span class="item-name {{hasUpdate?' stage':''}}">系统更新</span>
-                            </div>
-                            <div class="module-col col-7">
-                              <span class="item-text">版本{{getVersion}}</span>
-                              <span class="item-next iconfont icon-next"></span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="module-item btn" @tap="onHandleSystemExit">
-                          <div class="module-row row">
-                            <div class="module-col col-5">
+                            <div class="module-col col-12">
                               <span class="item-name">退出登录</span>
-                            </div>
-                            <div class="module-col col-7">
-                              <span class="item-next iconfont icon-next"></span>
                             </div>
                           </div>
                         </div>
@@ -128,9 +105,6 @@
     },
 
     methods: {
-      onHandleUpdatePassword() {
-        this.navigateTo($routes.PASSWORD.path);
-      },
       onHandleUpdateVersion() {
         const {hasUpdate} = this;
         if (hasUpdate) {
@@ -138,9 +112,6 @@
         } else {
           this.showToast('当前系统已是最新版本，无需更新。');
         }
-      },
-      onHandleSystemHelp() {
-        this.navigateTo($routes.HELP.path);
       },
       onHandlePhoneNumber() {
         const {phoneNumber} = this;
@@ -213,7 +184,6 @@
           .scroll-view {
             height: 100%;
             .scroll-content {
-              padding-top: unit(20, rpx);
               .module {
                 .module-content {
                   .module-header {

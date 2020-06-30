@@ -1,15 +1,10 @@
 <template>
-  <div class="navigation">
-    <div class="navigation-row row">
-      <div class="navigation-col col-6" v-for="(item,index) in items" :key="index">
-        <div class="navigation-item" @tap="onHandleRoute(item)">
-          <div class="navigation-group row">
-            <div class="navigation-icon iconfont {{item.icon}}"></div>
-            <div class="navigation-text">{{item.name}}</div>
-          </div>
-          <div class="navigation-group row">
-            <div class="navigation-desc">{{item.desc||'使用说明'}}</div>
-          </div>
+  <div class="module">
+    <div class="module-row row">
+      <div class="module-col col-4" v-for="(item,index) in items" :key="index">
+        <div class="module-item btn" @tap="onHandleRoute(item)">
+          <div class="module-icon iconfont {{item.icon}}"></div>
+          <div class="module-text">{{item.text}}</div>
         </div>
       </div>
     </div>
@@ -44,38 +39,39 @@
   @import "../../assets/less/common";
   @import "../../assets/less/variable";
 
-  .navigation {
-    .navigation-row {
-      padding: unit(15, rpx);
-      .navigation-col {
-        padding: unit(15, rpx);
-        .navigation-item {
-          padding: unit(30, rpx);
-          background-color: @white;
-          .navigation-group {
-            line-height: unit(48, rpx);
-            .navigation-icon {
-              width: unit(48, rpx);
-              height: unit(48, rpx);
-              margin-right: unit(10, rpx);
-              border-radius: @borderRadius100;
-              background: -webkit-linear-gradient(left, @theme1, @theme2);
-              font-size: @fontSize24;
-              text-align: center;
-              color: @white;
-            }
-            .navigation-text {
-              font-size: unit(28, rpx);
-              font-weight: bold;
-              color: @fontColor1;
-            }
-            .navigation-desc {
-              line-height: unit(36, rpx);
-              padding-top: unit(30, rpx);
-              font-size: unit(24, rpx);
-              color: @fontColor2;
-            }
+  .module {
+    background-color: @white;
+    text-align: center;
+    .module-row {
+      .module-col {
+        border-right: 0.5px solid @borderColor1;
+        border-bottom: 0.5px solid @borderColor1;
+        .module-item {
+          padding: unit(45, rpx) 0;
+          .module-icon {
+            width: unit(80, rpx);
+            height: unit(80, rpx);
+            line-height: unit(80, rpx);
+            margin: 0 auto unit(20, rpx);
+            border-radius: @borderRadius100;
+            background: -webkit-linear-gradient(left, @theme1, @theme2);
+            font-size: @fontSize40;
+            color: @white;
           }
+          .module-text {
+            height: unit(40, rpx);
+            line-height: unit(40, rpx);
+            font-size: unit(26, rpx);
+            color: @fontColor1;
+          }
+        }
+        &:nth-last-child(1),
+        &:nth-last-child(2),
+        &:nth-last-child(3) {
+          border-bottom: none;
+        }
+        &:nth-of-type(3n) {
+          border-right: none;
         }
       }
     }

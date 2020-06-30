@@ -7,7 +7,7 @@
       <div class="body">
         <div class="context fade">
           <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
-            <count :isCount="isCount"/>
+            <total-count :isCount="isCount"/>
             <navigation :items="items"/>
           </scroll-view>
         </div>
@@ -42,46 +42,49 @@
       isScroll: true,
       items: [
         {
-          name: '新房管理',
+          text: '发布新房',
           icon: 'icon-new',
-          path: $routes.HOUSE.SELECT.path + '?type=1',
-          desc: '基本信息/房源特色/主力户型/图片上传'
+          path: $routes.HOUSE.INSERT.NEW_HOUSE.path
         },
         {
-          name: '二手房管理',
+          text: '发布售房',
           icon: 'icon-second',
-          path: $routes.HOUSE.SELECT.path + '?type=2',
-          desc: '基本信息/房源特色/房源配置/图片上传'
+          path: $routes.HOUSE.INSERT.SECOND_HOUSE.path
         },
         {
-          name: '租房管理',
+          text: '发布租房',
           icon: 'icon-rent',
-          path: $routes.HOUSE.SELECT.path + '?type=3',
-          desc: '基本信息/房源特色/房源配置/图片上传'
+          path: $routes.HOUSE.INSERT.RENT_HOUSE.path
         },
         {
-          name: '商户管理',
-          icon: 'icon-business',
-          path: $routes.BUSINESS.INDEX.path,
-          desc: '基本信息/商户简介/营业执照/置业顾问'
+          text: '我的房源',
+          icon: 'icon-new',
+          path: $routes.HOUSE.SELECT.path
         },
         {
-          name: '置业顾问',
-          icon: 'icon-agent',
-          path: $routes.AGENT.SELECT.path,
-          desc: '基本信息/商户简介/营业执照/置业顾问'
-        },
-        {
-          name: '用户管理',
+          text: '我的用户',
           icon: 'icon-user',
-          path: $routes.CUSTOMER.SELECT.path,
-          desc: '用户查询/用户电话/用户浏览/用户关注'
+          path: $routes.CUSTOMER.SELECT.path
         },
         {
-          name: '系统管理',
+          text: '置业顾问',
+          icon: 'icon-agent',
+          path: $routes.AGENT.SELECT.path
+        },
+        {
+          text: '系统管理',
           icon: 'icon-system',
-          path: $routes.SYSTEM.path,
-          desc: '修改密码/系统更新/使用说明/联系我们'
+          path: $routes.SYSTEM.path
+        },
+        {
+          text: '使用说明',
+          icon: 'icon-system',
+          path: $routes.ABOUT.path
+        },
+        {
+          text: '密码重置',
+          icon: 'icon-password',
+          path: $routes.PASSWORD.path
         }
       ]
     },
@@ -152,9 +155,9 @@
   navigationStyle:'custom',
   usingComponents: {
   'modal':'../../components/modal/modal',
-  'count':'../../components/count/count',
   'top-bar':'../../components/top-bar/top-bar',
-  'navigation':'../../components/navigation/navigation'
+  'navigation':'../../components/navigation/navigation',
+  'total-count':'../../components/total-count/total-count'
   }
   }
 </config>

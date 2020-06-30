@@ -10,6 +10,9 @@
             <div class="scroll-content">
               <div class="module">
                 <div class="module-content">
+                  <div class="module-header">
+                    <div class="module-title">Dear All</div>
+                  </div>
                   <div class="module-body">
                     <div class="module-desc" v-for="(item,index) in items" :key="index">{{item.desc}}</div>
                   </div>
@@ -89,24 +92,35 @@
               .module {
                 padding: unit(60, rpx);
                 font-size: @fontSize28;
-                .module-body {
-                  .module-desc {
-                    margin-bottom: unit(30, rpx);
-                    line-height: unit(40, rpx);
-                    text-align: justify;
-                    color: @fontColor1;
+                .module-content {
+                  .module-header {
+                    .module-title {
+                      height: unit(40, rpx);
+                      line-height: unit(40, rpx);
+                      margin-bottom: unit(20, rpx);
+                      font-size: @fontSize28;
+                      font-weight: bold;
+                    }
                   }
-                }
-                .module-footer {
-                  margin-top: unit(150, rpx);
-                  .module-desc {
-                    margin-bottom: unit(10, rpx);
-                    text-align: right;
+                  .module-body {
+                    .module-desc {
+                      margin-bottom: unit(30, rpx);
+                      line-height: unit(40, rpx);
+                      text-align: justify;
+                      color: @fontColor1;
+                    }
                   }
-                }
-                .module-desc {
-                  &:last-child {
-                    margin: 0;
+                  .module-footer {
+                    margin-top: unit(150, rpx);
+                    .module-desc {
+                      margin-bottom: unit(10, rpx);
+                      text-align: right;
+                    }
+                  }
+                  .module-desc {
+                    &:last-child {
+                      margin: 0;
+                    }
                   }
                 }
               }

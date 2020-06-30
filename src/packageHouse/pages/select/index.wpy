@@ -19,10 +19,7 @@
           </scroll-view>
         </div>
       </div>
-      <div class="footer">
-        <div class="btn-insert iconfont icon-insert"
-             @tap="onHandleInsertHouse"></div>
-      </div>
+      <div class="footer"></div>
       <modal :isEnter="isEnter"
              :isLeave="isLeave"
              title="确认删除该房源吗?"
@@ -48,7 +45,7 @@
     mixins: [Toast, Route, Loading],
 
     data: {
-      type: 1,
+      type: 3,
       timer: null,
       pageSize: 10,
       pageIndex: 1,
@@ -58,6 +55,11 @@
       tab: {
         activeIndex: -1,
         items: [
+          {
+            index: 0,
+            label: '筛选',
+            isShow: false
+          },
           {
             index: 0,
             label: '筛选',
@@ -171,9 +173,7 @@
       }
     },
 
-    onLoad(option) {
-      const {type} = option;
-      this.type = type;
+    onLoad() {
       this.removeHouseReplace();
       this.exeAjaxSelectHouse();
     }
@@ -256,23 +256,7 @@
           }
         }
       }
-      .footer {
-        .btn-insert {
-          position: fixed;
-          right: unit(40, rpx);
-          bottom: unit(80, rpx);
-          z-index: 1000;
-          width: unit(120, rpx);
-          height: unit(120, rpx);
-          line-height: unit(120, rpx);
-          border-radius: @borderRadius100;
-          box-shadow: 0 0 15px @boxShadow05;
-          background-color: @white;
-          font-size: @fontSize48;
-          text-align: center;
-          color: @theme2;
-        }
-      }
+      .footer {}
     }
   }
 </style>
