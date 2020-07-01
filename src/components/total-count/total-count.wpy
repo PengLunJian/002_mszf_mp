@@ -2,31 +2,11 @@
   <div class="module">
     <div class="module-content">
       <div class="module-body">
-        <div class="module-items">
-          <div class="module-group">
-            <div class="module-row row">
-              <div class="module-img">
-                <lazy-image src="{{url}}"/>
-              </div>
-              <div class="module-com">
-                <span>广进房产</span>
-              </div>
-              <div class="module-btn">
-                <div class="btn btn-update">
-                  <span class="btn-icon iconfont icon-update"></span>
-                  <span class="btn-text">编辑</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="module-group">
-            <div class="module-row row">
-              <div class="module-col col-3" v-for="(item,index) in items" :key="index">
-                <div class="module-item">
-                  <div class="module-value">{{item.totalCount}}</div>
-                  <div class="module-label">{{item.label}}</div>
-                </div>
-              </div>
+        <div class="module-row row">
+          <div class="module-col col-3" v-for="(item,index) in items" :key="index">
+            <div class="module-item">
+              <div class="module-value">{{item.totalCount}}</div>
+              <div class="module-label">{{item.label}}</div>
             </div>
           </div>
         </div>
@@ -37,12 +17,10 @@
 
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
-  import * as $config from '../../config';
 
   wepy.component({
     mixins: [],
     data: {
-      url: $config.DEFAULT_PHOTO,
       items: [
         {
           totalCount: 0,
@@ -65,9 +43,10 @@
     props: {
       isCount: {
         type: Object,
-        default: {}
+        default: []
       }
     },
+    methods: {},
     watch: {
       isCount() {
         const {isCount} = this;
@@ -93,7 +72,6 @@
         }
       }
     },
-    methods: {},
     created() {
     }
   });
@@ -105,71 +83,27 @@
 
   .module {
     margin: 0;
-    background-color: @theme2;
-    .module-group {
-      padding: unit(40, rpx) 0;
-      .module-row {
+    .module-row {
+      .module-col {
         text-align: center;
-        .module-img {
-          width: unit(90, rpx);
-          height: unit(90, rpx);
-          overflow: hidden;
-          margin-left: unit(50, rpx);
-          border-radius: @borderRadius100;
-          border: 2px solid @white;
-        }
-        .module-com {
-          width: unit(400, rpx);
-          height: unit(90, rpx);
-          line-height: unit(90, rpx);
-          margin-left: unit(30, rpx);
-          font-size: @fontSize40;
-          font-weight: bold;
-          text-align: left;
-          color: @white;
-        }
-        .module-btn {
-          line-height: unit(90, rpx);
-          font-size: 0;
-          .btn-update {
-            overflow: hidden;
-            display: inline-block;
-            vertical-align: middle;
-            padding: 0 unit(25, rpx);
-            line-height: unit(52, rpx);
-            border-radius: unit(52, rpx);
-            background-color: rgba(0, 0, 0, .5);
-            font-size: @fontSize24;
-            color: @white;
-            .btn-icon {
-              font-size: @fontSize24;
-            }
-          }
-        }
         .module-item {
-          color: @white;
+          padding: unit(50, rpx) 0;
           .module-value {
             height: unit(50, rpx);
             line-height: unit(50, rpx);
             margin-bottom: unit(20, rpx);
             font-size: @fontSize50;
             font-weight: bold;
+            color: @theme2;
           }
           .module-label {
             height: unit(40, rpx);
             line-height: unit(40, rpx);
             font-size: @fontSize26;
+            color: @fontColor1;
           }
         }
       }
     }
   }
 </style>
-
-<config>
-  {
-  usingComponents: {
-  'lazy-image': '../lazy-image/lazy-image'
-  }
-  }
-</config>

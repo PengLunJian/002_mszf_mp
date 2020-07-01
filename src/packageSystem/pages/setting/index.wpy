@@ -184,6 +184,7 @@
           .scroll-view {
             height: 100%;
             .scroll-content {
+              padding-top: unit(20, rpx);
               .module {
                 .module-content {
                   .module-header {
@@ -254,6 +255,9 @@
                   .module-footer {
 
                   }
+                }
+                &:first-child {
+                  margin: 0;
                 }
               }
             }
