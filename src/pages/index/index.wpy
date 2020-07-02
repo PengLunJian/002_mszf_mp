@@ -8,6 +8,7 @@
         <div class="context fade">
           <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
             <div class="scroll-content">
+              <user/>
               <total-count :isCount="isCount"/>
               <navigation :items="items"/>
             </div>
@@ -134,6 +135,9 @@
           padding-top: 65px;
           .scroll-view {
             height: 100%;
+            .scroll-content {
+              padding-top: unit(20, rpx);
+            }
           }
         }
       }
@@ -148,6 +152,7 @@
   disableScroll:true,
   navigationStyle:'custom',
   usingComponents: {
+  'user':'../../components/user/user',
   'top-bar':'../../components/top-bar/top-bar',
   'navigation':'../../components/navigation/navigation',
   'total-count':'../../components/total-count/total-count'

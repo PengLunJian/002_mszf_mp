@@ -13,27 +13,36 @@
                   <div class="module-body">
                     <div class="module-context">
                       <div class="module-items">
-                        <div class="module-item btn" @tap="onHandlePhoneNumber">
+                        <button class="module-item btn" hover-class="none" @tap="onHandlePhone">
                           <div class="module-row row">
                             <div class="module-col col-5">
-                              <span class="item-name">联系我们</span>
+                              <span class="item-label">联系电话</span>
                             </div>
                             <div class="module-col col-7">
                               <span class="item-next iconfont icon-next"></span>
                             </div>
                           </div>
-                        </div>
-                        <div class="module-item btn" @tap="onHandleUpdateVersion">
+                        </button>
+                        <button class="module-item btn" hover-class="none" open-type="contact">
                           <div class="module-row row">
                             <div class="module-col col-5">
-                              <span class="item-name {{hasUpdate?' stage':''}}">系统更新</span>
+                              <span class="item-label">在线客服</span>
                             </div>
                             <div class="module-col col-7">
-                              <span class="item-text">版本{{getVersion}}</span>
                               <span class="item-next iconfont icon-next"></span>
                             </div>
                           </div>
-                        </div>
+                        </button>
+                        <button class="module-item btn" hover-class="none" @tap="onHandleAddress">
+                          <div class="module-row row">
+                            <div class="module-col col-5">
+                              <span class="item-label">地址导航</span>
+                            </div>
+                            <div class="module-col col-7">
+                              <span class="item-next iconfont icon-next"></span>
+                            </div>
+                          </div>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -45,13 +54,46 @@
                   <div class="module-body">
                     <div class="module-context">
                       <div class="module-items">
-                        <div class="module-item btn exit" @tap="onHandleSystemExit">
+                        <button class="module-item btn" hover-class="none" open-type="feedback">
                           <div class="module-row row">
-                            <div class="module-col col-12">
-                              <span class="item-name">退出登录</span>
+                            <div class="module-col col-5">
+                              <span class="item-label">意见反馈</span>
+                            </div>
+                            <div class="module-col col-7">
+                              <span class="item-next iconfont icon-next"></span>
                             </div>
                           </div>
-                        </div>
+                        </button>
+                        <button class="module-item btn" hover-class="none" @tap="onHandleVersion">
+                          <div class="module-row row">
+                            <div class="module-col col-5">
+                              <span class="item-label">系统更新</span>
+                              <span class="item-stage {{hasUpdate?' active':''}}"></span>
+                            </div>
+                            <div class="module-col col-7">
+                              <span class="item-text">版本{{getVersion}}</span>
+                              <span class="item-next iconfont icon-next"></span>
+                            </div>
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="module-footer"></div>
+                </div>
+              </div>
+              <div class="module">
+                <div class="module-content">
+                  <div class="module-body">
+                    <div class="module-context">
+                      <div class="module-items">
+                        <button class="module-item btn" hover-class="none" @tap="onHandleSignOut">
+                          <div class="module-row row">
+                            <div class="module-col col-12">
+                              <span class="item-label">退出登录</span>
+                            </div>
+                          </div>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -77,10 +119,12 @@
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
   import store from '../../../store';
+  import QQMapWX from 'wx-qqmap-jssdk';
   import Toast from '../../../mixins/toast';
   import Route from '../../../mixins/route';
   import Storage from '../../../mixins/storage';
   import * as $routes from '../../../router';
+  import * as $config from '../../../config';
 
   wepy.page({
     store,
@@ -93,7 +137,13 @@
       isScroll: true,
       hasUpdate: false,
       updateManager: null,
-      phoneNumber: '13731887133'
+      company: {
+        latitude: 0,
+        longitude: 0,
+        name: '广德市码上找房',
+        phoneNumber: '13731887133',
+        address: '安徽省宣城市广德市桃州镇金鑫世贸广场北区商业B5楼505、506号'
+      }
     },
 
     computed: {
@@ -105,16 +155,9 @@
     },
 
     methods: {
-      onHandleUpdateVersion() {
-        const {hasUpdate} = this;
-        if (hasUpdate) {
-          this.onHandleShowModal();
-        } else {
-          this.showToast('当前系统已是最新版本，无需更新。');
-        }
-      },
-      onHandlePhoneNumber() {
-        const {phoneNumber} = this;
+      onHandlePhone() {
+        const {company} = this;
+        const {phoneNumber} = company;
         wx.makePhoneCall({
           phoneNumber,
           success: (res) => {
@@ -128,7 +171,33 @@
           }
         });
       },
-      onHandleSystemExit() {
+      onHandleAddress() {
+        const {latitude, longitude, name, address} = this.company;
+        wx.openLocation({
+          name,
+          address,
+          latitude,
+          longitude,
+          success: (res) => {
+            console.log(res);
+          },
+          fail: (err) => {
+            console.log(err);
+          },
+          complete: (res) => {
+            console.log(res);
+          }
+        });
+      },
+      onHandleVersion() {
+        const {hasUpdate} = this;
+        if (hasUpdate) {
+          this.onHandleShowModal();
+        } else {
+          this.showToast('当前系统已是最新版本，无需更新。');
+        }
+      },
+      onHandleSignOut() {
         this.removeItem('user');
         this.reLaunch($routes.LOGIN.path);
       },
@@ -136,15 +205,6 @@
         this.isEnter = true;
         this.isLeave = false;
         this.isScroll = false;
-      },
-      onHandleCheckVersion() {
-        const updateManager = wx.getUpdateManager();
-        this.updateManager = updateManager;
-        updateManager.onCheckForUpdate((res) => {
-          res = res || {};
-          const {hasUpdate} = res;
-          this.hasUpdate = hasUpdate;
-        });
       },
       onHandleConfirm() {
         const {hasUpdate, updateManager} = this;
@@ -156,10 +216,41 @@
             this.showToast('请您删除小程序，重新搜索打开');
           });
         }
+      },
+      onHandleCheckAddress() {
+        const {address} = this.company;
+        const qqmapsdk = new QQMapWX({
+          key: $config.DEFAULT_MAPKEY
+        });
+        qqmapsdk.geocoder({
+          address,
+          success: (res) => {
+            if (res) {
+              const {result} = res || {};
+              const {location} = result || {};
+              const {lat, lng} = location || {};
+              this.company.longitude = lng;
+              this.company.latitude = lat;
+            }
+          },
+          complete: (res) => {
+            console.log(res);
+          }
+        });
+      },
+      onHandleCheckVersion() {
+        const updateManager = wx.getUpdateManager();
+        this.updateManager = updateManager;
+        updateManager.onCheckForUpdate((res) => {
+          res = res || {};
+          const {hasUpdate} = res;
+          this.hasUpdate = hasUpdate;
+        });
       }
     },
 
     onLoad() {
+      this.onHandleCheckAddress();
       this.onHandleCheckVersion();
     }
   });
@@ -210,19 +301,19 @@
                             padding-right: unit(30, rpx);
                             border-bottom: 0.5px solid @borderColor1;
                             .module-col {
-                              .item-name {
+                              .item-label {
                                 width: 100%;
                                 font-size: @fontSize32;
-                                &.stage {
-                                  &:after {
-                                    content: '';
-                                    display: inline-block;
-                                    width: unit(16, rpx);
-                                    height: unit(16, rpx);
-                                    margin-left: unit(30, rpx);
-                                    background-color: @btnStage;
-                                    border-radius: @borderRadius100;
-                                  }
+                              }
+                              .item-stage {
+                                display: none;
+                                width: unit(20, rpx);
+                                height: unit(20, rpx);
+                                margin-left: unit(30, rpx);
+                                background-color: @btnStage;
+                                border-radius: @borderRadius100;
+                                &.active {
+                                  display: inline-block;
                                 }
                               }
                               .item-text {
@@ -232,6 +323,9 @@
                               }
                               .item-next {
                                 color: @iconNext;
+                              }
+                              &.col-5 {
+                                text-align: left;
                               }
                               &.col-7 {
                                 text-align: right;

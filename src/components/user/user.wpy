@@ -1,0 +1,98 @@
+<template>
+  <div class="module">
+    <div class="module-content">
+      <div class="module-body">
+        <div class="module-row row">
+          <div class="module-col col-8">
+            <div class="item-img">
+              <lazy-image src="{{url}}"/>
+            </div>
+            <div class="item-info">
+              <div class="item-name">广进房产</div>
+            </div>
+          </div>
+          <div class="module-col col-4">
+            <div class="item-btn btn btn-select">查看详情</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+  import * as $config from '../../config';
+
+  wepy.component({
+    mixins: [],
+    data: {
+      url: $config.DEFAULT_PHOTO
+    },
+    props: {},
+    methods: {},
+    watch: {},
+    created() {
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../assets/less/common";
+  @import "../../assets/less/variable";
+
+  @height: unit(60, rpx);
+
+  .module {
+    margin: 0;
+    .module-content {
+      padding-top: unit(30, rpx);
+      .module-row {
+        padding: 0 unit(30, rpx);
+        .module-col {
+          display: flex;
+          padding: unit(30, rpx);
+          .item-img {
+            width: @height;
+            height: @height;
+            overflow: hidden;
+            will-change: transform;
+            border-radius: @borderRadius100;
+          }
+          .item-info {
+            padding-left: unit(30, rpx);
+            .item-name {
+              line-height: @height;
+              font-size: @fontSize40;
+              font-weight: bold;
+              color: @fontColor1;
+            }
+          }
+          .item-btn {
+            height: @height;
+            overflow: hidden;
+            line-height: @height;
+            border-radius: @height;
+            padding: 0 unit(30, rpx);
+            background: -webkit-linear-gradient(left, @theme1, @theme2);
+            font-size: @fontSize24;
+            color: @white;
+          }
+          .item-icon {
+            line-height: @height;
+            font-size: @fontSize36;
+            color: @iconNext;
+          }
+        }
+      }
+    }
+  }
+</style>
+
+<config>
+  {
+  usingComponents: {
+  'lazy-image': '../lazy-image/lazy-image'
+  }
+  }
+</config>
