@@ -18,7 +18,7 @@
   "dependencies": {
     "@wepy/core": "^2.0.0-alpha.9",
     "@wepy/redux": "^2.0.1",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "miniprogram-slide-view": "0.0.3",
     "mockjs": "^1.0.1-beta3",
     "path": "^0.12.7",
