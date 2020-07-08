@@ -99,9 +99,9 @@ export const CUSTOMER = {
 };
 
 export const BUSINESS = {
-  INDEX: {
+  UPDATE: {
     name: '商户管理',
-    path: '/packageBusiness/pages/index/index'
+    path: '/packageBusiness/pages/update/index'
   },
   SELECT: {
     name: '商户查询',

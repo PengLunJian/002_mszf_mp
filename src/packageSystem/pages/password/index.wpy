@@ -28,13 +28,6 @@
         </div>
       </div>
       <div class="footer"></div>
-      <modal :isEnter="isEnter"
-             :isLeave="isLeave"
-             title="确认修改密码吗?"
-             context="密码修改后将返回重新登录"
-             cancelText="取消"
-             confirmText="确认"
-             @onConfirm="onHandleConfirm"/>
     </div>
   </div>
 </template>
@@ -44,6 +37,7 @@
   import store from '../../../store';
   import Toast from '../../../mixins/toast';
   import Route from '../../../mixins/route';
+  import Loading from '../../../mixins/loading';
   import Storage from '../../../mixins/storage';
   import {mapState, mapActions} from '@wepy/redux';
   import * as controller from './controller';
@@ -52,11 +46,9 @@
   wepy.page({
     store,
 
-    mixins: [Toast, Route, Storage],
+    mixins: [Toast, Loading, Route, Storage],
 
     data: {
-      isEnter: false,
-      isLeave: false,
       isScroll: true,
       oldPassword: '',
       newPassword: '',
@@ -69,14 +61,6 @@
 
     methods: {
       ...mapActions(controller.ACTIONS),
-      onHandleConfirm() {
-        this.exeAjaxUpdatePassword();
-      },
-      onHandleShowModal() {
-        this.isEnter = true;
-        this.isLeave = false;
-        this.isScroll = false;
-      },
       onHandleCheckEmpty() {
         let result = false;
         const {oldPassword, newPassword, againPassword, isLogin} = this;
@@ -85,8 +69,12 @@
           this.showToast('请输入原密码');
         } else if (!newPassword) {
           this.showToast('请输入新密码');
+        } else if (newPassword.length < 6) {
+          this.showToast('密码长度不能小于6位');
+        } else if (newPassword === oldPassword) {
+          this.showToast('新密码不能与原密码相同');
         } else if (!againPassword) {
-          this.showToast('请再次输入新密码');
+          this.showToast('请确认新密码');
         } else if (oldPassword !== passWord) {
           this.showToast('原密码输入错误');
         } else if (newPassword !== againPassword) {
@@ -98,14 +86,16 @@
       },
       onHandleUpdatePassword() {
         if (this.onHandleCheckEmpty()) {
-          this.onHandleShowModal();
+          this.exeAjaxUpdatePassword();
         }
       },
       exeAjaxUpdatePassword() {
+        this.showLoading();
         const params = this.getParams();
         this.ajaxUpdatePassword(params)
           .then((res) => {
             res = res || {};
+            this.hideLoading();
             const {success} = res.payload;
             if (success) {
               this.showToast('修改成功，请重新登录。');
@@ -120,15 +110,17 @@
           })
           .catch((err) => {
             console.log(err);
+            this.hideLoading();
             this.showToast('修改失败，请重试。');
           });
       },
       getParams() {
         const {isLogin, newPassword} = this;
-        const {busId, agentId} = isLogin;
+        const {busId, agentId, type} = isLogin;
         return {
           busId,
           agentId,
+          type,
           passWord: newPassword
         };
       }

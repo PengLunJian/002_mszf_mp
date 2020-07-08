@@ -54,6 +54,16 @@
                   <div class="module-body">
                     <div class="module-context">
                       <div class="module-items">
+                        <button class="module-item btn" hover-class="none" @tap="onHandleAbout">
+                          <div class="module-row row">
+                            <div class="module-col col-5">
+                              <span class="item-label">使用说明</span>
+                            </div>
+                            <div class="module-col col-7">
+                              <span class="item-next iconfont icon-next"></span>
+                            </div>
+                          </div>
+                        </button>
                         <button class="module-item btn" hover-class="none" open-type="feedback">
                           <div class="module-row row">
                             <div class="module-col col-5">
@@ -170,6 +180,9 @@
             console.log(res);
           }
         });
+      },
+      onHandleAbout() {
+        this.navigateTo($routes.ABOUT.path);
       },
       onHandleAddress() {
         const {latitude, longitude, name, address} = this.company;

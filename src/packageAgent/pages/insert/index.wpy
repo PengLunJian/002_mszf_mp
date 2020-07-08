@@ -33,6 +33,22 @@
                               <span class="form-next iconfont icon-next"></span>
                             </div>
                           </div>
+                          <div class="form-col col-12">
+                            <div class="form-group">
+                              <label class="form-label">账号</label>
+                              <input class="form-input" disabled="{{true}}" type="number"
+                                     placeholder="登录账号同手机号"/>
+                              <span class="form-next iconfont icon-next"></span>
+                            </div>
+                          </div>
+                          <div class="form-col col-12">
+                            <div class="form-group">
+                              <label class="form-label">密码</label>
+                              <input class="form-input" disabled="{{true}}" type="text"
+                                     placeholder="登录密码/123456"/>
+                              <span class="form-next iconfont icon-next"></span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>

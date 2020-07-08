@@ -8,7 +8,7 @@
         <div class="context fade">
           <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
             <div class="scroll-content">
-              <user/>
+              <avart :isData="isLogin"/>
               <total-count :isCount="isCount"/>
               <navigation :items="items"/>
             </div>
@@ -68,14 +68,14 @@
           path: $routes.AGENT.SELECT.path
         },
         {
+          text: '店铺管理',
+          icon: 'icon-business',
+          path: $routes.BUSINESS.SELECT.path
+        },
+        {
           text: '系统管理',
           icon: 'icon-system',
           path: $routes.SYSTEM.path
-        },
-        {
-          text: '使用说明',
-          icon: 'icon-system',
-          path: $routes.ABOUT.path
         },
         {
           text: '密码重置',
@@ -136,7 +136,6 @@
           .scroll-view {
             height: 100%;
             .scroll-content {
-              padding-top: unit(20, rpx);
             }
           }
         }
@@ -152,7 +151,7 @@
   disableScroll:true,
   navigationStyle:'custom',
   usingComponents: {
-  'user':'../../components/user/user',
+  'avart':'../../components/avart/avart',
   'top-bar':'../../components/top-bar/top-bar',
   'navigation':'../../components/navigation/navigation',
   'total-count':'../../components/total-count/total-count'

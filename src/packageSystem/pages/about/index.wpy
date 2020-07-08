@@ -10,9 +10,6 @@
             <div class="scroll-content">
               <div class="module">
                 <div class="module-content">
-                  <div class="module-header">
-                    <div class="module-title">Dear All</div>
-                  </div>
                   <div class="module-body">
                     <div class="module-desc" v-for="(item,index) in items" :key="index">{{item.desc}}</div>
                   </div>
@@ -89,19 +86,12 @@
           .scroll-view {
             height: 100%;
             .scroll-content {
+              padding-top: unit(20, rpx);
               .module {
+                margin: 0;
                 padding: unit(60, rpx);
                 font-size: @fontSize28;
                 .module-content {
-                  .module-header {
-                    .module-title {
-                      height: unit(40, rpx);
-                      line-height: unit(40, rpx);
-                      margin-bottom: unit(20, rpx);
-                      font-size: @fontSize28;
-                      font-weight: bold;
-                    }
-                  }
                   .module-body {
                     .module-desc {
                       margin-bottom: unit(30, rpx);

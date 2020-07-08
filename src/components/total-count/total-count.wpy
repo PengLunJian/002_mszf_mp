@@ -82,7 +82,6 @@
   @import "../../assets/less/variable";
 
   .module {
-    margin: 0;
     .module-row {
       .module-col {
         text-align: center;

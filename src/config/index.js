@@ -1,5 +1,6 @@
 import apis from '../apis';
 
+export const DEFAULT_AVART = apis.fileUrl + '/image/1a9ae696-53df-4950-8021-890b03a8f0fe.png';
 export const DEFAULT_HOUSE = apis.fileUrl + '/image/2c03e5ca-f837-4a9d-b99c-a9df02717706.jpg';
 export const DEFAULT_WATER = apis.fileUrl + '/image/5c6faf0c-a5e9-4785-bac3-060b6e758ebc.png';
 export const DEFAULT_PHOTO = apis.fileUrl + '/image/5127f429-2015-48ef-9041-18b1b6e203d5.png';

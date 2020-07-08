@@ -3,16 +3,13 @@
     <div class="module-content">
       <div class="module-body">
         <div class="module-row row">
-          <div class="module-col col-8">
+          <div class="module-col col-3">
             <div class="item-img">
               <lazy-image src="{{url}}"/>
             </div>
-            <div class="item-info">
-              <div class="item-name">广进房产</div>
-            </div>
           </div>
-          <div class="module-col col-4">
-            <div class="item-btn btn btn-select">查看详情</div>
+          <div class="module-col col-9">
+            <div class="item-info">{{isData.userName}}</div>
           </div>
         </div>
       </div>
@@ -27,9 +24,14 @@
   wepy.component({
     mixins: [],
     data: {
-      url: $config.DEFAULT_PHOTO
+      url: $config.DEFAULT_AVART
     },
-    props: {},
+    props: {
+      isData: {
+        type: Object,
+        default: {}
+      }
+    },
     methods: {},
     watch: {},
     created() {
@@ -41,47 +43,32 @@
   @import "../../assets/less/common";
   @import "../../assets/less/variable";
 
-  @height: unit(60, rpx);
+  @height: unit(100, rpx);
 
   .module {
     margin: 0;
+    background-color: @theme2;
     .module-content {
-      padding-top: unit(30, rpx);
       .module-row {
-        padding: 0 unit(30, rpx);
+        padding: unit(50, rpx) unit(60, rpx);
         .module-col {
+          width: auto;
           display: flex;
-          padding: unit(30, rpx);
           .item-img {
             width: @height;
             height: @height;
             overflow: hidden;
             will-change: transform;
             border-radius: @borderRadius100;
+            background-color: @white;
+            border: 2px solid @white;
           }
           .item-info {
             padding-left: unit(30, rpx);
-            .item-name {
-              line-height: @height;
-              font-size: @fontSize40;
-              font-weight: bold;
-              color: @fontColor1;
-            }
-          }
-          .item-btn {
-            height: @height;
-            overflow: hidden;
             line-height: @height;
-            border-radius: @height;
-            padding: 0 unit(30, rpx);
-            background: -webkit-linear-gradient(left, @theme1, @theme2);
-            font-size: @fontSize24;
+            font-size: @fontSize40;
+            font-weight: bold;
             color: @white;
-          }
-          .item-icon {
-            line-height: @height;
-            font-size: @fontSize36;
-            color: @iconNext;
           }
         }
       }
@@ -92,7 +79,7 @@
 <config>
   {
   usingComponents: {
-  'lazy-image': '../lazy-image/lazy-image'
+  'lazy-image':'../lazy-image/lazy-image'
   }
   }
 </config>

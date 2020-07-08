@@ -244,6 +244,11 @@
                               <com-checkbox :checked="item.checked"/>
                             </div>
                           </div>
+                          <div class="module-col col-4">
+                            <div class="module-btn btn btn-agent" @tap="onHandleInsertAgent">
+                              <div class="module-icon iconfont icon-insert"></div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -268,9 +273,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="module-footer">
-                      <div class="information">建议：为保证前台用户体验请尽量选择3个房源特色</div>
-                    </div>
+                    <div class="module-footer"></div>
                   </div>
                 </div>
               </div>
@@ -781,6 +784,9 @@
       onHandleDeleteImage(index) {
         this.urls.splice(index, 1);
       },
+      onHandleInsertAgent() {
+        this.navigateTo($routes.AGENT.INSERT.path);
+      },
       onHandleRenderHouse(data) {
         const {
           id, contact, phone, title, price,
@@ -1126,6 +1132,16 @@
                                 z-index: 1;
                               }
                             }
+                            .module-btn {
+                              height: unit(200, rpx);
+                              line-height: unit(200, rpx);
+                              background-color: #F0F0F0;
+                              text-align: center;
+                              .module-icon {
+                                font-size: @fontSize50;
+                                color: @fontColor5;
+                              }
+                            }
                           }
                         }
                       }
@@ -1201,14 +1217,7 @@
                         }
                       }
                     }
-                    .module-footer {
-                      .information {
-                        padding: 0 unit(30, rpx) unit(30, rpx);
-                        line-height: unit(40, rpx);
-                        font-size: @fontSize26;
-                        color: @fontColor3;
-                      }
-                    }
+                    .module-footer {}
                   }
                   &:first-child {
                     margin: 0;
