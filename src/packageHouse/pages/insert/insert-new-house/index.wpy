@@ -209,11 +209,6 @@
                               <com-checkbox :checked="item.checked"/>
                             </div>
                           </div>
-                          <div class="module-col col-4">
-                            <div class="module-btn btn btn-agent" @tap="onHandleInsertAgent">
-                              <div class="module-icon iconfont icon-insert"></div>
-                            </div>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -700,9 +695,6 @@
         this.onHandleCheckEmpty();
         arr = null;
       },
-      onHandleInsertAgent() {
-        this.navigateTo($routes.AGENT.INSERT.path);
-      },
       onHandleInsertLayout() {
         this.navigateTo($routes.HOUSE.LAYOUT.path);
       },
@@ -1037,16 +1029,6 @@
                                 top: unit(20, rpx);
                                 left: unit(20, rpx);
                                 z-index: 1;
-                              }
-                            }
-                            .module-btn {
-                              height: unit(200, rpx);
-                              line-height: unit(200, rpx);
-                              background-color: #F0F0F0;
-                              text-align: center;
-                              .module-icon {
-                                font-size: @fontSize50;
-                                color: @fontColor5;
                               }
                             }
                           }

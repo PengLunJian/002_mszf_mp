@@ -169,7 +169,7 @@
       },
       getParams() {
         const {userName, passWord, options} = this;
-        const type = options.value;
+        const type = options.value + 1;
         const params = {
           userName,
           passWord,
@@ -262,7 +262,7 @@
                   .form-input {
                     height: @height;
                     padding-left: @height;
-                    border-radius: @borderRadius15;
+                    border-radius: @height;
                     background-color: @bgColor;
                   }
                   .form-text {
@@ -275,11 +275,6 @@
                   .form-checkbox {
                     display: flex;
                     padding: unit(8, rpx) 0;
-                    .form-checkbox-text {
-                      height: unit(44, rpx);
-                      line-height: unit(44, rpx);
-                      padding-left: unit(10, rpx);
-                    }
                   }
                   .form-select {
                     float: right;
@@ -302,7 +297,7 @@
                     height: @height;
                     overflow: hidden;
                     line-height: @height;
-                    border-radius: @borderRadius15;
+                    border-radius: @height;
                     background: -webkit-linear-gradient(left, @theme1, @theme2);
                     font-size: @fontSize40;
                     letter-spacing: 2px;
