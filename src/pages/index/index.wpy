@@ -53,17 +53,17 @@
           path: $routes.HOUSE.INSERT.RENT_HOUSE.path
         },
         {
-          text: '我的房源',
+          text: '房源管理',
           icon: 'icon-new',
           path: $routes.HOUSE.SELECT.path
         },
         {
-          text: '我的用户',
+          text: '用户管理',
           icon: 'icon-user',
           path: $routes.CUSTOMER.SELECT.path
         },
         {
-          text: '置业顾问',
+          text: '员工管理',
           icon: 'icon-agent',
           path: $routes.AGENT.SELECT.path
         },
