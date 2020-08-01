@@ -127,3 +127,8 @@ export const ABOUT = {
   name: '关于我们',
   path: '/packageSystem/pages/about/index'
 };
+
+export const REGISTER = {
+  name: '账户注册',
+  path: '/pages/register/index'
+};

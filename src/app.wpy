@@ -26,6 +26,7 @@
   pages: [
   'pages/login/index',
   'pages/index/index',
+  'pages/register/index',
   'pages/waitting/index'
   ],
   'subpackages': [

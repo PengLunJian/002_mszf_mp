@@ -1,0 +1,166 @@
+<template>
+  <div class="container">
+    <div class="content">
+      <div class="header">
+        <top-bar title="用户注册"/>
+      </div>
+      <div class="body">
+        <div class="context fade">
+          <div class="module">
+            <div class="module-content">
+              <div class="module-header">
+              </div>
+              <div class="module-body">
+                <div class="module-row row">
+                  <div class="module-col col-8">
+                    <input class="form-input" v-model="phone" type="number" placeholder="请输入手机号"
+                           @tap="onHandleCheckEmpty"/>
+                  </div>
+                  <div class="module-col col-4">
+                    <div class="btn-release" @tap="onHandleGetCode">
+                      <div class="btn-text">获取验证码</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="module-row row">
+                  <div class="module-col col-12">
+                    <input class="form-input" v-model="code" type="number" placeholder="请输入验证码"
+                           @tap="onHandleCheckEmpty"/>
+                  </div>
+                </div>
+                <div class="module-row row">
+                  <div class="module-col col-12">
+                    <input class="form-input" v-model="password" type="password" placeholder="请输入登录密码"
+                           @tap="onHandleCheckEmpty"/>
+                  </div>
+                </div>
+              </div>
+              <div class="module-footer">
+                <div class="btn btn-confirm" @tap="onHandleConfirm">确定</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer"></div>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+  import wepy from '@wepy/core';
+  import store from '../../store';
+
+  wepy.page({
+    store,
+
+    mixins: [],
+
+    data: {
+      phone: '',
+      code: '',
+      password: '',
+      isDisable: true
+    },
+
+    computed: {},
+
+    methods: {
+      onHandleCheckEmpty() {
+      },
+      onHandleGetCode() {
+      },
+      onHandleConfirm() {
+      }
+    },
+
+    onLoad() {
+    }
+  });
+</script>
+
+<style scoped lang="less">
+  @import "../../assets/less/@media";
+  @import "../../assets/less/variable";
+
+  @height: unit(110, rpx);
+
+  .container {
+    min-height: 100vh;
+    .content {
+      height: 100vh;
+      .header {
+      }
+      .body {
+        height: 100%;
+        position: relative;
+        .context {
+          height: 100%;
+          padding-top: 65px;
+          .module {
+            background-color: @transparent;
+            .module-content {
+              .module-header {
+              }
+              .module-body {
+                background-color: @white;
+                .module-row {
+                  border-bottom: 0.5px solid @borderColor2;
+                  .module-col {
+                    font-size: @fontSize32;
+                    .form-input {
+                      height: @height;
+                      padding: 0 unit(30, rpx);
+                    }
+                    .btn-release {
+                      height: @height;
+                      line-height: @height;
+                      text-align: center;
+                      .btn-text {
+                        width: 100%;
+                        height: unit(60, rpx);
+                        display: inline-block;
+                        vertical-align: middle;
+                        line-height: unit(60, rpx);
+                        border-left: 0.5px solid @borderColor2;
+                      }
+                    }
+                  }
+                  &:first-child {
+                    border-top: 0.5px solid @borderColor2;
+                  }
+                }
+              }
+              .module-footer {
+                padding: unit(30, rpx);
+                .btn-confirm {
+                  height: @height;
+                  overflow: hidden;
+                  line-height: @height;
+                  border-radius: @borderRadius15;
+                  background: -webkit-linear-gradient(left, @theme1, @theme2);
+                  font-size: @fontSize36;
+                  letter-spacing: 2px;
+                  text-align: center;
+                  color: @white;
+                }
+              }
+            }
+          }
+        }
+      }
+      .footer {
+      }
+    }
+  }
+</style>
+
+<config>
+  {
+  navigationStyle:'custom',
+  usingComponents: {
+  'top-bar': '../../components/top-bar/top-bar',
+  'waitting': '../../components/waitting/waitting'
+  }
+  }
+</config>

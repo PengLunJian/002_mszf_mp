@@ -1,6 +1,6 @@
 <template>
   <div class="lazy-image">
-    <div class="lazy-image-loading">
+    <div class="lazy-image-loading{{isLoading?'':' lazy-image-leave'}}">
       <img :style="{'width':width}" src="./images/logo@2x.png" mode="aspectFit"/>
     </div>
     <div class="lazy-image-success{{isSuccess?' lazy-image-enter':''}}">
@@ -14,6 +14,7 @@
 
   wepy.component({
     data: {
+      isLoading: true,
       isSuccess: false
     },
     props: {
@@ -35,6 +36,7 @@
     methods: {
       onHandleLoad() {
         this.isSuccess = true;
+        this.isLoading = false;
       }
     },
     created() {
@@ -50,13 +52,13 @@
     width: 100%;
     height: 100%;
     position: relative;
-    background-color: @lazyBgColor;
     .lazy-image-loading {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
+      background-color: @lazyBgColor;
       image {
         width: 60%;
         height: 100%;
