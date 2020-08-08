@@ -1,13 +1,23 @@
 <template>
   <div class="container">
-    <div class="content">
-      <div class="header"></div>
+    <div class="content fade">
+      <div class="header">
+        <image class="image" src="../../assets/images/logo-white@2x.png" mode="aspectFit"/>
+      </div>
       <div class="body">
-        <div class="context fade">
+        <div class="context">
           <div class="module">
             <div class="module-content">
               <div class="module-header">
-                <image class="image" src="../../assets/images/logo-white@2x.png" mode="aspectFit"/>
+                <div class="tab-bar">
+                  <div class="tab-row row">
+                    <div class="tab-col col-6" :class="{'active':index===tab.activeIndex}"
+                         v-for="(item,index) in tab.items" :key="index"
+                         @tap="onHandleTabChange(index)">
+                      <div class="tab-item">{{item}}</div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="module-body">
                 <div class="form-group">
@@ -23,10 +33,15 @@
                 <div class="form-group">
                   <div class="form-row row">
                     <div class="form-col col-6">
-                      <span class="form-text" @tap="onHandleRoutePassword">忘记密码</span>
+                      <div class="form-checkbox" @tap="onHandleCheckbox">
+                        <div class="form-icon">
+                          <com-checkbox :checked="checked"/>
+                        </div>
+                        <div class="form-text">记住账户</div>
+                      </div>
                     </div>
                     <div class="form-col col-6">
-                      <span class="form-text pull-right" @tap="onHandleRegister">用户注册</span>
+                      <span class="form-text underline pull-right" @tap="onHandleRoutePassword">忘记密码</span>
                     </div>
                   </div>
                 </div>
@@ -64,16 +79,16 @@
     mixins: [Route, Toast, Loading],
 
     data: {
+      tab: {
+        activeIndex: 0,
+        items: [
+          '登录',
+          '注册'
+        ]
+      },
       userName: '',
       passWord: '',
-      checked: false,
-      options: {
-        value: 0,
-        items: [
-          '管理员',
-          '经纪人'
-        ]
-      }
+      checked: false
     },
 
     computed: {
@@ -106,24 +121,10 @@
       onHandleCheckbox() {
         this.checked = !this.checked;
       },
-      onHandleSelectOptions() {
-        const {items} = this.options;
-        wx.showActionSheet({
-          itemList: items,
-          success: (res) => {
-            res = res || {};
-            const {tapIndex} = res;
-            this.options.value = tapIndex;
-          },
-          fail: (err) => {
-            console.log(err);
-          }
-        });
+      onHandleTabChange(index) {
+        this.tab.activeIndex = index;
       },
       onHandleRoutePassword() {
-        this.navigateTo($routes.WAITTING.path);
-      },
-      onHandleRegister() {
         this.navigateTo($routes.REGISTER.path);
       },
       onHandleSelectLogin() {
@@ -159,12 +160,10 @@
           });
       },
       getParams() {
-        const {userName, passWord, options} = this;
-        const type = options.value + 1;
+        const {userName, passWord} = this;
         const params = {
           userName,
-          passWord,
-          type
+          passWord
         };
         return params;
       }
@@ -188,38 +187,65 @@
     min-height: 100vh;
     .content {
       height: 100vh;
+      background-color: @white;
       .header {
+        height: unit(400, rpx);
+        background-color: @theme2;
+        .image {
+          width: unit(250, rpx);
+          height: unit(300, rpx);
+          margin: 0 auto;
+        }
       }
       .body {
         height: 100%;
         position: relative;
         .context {
           height: 100%;
+          padding: 0 unit(45, rpx);
           .module {
-            height: 100%;
             margin: 0;
+            top: unit(-100, rpx);
+            box-shadow: 0 0 15px @boxShadow05;
+            border-radius: @borderRadius30;
+            font-size: @fontSize32;
+            color: @fontColor1;
             .module-content {
-              width: 100%;
-              font-size: @fontSize32;
-              color: @fontColor1;
               .module-header {
-                height: unit(400, rpx);
-                background-color: @theme2;
-                .image {
-                  width: unit(250, rpx);
-                  height: unit(300, rpx);
-                  margin: 0 auto;
+                .tab-bar {
+                  .tab-row {
+                    .tab-col {
+                      position: relative;
+                      padding: unit(30, rpx) 0;
+                      text-align: center;
+                      .tab-item {
+                        height: unit(40, rpx);
+                        line-height: unit(40, rpx);
+                        border-right: 0.5px solid @borderColor2;
+                      }
+                      &.active {
+                        color: @theme2;
+                        &:after {
+                          content: '';
+                          width: unit(160, rpx);
+                          position: absolute;
+                          left: 50%;
+                          bottom: 0;
+                          margin-left: unit(-80, rpx);
+                          border-top: unit(6, rpx) solid @theme2;
+                        }
+                      }
+                      &:last-child {
+                        .tab-item {
+                          border: none;
+                        }
+                      }
+                    }
+                  }
                 }
               }
               .module-body {
-                position: relative;
-                top: unit(-100, rpx);
-                width: unit(660, rpx);
-                margin: 0 auto;
-                padding: unit(100, rpx) unit(45, rpx);
-                box-shadow: 0 0 15px @boxShadow05;
-                border-radius: @borderRadius30;
-                background-color: @white;
+                padding: unit(80, rpx) unit(45, rpx);
                 .form-group {
                   position: relative;
                   margin-bottom: unit(50, rpx);
@@ -239,11 +265,17 @@
                     border-radius: @height;
                     background-color: @bgColor;
                   }
+                  .form-checkbox {
+                    display: flex;
+                    .form-icon {
+                      margin-right: unit(15, rpx);
+                    }
+                  }
                   .form-text {
                     height: unit(44, rpx);
                     line-height: unit(44, rpx);
-                    &.checkbox {
-                      padding-left: unit(15, rpx);
+                    &.underline {
+                      text-decoration: underline;
                     }
                   }
                   .form-desc {

@@ -2,7 +2,7 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="用户注册"/>
+        <top-bar title="忘记密码"/>
       </div>
       <div class="body">
         <div class="context fade">
@@ -30,7 +30,7 @@
                 </div>
                 <div class="module-row row">
                   <div class="module-col col-12">
-                    <input class="form-input" v-model="password" type="password" placeholder="请输入登录密码"
+                    <input class="form-input" v-model="password" type="password" placeholder="请输入新密码"
                            @tap="onHandleCheckEmpty"/>
                   </div>
                 </div>
