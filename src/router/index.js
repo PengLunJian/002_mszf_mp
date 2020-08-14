@@ -128,7 +128,7 @@ export const ABOUT = {
   path: '/packageSystem/pages/about/index'
 };
 
-export const REGISTER = {
-  name: '账户注册',
-  path: '/pages/register/index'
+export const FORGET = {
+  name: '忘记密码',
+  path: '/pages/forget/index'
 };

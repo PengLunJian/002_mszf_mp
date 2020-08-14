@@ -13,8 +13,8 @@
               <div class="module-body">
                 <div class="module-row row">
                   <div class="module-col col-8">
-                    <input class="form-input" v-model="phone" type="number" placeholder="请输入手机号"
-                           @tap="onHandleCheckEmpty"/>
+                    <input class="form-input" v-model="phone" type="number"
+                           placeholder="请输入手机号"/>
                   </div>
                   <div class="module-col col-4">
                     <div class="btn-send" @tap="onHandleSendCode">
@@ -24,14 +24,14 @@
                 </div>
                 <div class="module-row row">
                   <div class="module-col col-12">
-                    <input class="form-input" v-model="code" type="number" placeholder="请输入验证码"
-                           @tap="onHandleCheckEmpty"/>
+                    <input class="form-input" v-model="code" type="number"
+                           placeholder="请输入验证码"/>
                   </div>
                 </div>
                 <div class="module-row row">
                   <div class="module-col col-12">
-                    <input class="form-input" v-model="password" type="password" placeholder="请输入新密码"
-                           @tap="onHandleCheckEmpty"/>
+                    <input class="form-input" v-model="password" type="password"
+                           placeholder="请输入新密码"/>
                   </div>
                 </div>
               </div>
@@ -50,27 +50,77 @@
 <script type="text/ecmascript-6">
   import wepy from '@wepy/core';
   import store from '../../store';
+  import Toast from '../../mixins/toast';
+  import Route from '../../mixins/route';
+  import Loading from '../../mixins/loading';
+  import {mapState, mapActions} from '@wepy/redux';
+  import * as controller from './controller';
+  import * as $routes from '../../router';
 
   wepy.page({
     store,
 
-    mixins: [],
+    mixins: [Toast, Route, Loading],
 
     data: {
       phone: '',
       code: '',
-      password: '',
-      isDisable: true
+      password: ''
     },
 
-    computed: {},
+    computed: {
+      ...mapState(controller.STATES)
+    },
 
     methods: {
+      ...mapActions(controller.ACTIONS),
       onHandleCheckEmpty() {
+        let result = false;
+        const {phone, cdoe, password} = this;
+        if (!phone) {
+          this.showToast('请输入手机号');
+        } else if (!cdoe) {
+          this.showToast('请输入验证码');
+        } else if (!password) {
+          this.showToast('请输入新密码');
+        } else {
+          result = true;
+        }
+        return result;
       },
       onHandleSendCode() {
       },
       onHandleConfirm() {
+        if (this.onHandleCheckEmpty()) {
+          this.exeAjaxUpdateForget();
+        }
+      },
+      exeAjaxUpdateForget() {
+        this.showLoading();
+        const params = this.getParams();
+        this.ajaxUpdateForget(params)
+          .then((res) => {
+            this.hideLoading();
+            res = res || {};
+            const {success, data} = res.payload;
+            if (success) {
+            } else {
+            }
+          })
+          .catch((err) => {
+            this.hideLoading();
+            this.showToast('服务器连接失败');
+            console.log(err);
+          });
+      },
+      getParams() {
+        const {phone, code, password} = this;
+        const params = {
+          phone,
+          code,
+          password
+        };
+        return params;
       }
     },
 

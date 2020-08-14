@@ -56,7 +56,7 @@
                 <div class="tab-content" v-if="tab.activeIndex===1">
                   <div class="form-group">
                     <label class="form-label iconfont icon-phone"></label>
-                    <input class="form-input" v-model="phoneNumber" type="number"
+                    <input class="form-input" v-model="phone" type="number"
                            placeholder="请输入手机号"/>
                   </div>
                   <div class="form-group">
@@ -112,7 +112,7 @@
       userName: '',
       passWord: '',
       checked: false,
-      phoneNumber: '',
+      phone: '',
       vCode: '',
       password: ''
     },
@@ -151,7 +151,7 @@
         this.tab.activeIndex = index;
       },
       onHandleRoutePassword() {
-        this.navigateTo($routes.REGISTER.path);
+        this.navigateTo($routes.FORGET.path);
       },
       onHandleSelectLogin() {
         if (this.onHandleCheckEmpty()) {
@@ -159,7 +159,15 @@
         }
       },
       onHandleSelectVcode() {
-        this.exeAjaxSelectVcode();
+        const {phone} = this;
+        const regExp = /^1{1}\d{10}$/;
+        if (!phone) {
+          this.showToast('请输入手机号');
+        } else if (!regExp.test(phone)) {
+          this.showToast('手机号格式不正确');
+        } else {
+          this.exeAjaxSelectVcode();
+        }
       },
       onHandleInsertRegister() {
         this.exeAjaxInsertRegister();
@@ -183,7 +191,6 @@
             } else {
               this.showToast('用户名或密码错误');
             }
-            console.log(res);
           })
           .catch((err) => {
             this.hideLoading();
@@ -193,7 +200,10 @@
       },
       exeAjaxSelectVcode() {
         this.showLoading();
-        const params = this.getParams();
+        const {phone} = this;
+        const params = {
+          phone
+        };
         this.ajaxSelectVcode(params)
           .then((res) => {
             this.hideLoading();
@@ -202,7 +212,6 @@
             if (success) {
             } else {
             }
-            console.log(res);
           })
           .catch((err) => {
             this.hideLoading();
@@ -212,7 +221,12 @@
       },
       exeAjaxInsertRegister() {
         this.showLoading();
-        const params = this.getParams();
+        const {phone, password, vCode} = this;
+        const params = {
+          phone,
+          password,
+          vCode
+        };
         this.ajaxInsertRegister(params)
           .then((res) => {
             this.hideLoading();
@@ -221,7 +235,6 @@
             if (success) {
             } else {
             }
-            console.log(res);
           })
           .catch((err) => {
             this.hideLoading();

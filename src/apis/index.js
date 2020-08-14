@@ -15,6 +15,13 @@ const apis = {
       passWord: ''
     }
   },
+  updateForget: {
+    url: '/update/forget',
+    params: {
+      oldPassword: '',
+      newPassword: '',
+    }
+  },
   updatePassword: {
     url: '/account/update',
     params: {
@@ -35,7 +42,7 @@ const apis = {
     }
   },
   selectVcode: {
-    url: '/select/vcode',
+    url: '/send',
     params: {
       phone: ''
     }
