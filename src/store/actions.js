@@ -60,6 +60,50 @@ export const ajaxRequestSelectLogin = createAction(
     });
   });
 
+export const ajaxRequestInsertRegister = createAction(
+  'insertRegister', (params) => {
+    commit(actionTypes.INSERT_REGISTER_REQUEST);
+    return new Promise((resolve, reject) => {
+      axios.post(apis.insertRegister, params)
+        .then((res) => {
+          res = res || {};
+          const {data, success} = res;
+          if (success) {
+            commit(actionTypes.INSERT_REGISTER_SUCCESS, data);
+          } else {
+            commit(actionTypes.INSERT_REGISTER_FAILURE);
+          }
+          resolve(res);
+        })
+        .catch((err) => {
+          commit(actionTypes.INSERT_REGISTER_FAILURE);
+          reject(err);
+        });
+    });
+  });
+
+export const ajaxRequestSelectVcode = createAction(
+  'selectVcode', (params) => {
+    commit(actionTypes.SELECT_VCODE_REQUEST);
+    return new Promise((resolve, reject) => {
+      axios.post(apis.selectVcode, params)
+        .then((res) => {
+          res = res || {};
+          const {data, success} = res;
+          if (success) {
+            commit(actionTypes.SELECT_VCODE_SUCCESS, data);
+          } else {
+            commit(actionTypes.SELECT_VCODE_FAILURE);
+          }
+          resolve(res);
+        })
+        .catch((err) => {
+          commit(actionTypes.SELECT_VCODE_FAILURE);
+          reject(err);
+        });
+    });
+  });
+
 const ajaxRequestCount = (params) => {
   return axios.post(apis.selectCount, params)
     .then((res) => {

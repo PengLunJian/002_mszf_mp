@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux';
 import SELECT_LOGIN_REDUCER from './selectLogin';
+import SELECT_VCODE_REDUCER from './selectVcode';
 import INSERT_IMAGE_REDUCER from './insertImage';
 import INSERT_HOUSE_REDUCER from './insertHouse';
 import DELETE_HOUSE_REDUCER from './deleteHouse';
@@ -13,6 +14,7 @@ import SELECT_COUNT_REDUCER from './selectCount';
 import SELECT_LAYOUT_REDUCER from './selectLayout';
 import SELECT_BROWSE_REDUCER from './selectBrowse';
 import SELECT_FOLLOW_REDUCER from './selectFollow';
+import INSERT_REGISTER_REDUCER from './insertRegister';
 import UPDATE_BUSINESS_REDUCER from './updateBusiness';
 import SELECT_BUSINESS_REDUCER from './selectBusiness';
 import SELECT_CUSTOMER_REDUCER from './selectCustomer';
@@ -21,6 +23,7 @@ import SELECT_AGENT_DETAIL_REDUCER from './selectAgentDetail';
 
 export default combineReducers({
   SELECT_LOGIN_REDUCER,
+  SELECT_VCODE_REDUCER,
   INSERT_IMAGE_REDUCER,
   INSERT_HOUSE_REDUCER,
   DELETE_HOUSE_REDUCER,
@@ -34,6 +37,7 @@ export default combineReducers({
   SELECT_BROWSE_REDUCER,
   SELECT_FOLLOW_REDUCER,
   SELECT_LAYOUT_REDUCER,
+  INSERT_REGISTER_REDUCER,
   UPDATE_BUSINESS_REDUCER,
   SELECT_BUSINESS_REDUCER,
   SELECT_CUSTOMER_REDUCER,

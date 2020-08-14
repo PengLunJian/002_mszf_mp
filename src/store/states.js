@@ -5,6 +5,20 @@ export const SELECT_LOGIN_STATE = {
   data: null
 };
 
+export const INSERT_REGISTER_STATE = {
+  isLoading: true,
+  isSuccess: false,
+  isFailure: false,
+  data: null
+};
+
+export const SELECT_VCODE_STATE = {
+  isLoading: true,
+  isSuccess: false,
+  isFailure: false,
+  data: null
+};
+
 export const SELECT_HOUSE_STATE = {
   isLoading: true,
   isSuccess: false,

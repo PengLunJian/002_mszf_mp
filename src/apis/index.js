@@ -26,6 +26,20 @@ const apis = {
       userName: ''
     }
   },
+  insertRegister: {
+    url: '/insert/register',
+    params: {
+      phone: '',
+      vcode: '',
+      password: ''
+    }
+  },
+  selectVcode: {
+    url: '/select/vcode',
+    params: {
+      phone: ''
+    }
+  },
   selectCount: {
     url: '/house/total',
     params: {
