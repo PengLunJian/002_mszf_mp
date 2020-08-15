@@ -15,7 +15,7 @@ import UPDATE_FORGET_REDUCER from './updateForget';
 import SELECT_LAYOUT_REDUCER from './selectLayout';
 import SELECT_BROWSE_REDUCER from './selectBrowse';
 import SELECT_FOLLOW_REDUCER from './selectFollow';
-import INSERT_REGISTER_REDUCER from './insertRegister';
+import INSERT_BUSINESS_REDUCER from './insertBusiness';
 import UPDATE_BUSINESS_REDUCER from './updateBusiness';
 import SELECT_BUSINESS_REDUCER from './selectBusiness';
 import SELECT_CUSTOMER_REDUCER from './selectCustomer';
@@ -39,7 +39,7 @@ export default combineReducers({
   SELECT_FOLLOW_REDUCER,
   SELECT_LAYOUT_REDUCER,
   UPDATE_FORGET_REDUCER,
-  INSERT_REGISTER_REDUCER,
+  INSERT_BUSINESS_REDUCER,
   UPDATE_BUSINESS_REDUCER,
   SELECT_BUSINESS_REDUCER,
   SELECT_CUSTOMER_REDUCER,

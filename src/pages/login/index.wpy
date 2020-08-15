@@ -61,7 +61,7 @@
                   </div>
                   <div class="form-group">
                     <label class="form-label iconfont icon-code"></label>
-                    <input class="form-input" v-model="vCode" type="number"
+                    <input class="form-input" v-model="code" type="number"
                            placeholder="请输入验证码"/>
                     <div class="btn btn-send" @tap="onHandleSelectVcode">发送验证码</div>
                   </div>
@@ -71,7 +71,7 @@
                            placeholder="请输入密码"/>
                   </div>
                   <div class="form-group">
-                    <div class="btn btn-register" @tap="onHandleInsertRegister">注册</div>
+                    <div class="btn btn-register" @tap="onHandleInsertBusiness">注册</div>
                   </div>
                 </div>
               </div>
@@ -113,8 +113,9 @@
       passWord: '',
       checked: false,
       phone: '',
-      vCode: '',
-      password: ''
+      code: '',
+      password: '',
+      vCode: ''
     },
 
     computed: {
@@ -169,8 +170,22 @@
           this.exeAjaxSelectVcode();
         }
       },
-      onHandleInsertRegister() {
-        this.exeAjaxInsertRegister();
+      onHandleInsertBusiness() {
+        const {phone, code, password, vCode} = this;
+        const regExp = /^1{1}\d{10}$/;
+        if (!phone) {
+          this.showToast('请输入手机号');
+        } else if (!code) {
+          this.showToast('请输入验证码');
+        } else if (!password) {
+          this.showToast('请输入密码');
+        } else if (!regExp.test(phone)) {
+          this.showToast('手机号格式不正确');
+        } else if (code !== vCode) {
+          this.showToast('验证码输入不正确');
+        } else {
+          this.exeAjaxInsertBusiness();
+        }
       },
       exeAjaxSelectLogin() {
         this.showLoading();
@@ -208,9 +223,12 @@
           .then((res) => {
             this.hideLoading();
             res = res || {};
-            const {success} = res.payload;
+            const {success, data} = res.payload;
             if (success) {
+              const {code} = data;
+              this.vCode = code;
             } else {
+              this.showToast('验证码发送失败');
             }
           })
           .catch((err) => {
@@ -219,21 +237,22 @@
             console.log(err);
           });
       },
-      exeAjaxInsertRegister() {
+      exeAjaxInsertBusiness() {
         this.showLoading();
-        const {phone, password, vCode} = this;
+        const {phone, password, code} = this;
         const params = {
           phone,
-          password,
-          vCode
+          code,
+          passWord: password
         };
-        this.ajaxInsertRegister(params)
+        this.ajaxInsertBusiness(params)
           .then((res) => {
             this.hideLoading();
             res = res || {};
-            const {success, data} = res.payload;
+            const {success, message} = res.payload;
             if (success) {
             } else {
+              this.showToast(message);
             }
           })
           .catch((err) => {

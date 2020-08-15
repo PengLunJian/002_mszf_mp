@@ -5,7 +5,7 @@ export const SELECT_LOGIN_STATE = {
   data: null
 };
 
-export const INSERT_REGISTER_STATE = {
+export const INSERT_BUSINESS_STATE = {
   isLoading: true,
   isSuccess: false,
   isFailure: false,

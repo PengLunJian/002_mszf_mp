@@ -19,7 +19,7 @@ const apis = {
     url: '/update/forget',
     params: {
       oldPassword: '',
-      newPassword: '',
+      newPassword: ''
     }
   },
   updatePassword: {
@@ -31,14 +31,6 @@ const apis = {
       type: 0,
       passWord: '',
       userName: ''
-    }
-  },
-  insertRegister: {
-    url: '/insert/register',
-    params: {
-      phone: '',
-      vcode: '',
-      password: ''
     }
   },
   selectVcode: {
@@ -184,6 +176,14 @@ const apis = {
       pageIndex: 1,
       pageSize: 10,
       phone: ''
+    }
+  },
+  insertBusiness: {
+    url: '/business/insert',
+    params: {
+      phone: '',
+      code: '',
+      password: ''
     }
   },
   selectBusiness: {

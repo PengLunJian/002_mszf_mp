@@ -3,7 +3,7 @@ import * as actionTypes from '../actionTypes';
 import * as states from '../states';
 
 const actions = {
-  [actionTypes.INSERT_REGISTER_REQUEST](state) {
+  [actionTypes.INSERT_BUSINESS_REQUEST](state) {
     return {
       ...state,
       isLoading: true,
@@ -11,7 +11,7 @@ const actions = {
       isFailure: false
     };
   },
-  [actionTypes.INSERT_REGISTER_SUCCESS](state, action) {
+  [actionTypes.INSERT_BUSINESS_SUCCESS](state, action) {
     return {
       ...state,
       isLoading: false,
@@ -20,7 +20,7 @@ const actions = {
       data: action.data
     };
   },
-  [actionTypes.INSERT_REGISTER_FAILURE](state) {
+  [actionTypes.INSERT_BUSINESS_FAILURE](state) {
     return {
       ...state,
       isLoading: false,
@@ -30,6 +30,6 @@ const actions = {
   }
 };
 
-const INSERT_REGISTER_REDUCER = handleActions(actions, states.INSERT_REGISTER_STATE);
+const INSERT_BUSINESS_REDUCER = handleActions(actions, states.INSERT_BUSINESS_STATE);
 
-export default INSERT_REGISTER_REDUCER;
+export default INSERT_BUSINESS_REDUCER;

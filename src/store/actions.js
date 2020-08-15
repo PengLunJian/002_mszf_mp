@@ -60,23 +60,23 @@ export const ajaxRequestSelectLogin = createAction(
     });
   });
 
-export const ajaxRequestInsertRegister = createAction(
-  'insertRegister', (params) => {
-    commit(actionTypes.INSERT_REGISTER_REQUEST);
+export const ajaxRequestInsertBusiness = createAction(
+  'insertBusiness', (params) => {
+    commit(actionTypes.INSERT_BUSINESS_REQUEST);
     return new Promise((resolve, reject) => {
-      axios.post(apis.insertRegister, params)
+      axios.post(apis.insertBusiness, params)
         .then((res) => {
           res = res || {};
           const {data, success} = res;
           if (success) {
-            commit(actionTypes.INSERT_REGISTER_SUCCESS, data);
+            commit(actionTypes.INSERT_BUSINESS_SUCCESS, data);
           } else {
-            commit(actionTypes.INSERT_REGISTER_FAILURE);
+            commit(actionTypes.INSERT_BUSINESS_FAILURE);
           }
           resolve(res);
         })
         .catch((err) => {
-          commit(actionTypes.INSERT_REGISTER_FAILURE);
+          commit(actionTypes.INSERT_BUSINESS_FAILURE);
           reject(err);
         });
     });
