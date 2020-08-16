@@ -164,7 +164,6 @@
                 .btn-update {
                   height: unit(100, rpx);
                   line-height: unit(100, rpx);
-                  overflow: hidden;
                   border-radius: @borderRadius10;
                   background: -webkit-linear-gradient(left, @theme1, @theme2);
                   font-size: @fontSize40;

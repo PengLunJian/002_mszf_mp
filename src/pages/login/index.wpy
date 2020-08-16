@@ -63,7 +63,8 @@
                     <label class="form-label iconfont icon-code"></label>
                     <input class="form-input" v-model="code" type="number"
                            placeholder="请输入验证码"/>
-                    <div class="btn btn-send" @tap="onHandleSelectVcode">发送验证码</div>
+                    <div class="btn btn-send" v-if="isSend" @tap="onHandleSelectVcode">发送验证码</div>
+                    <div class="btn btn-send disable" v-if="!isSend">{{time}}秒后重试</div>
                   </div>
                   <div class="form-group">
                     <label class="form-label iconfont icon-lock"></label>
@@ -115,7 +116,10 @@
       phone: '',
       code: '',
       password: '',
-      vCode: ''
+      vCode: '',
+      time: 60,
+      timer: null,
+      isSend: true
     },
 
     computed: {
@@ -159,6 +163,17 @@
           this.exeAjaxSelectLogin();
         }
       },
+      onHandleCountDown() {
+        this.timer = setTimeout(() => {
+          this.time--;
+          if (this.time <= 0) {
+            this.isSend = true;
+            clearInterval(this.timer);
+          } else {
+            this.onHandleCountDown();
+          }
+        }, 1000);
+      },
       onHandleSelectVcode() {
         const {phone} = this;
         const regExp = /^1{1}\d{10}$/;
@@ -167,6 +182,9 @@
         } else if (!regExp.test(phone)) {
           this.showToast('手机号格式不正确');
         } else {
+          this.time = 60;
+          this.isSend = false;
+          this.onHandleCountDown();
           this.exeAjaxSelectVcode();
         }
       },
@@ -409,6 +427,9 @@
                     background: -webkit-linear-gradient(left, @theme1, @theme2);
                     font-size: @fontSize26;
                     color: @white;
+                    &.disable {
+                      background: @disable;
+                    }
                   }
                   &:last-child {
                     margin: 0;
