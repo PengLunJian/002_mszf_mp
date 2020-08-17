@@ -1242,10 +1242,8 @@
                         }
                       }
                     }
-                    .module-footer {}
-                  }
-                  &:first-child {
-                    margin: 0;
+                    .module-footer {
+                    }
                   }
                 }
               }

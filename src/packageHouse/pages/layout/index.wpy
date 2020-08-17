@@ -8,77 +8,73 @@
         <div class="context fade">
           <scroll-view class="scroll-view" scroll-y="{{true}}">
             <div class="scroll-content">
-              <div class="scroll-header"></div>
-              <div class="scroll-body">
-                <div class="module">
-                  <div class="module-content">
-                    <div class="module-body">
-                      <div class="module-base">
-                        <div class="form-row row">
-                          <div class="form-col col-12">
+              <div class="module">
+                <div class="module-content">
+                  <div class="module-body">
+                    <div class="module-base">
+                      <div class="form-row row">
+                        <div class="form-col col-12">
+                          <div class="form-group">
+                            <label class="form-label">状态</label>
+                            <input class="form-input" v-model="state.value"
+                                   disabled="{{true}}" type="text" placeholder="在售"
+                                   @tap="onHandleSelectState"/>
+                            <span class="form-next iconfont icon-next"></span>
+                          </div>
+                        </div>
+                        <div class="form-col col-12">
+                          <div class="form-group">
+                            <label class="form-label">面积</label>
+                            <input class="form-input" v-model="mainArea" type="digit"
+                                   placeholder="m²"
+                                   @input="onHandleCheckEmpty"/>
+                            <span class="form-next iconfont icon-next"></span>
+                          </div>
+                        </div>
+                        <div class="form-col col-12">
+                          <picker mode="multiSelector" @change="onHandleSelectApart"
+                                  value="{{apart.index}}" range="{{apart.items}}">
                             <div class="form-group">
-                              <label class="form-label">状态</label>
-                              <input class="form-input" v-model="state.value"
-                                     disabled="{{true}}" type="text" placeholder="在售"
-                                     @tap="onHandleSelectState"/>
+                              <label class="form-label">户型</label>
+                              <input class="form-input" v-model="apart.value"
+                                     disabled="{{true}}" type="text"
+                                     placeholder="2室1厅1卫"/>
                               <span class="form-next iconfont icon-next"></span>
                             </div>
-                          </div>
-                          <div class="form-col col-12">
-                            <div class="form-group">
-                              <label class="form-label">面积</label>
-                              <input class="form-input" v-model="mainArea" type="digit"
-                                     placeholder="m²"
-                                     @input="onHandleCheckEmpty"/>
-                              <span class="form-next iconfont icon-next"></span>
-                            </div>
-                          </div>
-                          <div class="form-col col-12">
-                            <picker mode="multiSelector" @change="onHandleSelectApart"
-                                    value="{{apart.index}}" range="{{apart.items}}">
-                              <div class="form-group">
-                                <label class="form-label">户型</label>
-                                <input class="form-input" v-model="apart.value"
-                                       disabled="{{true}}" type="text"
-                                       placeholder="2室1厅1卫"/>
-                                <span class="form-next iconfont icon-next"></span>
-                              </div>
-                            </picker>
-                          </div>
+                          </picker>
                         </div>
                       </div>
                     </div>
-                    <div class="module-footer"></div>
                   </div>
-                </div>
-                <div class="module">
-                  <div class="module-content">
-                    <div class="module-header">
-                      <div class="module-title">图片上传</div>
-                    </div>
-                    <div class="module-body">
-                      <div class="module-images">
-                        <div class="module-row row">
-                          <div class="module-col col-4" v-for="(item,index) in urls" :key="index">
-                            <div class="module-item" @tap="onHandleShowImage(index)">
-                              <div class="btn-delete iconfont icon-delete"
-                                   @tap.stop="onHandleDeleteImage(index)"></div>
-                              <lazy-image src="{{fileUrl+item}}" mode="aspectFill"/>
-                            </div>
-                          </div>
-                          <div class="module-col col-4">
-                            <div class="module-btn btn btn-image" @tap="onHandleShowUpload">
-                              <div class="module-icon iconfont icon-insert"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="module-footer"></div>
-                  </div>
+                  <div class="module-footer"></div>
                 </div>
               </div>
-              <div class="scroll-footer"></div>
+              <div class="module">
+                <div class="module-content">
+                  <div class="module-header">
+                    <div class="module-title">图片上传</div>
+                  </div>
+                  <div class="module-body">
+                    <div class="module-images">
+                      <div class="module-row row">
+                        <div class="module-col col-4" v-for="(item,index) in urls" :key="index">
+                          <div class="module-item" @tap="onHandleShowImage(index)">
+                            <div class="btn-delete iconfont icon-delete"
+                                 @tap.stop="onHandleDeleteImage(index)"></div>
+                            <lazy-image src="{{fileUrl+item}}" mode="aspectFill"/>
+                          </div>
+                        </div>
+                        <div class="module-col col-4">
+                          <div class="module-btn btn btn-image" @tap="onHandleShowUpload">
+                            <div class="module-icon iconfont icon-insert"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="module-footer"></div>
+                </div>
+              </div>
             </div>
           </scroll-view>
         </div>
@@ -274,109 +270,100 @@
             height: 100%;
             .scroll-content {
               padding: unit(20, rpx) 0;
-              .scroll-header {
-              }
-              .scroll-body {
-                .module {
-                  .module-content {
-                    .module-header {
-                      padding: unit(30, rpx) unit(30, rpx) 0;
-                      .module-title {
-                        height: unit(32, rpx);
-                        line-height: unit(32, rpx);
-                        padding-left: unit(20, rpx);
-                        border-left: 4px solid @theme2;
-                        font-size: @fontSize32;
-                        letter-spacing: 0.5px;
-                        font-weight: bold;
-                        color: @fontColor1;
-                      }
-                    }
-                    .module-body {
-                      .module-base {
-                        padding-left: unit(30, rpx);
-                        .form-row {
-                          .form-col {
-                            padding-right: unit(20, rpx);
-                            border-bottom: 0.5px solid @borderColor1;
-                            .form-group {
-                              display: flex;
-                              font-size: @fontSize32;
-                              color: @fontColor1;
-                              .form-label {
-                                width: 25%;
-                                height: @height;
-                                display: inline-block;
-                                vertical-align: middle;
-                                line-height: @height;
-                              }
-                              .form-input {
-                                width: 75%;
-                                height: @height;
-                                display: inline-block;
-                                vertical-align: middle;
-                                text-align: right;
-                              }
-                              .form-next {
-                                display: inline-block;
-                                vertical-align: middle;
-                                padding-left: unit(10, rpx);
-                                line-height: @height;
-                                color: @iconNext;
-                              }
-                            }
-                            &:last-child {
-                              border: none;
-                            }
-                          }
-                        }
-                      }
-                      .module-images {
-                        .module-row {
-                          padding: unit(15, rpx);
-                          .module-col {
-                            padding: unit(15, rpx);
-                            .module-item {
-                              width: 100%;
-                              position: relative;
-                              height: unit(200, rpx);
-                              .btn-delete {
-                                position: absolute;
-                                top: 0;
-                                right: 0;
-                                z-index: 10;
-                                width: unit(50, rpx);
-                                height: unit(50, rpx);
-                                line-height: unit(50, rpx);
-                                background-color: rgba(0, 0, 0, .6);
-                                font-size: @fontSize36;
-                                text-align: center;
-                                color: @btnDelete;
-                              }
-                            }
-                            .module-btn {
-                              height: unit(200, rpx);
-                              line-height: unit(200, rpx);
-                              background-color: #F0F0F0;
-                              text-align: center;
-                              .module-icon {
-                                font-size: @fontSize50;
-                                color: @fontColor5;
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                    .module-footer {
+              .module {
+                .module-content {
+                  .module-header {
+                    padding: unit(30, rpx) unit(30, rpx) 0;
+                    .module-title {
+                      height: unit(32, rpx);
+                      line-height: unit(32, rpx);
+                      padding-left: unit(20, rpx);
+                      border-left: 4px solid @theme2;
+                      font-size: @fontSize32;
+                      letter-spacing: 0.5px;
+                      font-weight: bold;
+                      color: @fontColor1;
                     }
                   }
-                  &:first-child {
-                    margin: 0;
+                  .module-body {
+                    .module-base {
+                      padding-left: unit(30, rpx);
+                      .form-row {
+                        .form-col {
+                          padding-right: unit(20, rpx);
+                          border-bottom: 0.5px solid @borderColor1;
+                          .form-group {
+                            display: flex;
+                            font-size: @fontSize32;
+                            color: @fontColor1;
+                            .form-label {
+                              width: 25%;
+                              height: @height;
+                              display: inline-block;
+                              vertical-align: middle;
+                              line-height: @height;
+                            }
+                            .form-input {
+                              width: 75%;
+                              height: @height;
+                              display: inline-block;
+                              vertical-align: middle;
+                              text-align: right;
+                            }
+                            .form-next {
+                              display: inline-block;
+                              vertical-align: middle;
+                              padding-left: unit(10, rpx);
+                              line-height: @height;
+                              color: @iconNext;
+                            }
+                          }
+                          &:last-child {
+                            border: none;
+                          }
+                        }
+                      }
+                    }
+                    .module-images {
+                      .module-row {
+                        padding: unit(15, rpx);
+                        .module-col {
+                          padding: unit(15, rpx);
+                          .module-item {
+                            width: 100%;
+                            position: relative;
+                            height: unit(200, rpx);
+                            .btn-delete {
+                              position: absolute;
+                              top: 0;
+                              right: 0;
+                              z-index: 10;
+                              width: unit(50, rpx);
+                              height: unit(50, rpx);
+                              line-height: unit(50, rpx);
+                              background-color: rgba(0, 0, 0, .6);
+                              font-size: @fontSize36;
+                              text-align: center;
+                              color: @btnDelete;
+                            }
+                          }
+                          .module-btn {
+                            height: unit(200, rpx);
+                            line-height: unit(200, rpx);
+                            background-color: #F0F0F0;
+                            text-align: center;
+                            .module-icon {
+                              font-size: @fontSize50;
+                              color: @fontColor5;
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                  .module-footer {
                   }
                 }
-              }
-              .scroll-footer {
               }
             }
           }

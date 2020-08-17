@@ -8,20 +8,36 @@
         <div class="context fade">
           <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
             <div class="scroll-content">
-              <div class="form-group">
-                <input class="form-input" v-model="oldPassword" type="password"
-                       placeholder="请输入原密码"/>
-              </div>
-              <div class="form-group">
-                <input class="form-input" v-model="newPassword" type="password"
-                       placeholder="请输入新密码"/>
-              </div>
-              <div class="form-group">
-                <input class="form-input" v-model="againPassword" type="password"
-                       placeholder="请确认新密码"/>
-              </div>
-              <div class="form-group">
-                <div class="btn btn-update" @tap="onHandleUpdatePassword">保存</div>
+              <div class="module">
+                <div class="module-content">
+                  <div class="module-header"></div>
+                  <div class="module-body">
+                    <div class="module-row row">
+                      <div class="module-col col-12">
+                        <label class="form-label">原密码</label>
+                        <input class="form-input" v-model="oldPassword" type="password"
+                               placeholder="请输入原密码"/>
+                      </div>
+                    </div>
+                    <div class="module-row row">
+                      <div class="module-col col-12">
+                        <label class="form-label">新密码</label>
+                        <input class="form-input" v-model="newPassword" type="password"
+                               placeholder="请输入新密码"/>
+                      </div>
+                    </div>
+                    <div class="module-row row">
+                      <div class="module-col col-12">
+                        <label class="form-label">确认新密码</label>
+                        <input class="form-input" v-model="againPassword" type="password"
+                               placeholder="请确认新密码"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="module-footer">
+                    <div class="btn btn-update" @tap="onHandleUpdatePassword">保存</div>
+                  </div>
+                </div>
               </div>
             </div>
           </scroll-view>
@@ -152,27 +168,42 @@
           .scroll-view {
             height: 100%;
             .scroll-content {
-              padding-top: unit(20, rpx);
-              .form-group {
-                margin-bottom: unit(20, rpx);
-                font-size: @fontSize32;
-                .form-input {
-                  height: @height;
-                  padding: 0 unit(30, rpx);
-                  background-color: @white;
-                }
-                .btn-update {
-                  height: unit(100, rpx);
-                  line-height: unit(100, rpx);
-                  border-radius: @borderRadius10;
-                  background: -webkit-linear-gradient(left, @theme1, @theme2);
-                  font-size: @fontSize40;
-                  letter-spacing: 2px;
-                  text-align: center;
-                  color: @white;
-                }
-                &:last-child {
-                  padding: unit(30, rpx);
+              .module {
+                background-color: @transparent;
+                .module-content {
+                  .module-header {
+                  }
+                  .module-body {
+                    .module-row {
+                      .form-label {
+                        display: block;
+                        height: unit(70, rpx);
+                        line-height: unit(70, rpx);
+                        padding: 0 unit(30, rpx);
+                        font-size: @fontSize28;
+                        font-weight: bold;
+                      }
+                      .form-input {
+                        height: @height;
+                        padding: 0 unit(30, rpx);
+                        background-color: @white;
+                        font-size: @fontSize32;
+                      }
+                    }
+                  }
+                  .module-footer {
+                    padding: unit(30, rpx);
+                    .btn-update {
+                      height: @height;
+                      line-height: @height;
+                      border-radius: @borderRadius15;
+                      background: -webkit-linear-gradient(left, @theme1, @theme2);
+                      font-size: @fontSize36;
+                      letter-spacing: 2px;
+                      text-align: center;
+                      color: @white;
+                    }
+                  }
                 }
               }
             }

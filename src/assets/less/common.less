@@ -77,9 +77,10 @@ image {
 }
 
 page {
-  font-size: unit(26, rpx);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: @bgColor;
+  font-size: @fontSize26;
+  color: @fontColor1;
 }
 
 button {
@@ -98,8 +99,11 @@ button {
 
 .module {
   position: relative;
-  margin-top: unit(20, rpx);
+  margin-bottom: unit(20, rpx);
   background-color: @white;
+  &:last-child {
+    margin: 0;
+  }
 }
 
 .btn {

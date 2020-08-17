@@ -2,44 +2,60 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="忘记密码"/>
+        <top-bar title="密码重置"/>
       </div>
       <div class="body">
         <div class="context fade">
-          <div class="module">
-            <div class="module-content">
-              <div class="module-header">
-              </div>
-              <div class="module-body">
-                <div class="module-row row">
-                  <div class="module-col col-8">
-                    <input class="form-input" v-model="phone" type="number"
-                           placeholder="请输入手机号"/>
+          <scroll-view class="scroll-view" scroll-y="{{isScroll}}">
+            <div class="scroll-content">
+              <div class="module">
+                <div class="module-content">
+                  <div class="module-header">
                   </div>
-                  <div class="module-col col-4">
-                    <div class="btn-send" @tap="onHandleSendCode">
-                      <div class="btn-text">发送验证码</div>
+                  <div class="module-body">
+                    <div class="module-row row">
+                      <div class="module-col col-12">
+                        <label class="form-label">手机号</label>
+                      </div>
+                      <div class="module-col col-8">
+                        <input class="form-input" v-model="phone" type="number"
+                               placeholder="请输入手机号"/>
+                      </div>
+                      <div class="module-col col-4">
+                        <div class="btn-send" v-if="!isSend" @tap="onHandleSelectVcode">
+                          <div class="btn-text">获取验证码</div>
+                        </div>
+                        <div class="btn-send disable" v-if="isSend">
+                          <div class="btn-text">{{time}}秒后重试</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="module-row row">
+                      <div class="module-col col-12">
+                        <label class="form-label">验证码</label>
+                      </div>
+                      <div class="module-col col-12">
+                        <input class="form-input" v-model="code" type="number"
+                               placeholder="请输入验证码"/>
+                      </div>
+                    </div>
+                    <div class="module-row row">
+                      <div class="module-col col-12">
+                        <label class="form-label">新密码</label>
+                      </div>
+                      <div class="module-col col-12">
+                        <input class="form-input" v-model="password" type="password"
+                               placeholder="请输入新密码"/>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="module-row row">
-                  <div class="module-col col-12">
-                    <input class="form-input" v-model="code" type="number"
-                           placeholder="请输入验证码"/>
+                  <div class="module-footer">
+                    <div class="btn btn-confirm" @tap="onHandleConfirm">确定</div>
                   </div>
                 </div>
-                <div class="module-row row">
-                  <div class="module-col col-12">
-                    <input class="form-input" v-model="password" type="password"
-                           placeholder="请输入新密码"/>
-                  </div>
-                </div>
-              </div>
-              <div class="module-footer">
-                <div class="btn btn-confirm" @tap="onHandleConfirm">确定</div>
               </div>
             </div>
-          </div>
+          </scroll-view>
         </div>
       </div>
       <div class="footer"></div>
@@ -63,9 +79,14 @@
     mixins: [Toast, Route, Loading],
 
     data: {
-      phone: '',
       code: '',
-      password: ''
+      vCode: '',
+      phone: '',
+      password: '',
+      time: 60,
+      timer: null,
+      isSend: false,
+      isScroll: true
     },
 
     computed: {
@@ -76,19 +97,49 @@
       ...mapActions(controller.ACTIONS),
       onHandleCheckEmpty() {
         let result = false;
-        const {phone, cdoe, password} = this;
+        const {phone, code, password, vCode} = this;
+        const regExp = /^1{1}\d{10}$/;
         if (!phone) {
           this.showToast('请输入手机号');
-        } else if (!cdoe) {
+        } else if (!code) {
           this.showToast('请输入验证码');
         } else if (!password) {
-          this.showToast('请输入新密码');
+          this.showToast('请输入密码');
+        } else if (!regExp.test(phone)) {
+          this.showToast('手机格式输入不正确');
+        } else if (code !== vCode) {
+          this.showToast('验证码输入不正确');
+        } else if (password.length < 6) {
+          this.showToast('密码长度不能小于6位');
         } else {
           result = true;
         }
         return result;
       },
-      onHandleSendCode() {
+      onHandleCountDown() {
+        this.timer = setTimeout(() => {
+          this.time--;
+          if (this.time <= 0) {
+            this.isSend = false;
+            clearInterval(this.timer);
+          } else {
+            this.onHandleCountDown();
+          }
+        }, 1000);
+      },
+      onHandleSelectVcode() {
+        const {phone} = this;
+        const regExp = /^1{1}\d{10}$/;
+        if (!phone) {
+          this.showToast('请输入手机号');
+        } else if (!regExp.test(phone)) {
+          this.showToast('手机格式输入不正确');
+        } else {
+          this.time = 60;
+          this.isSend = true;
+          this.onHandleCountDown();
+          this.exeAjaxSelectVcode();
+        }
       },
       onHandleConfirm() {
         if (this.onHandleCheckEmpty()) {
@@ -105,6 +156,30 @@
             const {success, data} = res.payload;
             if (success) {
             } else {
+            }
+          })
+          .catch((err) => {
+            this.hideLoading();
+            this.showToast('服务器连接失败');
+            console.log(err);
+          });
+      },
+      exeAjaxSelectVcode() {
+        this.showLoading();
+        const {phone} = this;
+        const params = {
+          phone
+        };
+        this.ajaxSelectVcode(params)
+          .then((res) => {
+            this.hideLoading();
+            res = res || {};
+            const {success, data} = res.payload;
+            if (success) {
+              const {code} = data;
+              this.vCode = code;
+            } else {
+              this.showToast('验证码发送失败');
             }
           })
           .catch((err) => {
@@ -147,51 +222,64 @@
         .context {
           height: 100%;
           padding-top: 65px;
-          .module {
-            background-color: @transparent;
-            .module-content {
-              .module-header {
-              }
-              .module-body {
-                background-color: @white;
-                .module-row {
-                  border-bottom: 0.5px solid @borderColor2;
-                  .module-col {
-                    font-size: @fontSize32;
-                    .form-input {
-                      height: @height;
-                      padding: 0 unit(30, rpx);
-                    }
-                    .btn-send {
-                      height: @height;
-                      line-height: @height;
-                      text-align: center;
-                      .btn-text {
-                        width: 100%;
-                        height: unit(50, rpx);
-                        display: inline-block;
-                        vertical-align: middle;
-                        line-height: unit(50, rpx);
-                        border-left: 0.5px solid @borderColor2;
+          .scroll-view {
+            height: 100%;
+            .scroll-content {
+              .module {
+                background-color: @transparent;
+                .module-content {
+                  .module-header {
+                  }
+                  .module-body {
+                    .module-row {
+                      background-color: @white;
+                      .module-col {
+                        font-size: @fontSize32;
+                        .form-label {
+                          display: block;
+                          height: unit(70, rpx);
+                          line-height: unit(70, rpx);
+                          background-color: @bgColor;
+                          padding: 0 unit(30, rpx);
+                          font-size: @fontSize28;
+                          font-weight: bold;
+                        }
+                        .form-input {
+                          height: @height;
+                          padding: 0 unit(30, rpx);
+                        }
+                        .btn-send {
+                          height: @height;
+                          line-height: @height;
+                          text-align: center;
+                          .btn-text {
+                            width: 100%;
+                            height: unit(50, rpx);
+                            display: inline-block;
+                            vertical-align: middle;
+                            line-height: unit(50, rpx);
+                            border-left: 0.5px solid @borderColor2;
+                          }
+                          &.disable {
+                            color: @fontColor3;
+                          }
+                        }
                       }
                     }
                   }
-                  &:first-child {
-                    border-top: 0.5px solid @borderColor2;
+                  .module-footer {
+                    padding: unit(30, rpx);
+                    .btn-confirm {
+                      height: @height;
+                      line-height: @height;
+                      border-radius: @borderRadius15;
+                      background: -webkit-linear-gradient(left, @theme1, @theme2);
+                      font-size: @fontSize36;
+                      letter-spacing: 2px;
+                      text-align: center;
+                      color: @white;
+                    }
                   }
-                }
-              }
-              .module-footer {
-                padding: unit(30, rpx);
-                .btn-confirm {
-                  height: @height;
-                  line-height: @height;
-                  border-radius: @borderRadius15;
-                  background: -webkit-linear-gradient(left, @theme1, @theme2);
-                  font-size: @fontSize36;
-                  letter-spacing: 2px;
-                  text-align: center;
-                  color: @white;
                 }
               }
             }
