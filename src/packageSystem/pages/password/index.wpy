@@ -218,7 +218,6 @@
 
 <config>
   {
-  disableScroll:true,
   navigationStyle:'custom',
   usingComponents: {
   'modal': '../../../components/modal/modal',
