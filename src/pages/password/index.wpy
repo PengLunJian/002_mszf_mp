@@ -143,19 +143,24 @@
       },
       onHandleConfirm() {
         if (this.onHandleCheckEmpty()) {
-          this.exeAjaxUpdateForget();
+          this.exeAjaxUpdatePassword();
         }
       },
-      exeAjaxUpdateForget() {
+      exeAjaxUpdatePassword() {
         this.showLoading();
         const params = this.getParams();
-        this.ajaxUpdateForget(params)
+        this.ajaxUpdatePassword(params)
           .then((res) => {
             this.hideLoading();
             res = res || {};
-            const {success, data} = res.payload;
+            const {success} = res.payload;
             if (success) {
+              this.showToast('修改成功，请重新登录');
+              setTimeout(() => {
+                this.navigateBack(1);
+              }, 1000);
             } else {
+              this.showToast('修改失败，请重试');
             }
           })
           .catch((err) => {

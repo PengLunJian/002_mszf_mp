@@ -104,28 +104,6 @@ export const ajaxRequestSelectVcode = createAction(
     });
   });
 
-export const ajaxRequestUpdateForget = createAction(
-  'updateForget', (params) => {
-    commit(actionTypes.UPDATE_FORGET_REQUEST);
-    return new Promise((resolve, reject) => {
-      axios.post(apis.updateForget, params)
-        .then((res) => {
-          res = res || {};
-          const {data, success} = res;
-          if (success) {
-            commit(actionTypes.UPDATE_FORGET_SUCCESS, data);
-          } else {
-            commit(actionTypes.UPDATE_FORGET_FAILURE);
-          }
-          resolve(res);
-        })
-        .catch((err) => {
-          commit(actionTypes.UPDATE_FORGET_FAILURE);
-          reject(err);
-        });
-    });
-  });
-
 const ajaxRequestCount = (params) => {
   return axios.post(apis.selectCount, params)
     .then((res) => {

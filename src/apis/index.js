@@ -15,22 +15,12 @@ const apis = {
       passWord: ''
     }
   },
-  updateForget: {
-    url: '/update/forget',
-    params: {
-      oldPassword: '',
-      newPassword: ''
-    }
-  },
   updatePassword: {
     url: '/account/update',
     params: {
-      agentId: 0,
-      busId: 0,
-      id: 0,
-      type: 0,
-      passWord: '',
-      userName: ''
+      code: '',
+      password: '',
+      phone: ''
     }
   },
   selectVcode: {

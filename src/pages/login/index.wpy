@@ -156,7 +156,7 @@
         this.tab.activeIndex = index;
       },
       onHandleRoutePassword() {
-        this.navigateTo($routes.FORGET.path);
+        this.navigateTo($routes.PASSWORD.path);
       },
       onHandleSelectLogin() {
         if (this.onHandleCheckEmpty()) {

@@ -11,7 +11,6 @@ import DELETE_AGENT_REDUCER from './deleteAgent';
 import UPDATE_AGENT_REDUCER from './updateAgent';
 import SELECT_AGENT_REDUCER from './selectAgent';
 import SELECT_COUNT_REDUCER from './selectCount';
-import UPDATE_FORGET_REDUCER from './updateForget';
 import SELECT_LAYOUT_REDUCER from './selectLayout';
 import SELECT_BROWSE_REDUCER from './selectBrowse';
 import SELECT_FOLLOW_REDUCER from './selectFollow';
@@ -38,7 +37,6 @@ export default combineReducers({
   SELECT_BROWSE_REDUCER,
   SELECT_FOLLOW_REDUCER,
   SELECT_LAYOUT_REDUCER,
-  UPDATE_FORGET_REDUCER,
   INSERT_BUSINESS_REDUCER,
   UPDATE_BUSINESS_REDUCER,
   SELECT_BUSINESS_REDUCER,

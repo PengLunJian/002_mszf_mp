@@ -118,17 +118,12 @@ export const SYSTEM = {
   path: '/packageSystem/pages/setting/index'
 };
 
-export const PASSWORD = {
-  name: '密码重置',
-  path: '/packageSystem/pages/password/index'
-};
-
 export const ABOUT = {
   name: '关于我们',
   path: '/packageSystem/pages/about/index'
 };
 
-export const FORGET = {
-  name: '忘记密码',
-  path: '/pages/forget/index'
+export const PASSWORD = {
+  name: '密码重置',
+  path: '/pages/password/index'
 };
