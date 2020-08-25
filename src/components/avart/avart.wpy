@@ -3,16 +3,20 @@
     <div class="module-content">
       <div class="module-body">
         <div class="module-row row">
-          <div class="module-col col-3">
-            <div class="item-img">
-              <lazy-image src="{{url}}"/>
+          <div class="module-col col-2">
+            <div class="module-img">
+              <lazy-image src="{{url}}" mode="aspectFit"/>
             </div>
           </div>
-          <div class="module-col col-9">
-            <div class="item-info">
-              <div class="item-name">{{isData.userName}}</div>
-              <div class="item-split"></div>
-              <div class="item-type">{{isData.type===1?'管理员':'经纪人'}}</div>
+          <div class="module-col col-7">
+            <div class="module-info">
+              <div class="module-name">联邦房产</div>
+              <div class="module-user">{{isData.userName}}</div>
+            </div>
+          </div>
+          <div class="module-col col-3">
+            <div class="module-btn">
+              <div class="btn btn-payment">充值缴费</div>
             </div>
           </div>
         </div>
@@ -56,9 +60,7 @@
       .module-row {
         padding: unit(50, rpx) unit(60, rpx);
         .module-col {
-          width: auto;
-          display: flex;
-          .item-img {
+          .module-img {
             width: @height;
             height: @height;
             overflow: hidden;
@@ -67,27 +69,34 @@
             background-color: @white;
             border: 2px solid @white;
           }
-          .item-info {
-            display: flex;
-            padding-left: unit(30, rpx);
-            line-height: @height;
-            font-weight: bold;
-
+          .module-info {
+            padding: 0 unit(30, rpx);
             color: @white;
-            .item-name {
-              font-size: @fontSize40;
+            .module-name {
+              height: unit(50, rpx);
+              line-height: unit(50, rpx);
+              font-size: @fontSize36;
+              font-weight: bold;
             }
-            .item-split {
-              padding: unit(32, rpx) unit(20, rpx);
-              &:after {
-                content: '';
-                height: 100%;
-                display: block;
-                border-left: 2px solid @white;
-              }
+            .module-user {
+              height: unit(50, rpx);
+              line-height: unit(50, rpx);
+              font-size: @fontSize32;
             }
-            .item-type {
-              font-size: @fontSize34;
+          }
+          .module-btn {
+            line-height: unit(100, rpx);
+            font-size: 0;
+            .btn-payment {
+              display: inline-block;
+              vertical-align: middle;
+              height: unit(60, rpx);
+              line-height: unit(60, rpx);
+              padding: 0 unit(30, rpx);
+              border-radius: unit(60, rpx);
+              background-color: @white;
+              font-size: @fontSize24;
+              color: @theme2;
             }
           }
         }

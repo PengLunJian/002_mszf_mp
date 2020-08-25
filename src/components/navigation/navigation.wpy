@@ -54,9 +54,9 @@
             line-height: unit(80, rpx);
             margin: 0 auto unit(20, rpx);
             border-radius: @borderRadius100;
-            background: -webkit-linear-gradient(left, @theme1, @theme2);
+            background-color: rgba(255, 153, 0, .15);
             font-size: @fontSize40;
-            color: @white;
+            color: @theme2;
           }
           .module-text {
             height: unit(40, rpx);
