@@ -70,18 +70,19 @@
             border: 2px solid @white;
           }
           .module-info {
-            padding: 0 unit(30, rpx);
+            padding: unit(5, rpx) unit(30, rpx);
             color: @white;
             .module-name {
               height: unit(50, rpx);
               line-height: unit(50, rpx);
               font-size: @fontSize36;
+              letter-spacing: 1px;
               font-weight: bold;
             }
             .module-user {
-              height: unit(50, rpx);
-              line-height: unit(50, rpx);
-              font-size: @fontSize32;
+              height: unit(40, rpx);
+              line-height: unit(40, rpx);
+              font-size: @fontSize28;
             }
           }
           .module-btn {
