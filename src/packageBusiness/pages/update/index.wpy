@@ -2,7 +2,7 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <top-bar title="商户管理"/>
+        <top-bar title="修改信息"/>
       </div>
       <div class="body">
         <div class="context fade">
@@ -10,24 +10,75 @@
             <div class="scroll-content">
               <div class="module">
                 <div class="module-content">
+                  <div class="module-header"></div>
                   <div class="module-body">
-                    <div class="module-context">
-                      <div class="module-items">
-                        <div class="module-item btn" v-for="(item,index) in items" @tap="onHandleRoute(item)"
-                             :key="index">
-                          <div class="module-row row">
-                            <div class="module-col col-5">
-                              <span class="item-name">{{item.name}}</span>
-                            </div>
-                            <div class="module-col col-7">
-                              <span class="item-next iconfont icon-next"></span>
-                            </div>
-                          </div>
+                    <div class="module-row row">
+                      <div class="module-col col-12">
+                        <label class="form-label">店铺名称</label>
+                      </div>
+                      <div class="module-col col-12">
+                        <input class="form-input" v-model="busName" type="text"
+                               placeholder="请输入店铺名称"
+                               @input="onHandleCheckEmpty"/>
+                      </div>
+                    </div>
+                    <div class="module-row row">
+                      <div class="module-col col-12">
+                        <label class="form-label">店主姓名</label>
+                      </div>
+                      <div class="module-col col-12">
+                        <input class="form-input" v-model="name" type="text"
+                               placeholder="请输入店主姓名"
+                               @input="onHandleCheckEmpty"/>
+                      </div>
+                    </div>
+                    <div class="module-row row">
+                      <div class="module-col col-12">
+                        <label class="form-label">联系电话</label>
+                      </div>
+                      <div class="module-col col-12">
+                        <input class="form-input" v-model="phone" type="number"
+                               placeholder="请输入联系电话"
+                               @input="onHandleCheckEmpty"/>
+                      </div>
+                    </div>
+                    <div class="module-row row">
+                      <div class="module-col col-12">
+                        <label class="form-label">店铺地址</label>
+                      </div>
+                      <div class="module-col col-12">
+                        <div class="form-picker">
+                          <picker mode="region" @change="onHandleChangeAddress" value="{{address.items}}">
+                            <input class="form-input" v-model="address.value" disabled="{{true}}" type="text"
+                                   placeholder="请选择店铺地址"/>
+                          </picker>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="module-row row">
+                      <div class="module-col col-12">
+                        <label class="form-label">详细地址</label>
+                      </div>
+                      <div class="module-col col-12">
+                        <input class="form-input" v-model="detailAddress"
+                               placeholder="请输入详细地址"
+                               @input="onHandleCheckEmpty"/>
+                      </div>
+                    </div>
+                    <div class="module-row row">
+                      <div class="module-col col-12">
+                        <label class="form-label">营业执照</label>
+                      </div>
+                      <div class="module-col col-12">
+                        <div class="module-btn btn btn-upload">
+                          <div class="module-icon iconfont icon-insert"></div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="module-footer"></div>
+                  <div class="module-footer">
+                    <div class="btn btn-confirm" @tap="onHandleConfirm">确认</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -53,24 +104,39 @@
     mixins: [Toast, Route, Storage],
 
     data: {
-      items: [
-        {
-          name: '店铺信息',
-          path: $routes.BUSINESS.SELECT.path
-        },
-        {
-          name: '置业顾问',
-          path: $routes.AGENT.SELECT.path
-        }
-      ]
+      isScroll: true,
+      busName: '',
+      name: '',
+      phone: '',
+      address: {
+        value: '',
+        items: ['安徽省', '宣城市', '广德县']
+      },
+      detailAddress: '',
+      url: ''
     },
 
     computed: {},
 
     methods: {
-      onHandleRoute(item) {
-        const {path} = item;
-        this.navigateTo(path);
+      onHandleCheckEmpty() {
+        let isEmpty = (
+          this.busName &&
+          this.name &&
+          this.phone &&
+          this.address.value &&
+          this.detailAddress &&
+          this.url
+        );
+        return isEmpty;
+      },
+      onHandleChangeAddress(e) {
+        const items = e.$wx.detail.value;
+        this.address.items = items;
+        this.address.value = items.join('、');
+        this.onHandleCheckEmpty();
+      },
+      onHandleConfirm() {
       }
     },
 
@@ -82,8 +148,6 @@
 <style scoped lang="less">
   @import "../../../assets/less/@media";
   @import "../../../assets/less/variable";
-
-  @height: unit(100, rpx);
 
   .container {
     min-height: 100vh;
@@ -103,72 +167,59 @@
               .module {
                 .module-content {
                   .module-header {
-                    padding: unit(30, rpx) unit(30, rpx) 0;
-                    .module-title {
-                      height: unit(32, rpx);
-                      line-height: unit(32, rpx);
-                      padding-left: unit(20, rpx);
-                      border-left: 4px solid @theme2;
-                      font-size: @fontSize32;
-                      letter-spacing: 0.5px;
-                      font-weight: bold;
-                      color: @fontColor1;
-                    }
                   }
                   .module-body {
-                    .module-context {
-                      .module-items {
-                        .module-item {
-                          line-height: unit(110, rpx);
-                          padding-left: unit(30, rpx);
-                          .module-row {
-                            padding-right: unit(30, rpx);
-                            border-bottom: 0.5px solid @borderColor1;
-                            .module-col {
-                              .item-name {
-                                width: 100%;
-                                font-size: @fontSize32;
-                                &.stage {
-                                  &:after {
-                                    content: '';
-                                    display: inline-block;
-                                    width: unit(16, rpx);
-                                    height: unit(16, rpx);
-                                    margin-left: unit(30, rpx);
-                                    background-color: @btnStage;
-                                    border-radius: @borderRadius100;
-                                  }
-                                }
-                              }
-                              .item-text {
-                                padding-right: unit(30, rpx);
-                                font-size: @fontSize32;
-                                color: @fontColor3;
-                              }
-                              .item-next {
-                                color: @iconNext;
-                              }
-                              &.col-7 {
-                                text-align: right;
-                              }
-                            }
+                    .module-row {
+                      .module-col {
+                        .form-label {
+                          display: block;
+                          height: unit(70, rpx);
+                          line-height: unit(70, rpx);
+                          padding: 0 unit(30, rpx);
+                          background-color: @bgColor;
+                          font-size: @fontSize28;
+                          font-weight: bold;
+                        }
+                        .form-input {
+                          height: unit(110, rpx);
+                          padding: 0 unit(30, rpx);
+                          background-color: @white;
+                          font-size: @fontSize32;
+                        }
+                        .module-btn {
+                          width: unit(200, rpx);
+                          height: unit(200, rpx);
+                          line-height: unit(200, rpx);
+                          background-color: @bgColor;
+                          text-align: center;
+                          .module-icon {
+                            font-size: @fontSize50;
+                            color: @fontColor1;
                           }
-                          &.exit {
-                            padding: 0;
-                            font-size: @fontSize32;
-                            text-align: center;
-                          }
+                        }
+                      }
+                      &:last-child {
+                        .module-col {
                           &:last-child {
-                            .module-row {
-                              border: none;
-                            }
+                            padding: unit(30, rpx);
                           }
                         }
                       }
                     }
                   }
                   .module-footer {
-
+                    padding: unit(30, rpx);
+                    background-color: @bgColor;
+                    .btn-confirm {
+                      height: unit(100, rpx);
+                      line-height: unit(100, rpx);
+                      border-radius: @borderRadius10;
+                      background: -webkit-linear-gradient(left, @theme1, @theme2);
+                      font-size: @fontSize32;
+                      letter-spacing: 1px;
+                      text-align: center;
+                      color: @white;
+                    }
                   }
                 }
               }

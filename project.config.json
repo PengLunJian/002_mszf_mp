@@ -169,6 +169,12 @@
 					"pathName": "packageSystem/pages/help/index",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "packageBusiness/pages/update/index",
+					"pathName": "packageBusiness/pages/update/index",
+					"scene": null
 				}
 			]
 		}

@@ -1116,7 +1116,6 @@
         background-color: @white;
         box-shadow: 0 0 15px @boxShadow05;
         .btn-insert {
-          overflow: hidden;
           height: unit(100, rpx);
           line-height: unit(100, rpx);
           border-radius: @borderRadius10;
