@@ -11,7 +11,7 @@
           <div class="module-col col-7">
             <div class="module-info">
               <div class="module-name">联邦房产</div>
-              <div class="module-user">{{isData.userName}}</div>
+              <div class="module-user">{{isData.userName||'暂无数据'}}</div>
             </div>
           </div>
           <div class="module-col col-3">
