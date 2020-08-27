@@ -388,7 +388,7 @@ export const ajaxRequestSelectBusiness = createAction(
   });
 
 export const ajaxRequestUpdateBusiness = createAction(
-  'selectBusiness', (params) => {
+  'updateBusiness', (params) => {
     commit(actionTypes.UPDATE_BUSINESS_REQUEST);
     return new Promise((resolve, reject) => {
       axios.post(apis.updateBusiness, params)
