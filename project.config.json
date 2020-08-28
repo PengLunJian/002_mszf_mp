@@ -171,9 +171,10 @@
 					"scene": null
 				},
 				{
-					"id": -1,
-					"name": "packageBusiness/pages/update/index",
-					"pathName": "packageBusiness/pages/update/index",
+					"id": 16,
+					"name": "packageBusiness/pages/select/index",
+					"pathName": "packageBusiness/pages/select/index",
+					"query": "",
 					"scene": null
 				}
 			]
