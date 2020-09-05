@@ -131,10 +131,30 @@
       },
       onHandleConfirm() {
         if (this.onHandleCheckEmpty()) {
-
+          this.exeAjaxUpdateBusiness();
         }
       },
       exeAjaxUpdateBusiness() {
+        this.showLoading();
+        const params = this.getParams();
+        this.ajaxUpdateBusiness(params)
+          .then((res) => {
+            res = res || {};
+            const {success} = res;
+            if (success) {
+              this.showToast('修改成功');
+              setTimeout(() => {
+                this.navigateBack(1);
+              }, 1000);
+            } else {
+              this.showToast('修改失败，请重试');
+            }
+            this.hideLoading();
+          })
+          .catch((err) => {
+            this.hideLoading();
+            console.log(err);
+          });
       },
       getParams() {
         const {busName, name, phone, address, detailAddress} = this;
@@ -144,7 +164,7 @@
           phone,
           address: address.value,
           detailAddress
-        }
+        };
         return params;
       }
     },

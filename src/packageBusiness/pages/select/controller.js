@@ -11,6 +11,5 @@ export const STATES = {
 
 export const ACTIONS = {
   ajaxSelectBusiness: params => actions.ajaxRequestSelectBusiness(params),
-  ajaxUpdateBusiness: params => actions.ajaxRequestUpdateBusiness(params),
   removeImageReplace: actions.removeImageReplace
 };
