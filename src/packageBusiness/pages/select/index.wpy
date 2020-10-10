@@ -164,7 +164,7 @@
       onHandleUploadImage() {
         this.navigateTo($routes.BUSINESS.UPLOAD.path);
       },
-      onHandleUpdateBusiness() {
+      onHandleUpdateBusinesss() {
         const isCheckEmpty = this.onHandleCheckEmpty();
         const {isBaseEmpty} = isCheckEmpty;
         if (!isBaseEmpty) {
@@ -198,6 +198,7 @@
         }
       },
       onHandleUpdateBusiness() {
+        this.navigateTo($routes.BUSINESS.UPDATE.path);
       },
       exeAjaxSelectBusiness() {
         this.showLoading();
