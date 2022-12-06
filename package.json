@@ -22,7 +22,7 @@
     "miniprogram-slide-view": "0.0.3",
     "mockjs": "^1.0.1-beta3",
     "path": "^0.12.7",
-    "qs": "^6.9.1",
+    "qs": "^6.9.7",
     "redux": "^4.0.1",
     "redux-actions": "^2.6.5",
     "redux-promise": "^0.6.0",
